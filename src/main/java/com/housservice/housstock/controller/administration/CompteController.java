@@ -1,15 +1,10 @@
 package com.housservice.housstock.controller.administration;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,10 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Comptes;
-import com.housservice.housstock.model.UniteMesure;
-import com.housservice.housstock.model.UniteMesureDetail;
 import com.housservice.housstock.repository.ComptesRepository;
-import com.housservice.housstock.repository.UniteMesureRepository;
 import com.housservice.housstock.service.SequenceGeneratorService;
 /**
  * 
@@ -39,7 +31,7 @@ public class CompteController {
 	  @Autowired
 	  private SequenceGeneratorService sequenceGeneratorService;
 	  
-	  @GetMapping("/unites/{id}")
+	  @GetMapping("/comptes/{id}")
 	  public ResponseEntity < Comptes > getUniteMesureById(@PathVariable(value = "id") Long compteId)
 	  throws ResourceNotFoundException {
 	      Comptes compte = comptesRepository.findById(compteId)
@@ -47,13 +39,13 @@ public class CompteController {
 	      return ResponseEntity.ok().body(compte);
 	  }
 
-	  @PutMapping("/unites")
+	  @PutMapping("/comptes")
 	  public Comptes createUniteMesure(@Valid @RequestBody Comptes compte) {
 		  compte.setId(sequenceGeneratorService.generateSequence(Comptes.SEQUENCE_NAME));
 	      return comptesRepository.save(compte);
 	  }
 
-	  @PutMapping("/unites/{id}")
+	  @PutMapping("/comptes/{id}")
 	  public ResponseEntity < Comptes > updateUniteMesure(@PathVariable(value = "id") Long compteId,
 	      @Valid @RequestBody Comptes compteData) throws ResourceNotFoundException {
 		  Comptes compte = comptesRepository.findById(compteId)
@@ -65,7 +57,7 @@ public class CompteController {
 	      return ResponseEntity.ok(updatedCompte);
 	  }
 
-//	  @DeleteMapping("/unites/{id}")
+//	  @DeleteMapping("/comptes/{id}")
 //	  public Map < String, Boolean > deleteUniteMesure(@PathVariable(value = "id") Long uniteMesureId)
 //	  throws ResourceNotFoundException {
 //		  Comptes compte = comptesRepository.findById(uniteMesureId)
