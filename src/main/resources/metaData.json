@@ -1,0 +1,111 @@
+{
+	"catalogue":"unite",
+	"titre":"Longueur",
+	"description":"L’unité de mesure des longueurs est le mètre",
+	"image":"",
+	"data":{
+		"nom":"Mètre",
+		"label":"m",
+		"description":"Le mètre est la longueur du trajet parcouru dans le vide par la lumière pendant une durée de 1/299 792 458 seconde",
+		"listMultiple":[
+			{"nom":"Décamètre","label":"dam","type":"M","coefficient":10},
+			{"nom":"Hectomètre","label":"hm","type":"M","coefficient":100},
+			{"nom":"kilomètre","label":"km","type":"M","coefficient":1000}
+						],
+		"listSousMultiple":[
+			{"nom":"décimètre","label":"dm","type":"S","coefficient":10},
+			{"nom":"centimètre","label":"cm","type":"S","coefficient":100},
+			{"nom":"millimètre","label":"mm","type":"S","coefficient":1000}
+							]
+			},
+	"url":"http://localhost:8080/api/v1/unites"
+},
+{
+	"catalogue":"unite",
+	"titre":"Masse",
+	"description":"L’unité de mesure des masses est le kilogramme",
+	"image":"",
+	"data":{
+		"nom":"Kilogramme",
+		"label":"kg",
+		"description":"Le kilogramme, dont le symbole est kg (en minuscules), est l'unité de base de masse dans le Système international d'unités",
+		"listMultiple":[
+			{"nom":"Quintal","label":"q","type":"M","coefficient":100},
+			{"nom":"Tonne","label":"t","type":"M","coefficient":1000}
+						],
+		"listSousMultiple":[
+			{"nom":"Gramme","label":"g","type":"S","coefficient":1000},
+			{"nom":"Décigramme","label":"dg","type":"S","coefficient":10000},
+			{"nom":"centigramme","label":"cg","type":"S","coefficient":100000},
+			{"nom":"milligramme","label":"mg","type":"S","coefficient":1000000}
+							]
+			},
+	"url":"http://localhost:8080/api/v1/unites"
+},
+{
+	"catalogue":"unite",
+	"titre":"Volume",
+	"description":"Le volume physique se mesure en mètre cube dans le Système international d'unités. On utilise fréquemment le litre, notamment pour des liquides et pour des matières sèches.",
+	"image":"",
+	"data":{
+		"nom":"mètre cube",
+		"label":"m3",
+		"description":"Le mètre cube (symbole : m3) est l'unité de mesure de volume du Système international. Il représente, par exemple, le volume occupé par un cube d'un mètre d'arête.",
+		"listMultiple":[
+			{"nom":"Décamètre cube", "label":"dam3","type":"M","coefficient":1000},
+			{"nom":"Hectomètre cube","label":"hm3", "type":"M","coefficient":1000000},
+			{"nom":"Kilomètre cube", "label":"km3", "type":"M","coefficient":1000000000}
+						],
+		"listSousMultiple":[
+			{"nom":"Décimètre cube", "label":"dm3","type":"S","coefficient":1000},
+			{"nom":"Centimètre cube","label":"cm3","type":"S","coefficient":1000000},
+			{"nom":"millimètre cube","label":"mm3","type":"S","coefficient":1000000000},
+			{"nom":"Litre", "label":"l","type":"S","coefficient":1000}
+							]
+			},
+	"url":"http://localhost:8080/api/v1/unites"
+},
+{
+	"catalogue":"unite",
+	"titre":"Volume en Litre",
+	"description":"On utilise fréquemment le litre, pour mesurer les liquides et des matières sèches.",
+	"image":"",
+	"data":{
+		"nom":"Litre",
+		"label":"l",
+		"description":"Le litre (dérivé de litron1, ancienne mesure de capacité) est une unité de mesure de volume égale à un décimètre cube.",
+		"listMultiple":[
+			{"nom":"Décalitre", "label":"dal","type":"M","coefficient":10},
+			{"nom":"Hectolitre","label":"hl", "type":"M","coefficient":100},
+			{"nom":"Kilolitre", "label":"kl", "type":"M","coefficient":1000}
+						],
+		"listSousMultiple":[
+			{"nom":"Décilitre", "label":"dl","type":"S","coefficient":10},
+			{"nom":"Centilitre","label":"cl","type":"S","coefficient":100},
+			{"nom":"Millilitre","label":"ml","type":"S","coefficient":1000}
+							]
+			},
+	"url":"http://localhost:8080/api/v1/unites"
+},
+{
+	"catalogue":"unite",
+	"titre":"Superficie ",
+	"description":"L'unité correspondante du Système international est le mètre carré",
+	"image":"",
+	"data":{
+		"nom":"Mètre carré",
+		"label":"m²",
+		"description":"Le mètre carré, de symbole m², est l'unité d'aire du Système international. C'est notamment l'aire d'un carré d'un mètre de côté",
+		"listMultiple":[
+			{"nom":"Décamètre carré","label":"dam²","type":"M","coefficient":100},
+			{"nom":"Hectomètre carré","label":"hm²","type":"M","coefficient":10000},
+			{"nom":"Kilomètre carré","label":"km²","type":"M","coefficient":1000000}
+						],
+		"listSousMultiple":[
+			{"nom":"décimètre carré","label":"dm²","type":"S","coefficient":100},
+			{"nom":"centimètre carré","label":"cm²","type":"S","coefficient":10000},
+			{"nom":"millimètre carré","label":"mm²","type":"S","coefficient":1000000}
+							]
+			},
+	"url":"http://localhost:8080/api/v1/unites"
+}
