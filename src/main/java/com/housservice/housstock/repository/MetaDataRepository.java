@@ -11,7 +11,7 @@ import com.housservice.housstock.model.MetaData;
  * @author houssem.khadraoui@gmail.com
  *
  */
-public interface MetaDataRepository extends MongoRepository<MetaData, Long> {
+public interface MetaDataRepository extends MongoRepository<MetaData, String> {
 
 	List<MetaData> findByCatalogue(String catalogue);
 }

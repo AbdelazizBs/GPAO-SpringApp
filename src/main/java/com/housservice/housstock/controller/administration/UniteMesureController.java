@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,7 +44,7 @@ public class UniteMesureController {
 	  }
 
 	  @GetMapping("/unites/{id}")
-	  public ResponseEntity < UniteMesure > getUniteMesureById(@PathVariable(value = "id") Long uniteMesureId)
+	  public ResponseEntity < UniteMesure > getUniteMesureById(@PathVariable(value = "id") String uniteMesureId)
 	  throws ResourceNotFoundException {
 	      UniteMesure uniteMesure = uniteMesureRepository.findById(uniteMesureId)
 	    		  .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + uniteMesureId));
@@ -52,22 +53,22 @@ public class UniteMesureController {
 
 	  @PutMapping("/unites")
 	  public UniteMesure createUniteMesure(@Valid @RequestBody UniteMesure uniteMesure) {
-		  uniteMesure.setId(sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
+		  uniteMesure.setId("" + sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
 		  if (uniteMesure.getListMultiple() != null) {
 			for (UniteMesureDetail uniteMesureDetail : uniteMesure.getListMultiple()) {
-				uniteMesureDetail.setId(sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
+				uniteMesureDetail.setId(uniteMesure.getId() + "-" + sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
 			}
 		  }
 		  if (uniteMesure.getListSousMultiple() != null) {
 			  for (UniteMesureDetail uniteMesureDetail : uniteMesure.getListSousMultiple()) {
-				  uniteMesureDetail.setId(sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
+				  uniteMesureDetail.setId(uniteMesure.getId() + "-" + sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
 			  }
 		  }
 	      return uniteMesureRepository.save(uniteMesure);
 	  }
 
 	  @PutMapping("/unites/{id}")
-	  public ResponseEntity < UniteMesure > updateUniteMesure(@PathVariable(value = "id") Long uniteMesureId,
+	  public ResponseEntity < UniteMesure > updateUniteMesure(@PathVariable(value = "id") String uniteMesureId,
 	      @Valid @RequestBody UniteMesure uniteMesureData) throws ResourceNotFoundException {
 	      UniteMesure uniteMesure = uniteMesureRepository.findById(uniteMesureId)
 	          .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + uniteMesureId));
@@ -75,14 +76,14 @@ public class UniteMesureController {
 	      uniteMesure.setNom(uniteMesureData.getNom());
 	      uniteMesure.setLabel(uniteMesureData.getLabel());
 	      for (UniteMesureDetail uniteMesureDetail : uniteMesureData.getListMultiple()) {
-			if (uniteMesureDetail.getId() == 0) {
-				uniteMesureDetail.setId(sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
+			if (StringUtils.isEmpty(uniteMesureDetail.getId())) {
+				uniteMesureDetail.setId(uniteMesure.getId() + "-" + sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
 			}
 	      }
 	      uniteMesure.setListMultiple(uniteMesureData.getListMultiple());
 	      for (UniteMesureDetail uniteMesureDetail : uniteMesureData.getListSousMultiple()) {
-	    	  if (uniteMesureDetail.getId() == 0) {
-	    		  uniteMesureDetail.setId(sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
+	    	  if (StringUtils.isEmpty(uniteMesureDetail.getId())) {
+	    		  uniteMesureDetail.setId(uniteMesure.getId() + "-" + sequenceGeneratorService.generateSequence(UniteMesure.SEQUENCE_NAME));
 	    	  }
 	      }
 	      uniteMesure.setListSousMultiple(uniteMesureData.getListSousMultiple());
@@ -91,7 +92,7 @@ public class UniteMesureController {
 	  }
 
 	  @DeleteMapping("/unites/{id}")
-	  public Map < String, Boolean > deleteUniteMesure(@PathVariable(value = "id") Long uniteMesureId)
+	  public Map < String, Boolean > deleteUniteMesure(@PathVariable(value = "id") String uniteMesureId)
 	  throws ResourceNotFoundException {
 	      UniteMesure uniteMesure = uniteMesureRepository.findById(uniteMesureId)
 	          .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + uniteMesureId));

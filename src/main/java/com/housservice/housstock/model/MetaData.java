@@ -14,7 +14,7 @@ public class MetaData {
     public static final String SEQUENCE_NAME = "meta_data_sequence";
 
     @Id
-    private long id;
+    private String id;
 
     private String catalogue;
 
@@ -47,14 +47,14 @@ public class MetaData {
 	/**
 	 * @return the id
 	 */
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

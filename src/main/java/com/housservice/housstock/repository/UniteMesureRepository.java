@@ -9,6 +9,6 @@ import com.housservice.housstock.model.UniteMesure;
  * @author houssem.khadraoui@gmail.com
  *
  */
-public interface UniteMesureRepository extends MongoRepository<UniteMesure, Long> {
+public interface UniteMesureRepository extends MongoRepository<UniteMesure, String> {
 
 }

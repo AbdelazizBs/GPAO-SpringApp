@@ -20,7 +20,7 @@ public class Comptes {
     public static final String SEQUENCE_NAME = "comptes_sequence";
 	
     @Id
-    private long id;
+    private String id;
 
     @NotBlank
     @Size(max = 100)
@@ -35,14 +35,14 @@ public class Comptes {
 	/**
 	 * @return the id
 	 */
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

@@ -32,7 +32,7 @@ public class CompteController {
 	  private SequenceGeneratorService sequenceGeneratorService;
 	  
 	  @GetMapping("/comptes/{id}")
-	  public ResponseEntity < Comptes > getUniteMesureById(@PathVariable(value = "id") Long compteId)
+	  public ResponseEntity < Comptes > getUniteMesureById(@PathVariable(value = "id") String compteId)
 	  throws ResourceNotFoundException {
 	      Comptes compte = comptesRepository.findById(compteId)
 	    		  .orElseThrow(() -> new ResourceNotFoundException("Compte non trouvé pour cet id :: " + compteId));
@@ -41,12 +41,12 @@ public class CompteController {
 
 	  @PutMapping("/comptes")
 	  public Comptes createUniteMesure(@Valid @RequestBody Comptes compte) {
-		  compte.setId(sequenceGeneratorService.generateSequence(Comptes.SEQUENCE_NAME));
+		  compte.setId("" + sequenceGeneratorService.generateSequence(Comptes.SEQUENCE_NAME));
 	      return comptesRepository.save(compte);
 	  }
 
 	  @PutMapping("/comptes/{id}")
-	  public ResponseEntity < Comptes > updateUniteMesure(@PathVariable(value = "id") Long compteId,
+	  public ResponseEntity < Comptes > updateUniteMesure(@PathVariable(value = "id") String compteId,
 	      @Valid @RequestBody Comptes compteData) throws ResourceNotFoundException {
 		  Comptes compte = comptesRepository.findById(compteId)
 	          .orElseThrow(() -> new ResourceNotFoundException("Compte non trouvé pour cet id :: " + compteId));

@@ -1,4 +1,4 @@
-{
+[{
 	"catalogue":"unite",
 	"titre":"Longueur",
 	"description":"L’unité de mesure des longueurs est le mètre",
@@ -109,3 +109,4 @@
 			},
 	"url":"http://localhost:8080/api/v1/unites"
 }
+]

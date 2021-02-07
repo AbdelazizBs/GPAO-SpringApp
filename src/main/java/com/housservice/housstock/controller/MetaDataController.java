@@ -60,7 +60,7 @@ public class MetaDataController {
 	  }
 
 	  @GetMapping("/metadata/{id}")
-	  public ResponseEntity < MetaData > getMetaDataById(@PathVariable(value = "id") Long metaDataId)
+	  public ResponseEntity < MetaData > getMetaDataById(@PathVariable(value = "id") String metaDataId)
 	  throws ResourceNotFoundException {
 	      MetaData metaData = metaDataRepository.findById(metaDataId)
 	    		  .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + metaDataId));
@@ -69,12 +69,12 @@ public class MetaDataController {
 
 	  @PutMapping("/metadata")
 	  public MetaData createMetaData(@Valid @RequestBody MetaData metaData) {
-		  metaData.setId(sequenceGeneratorService.generateSequence(MetaData.SEQUENCE_NAME));
+		  metaData.setId("" + sequenceGeneratorService.generateSequence(MetaData.SEQUENCE_NAME));
 	      return metaDataRepository.save(metaData);
 	  }
 
 	  @PutMapping("/metadata/{id}")
-	  public ResponseEntity < MetaData > updateMetaData(@PathVariable(value = "id") Long metaDataId,
+	  public ResponseEntity < MetaData > updateMetaData(@PathVariable(value = "id") String metaDataId,
 	      @Valid @RequestBody MetaData metaDataData) throws ResourceNotFoundException {
 	      MetaData metaData = metaDataRepository.findById(metaDataId)
 	          .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + metaDataId));
@@ -91,7 +91,7 @@ public class MetaDataController {
 	  }
 
 	  @DeleteMapping("/metadata/{id}")
-	  public Map < String, Boolean > deleteMetaData(@PathVariable(value = "id") Long metaDataId)
+	  public Map < String, Boolean > deleteMetaData(@PathVariable(value = "id") String metaDataId)
 	  throws ResourceNotFoundException {
 	      MetaData metaData = metaDataRepository.findById(metaDataId)
 	          .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + metaDataId));
