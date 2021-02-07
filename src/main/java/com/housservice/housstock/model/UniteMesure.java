@@ -26,6 +26,9 @@ public class UniteMesure {
     private String id;
 
     @NotBlank
+    private String idCompte;
+
+    @NotBlank
     @Size(max = 100)
     @Indexed(unique = true)
     private String nom;
@@ -54,6 +57,20 @@ public class UniteMesure {
 	 */
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the idCompte
+	 */
+	public String getIdCompte() {
+		return idCompte;
+	}
+
+	/**
+	 * @param idCompte the idCompte to set
+	 */
+	public void setIdCompte(String idCompte) {
+		this.idCompte = idCompte;
 	}
 
 	/**
