@@ -50,9 +50,9 @@ public class NomenclatureController {
 	  }
 
 	  @PutMapping("/nomenclature")
-	  public Nomenclature createNomenclature(@Valid @RequestBody Nomenclature uniteMesure) {
-		  uniteMesure.setId("" + sequenceGeneratorService.generateSequence(Nomenclature.SEQUENCE_NAME));
-	      return uniteMesureRepository.save(uniteMesure);
+	  public Nomenclature createNomenclature(@Valid @RequestBody Nomenclature nomenclature) {
+		  nomenclature.setId("" + sequenceGeneratorService.generateSequence(Nomenclature.SEQUENCE_NAME));
+	      return uniteMesureRepository.save(nomenclature);
 	  }
 
 	  @PutMapping("/nomenclature/{id}")
