@@ -31,20 +31,20 @@ import com.housservice.housstock.service.SequenceGeneratorService;
 @RequestMapping("/api/v1")
 public class NomenclatureController {
 	  @Autowired
-	  private NomenclatureRepository uniteMesureRepository;
+	  private NomenclatureRepository nomenclatureRepository;
 
 	  @Autowired
 	  private SequenceGeneratorService sequenceGeneratorService;
 	  
 	  @GetMapping("/nomenclature")
 	  public List < Nomenclature > getAllNomenclature() {
-	      return uniteMesureRepository.findAll();
+	      return nomenclatureRepository.findAll();
 	  }
 
 	  @GetMapping("/nomenclature/{id}")
 	  public ResponseEntity < Nomenclature > getNomenclatureById(@PathVariable(value = "id") String uniteMesureId)
 	  throws ResourceNotFoundException {
-	      Nomenclature uniteMesure = uniteMesureRepository.findById(uniteMesureId)
+	      Nomenclature uniteMesure = nomenclatureRepository.findById(uniteMesureId)
 	    		  .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + uniteMesureId));
 	      return ResponseEntity.ok().body(uniteMesure);
 	  }
@@ -52,28 +52,31 @@ public class NomenclatureController {
 	  @PutMapping("/nomenclature")
 	  public Nomenclature createNomenclature(@Valid @RequestBody Nomenclature nomenclature) {
 		  nomenclature.setId("" + sequenceGeneratorService.generateSequence(Nomenclature.SEQUENCE_NAME));
-	      return uniteMesureRepository.save(nomenclature);
+	      return nomenclatureRepository.save(nomenclature);
 	  }
 
 	  @PutMapping("/nomenclature/{id}")
-	  public ResponseEntity < Nomenclature > updateNomenclature(@PathVariable(value = "id") String uniteMesureId,
-	      @Valid @RequestBody Nomenclature uniteMesureData) throws ResourceNotFoundException {
-	      Nomenclature uniteMesure = uniteMesureRepository.findById(uniteMesureId)
-	          .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + uniteMesureId));
-
-	      uniteMesure.setNom(uniteMesureData.getNom());
-	      uniteMesure.setLabel(uniteMesureData.getLabel());
-	      final Nomenclature updatedNomenclature = uniteMesureRepository.save(uniteMesure);
+	  public ResponseEntity < Nomenclature > updateNomenclature(@PathVariable(value = "id") String nomenclatureId,
+	      @Valid @RequestBody Nomenclature nomenclatureData) throws ResourceNotFoundException {
+	      Nomenclature nomenclature = nomenclatureRepository.findById(nomenclatureId)
+	          .orElseThrow(() -> new ResourceNotFoundException("Nomenclature non trouvé pour cet id :: " + nomenclatureId));
+	      
+	      nomenclature.setIdCompte(nomenclatureData.getIdCompte());
+	      nomenclature.setNom(nomenclatureData.getNom());
+	      nomenclature.setDescription(nomenclatureData.getDescription());
+	      nomenclature.setLabel(nomenclatureData.getLabel());
+	      nomenclature.setType(nomenclatureData.getType());
+	      final Nomenclature updatedNomenclature = nomenclatureRepository.save(nomenclature);
 	      return ResponseEntity.ok(updatedNomenclature);
 	  }
 
 	  @DeleteMapping("/nomenclature/{id}")
 	  public Map < String, Boolean > deleteNomenclature(@PathVariable(value = "id") String uniteMesureId)
 	  throws ResourceNotFoundException {
-	      Nomenclature uniteMesure = uniteMesureRepository.findById(uniteMesureId)
+	      Nomenclature uniteMesure = nomenclatureRepository.findById(uniteMesureId)
 	          .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + uniteMesureId));
 
-	      uniteMesureRepository.delete(uniteMesure);
+	      nomenclatureRepository.delete(uniteMesure);
 	      Map < String, Boolean > response = new HashMap < > ();
 	      response.put("deleted", Boolean.TRUE);
 	      return response;

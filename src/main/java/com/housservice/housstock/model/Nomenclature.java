@@ -38,6 +38,9 @@ public class Nomenclature {
     
     private String description;
     
+    @NotBlank
+    private String type;
+    
 	/**
 	 * @return the id
 	 */
@@ -106,6 +109,20 @@ public class Nomenclature {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }
