@@ -48,8 +48,8 @@ public class NomenclatureController {
 	      return nomenclatureRepository.findByTypeAndIdParent(Nomenclature.TYPE_FAMILLE, null);
 	  }
 	  
-	  @GetMapping("/nomenclature-search/{recherche}")
-	  public List < Nomenclature > getSearchNomenclature(@PathVariable(value = "recherche") String recherche) {
+	  @GetMapping("/famille-search/{recherche}")
+	  public List < Nomenclature > getFamilleSearch(@PathVariable(value = "recherche") String recherche) {
 	      if (StringUtils.isEmpty(recherche)) {
 	    	 return new ArrayList<>();
 	      }
