@@ -57,11 +57,11 @@ public class NomenclatureController {
 	  }	  
 
 	  @GetMapping("/nomenclature/{id}")
-	  public ResponseEntity < Nomenclature > getNomenclatureById(@PathVariable(value = "id") String uniteMesureId)
+	  public ResponseEntity < Nomenclature > getNomenclatureById(@PathVariable(value = "id") String nomenclatureId)
 	  throws ResourceNotFoundException {
-	      Nomenclature uniteMesure = nomenclatureRepository.findById(uniteMesureId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + uniteMesureId));
-	      return ResponseEntity.ok().body(uniteMesure);
+	      Nomenclature nomenclature = nomenclatureRepository.findById(nomenclatureId)
+	    		  .orElseThrow(() -> new ResourceNotFoundException("Nomenclature non trouvé pour cet id :: " + nomenclatureId));
+	      return ResponseEntity.ok().body(nomenclature);
 	  }
 
 	  @PutMapping("/nomenclature")
@@ -81,17 +81,18 @@ public class NomenclatureController {
 	      nomenclature.setDescription(nomenclatureData.getDescription());
 	      nomenclature.setLabel(nomenclatureData.getLabel());
 	      nomenclature.setType(nomenclatureData.getType());
+	      nomenclature.setIdParent(nomenclatureData.getIdParent());
 	      final Nomenclature updatedNomenclature = nomenclatureRepository.save(nomenclature);
 	      return ResponseEntity.ok(updatedNomenclature);
 	  }
 
 	  @DeleteMapping("/nomenclature/{id}")
-	  public Map < String, Boolean > deleteNomenclature(@PathVariable(value = "id") String uniteMesureId)
+	  public Map < String, Boolean > deleteNomenclature(@PathVariable(value = "id") String nomenclatureId)
 	  throws ResourceNotFoundException {
-	      Nomenclature uniteMesure = nomenclatureRepository.findById(uniteMesureId)
-	          .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + uniteMesureId));
+	      Nomenclature nomenclature = nomenclatureRepository.findById(nomenclatureId)
+	          .orElseThrow(() -> new ResourceNotFoundException("Unite de Mesure non trouvé pour cet id :: " + nomenclatureId));
 
-	      nomenclatureRepository.delete(uniteMesure);
+	      nomenclatureRepository.delete(nomenclature);
 	      Map < String, Boolean > response = new HashMap < > ();
 	      response.put("deleted", Boolean.TRUE);
 	      return response;
