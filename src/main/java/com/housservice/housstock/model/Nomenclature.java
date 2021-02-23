@@ -19,6 +19,22 @@ public class Nomenclature {
 	@Transient
     public static final String SEQUENCE_NAME = "nomenclature_sequence";
 	
+	/**
+	 * TYPE NOMENCLATURE : F
+	 */
+	@Transient
+	public static final String TYPE_FAMILLE = "F";
+	/**
+	 * TYPE NOMENCLATURE : A
+	 */
+	@Transient
+	public static final String TYPE_ARTICLE = "A";
+	/**
+	 * TYPE NOMENCLATURE : E
+	 */
+	@Transient
+	public static final String TYPE_ELEMENT = "E";
+	
     @Id
     private String id;
 
@@ -40,6 +56,8 @@ public class Nomenclature {
     
     @NotBlank
     private String type;
+    
+    private String idParent;
     
 	/**
 	 * @return the id
@@ -123,6 +141,20 @@ public class Nomenclature {
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	/**
+	 * @return the idParent
+	 */
+	public String getIdParent() {
+		return idParent;
+	}
+
+	/**
+	 * @param idParent the idParent to set
+	 */
+	public void setIdParent(String idParent) {
+		this.idParent = idParent;
 	}
 
 }

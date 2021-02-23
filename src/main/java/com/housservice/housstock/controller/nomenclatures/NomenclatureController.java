@@ -1,11 +1,13 @@
 package com.housservice.housstock.controller.nomenclatures;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,6 +42,19 @@ public class NomenclatureController {
 	  public List < Nomenclature > getAllNomenclature() {
 	      return nomenclatureRepository.findAll();
 	  }
+	  
+	  @GetMapping("/nomenclature/Familles")
+	  public List < Nomenclature > getAllNomenclatureFamillesRacine() {
+	      return nomenclatureRepository.findByTypeAndIdParent(Nomenclature.TYPE_FAMILLE, null);
+	  }
+	  
+	  @GetMapping("/nomenclature-search/{recherche}")
+	  public List < Nomenclature > getSearchNomenclature(@PathVariable(value = "recherche") String recherche) {
+	      if (StringUtils.isEmpty(recherche)) {
+	    	 return new ArrayList<>();
+	      }
+		  return nomenclatureRepository.findByNomLikeOrLabelLikeOrDescriptionLikeAndTypeAllIgnoreCase(recherche, recherche, recherche, Nomenclature.TYPE_FAMILLE);
+	  }	  
 
 	  @GetMapping("/nomenclature/{id}")
 	  public ResponseEntity < Nomenclature > getNomenclatureById(@PathVariable(value = "id") String uniteMesureId)
