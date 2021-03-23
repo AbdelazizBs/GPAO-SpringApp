@@ -29,6 +29,7 @@ import com.housservice.housstock.service.SequenceGeneratorService;
  * @author houssem.khadraoui@gmail.com
  *
  */
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
