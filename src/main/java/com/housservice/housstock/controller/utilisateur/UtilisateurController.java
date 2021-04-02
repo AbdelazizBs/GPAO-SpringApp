@@ -8,22 +8,27 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Utilisateur;
 import com.housservice.housstock.repository.UtilisateurRepository;
 import com.housservice.housstock.service.SequenceGeneratorService;
 
-
+@CrossOrigin
+@RestController
+@RequestMapping("/api/v1")
 public class UtilisateurController {
 	
 	@Autowired
-	private UtilisateurRepository UtilisateurRepository;
+	 private UtilisateurRepository UtilisateurRepository;
 	
 	 @Autowired
 	 private SequenceGeneratorService sequenceGeneratorService;
@@ -55,7 +60,7 @@ public class UtilisateurController {
 	 }
 	 
 	 @DeleteMapping("/utilisateur/{id}")
-		 public Map <String , Boolean> deleteUtilisateur(@PathVariable(value = "id") String utilisateurId)
+	public Map <String , Boolean> deleteUtilisateur(@PathVariable(value = "id") String utilisateurId)
 		 throws ResourceNotFoundException{
 			 Utilisateur utilisateur = UtilisateurRepository.findById(utilisateurId)
 					 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé pour cet id ::" + utilisateurId));
