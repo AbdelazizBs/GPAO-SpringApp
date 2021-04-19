@@ -1,5 +1,7 @@
 package com.housservice.housstock.model;
 
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -8,28 +10,27 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-@Document(collection="Utilisateur")
+@Document(collection = "Utilisateur")
 public class Utilisateur {
-	
+
 	@Transient
-	public static final String SEQUENCE_NAME ="utilisateur_sequence";
-	
+	public static final String SEQUENCE_NAME = "utilisateur_sequence";
+
 	@Id
 	private String id;
-	
+
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String nom;
-	
-    
+
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String prenom;
-	
-	 
+
+	// private List<Groupe> listGroupe;
+
 	/**
 	 * @return the id
 	 */
@@ -43,39 +44,47 @@ public class Utilisateur {
 	public void setId(String id) {
 		this.id = id;
 	}
-    
-	
+
 	/**
 	 * @return the nom
 	 */
 	public String getNom() {
 		return nom;
 	}
-	
-   
+
 	/**
 	 * @param nom the nom to set
 	 */
-	public void setNom(String nom)
-	{
+	public void setNom(String nom) {
 		this.nom = nom;
 	}
-    
-	
+
 	/**
 	 * @return the prenom
 	 */
-	public String getPrenom(){
+	public String getPrenom() {
 		return prenom;
 	}
-    
-	
+
 	/**
 	 * @param nom the prenom to set
 	 */
-	public void setPrenom(String prenom)
-	{
+	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
 
+	/*		*//**
+				 * @return the listGroupe
+				 */
+	/*
+	 * 
+	 * public List<Groupe> getListGroupe() { return listGroupe; }
+	 * 
+	 *//**
+		 * @param listGroupe the listGroupe to set
+		 *//*
+			 * public void setListGroupe(List<Groupe> listGroupe) { this.listGroupe =
+			 * listGroupe; }
+			 * 
+			 */
 }

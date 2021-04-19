@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Utilisateur;
-import com.housservice.housstock.repository.UtilisateurRepository;
+import com.housservice.housstock.repository.UtilisateurRepository; 
 import com.housservice.housstock.service.SequenceGeneratorService;
 
 @CrossOrigin
