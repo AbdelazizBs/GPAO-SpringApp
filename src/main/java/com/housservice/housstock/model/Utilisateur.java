@@ -1,5 +1,8 @@
 package com.housservice.housstock.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -28,8 +31,9 @@ public class Utilisateur {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String prenom;
-	
-	 
+		
+	private List<Groupe> listGroupes = new ArrayList<>();
+		 
 	/**
 	 * @return the id
 	 */
@@ -52,7 +56,6 @@ public class Utilisateur {
 		return nom;
 	}
 	
-   
 	/**
 	 * @param nom the nom to set
 	 */
@@ -77,5 +80,24 @@ public class Utilisateur {
 	{
 		this.prenom = prenom;
 	}
+
+	/**
+	 * @return the listGroupes
+	 */
+	public List<Groupe> getListGroupes() {
+		return listGroupes;
+	}
+
+	/**
+	 * @param listGroupes the listGroupes to set
+	 */
+	public void setListGroupes(List<Groupe> listGroupes) {
+		this.listGroupes = listGroupes;
+	}
+
+	
+
+
+
 
 }
