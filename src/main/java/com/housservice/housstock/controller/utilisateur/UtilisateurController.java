@@ -77,7 +77,6 @@ public class UtilisateurController {
 	  }
 
 
-
 		
 		/*
 		 * @PutMapping("/utilisateur/{id}") public ResponseEntity < Utilisateur >
