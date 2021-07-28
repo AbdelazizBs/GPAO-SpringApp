@@ -46,7 +46,7 @@ public class ClientController {
 	  public ResponseEntity < Client > getClientById(@PathVariable(value = "id") String clientId)
 	  throws ResourceNotFoundException {
 		  Client client = ClientRepository.findById(clientId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException("Client non trouvé pour cet id :: " + clientId));
+	    		  .orElseThrow(() -> new ResourceNotFoundException("Client non trouvé pour cet id : " + clientId));
 	      return ResponseEntity.ok().body(client);
 	  }
 	 
@@ -55,6 +55,12 @@ public class ClientController {
 	  public Client createClient(@Valid @RequestBody Client client)
 	  {
 		  client.setId("" + sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
+		  
+		  // date
+		  
+		  // branche activité
+		  
+		  // secteur activité
 		  
 		  if (client.getListCommandes() != null)
 		  {
@@ -100,7 +106,6 @@ public class ClientController {
 		  client.setListCommandes(clientData.getListCommandes());
 		 
 	     
-
 		 final Client updateClient = ClientRepository.save(client);
 		 return ResponseEntity.ok(updateClient);
 		 	 

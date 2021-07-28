@@ -32,6 +32,8 @@ public class Client {
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private LocalDate date;
 	
+	//private LocalDate date = LocalDate.now();
+	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
