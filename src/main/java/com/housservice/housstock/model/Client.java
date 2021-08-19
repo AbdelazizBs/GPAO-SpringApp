@@ -62,7 +62,7 @@ public class Client {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String Incoterm;
-	
+
     
 	@NotBlank
 	@Size(max = 100)
