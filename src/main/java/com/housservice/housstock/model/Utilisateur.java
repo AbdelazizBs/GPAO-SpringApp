@@ -1,5 +1,6 @@
 package com.housservice.housstock.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -29,7 +30,7 @@ public class Utilisateur {
 	@Indexed(unique = true)
 	private String prenom;
 
-	// private List<Groupe> listGroupe;
+	private List<Groupe> listGroupes = new ArrayList<>();
 
 	/**
 	 * @return the id
@@ -51,7 +52,6 @@ public class Utilisateur {
 	public String getNom() {
 		return nom;
 	}
-
 	/**
 	 * @param nom the nom to set
 	 */
@@ -73,18 +73,18 @@ public class Utilisateur {
 		this.prenom = prenom;
 	}
 
-	/*		*//**
-				 * @return the listGroupe
-				 */
-	/*
-	 * 
-	 * public List<Groupe> getListGroupe() { return listGroupe; }
-	 * 
-	 *//**
-		 * @param listGroupe the listGroupe to set
-		 *//*
-			 * public void setListGroupe(List<Groupe> listGroupe) { this.listGroupe =
-			 * listGroupe; }
-			 * 
-			 */
+	/**
+	 * @return the listGroupes
+	 */
+	public List<Groupe> getListGroupes() {
+		return listGroupes;
+	}
+
+	/**
+	 * @param listGroupes the listGroupes to set
+	 */
+	public void setListGroupes(List<Groupe> listGroupes) {
+		this.listGroupes = listGroupes;
+	}
+
 }

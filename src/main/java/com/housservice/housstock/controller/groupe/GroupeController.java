@@ -22,7 +22,6 @@ import com.housservice.housstock.model.Groupe;
 import com.housservice.housstock.repository.GroupeRepository; 
 import com.housservice.housstock.service.SequenceGeneratorService;
 
-
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
@@ -48,10 +47,11 @@ public class GroupeController {
 		 return GroupeRepository.save(groupe);
 	 }
 	 
+
 	 @PutMapping("/groupe/{id}")
 	 public ResponseEntity < Groupe > updateGroupe (@PathVariable(value = "id")String groupeId,
 			 @Valid @RequestBody Groupe groupeData) throws ResourceNotFoundException {
-		 Groupe groupe = GroupeRepository.findById(groupeId).orElseThrow(()-> new ResourceNotFoundException("Groupe non trouvé pour cet id :: " + groupeId));
+		 Groupe groupe = GroupeRepository.findById(groupeId).orElseThrow(()-> new ResourceNotFoundException("Groupe non trouvé pour cet id : " + groupeId));
 		 
 		 groupe.setId(groupeData.getId());
 		 groupe.setLibelle(groupeData.getLibelle());
@@ -63,16 +63,12 @@ public class GroupeController {
 	public Map <String , Boolean> deleteGroupe(@PathVariable(value = "id") String groupeId)
 		 throws ResourceNotFoundException{
 		 Groupe groupe = GroupeRepository.findById(groupeId)
-					 .orElseThrow(() -> new ResourceNotFoundException("Groupe non trouvé pour cet id ::" + groupeId));
+					 .orElseThrow(() -> new ResourceNotFoundException("Groupe non trouvé pour cet id :" + groupeId));
 			 
-			 GroupeRepository.delete(groupe);
+		 GroupeRepository.delete(groupe);
 			 Map < String, Boolean > response = new HashMap < > ();
 			 response.put("deleted", Boolean.TRUE);
 			 return response;
-
 	 }
-	 
-	
 
 }
-

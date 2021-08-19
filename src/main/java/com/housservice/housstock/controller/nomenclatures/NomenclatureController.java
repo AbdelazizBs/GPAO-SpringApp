@@ -23,6 +23,7 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.repository.NomenclatureRepository;
 import com.housservice.housstock.service.SequenceGeneratorService;
+
 /**
  * 
  * @author houssem.khadraoui@gmail.com

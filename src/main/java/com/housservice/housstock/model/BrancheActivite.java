@@ -8,11 +8,11 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="Groupe")
-public class Groupe {
+@Document(collection="BrancheActivite")
+public class BrancheActivite {
 	
 	@Transient
-	public static final String SEQUENCE_NAME ="groupe_sequence";
+	public static final String SEQUENCE_NAME ="brancheActivite_sequence";
 	
 	@Id
 	private String id;
@@ -20,8 +20,8 @@ public class Groupe {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String libelle;
-	
+	private String branche;
+
 	/**
 	 * @return the id
 	 */
@@ -35,24 +35,20 @@ public class Groupe {
 	public void setId(String id) {
 		this.id = id;
 	}
-    
-	
+
 	/**
-	 * @return the libelle
+	 * @return the branche
 	 */
-	public String getLibelle() {
-		return libelle;
+	public String getBranche() {
+		return branche;
+	}
+
+	/**
+	 * @param branche the branche to set
+	 */
+	public void setBranche(String branche) {
+		this.branche = branche;
 	}
 	
-   
-	/**
-	 * @param libelle the libelle to set
-	 */
-	public void setLibelle(String libelle)
-	{
-		this.libelle = libelle;
-	}
 
 }
-
-
