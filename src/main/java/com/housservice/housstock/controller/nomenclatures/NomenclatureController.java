@@ -45,7 +45,7 @@ public class NomenclatureController {
 	  
 	  @GetMapping("/nomenclature/Familles")
 	  public List < Nomenclature > getAllNomenclatureFamillesRacine() {
-	      return nomenclatureRepository.findByTypeAndIdParent(Nomenclature.TYPE_FAMILLE, null);
+	      return nomenclatureRepository.findByTypeAndIdParent(Nomenclature.TYPE_FAMILLE, "");
 	  }
 	  
 	  @GetMapping("/famille-search/{recherche}")
