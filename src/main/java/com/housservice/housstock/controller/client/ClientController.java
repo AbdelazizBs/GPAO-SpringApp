@@ -42,13 +42,14 @@ public class ClientController {
 		 
 	 }
 	  	 
-	  @GetMapping("/client/{id}")
-	  public ResponseEntity < Client > getClientById(@PathVariable(value = "id") String clientId)
-	  throws ResourceNotFoundException {
-		  Client client = ClientRepository.findById(clientId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException("Client non trouvé pour cet id : " + clientId));
-	      return ResponseEntity.ok().body(client);
-	  }
+		
+	@GetMapping("/client/{id}") 
+	public ResponseEntity < Client > getClientById(@PathVariable(value = "id") String clientId) throws
+		  ResourceNotFoundException { Client client =
+		  ClientRepository.findById(clientId) .orElseThrow(() -> new
+		  ResourceNotFoundException("Client non trouvé pour cet id : " + clientId));
+		  return ResponseEntity.ok().body(client); }
+		 
 	 
 	   
 	  @PutMapping("/client")

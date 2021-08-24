@@ -77,7 +77,6 @@ public class UtilisateurController {
 	  }
 
 
-		
 		/*
 		 * @PutMapping("/utilisateur/{id}") public ResponseEntity < Utilisateur >
 		 * updateUtilisateurVersion_1 (@PathVariable(value = "id")String utilisateurId,
