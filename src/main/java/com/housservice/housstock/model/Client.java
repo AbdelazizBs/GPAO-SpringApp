@@ -30,9 +30,9 @@ public class Client {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate date;
+	//private LocalDate date;
 	
-	//private LocalDate date = LocalDate.now();
+	private LocalDate date = LocalDate.now();
 	
 	@NotBlank
 	@Size(max = 100)
@@ -102,7 +102,7 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String blocage;
+	private int blocage;
 	
 	
 	@NotBlank
@@ -310,14 +310,14 @@ public class Client {
 	/**
 	 * @return the blocage
 	 */
-	public String getBlocage() {
+	public int getBlocage() {
 		return blocage;
 	}
 
 	/**
 	 * @param blocage the blocage to set
 	 */
-	public void setBlocage(String blocage) {
+	public void setBlocage(int blocage) {
 		this.blocage = blocage;
 	}
 

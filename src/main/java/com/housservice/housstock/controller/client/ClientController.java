@@ -49,8 +49,7 @@ public class ClientController {
 		  ClientRepository.findById(clientId) .orElseThrow(() -> new
 		  ResourceNotFoundException("Client non trouvé pour cet id : " + clientId));
 		  return ResponseEntity.ok().body(client); }
-		 
-	 
+		  
 	   
 	  @PutMapping("/client")
 	  public Client createClient(@Valid @RequestBody Client client)
