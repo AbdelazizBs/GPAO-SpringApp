@@ -23,6 +23,7 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.repository.NomenclatureRepository;
 import com.housservice.housstock.service.SequenceGeneratorService;
+
 /**
  * 
  * @author houssem.khadraoui@gmail.com
@@ -45,7 +46,7 @@ public class NomenclatureController {
 	  
 	  @GetMapping("/nomenclature/Familles")
 	  public List < Nomenclature > getAllNomenclatureFamillesRacine() {
-	      return nomenclatureRepository.findByTypeAndIdParent(Nomenclature.TYPE_FAMILLE, null);
+	      return nomenclatureRepository.findByTypeAndIdParent(Nomenclature.TYPE_FAMILLE, "");
 	  }
 	  
 	  @GetMapping("/famille-search/{recherche}")
