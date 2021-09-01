@@ -38,11 +38,16 @@ public class ClientController {
 	 
 	 @GetMapping("/client")
 	 public List< Client > getAllClient() {
-		 return ClientRepository.findAll();
+		 return ClientRepository.findClientNotEnVeille();
 		 
 	 }
-	  	 
-		
+	  
+	 @GetMapping("/clientEnVeille")
+	 public List< Client > getClientEnVeille() {
+		 return ClientRepository.findClientEnVeille();
+		 
+	 }
+	 
 	@GetMapping("/client/{id}") 
 	public ResponseEntity < Client > getClientById(@PathVariable(value = "id") String clientId) throws
 		  ResourceNotFoundException { Client client =
@@ -50,17 +55,12 @@ public class ClientController {
 		  ResourceNotFoundException("Client non trouvé pour cet id : " + clientId));
 		  return ResponseEntity.ok().body(client); }
 		  
+
 	   
 	  @PutMapping("/client")
 	  public Client createClient(@Valid @RequestBody Client client)
 	  {
 		  client.setId("" + sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
-		  
-		  // date
-		  
-		  // branche activité
-		  
-		  // secteur activité
 		  
 		  if (client.getListCommandes() != null)
 		  {
