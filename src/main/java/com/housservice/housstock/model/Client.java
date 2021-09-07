@@ -25,13 +25,10 @@ public class Client {
 	private String id;
 	
 
-	// Automatiquement ajouté à partir de la date système
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	//private LocalDate date;
-	
+	@JsonFormat(pattern="dd/MM/yyyy")	
 	private LocalDate date = LocalDate.now();
 	
 	@NotBlank
@@ -117,10 +114,9 @@ public class Client {
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private LocalDate date_MiseEnVeille;
 	
+	private String idBranche ;
 	
-	private BrancheActivite brancheActivite;
-	
-	private SecteurActivite secteurActivite;
+	private String idSecteur;
 	
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 	
@@ -349,32 +345,21 @@ public class Client {
 		this.date_MiseEnVeille = date_MiseEnVeille;
 	}
 
-	/**
-	 * @return the brancheActivite
-	 */
-	public BrancheActivite getBrancheActivite() {
-		return brancheActivite;
+
+	public String getIdBranche() {
+		return idBranche;
 	}
 
-	/**
-	 * @param brancheActivite the brancheActivite to set
-	 */
-	public void setBrancheActivite(BrancheActivite brancheActivite) {
-		this.brancheActivite = brancheActivite;
+	public void setIdBranche(String idBranche) {
+		this.idBranche = idBranche;
 	}
 
-	/**
-	 * @return the secteurActivite
-	 */
-	public SecteurActivite getSecteurActivite() {
-		return secteurActivite;
+	public String getIdSecteur() {
+		return idSecteur;
 	}
 
-	/**
-	 * @param secteurActivite the secteurActivite to set
-	 */
-	public void setSecteurActivite(SecteurActivite secteurActivite) {
-		this.secteurActivite = secteurActivite;
+	public void setIdSecteur(String idSecteur) {
+		this.idSecteur = idSecteur;
 	}
 
 	/**

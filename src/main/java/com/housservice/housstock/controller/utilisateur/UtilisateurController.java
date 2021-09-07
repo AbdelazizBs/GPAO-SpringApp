@@ -30,7 +30,7 @@ import com.housservice.housstock.service.SequenceGeneratorService;
 public class UtilisateurController {
 	
 	@Autowired
-	 private UtilisateurRepository UtilisateurRepository;
+	 private UtilisateurRepository utilisateurRepository;
 	
 	 @Autowired
 	 private SequenceGeneratorService sequenceGeneratorService;
@@ -38,27 +38,19 @@ public class UtilisateurController {
 	 
 	 @GetMapping("/utilisateur")
 	 public List< Utilisateur > getAllUtilisateur() {
-		 return UtilisateurRepository.findAll();
+		 return utilisateurRepository.findAll();
 		 
 	 }
 	  	 
 	  @GetMapping("/utilisateur/{id}")
 	  public ResponseEntity < Utilisateur > getUtilisateurById(@PathVariable(value = "id") String utilisateurId)
 	  throws ResourceNotFoundException {
-		  Utilisateur utilisateur = UtilisateurRepository.findById(utilisateurId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé pour cet id :: " + utilisateurId));
+		  Utilisateur utilisateur = utilisateurRepository.findById(utilisateurId)
+	    		  .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé pour cet id : " + utilisateurId));
 	      return ResponseEntity.ok().body(utilisateur);
 	  }
 	 
-	  
-		/*
-		 * @PutMapping("/utilisateur") public Utilisateur
-		 * createUtilisateur1(@Valid @RequestBody Utilisateur utilisateur) {
-		 * utilisateur.setId("" +
-		 * sequenceGeneratorService.generateSequence(Utilisateur.SEQUENCE_NAME)); return
-		 * UtilisateurRepository.save(utilisateur); }
-		 */
-	 
+
 	 
 	  @PutMapping("/utilisateur")
 	  public Utilisateur createUtilisateur(@Valid @RequestBody Utilisateur utilisateur)
@@ -73,36 +65,14 @@ public class UtilisateurController {
 			}
 		  }
 
-	      return UtilisateurRepository.save(utilisateur);
+	      return utilisateurRepository.save(utilisateur);
 	  }
 
-
-		/*
-		 * @PutMapping("/utilisateur/{id}") public ResponseEntity < Utilisateur >
-		 * updateUtilisateurVersion_1 (@PathVariable(value = "id")String utilisateurId,
-		 * 
-		 * @Valid @RequestBody Utilisateur utilisateurData) throws
-		 * ResourceNotFoundException { Utilisateur utilisateur =
-		 * UtilisateurRepository.findById(utilisateurId).orElseThrow(()-> new
-		 * ResourceNotFoundException("Utilisateur non trouvé pour cet id :: " +
-		 * utilisateurId));
-		 * 
-		 * utilisateur.setId(utilisateurData.getId());
-		 * utilisateur.setNom(utilisateurData.getNom());
-		 * utilisateur.setPrenom(utilisateurData.getPrenom());
-		 * 
-		 * final Utilisateur updateUtilisateur =
-		 * UtilisateurRepository.save(utilisateur); return
-		 * ResponseEntity.ok(updateUtilisateur);
-		 * 
-		 * }
-		 */
-		 
 	 
 	 @PutMapping("/utilisateur/{id}")
 	 public ResponseEntity < Utilisateur > updateUtilisateur (@PathVariable(value = "id")String utilisateurId,
 			 @Valid @RequestBody Utilisateur utilisateurData) throws ResourceNotFoundException {
-		 Utilisateur utilisateur = UtilisateurRepository.findById(utilisateurId).orElseThrow(()-> new ResourceNotFoundException("Utilisateur non trouvé pour cet id :: " + utilisateurId));
+		 Utilisateur utilisateur = utilisateurRepository.findById(utilisateurId).orElseThrow(()-> new ResourceNotFoundException("Utilisateur non trouvé pour cet id :: " + utilisateurId));
 		 
 		 utilisateur.setId(utilisateurData.getId());
 		 utilisateur.setNom(utilisateurData.getNom());
@@ -119,7 +89,7 @@ public class UtilisateurController {
 		  utilisateur.setListGroupes(utilisateurData.getListGroupes());
 	      
 
-		 final Utilisateur updateUtilisateur = UtilisateurRepository.save(utilisateur);
+		 final Utilisateur updateUtilisateur = utilisateurRepository.save(utilisateur);
 		 return ResponseEntity.ok(updateUtilisateur);
 		 	 
 	 }
@@ -127,10 +97,10 @@ public class UtilisateurController {
 	 @DeleteMapping("/utilisateur/{id}")
 	public Map <String , Boolean> deleteUtilisateur(@PathVariable(value = "id") String utilisateurId)
 		 throws ResourceNotFoundException{
-			 Utilisateur utilisateur = UtilisateurRepository.findById(utilisateurId)
+			 Utilisateur utilisateur = utilisateurRepository.findById(utilisateurId)
 					 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé pour cet id ::" + utilisateurId));
 			 
-			 UtilisateurRepository.delete(utilisateur);
+			 utilisateurRepository.delete(utilisateur);
 			 Map < String, Boolean > response = new HashMap < > ();
 			 response.put("deleted", Boolean.TRUE);
 			 return response;

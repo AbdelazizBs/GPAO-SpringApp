@@ -28,7 +28,7 @@ import com.housservice.housstock.service.SequenceGeneratorService;
 public class BrancheActiviteController {
 
 	@Autowired
-	 private BrancheActiviteRepository BrancheActiviteRepository;
+	 private BrancheActiviteRepository brancheActiviteRepository;
 	
 	 @Autowired
 	 private SequenceGeneratorService sequenceGeneratorService;
@@ -36,7 +36,7 @@ public class BrancheActiviteController {
 	 
 	 @GetMapping("/brancheActivite")
 	 public List< BrancheActivite > getAllBrancheActivite() {
-		 return BrancheActiviteRepository.findAll();
+		 return brancheActiviteRepository.findAll();
 		 
 	 }
 	 
@@ -44,18 +44,18 @@ public class BrancheActiviteController {
 	 public BrancheActivite createBrancheActivite(@Valid @RequestBody BrancheActivite brancheActivite)
 	 {
 		 brancheActivite.setId("" + sequenceGeneratorService.generateSequence(BrancheActivite.SEQUENCE_NAME));
-		 return BrancheActiviteRepository.save(brancheActivite);
+		 return brancheActiviteRepository.save(brancheActivite);
 	 }
 	 
 	 
 	 @PutMapping("/brancheActivite/{id}")
 	 public ResponseEntity < BrancheActivite > updateBrancheActivite (@PathVariable(value = "id")String brancheActiviteId,
 			 @Valid @RequestBody BrancheActivite brancheActiviteData) throws ResourceNotFoundException {
-		 BrancheActivite brancheActivite = BrancheActiviteRepository.findById(brancheActiviteId).orElseThrow(()-> new ResourceNotFoundException("BrancheActivite non trouvé pour cet id : " + brancheActiviteId));
+		 BrancheActivite brancheActivite = brancheActiviteRepository.findById(brancheActiviteId).orElseThrow(()-> new ResourceNotFoundException("BrancheActivite non trouvé pour cet id : " + brancheActiviteId));
 		 
 		 brancheActivite.setId(brancheActiviteData.getId());
 		 brancheActivite.setBranche(brancheActiviteData.getBranche());
-		 final BrancheActivite updateBrancheActivite = BrancheActiviteRepository.save(brancheActivite);
+		 final BrancheActivite updateBrancheActivite = brancheActiviteRepository.save(brancheActivite);
 		 return ResponseEntity.ok(updateBrancheActivite);
 	 }
 	 
@@ -63,10 +63,10 @@ public class BrancheActiviteController {
 	 @DeleteMapping("/brancheActivite/{id}")
 	public Map <String , Boolean> deleteBrancheActivite(@PathVariable(value = "id") String brancheActiviteId)
 		 throws ResourceNotFoundException{
-		 BrancheActivite brancheActivite = BrancheActiviteRepository.findById(brancheActiviteId)
+		 BrancheActivite brancheActivite = brancheActiviteRepository.findById(brancheActiviteId)
 					 .orElseThrow(() -> new ResourceNotFoundException("Branche d'activite non trouvé pour cet id :" + brancheActiviteId));
 			 
-		 BrancheActiviteRepository.delete(brancheActivite);
+		 brancheActiviteRepository.delete(brancheActivite);
 			 Map < String, Boolean > response = new HashMap < > ();
 			 response.put("deleted", Boolean.TRUE);
 			 return response;

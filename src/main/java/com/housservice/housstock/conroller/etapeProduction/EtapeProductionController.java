@@ -28,7 +28,7 @@ import com.housservice.housstock.service.SequenceGeneratorService;
 public class EtapeProductionController {
 	
 	@Autowired
-	 private EtapeProductionRepository EtapeProductionRepository;
+	 private EtapeProductionRepository etapeProductionRepository;
 	
 	@Autowired
 	 private SequenceGeneratorService sequenceGeneratorService;
@@ -36,7 +36,7 @@ public class EtapeProductionController {
 
 	@GetMapping("/etapeProduction")
 	 public List<EtapeProduction> getAllEtapeProduction() {
-		 return EtapeProductionRepository.findAll();
+		 return etapeProductionRepository.findAll();
 		 
 	 }
 	
@@ -45,19 +45,19 @@ public class EtapeProductionController {
 	 public EtapeProduction createEtapeProduction(@Valid @RequestBody EtapeProduction etapeProduction)
 	 {
 		 etapeProduction.setId("" + sequenceGeneratorService.generateSequence(EtapeProduction.SEQUENCE_NAME));
-		 return EtapeProductionRepository.save(etapeProduction);
+		 return etapeProductionRepository.save(etapeProduction);
 	 }
 	 
 	 
 	 @PutMapping("/etapeProduction/{id}")
 	 public ResponseEntity < EtapeProduction > updateEtapeProduction (@PathVariable(value = "id")String etapeProductionId,
 			 @Valid @RequestBody EtapeProduction etapeProductionData) throws ResourceNotFoundException {
-		 EtapeProduction etapeProduction = EtapeProductionRepository.findById(etapeProductionId).orElseThrow(()-> new ResourceNotFoundException("Etape production non trouvé pour cet id : " + etapeProductionId));
+		 EtapeProduction etapeProduction = etapeProductionRepository.findById(etapeProductionId).orElseThrow(()-> new ResourceNotFoundException("Etape production non trouvé pour cet id : " + etapeProductionId));
 		 
 		 etapeProduction.setId(etapeProductionData.getId());
 		 etapeProduction.setNom_etape(etapeProductionData.getNom_etape());
 		 etapeProduction.setType_etape(etapeProductionData.getType_etape());
-		 final EtapeProduction updateEtapeProduction = EtapeProductionRepository.save(etapeProduction);
+		 final EtapeProduction updateEtapeProduction = etapeProductionRepository.save(etapeProduction);
 		 return ResponseEntity.ok(updateEtapeProduction);
 	 }
 	 
@@ -66,10 +66,10 @@ public class EtapeProductionController {
 	 @DeleteMapping("/etapeProduction/{id}")
 		public Map <String , Boolean> deleteEtapeProduction(@PathVariable(value = "id") String etapeProductionId)
 			 throws ResourceNotFoundException{
-		 EtapeProduction etapeProduction = EtapeProductionRepository.findById(etapeProductionId)
+		 EtapeProduction etapeProduction = etapeProductionRepository.findById(etapeProductionId)
 						 .orElseThrow(() -> new ResourceNotFoundException("Etape production non trouvé pour cet id :" + etapeProductionId));
 				 
-		 EtapeProductionRepository.delete(etapeProduction);
+		 etapeProductionRepository.delete(etapeProduction);
 				 Map < String, Boolean > response = new HashMap < > ();
 				 response.put("deleted", Boolean.TRUE);
 				 return response;

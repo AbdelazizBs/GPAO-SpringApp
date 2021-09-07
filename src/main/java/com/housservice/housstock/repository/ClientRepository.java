@@ -10,8 +10,8 @@ import com.housservice.housstock.model.Client;
 public interface ClientRepository extends MongoRepository <Client, String> {
 
 	    @Query("{ 'MiseEnVeille' : { $ne: 1}}")
-	    List<Client> findClientNotEnVeille();
+	    List<Client> findClientActif();
 	
 	    @Query("{ 'MiseEnVeille' : 1}")
-	    List<Client> findClientEnVeille();
+	    List<Client> findClientNotActif();
 }

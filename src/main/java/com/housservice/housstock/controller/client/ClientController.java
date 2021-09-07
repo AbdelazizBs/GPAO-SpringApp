@@ -22,6 +22,7 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.repository.ClientRepository;
+import com.housservice.housstock.service.ClientService;
 import com.housservice.housstock.service.SequenceGeneratorService;
 
 @CrossOrigin
@@ -30,28 +31,35 @@ import com.housservice.housstock.service.SequenceGeneratorService;
 public class ClientController {
 	
 	@Autowired
-	 private ClientRepository ClientRepository;
+	 private ClientRepository clientRepository;
+	
+		
+	@Autowired 
+	private ClientService clientService;
+		 
 	
 	 @Autowired
 	 private SequenceGeneratorService sequenceGeneratorService;
-	  
+	 
 	 
 	 @GetMapping("/client")
 	 public List< Client > getAllClient() {
-		 return ClientRepository.findClientNotEnVeille();
+		 return clientRepository.findClientActif();
+		 
+		 // liste des clients frontend
 		 
 	 }
 	  
 	 @GetMapping("/clientEnVeille")
 	 public List< Client > getClientEnVeille() {
-		 return ClientRepository.findClientEnVeille();
+		 return clientRepository.findClientNotActif();
 		 
 	 }
 	 
 	@GetMapping("/client/{id}") 
 	public ResponseEntity < Client > getClientById(@PathVariable(value = "id") String clientId) throws
 		  ResourceNotFoundException { Client client =
-		  ClientRepository.findById(clientId) .orElseThrow(() -> new
+		  clientRepository.findById(clientId) .orElseThrow(() -> new
 		  ResourceNotFoundException("Client non trouvé pour cet id : " + clientId));
 		  return ResponseEntity.ok().body(client); }
 		  
@@ -61,7 +69,7 @@ public class ClientController {
 	  public Client createClient(@Valid @RequestBody Client client)
 	  {
 		  client.setId("" + sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
-		  
+		  		  		  
 		  if (client.getListCommandes() != null)
 		  {
 			for (CommandeClient commandeClient : client.getListCommandes())
@@ -69,14 +77,17 @@ public class ClientController {
 				commandeClient.setId(client.getId() + "-" + sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
 			}
 		  }
-	      return ClientRepository.save(client);
+		  return clientService.createClient(client);
+		  
+		  
+	      //return clientRepository.save(client);
 	  }
 	
 	 
 	 @PutMapping("/client/{id}")
 	 public ResponseEntity < Client > updateClient (@PathVariable(value = "id")String clientId,
 			 @Valid @RequestBody Client clientData) throws ResourceNotFoundException {
-		 Client client = ClientRepository.findById(clientId).orElseThrow(()-> new ResourceNotFoundException("Client non trouvé pour cet id :: " + clientId));
+		 Client client = clientRepository.findById(clientId).orElseThrow(()-> new ResourceNotFoundException("Client non trouvé pour cet id :: " + clientId));
 		 
 		 client.setId(clientData.getId());
 		 
@@ -91,8 +102,8 @@ public class ClientController {
 		 client.setAdresse_banque(clientData.getAdresse_banque());
 		 client.setRIB(clientData.getRIB());
 		 client.setSWIFT(clientData.getSWIFT());
-		 client.setBrancheActivite(clientData.getBrancheActivite());
-		 client.setSecteurActivite(clientData.getSecteurActivite());
+		// client.setBrancheActivite(clientData.getBrancheActivite());
+		// client.setSecteurActivite(clientData.getSecteurActivite());
 		 
 		 
 		 for (CommandeClient commandeClient : clientData.getListCommandes()) 
@@ -106,7 +117,7 @@ public class ClientController {
 		  client.setListCommandes(clientData.getListCommandes());
 		 
 	     
-		 final Client updateClient = ClientRepository.save(client);
+		 final Client updateClient = clientRepository.save(client);
 		 return ResponseEntity.ok(updateClient);
 		 	 
 	 }
@@ -114,10 +125,10 @@ public class ClientController {
 	 @DeleteMapping("/client/{id}")
 	public Map <String , Boolean> deleteClient(@PathVariable(value = "id") String clientId)
 		 throws ResourceNotFoundException{
-			 Client client = ClientRepository.findById(clientId)
+			 Client client = clientRepository.findById(clientId)
 					 .orElseThrow(() -> new ResourceNotFoundException("Client non trouvé pour cet id ::" + clientId));
 			 
-			 ClientRepository.delete(client);
+			 clientRepository.delete(client);
 			 Map < String, Boolean > response = new HashMap < > ();
 			 response.put("deleted", Boolean.TRUE);
 			 return response;

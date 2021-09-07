@@ -28,7 +28,7 @@ import com.housservice.housstock.service.SequenceGeneratorService;
 public class GroupeController {
 	
 	@Autowired
-	 private GroupeRepository GroupeRepository;
+	 private GroupeRepository groupeRepository;
 	
 	 @Autowired
 	 private SequenceGeneratorService sequenceGeneratorService;
@@ -36,7 +36,7 @@ public class GroupeController {
 	 
 	 @GetMapping("/groupe")
 	 public List< Groupe > getAllGroupe() {
-		 return GroupeRepository.findAll();
+		 return groupeRepository.findAll();
 		 
 	 }
 	 	 
@@ -44,28 +44,28 @@ public class GroupeController {
 	 public Groupe createGroupe(@Valid @RequestBody Groupe groupe)
 	 {
 		 groupe.setId("" + sequenceGeneratorService.generateSequence(Groupe.SEQUENCE_NAME));
-		 return GroupeRepository.save(groupe);
+		 return groupeRepository.save(groupe);
 	 }
 	 
 
 	 @PutMapping("/groupe/{id}")
 	 public ResponseEntity < Groupe > updateGroupe (@PathVariable(value = "id")String groupeId,
 			 @Valid @RequestBody Groupe groupeData) throws ResourceNotFoundException {
-		 Groupe groupe = GroupeRepository.findById(groupeId).orElseThrow(()-> new ResourceNotFoundException("Groupe non trouvé pour cet id : " + groupeId));
+		 Groupe groupe = groupeRepository.findById(groupeId).orElseThrow(()-> new ResourceNotFoundException("Groupe non trouvé pour cet id : " + groupeId));
 		 
 		 groupe.setId(groupeData.getId());
 		 groupe.setLibelle(groupeData.getLibelle());
-		 final Groupe updateGroupe = GroupeRepository.save(groupe);
+		 final Groupe updateGroupe = groupeRepository.save(groupe);
 		 return ResponseEntity.ok(updateGroupe);
 	 }
 	 
 	 @DeleteMapping("/groupe/{id}")
 	public Map <String , Boolean> deleteGroupe(@PathVariable(value = "id") String groupeId)
 		 throws ResourceNotFoundException{
-		 Groupe groupe = GroupeRepository.findById(groupeId)
+		 Groupe groupe = groupeRepository.findById(groupeId)
 					 .orElseThrow(() -> new ResourceNotFoundException("Groupe non trouvé pour cet id :" + groupeId));
 			 
-		 GroupeRepository.delete(groupe);
+		 groupeRepository.delete(groupe);
 			 Map < String, Boolean > response = new HashMap < > ();
 			 response.put("deleted", Boolean.TRUE);
 			 return response;

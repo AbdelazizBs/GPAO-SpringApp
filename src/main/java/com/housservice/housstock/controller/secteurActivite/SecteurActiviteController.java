@@ -29,7 +29,7 @@ public class SecteurActiviteController {
 
 	
 	@Autowired
-	 private SecteurActiviteRepository SecteurActiviteRepository;
+	 private SecteurActiviteRepository secteurActiviteRepository;
 	
 	 @Autowired
 	 private SequenceGeneratorService sequenceGeneratorService;
@@ -37,7 +37,7 @@ public class SecteurActiviteController {
 	 
 	 @GetMapping("/secteurActivite")
 	 public List< SecteurActivite > getAllSecteurActivite() {
-		 return SecteurActiviteRepository.findAll();
+		 return secteurActiviteRepository.findAll();
 		 
 	 }
 	 
@@ -45,18 +45,18 @@ public class SecteurActiviteController {
 	 public SecteurActivite createSecteurActivite(@Valid @RequestBody SecteurActivite secteurActivite)
 	 {
 		 secteurActivite.setId("" + sequenceGeneratorService.generateSequence(SecteurActivite.SEQUENCE_NAME));
-		 return SecteurActiviteRepository.save(secteurActivite);
+		 return secteurActiviteRepository.save(secteurActivite);
 	 }
 	 
 	 
 	 @PutMapping("/secteurActivite/{id}")
 	 public ResponseEntity < SecteurActivite > updateSecteurActivite (@PathVariable(value = "id")String secteurActiviteId,
 			 @Valid @RequestBody SecteurActivite secteurActiviteData) throws ResourceNotFoundException {
-		 SecteurActivite secteurActivite = SecteurActiviteRepository.findById(secteurActiviteId).orElseThrow(()-> new ResourceNotFoundException("SecteurActivite non trouvé pour cet id : " + secteurActiviteId));
+		 SecteurActivite secteurActivite = secteurActiviteRepository.findById(secteurActiviteId).orElseThrow(()-> new ResourceNotFoundException("SecteurActivite non trouvé pour cet id : " + secteurActiviteId));
 		 
 		 secteurActivite.setId(secteurActiviteData.getId());
 		 secteurActivite.setSecteur(secteurActiviteData.getSecteur());
-		 final SecteurActivite updateSecteurActivite = SecteurActiviteRepository.save(secteurActivite);
+		 final SecteurActivite updateSecteurActivite = secteurActiviteRepository.save(secteurActivite);
 		 return ResponseEntity.ok(updateSecteurActivite);
 	 }
 	 
@@ -64,10 +64,10 @@ public class SecteurActiviteController {
 	 @DeleteMapping("/secteurActivite/{id}")
 	public Map <String , Boolean> deleteSecteurActivite(@PathVariable(value = "id") String secteurActiviteId)
 		 throws ResourceNotFoundException{
-		 SecteurActivite secteurActivite = SecteurActiviteRepository.findById(secteurActiviteId)
+		 SecteurActivite secteurActivite = secteurActiviteRepository.findById(secteurActiviteId)
 					 .orElseThrow(() -> new ResourceNotFoundException("Secteur d'activite non trouvé pour cet id :" + secteurActiviteId));
 			 
-		 SecteurActiviteRepository.delete(secteurActivite);
+		 secteurActiviteRepository.delete(secteurActivite);
 			 Map < String, Boolean > response = new HashMap < > ();
 			 response.put("deleted", Boolean.TRUE);
 			 return response;
