@@ -17,7 +17,13 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<commons-lang3.version>3.11</commons-lang3.version>
+		<swagger-version>2.7.0</swagger-version>
 	</properties>
+	<scm>
+		<url>https://gitlab.com/houssem.khadraoui/housstock-frontend.git</url>
+		<connection>scm:git:https://gitlab.com/houssem.khadraoui/housstock-frontend.git</connection>
+		<developerConnection>scm:git:https://gitlab.com/houssem.khadraoui/housstock-frontend.git</developerConnection>
+	</scm>
 
 	<dependencies>
 		<dependency>
@@ -48,7 +54,22 @@
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
-		    <version>${commons-lang3.version}</version>
+<!-- 		    <version>${commons-lang3.version}</version> -->
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
