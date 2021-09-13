@@ -21,22 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.Client;
-import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.service.ClientService;
 import com.housservice.housstock.service.SequenceGeneratorService;
+
+import com.housservice.housstock.repository.ClientRepository;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class ClientController {
-	
-	@Autowired
-	 private ClientRepository clientRepository;
-	
 		
 	@Autowired 
 	private ClientService clientService;
-		 
+		
+	@Autowired 
+	private ClientRepository clientRepository;
 	
 	 @Autowired
 	 private SequenceGeneratorService sequenceGeneratorService;
@@ -44,23 +43,27 @@ public class ClientController {
 	 
 	 @GetMapping("/client")
 	 public List< Client > getAllClient() {
-		 return clientRepository.findClientActif();
+		 
+		// return clientRepository.findClientActif();
+		 return clientService.findClientActif();
 		 
 		 // liste des clients frontend
 		 
 	 }
-	  
+	 
 	 @GetMapping("/clientEnVeille")
 	 public List< Client > getClientEnVeille() {
-		 return clientRepository.findClientNotActif();
+	//	 return clientRepository.findClientNotActif();
+		 return clientService.findClientNotActif();
 		 
 	 }
 	 
 	@GetMapping("/client/{id}") 
 	public ResponseEntity < Client > getClientById(@PathVariable(value = "id") String clientId) throws
-		  ResourceNotFoundException { Client client =
-		  clientRepository.findById(clientId) .orElseThrow(() -> new
+		  ResourceNotFoundException { 
+		  Client client = clientRepository.findById(clientId) .orElseThrow(() -> new
 		  ResourceNotFoundException("Client non trouvé pour cet id : " + clientId));
+				
 		  return ResponseEntity.ok().body(client); }
 		  
 
