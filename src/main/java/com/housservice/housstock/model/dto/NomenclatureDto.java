@@ -1,7 +1,7 @@
-package com.housservice.housstock.model;
+package com.housservice.housstock.model.dto;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,11 +20,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Document(collection = "Nomenclature")
-public class Nomenclature {
-	
-	@Transient
-    public static final String SEQUENCE_NAME = "nomenclature_sequence";
+public class NomenclatureDto {
 	
 	/**
 	 * TYPE NOMENCLATURE : F
@@ -62,6 +57,6 @@ public class Nomenclature {
     
     private String idParent;
     
-    private Set<String> listIdChildren = new HashSet<>();
+    private List<NomenclatureDto> listNomenclatureChildren = new ArrayList<>();
     
 }
