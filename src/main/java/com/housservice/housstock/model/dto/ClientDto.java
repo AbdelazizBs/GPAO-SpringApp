@@ -1,30 +1,29 @@
-package com.housservice.housstock.model;
+package com.housservice.housstock.model.dto;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.housservice.housstock.model.CommandeClient;
 
 import lombok.Getter;
 import lombok.Setter;
 
-
+/**
+ * 
+ * @author houssem.khadraoui@gmail.com
+ *
+ */
 @Getter
 @Setter
-@Document(collection="Client")
-public class Client {
-	
-	@Transient
-	public static final String SEQUENCE_NAME ="client_sequence";
+public class ClientDto {
 	
 	@Id
 	private String id;
@@ -132,5 +131,7 @@ public class Client {
 	
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 	
-
+    
+   // private List<ClientDto> listClientChildren = new ArrayList<>();
+    
 }

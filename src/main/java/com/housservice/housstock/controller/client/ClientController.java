@@ -1,12 +1,13 @@
 package com.housservice.housstock.controller.client;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,124 +19,120 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.service.ClientService;
-import com.housservice.housstock.service.SequenceGeneratorService;
 
-import com.housservice.housstock.repository.ClientRepository;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
+@Api(tags = {"Clients Management"})
 public class ClientController {
 		
 	@Autowired 
 	private ClientService clientService;
-		
-	@Autowired 
-	private ClientRepository clientRepository;
 	
-	 @Autowired
-	 private SequenceGeneratorService sequenceGeneratorService;
-	 
+	  private final MessageHttpErrorProperties messageHttpErrorProperties;
+		
+	
+	  @Autowired
+	  public ClientController(ClientService clientService, MessageHttpErrorProperties messageHttpErrorProperties) {
+		this.clientService = clientService;
+		this.messageHttpErrorProperties = messageHttpErrorProperties;
+	  }
+
 	 
 	 @GetMapping("/client")
 	 public List< Client > getAllClient() {
-		 
-		// return clientRepository.findClientActif();
+		 		
 		 return clientService.findClientActif();
-		 
-		 // liste des clients frontend
-		 
+	 
 	 }
 	 
 	 @GetMapping("/clientEnVeille")
 	 public List< Client > getClientEnVeille() {
-	//	 return clientRepository.findClientNotActif();
 		 return clientService.findClientNotActif();
 		 
 	 }
-	 
-	@GetMapping("/client/{id}") 
-	public ResponseEntity < Client > getClientById(@PathVariable(value = "id") String clientId) throws
-		  ResourceNotFoundException { 
-		  Client client = clientRepository.findById(clientId) .orElseThrow(() -> new
-		  ResourceNotFoundException("Client non trouvé pour cet id : " + clientId));
-				
-		  return ResponseEntity.ok().body(client); }
-		  
+
+	  @GetMapping("/client/{id}")
+	  @ApiOperation(value = "service to get one Client by Id.")
+	  public ResponseEntity < Client > getClientById(
+			  @ApiParam(name = "id", value="id of client", required = true)
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String clientId)
+	  throws ResourceNotFoundException {
+		  Client client = clientService.getClientById(clientId)
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), clientId)));
+	      return ResponseEntity.ok().body(client);
+	  }
 
 	   
+		/*
+		 * @PutMapping("/client") public Client createClient(@Valid @RequestBody Client
+		 * client) { client.setId("" +
+		 * sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
+		 * 
+		 * if (client.getListCommandes() != null) { for (CommandeClient commandeClient :
+		 * client.getListCommandes()) { commandeClient.setId(client.getId() + "-" +
+		 * sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME)); } } return
+		 * clientService.createClient(client);
+		 * 
+		 * }
+		 */
+	  
+	  
 	  @PutMapping("/client")
-	  public Client createClient(@Valid @RequestBody Client client)
-	  {
-		  client.setId("" + sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
-		  		  		  
-		  if (client.getListCommandes() != null)
-		  {
-			for (CommandeClient commandeClient : client.getListCommandes())
-			{
-				commandeClient.setId(client.getId() + "-" + sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
-			}
-		  }
-		  return clientService.createClient(client);
+	  public ResponseEntity<String> createClient(@Valid @RequestBody ClientDto clientDto) {
 		  
-		  
-	      //return clientRepository.save(client);
+		  clientService.createNewClient(clientDto);
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0003());
 	  }
-	
+	  
+	  
 	 
-	 @PutMapping("/client/{id}")
-	 public ResponseEntity < Client > updateClient (@PathVariable(value = "id")String clientId,
-			 @Valid @RequestBody Client clientData) throws ResourceNotFoundException {
-		 Client client = clientRepository.findById(clientId).orElseThrow(()-> new ResourceNotFoundException("Client non trouvé pour cet id :: " + clientId));
-		 
-		 client.setId(clientData.getId());
-		 
-		 client.setRaison_social(clientData.getRaison_social());
-		 client.setRegime(clientData.getRegime());
-		 client.setAdresse_facturation(clientData.getAdresse_facturation());
-		 client.setAdresse_liv(clientData.getAdresse_liv());
-		 client.setIncoterm(clientData.getIncoterm());
-		 client.setEcheance(clientData.getEcheance());
-		 client.setMode_pai(clientData.getMode_pai());
-		 client.setNom_banque(clientData.getNom_banque());
-		 client.setAdresse_banque(clientData.getAdresse_banque());
-		 client.setRIB(clientData.getRIB());
-		 client.setSWIFT(clientData.getSWIFT());
-		// client.setBrancheActivite(clientData.getBrancheActivite());
-		// client.setSecteurActivite(clientData.getSecteurActivite());
-		 
-		 
-		 for (CommandeClient commandeClient : clientData.getListCommandes()) 
-	      {
-			if (StringUtils.isEmpty(commandeClient.getId()))
-			{
-				commandeClient.setId(client.getId() + "-" + sequenceGeneratorService.generateSequence(CommandeClient.SEQUENCE_NAME));
-			}
-	      }
+	  @PutMapping("/client/{id}")
+	  public ResponseEntity <String> updateClient(
+			  @ApiParam(name = "id", value="id of client", required = true)
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String clientId,
+	      @Valid @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
+		  
+		  clientService.updateClient(clientDto);
 	      
-		  client.setListCommandes(clientData.getListCommandes());
-		 
-	     
-		 final Client updateClient = clientRepository.save(client);
-		 return ResponseEntity.ok(updateClient);
-		 	 
-	 }
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0004());
+	  }
 	 
-	 @DeleteMapping("/client/{id}")
-	public Map <String , Boolean> deleteClient(@PathVariable(value = "id") String clientId)
-		 throws ResourceNotFoundException{
-			 Client client = clientRepository.findById(clientId)
-					 .orElseThrow(() -> new ResourceNotFoundException("Client non trouvé pour cet id ::" + clientId));
-			 
-			 clientRepository.delete(client);
-			 Map < String, Boolean > response = new HashMap < > ();
-			 response.put("deleted", Boolean.TRUE);
-			 return response;
+	  @DeleteMapping("/client/{id}")
+	  @ApiOperation(value = "service to delete one Client by Id.")
+	  public Map < String, Boolean > deleteclient(
+			  @ApiParam(name = "id", value="id of client", required = true)
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String clientId)
+	  throws ResourceNotFoundException {
+	      Client client = clientService.getClientById(clientId)
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), clientId)));
 
-	 }
+	      clientService.deleteClient(client);
+	      Map < String, Boolean > response = new HashMap < > ();
+	      response.put("deleted", Boolean.TRUE);
+	      return response;
+	  }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	
 }
