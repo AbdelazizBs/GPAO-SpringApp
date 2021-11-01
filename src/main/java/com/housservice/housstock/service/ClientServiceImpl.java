@@ -44,17 +44,17 @@ public class ClientServiceImpl implements ClientService {
 		ClientDto clientDto = new ClientDto();
 		clientDto.setId(client.getId());
 		
-		clientDto.setRaison_social(client.getRaison_social());		
+		clientDto.setRaisonSocial(client.getRaisonSocial());		
 		clientDto.setRegime(client.getRegime());
-		clientDto.setAdresse_facturation(client.getAdresse_facturation());
-		clientDto.setAdresse_liv(client.getAdresse_liv());
+		clientDto.setAdresseFacturation(client.getAdresseFacturation());
+		clientDto.setAdresseLivraison(client.getAdresseLivraison());
 		clientDto.setIncoterm(client.getIncoterm());
 		clientDto.setEcheance(client.getEcheance());
-		clientDto.setMode_pai(client.getMode_pai());
-		clientDto.setNom_banque(client.getNom_banque());
-		clientDto.setAdresse_banque(client.getAdresse_banque());
-		clientDto.setRIB(client.getRIB());
-		clientDto.setSWIFT(client.getSWIFT());
+		clientDto.setModePaiement(client.getModePaiement());
+		clientDto.setNomBanque(client.getNomBanque());
+		clientDto.setAdresseBanque(client.getAdresseBanque());
+		clientDto.setRib(client.getRib());
+		clientDto.setSwift(client.getSwift());
 		clientDto.setBrancheActivite(client.getBrancheActivite());
 		clientDto.setSecteurActivite(client.getSecteurActivite());
 		
@@ -84,17 +84,17 @@ public class ClientServiceImpl implements ClientService {
 	private Client buildClientFromClientDto(ClientDto clientDto) {
 		Client client = new Client();
 		client.setId(""+sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
-		client.setRaison_social(clientDto.getRaison_social());		
+		client.setRaisonSocial(clientDto.getRaisonSocial());		
 		client.setRegime(clientDto.getRegime());
-		client.setAdresse_facturation(clientDto.getAdresse_facturation());
-		client.setAdresse_liv(clientDto.getAdresse_liv());
+		client.setAdresseFacturation(clientDto.getAdresseFacturation());
+		client.setAdresseLivraison(clientDto.getAdresseLivraison());
 		client.setIncoterm(clientDto.getIncoterm());
 		client.setEcheance(clientDto.getEcheance());
-		client.setMode_pai(clientDto.getMode_pai());
-		client.setNom_banque(clientDto.getNom_banque());
-		client.setAdresse_banque(clientDto.getAdresse_banque());
-		client.setRIB(clientDto.getRIB());
-		client.setSWIFT(clientDto.getSWIFT());
+		client.setModePaiement(clientDto.getModePaiement());
+		client.setNomBanque(clientDto.getNomBanque());
+		client.setAdresseBanque(clientDto.getAdresseBanque());
+		client.setRib(clientDto.getRib());
+		client.setSwift(clientDto.getSwift());
 		client.setBrancheActivite(clientDto.getBrancheActivite());
 		client.setSecteurActivite(clientDto.getSecteurActivite());
 		
@@ -109,17 +109,17 @@ public class ClientServiceImpl implements ClientService {
 		Client client = getClientById(clientDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(),  clientDto.getId())));
 		
-		client.setRaison_social(clientDto.getRaison_social());		
+		client.setRaisonSocial(clientDto.getRaisonSocial());		
 		client.setRegime(clientDto.getRegime());
-		client.setAdresse_facturation(clientDto.getAdresse_facturation());
-		client.setAdresse_liv(clientDto.getAdresse_liv());
+		client.setAdresseFacturation(clientDto.getAdresseFacturation());
+		client.setAdresseLivraison(clientDto.getAdresseLivraison());
 		client.setIncoterm(clientDto.getIncoterm());
 		client.setEcheance(clientDto.getEcheance());
-		client.setMode_pai(clientDto.getMode_pai());
-		client.setNom_banque(clientDto.getNom_banque());
-		client.setAdresse_banque(clientDto.getAdresse_banque());
-		client.setRIB(clientDto.getRIB());
-		client.setSWIFT(clientDto.getSWIFT());
+		client.setModePaiement(clientDto.getModePaiement());
+		client.setNomBanque(clientDto.getNomBanque());
+		client.setAdresseBanque(clientDto.getAdresseBanque());
+		client.setRib(clientDto.getRib());
+		client.setSwift(clientDto.getSwift());
 		client.setBrancheActivite(clientDto.getBrancheActivite());
 		client.setSecteurActivite(clientDto.getSecteurActivite());
 

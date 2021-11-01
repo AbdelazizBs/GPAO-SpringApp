@@ -39,7 +39,7 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String raison_social;
+	private String raisonSocial;
 	
     
 	@NotBlank
@@ -61,19 +61,19 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String adresse_facturation;
+	private String adresseFacturation;
 	
     
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String adresse_liv;
+	private String adresseLivraison;
 	
 	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String Incoterm;
+	private String incoterm;
 
     
 	@NotBlank
@@ -85,30 +85,30 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String Mode_pai;
+	private String modePaiement;
 	
     
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String nom_banque;
+	private String nomBanque;
 	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String adresse_banque;
+	private String adresseBanque;
 	
     
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String RIB;
+	private String rib;
 	
 	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String SWIFT;
+	private String swift;
 	
     
 	@NotBlank
@@ -120,14 +120,14 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private int MiseEnVeille;
+	private int miseEnVeille;
 	
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate date_MiseEnVeille;
+	private LocalDate dateMiseEnVeille;
 	
 	
 	private List<CommandeClient> listCommandes = new ArrayList<>();
