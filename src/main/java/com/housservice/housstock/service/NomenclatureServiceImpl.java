@@ -10,6 +10,10 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -21,6 +25,7 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.dto.NomenclatureDto;
 import com.housservice.housstock.repository.NomenclatureRepository;
+import com.housservice.housstock.util.ConstantHelper;
 import com.mongodb.client.result.UpdateResult;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,14 +53,38 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	}
 	
 	@Override
-	public List<NomenclatureDto> getAllFamily(String idCompte, String typeFamille, String idParent) {
-		List<Nomenclature> listNomenclatures = nomenclatureRepository.findByIdCompteAndTypeAndIdParent(idCompte, Nomenclature.TYPE_FAMILLE, "").orElse(new ArrayList<>());
+	public List<NomenclatureDto> getNomenclatureyIdCompteIdParent(String idCompte, String idParent) {
+		if (StringUtils.equals(idParent, NomenclatureDto.ROOT_LEVEL)) {
+			idParent = "";
+		}
+		List<Nomenclature> listNomenclatures = nomenclatureRepository.findByIdCompteAndIdParent(idCompte, idParent).orElse(new ArrayList<>());
 		
 		return listNomenclatures.stream()
 				.map(nomenclature -> buildNomenclatureDtoFromNomenlcature(nomenclature))
 				.filter(nomenclatur -> nomenclatur != null)
 				.collect(Collectors.toList());
 			
+	}
+	
+	@Override
+	public List<NomenclatureDto> getNomenclatureyByIdCompteIdParentSorted(String idCompte, String idParent, String sortId, String sortWay) {
+		if (StringUtils.equals(idParent, NomenclatureDto.ROOT_LEVEL)) {
+			idParent = "";
+		}
+		if (StringUtils.isNotBlank(sortId)) {
+			Sort sort = Sort.by(Sort.Direction.ASC, sortId);
+			if (StringUtils.equals(sortWay, ConstantHelper.SORT_SENS_DESC)) {
+				sort = Sort.by(Sort.Direction.DESC, sortId);
+			}
+			
+			List<Nomenclature> listNomenclatures = nomenclatureRepository.findByIdCompteAndIdParent(idCompte, idParent, sort).orElse(new ArrayList<>());
+			
+			return listNomenclatures.stream()
+					.map(nomenclature -> buildNomenclatureDtoFromNomenlcature(nomenclature))
+					.filter(nomenclatur -> nomenclatur != null)
+					.collect(Collectors.toList());
+		}
+		return getNomenclatureyIdCompteIdParent(idCompte, idParent);
 	}
 	
 	@Override
@@ -69,6 +98,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		nomenclatureDto.setDescription(nomenclature.getDescription());
 		nomenclatureDto.setIdParent(nomenclature.getIdParent());
 		if (nomenclature.getListIdChildren() != null) {
+			nomenclatureDto.setHasChildren(true);
 			List<NomenclatureDto> listNomenclatureDtoChild = nomenclature.getListIdChildren().stream()
 																		.map(nomenclatureId -> buildNomenclatureDtoFromNomenlcature(getNomenclatureById(nomenclatureId)))
 																		.filter(nomenclatur -> nomenclatur != null)
@@ -100,7 +130,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	@Override
 	public void createNewNomenclature(@Valid NomenclatureDto nomenclatureDto) {
 		
-		Nomenclature nomenclature = nomenclatureRepository.save(buildNomenclatureFromNomenlcatureDto(nomenclatureDto));
+		Nomenclature nomenclature = nomenclatureRepository.save(buildNomenclatureFromNomenlcatureDto(nomenclatureDto, true));
 		if (StringUtils.isNotBlank(nomenclature.getIdParent())) {
 			addIdNomenclatureToPere(nomenclature.getId(), nomenclature.getIdParent());
 			
@@ -108,9 +138,15 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		
 	}
 
-	private Nomenclature buildNomenclatureFromNomenlcatureDto(NomenclatureDto nomenclatureDto) {
+	private Nomenclature buildNomenclatureFromNomenlcatureDto(NomenclatureDto nomenclatureDto, boolean withID) {
 		Nomenclature nomenclature = new Nomenclature();
-		nomenclature.setId("" + sequenceGeneratorService.generateSequence(Nomenclature.SEQUENCE_NAME));
+		if (withID) {
+			if (StringUtils.isBlank(nomenclatureDto.getId())) {
+				nomenclature.setId("" + sequenceGeneratorService.generateSequence(Nomenclature.SEQUENCE_NAME));
+			}else {
+				nomenclature.setId(nomenclatureDto.getId());
+			}
+		}
 		nomenclature.setNom(nomenclatureDto.getNom());
 		nomenclature.setDescription(nomenclatureDto.getDescription());
 		nomenclature.setIdCompte(nomenclatureDto.getIdCompte());
@@ -156,11 +192,33 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	}
 
 	@Override
-	public List<NomenclatureDto> findFamilyNomenclature(String recherche) {
-		List<Nomenclature> listNomenclatures =  nomenclatureRepository.findByNomLikeOrDescriptionLikeAndTypeAllIgnoreCase(recherche, recherche, Nomenclature.TYPE_FAMILLE).orElse(new ArrayList<Nomenclature>());
+	public List<NomenclatureDto> findFamilyNomenclatureByIdCompte(String idCompte, String recherche) {
+		List<Nomenclature> listNomenclatures =  nomenclatureRepository.findByIdCompteAndNomLikeOrDescriptionLikeAndTypeAllIgnoreCase(idCompte, recherche, recherche, Nomenclature.TYPE_FAMILLE).orElse(new ArrayList<Nomenclature>());
 		return listNomenclatures.stream()
 				.map(nomenclature -> buildNomenclatureDtoFromNomenlcature(nomenclature))
-				.filter(nomenclatur -> nomenclatur != null)
+				.filter(nomenclature -> nomenclature != null)
+				.collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<NomenclatureDto> findNomenclatures(String idCompte, NomenclatureDto nomenclatureDto) {
+		Nomenclature nomenclatur = buildNomenclatureFromNomenlcatureDto(nomenclatureDto, false);
+		nomenclatur.setIdCompte(idCompte);
+		if (nomenclatur.getListIdChildren().isEmpty()) {
+			nomenclatur.setListIdChildren(null);
+		}
+		ExampleMatcher matcher = ExampleMatcher.matchingAll()
+				   .withIgnoreCase()
+				   .withStringMatcher(StringMatcher.ENDING)
+				   .withStringMatcher(StringMatcher.STARTING)
+				   .withStringMatcher(StringMatcher.CONTAINING);
+		Example<Nomenclature> exampleNomenclature = Example.of(nomenclatur, matcher);
+		
+				
+		List<Nomenclature> listNomenclatures =  nomenclatureRepository.findAll(exampleNomenclature);
+		return listNomenclatures.stream()
+				.map(nomenclature -> buildNomenclatureDtoFromNomenlcature(nomenclature))
+				.filter(nomenclature -> nomenclature != null)
 				.collect(Collectors.toList());
 	}
 

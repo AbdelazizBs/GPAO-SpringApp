@@ -37,6 +37,11 @@ public class NomenclatureDto {
 	 */
 	@Transient
 	public static final String TYPE_ELEMENT = "E";
+	/**
+	 * idParent : root
+	 */
+	@Transient
+	public static final String ROOT_LEVEL = "root";
 	
     @Id
     private String id;
@@ -56,6 +61,8 @@ public class NomenclatureDto {
     private String type;
     
     private String idParent;
+    
+    private boolean hasChildren = false;
     
     private List<NomenclatureDto> listNomenclatureChildren = new ArrayList<>();
     

@@ -11,8 +11,6 @@ import com.housservice.housstock.model.dto.NomenclatureDto;
 
 public interface NomenclatureService {
 
-	List<NomenclatureDto> getAllFamily(String idCompte, String typeFamille, String idParent);
-	
 	Optional<Nomenclature> getNomenclatureById(String id);
 	
 	NomenclatureDto buildNomenclatureDtoFromNomenlcature(Nomenclature nomenclature);
@@ -23,6 +21,12 @@ public interface NomenclatureService {
 
 	void updateNomenclature(@Valid NomenclatureDto nomenclatureDto) throws ResourceNotFoundException;
 
-	List<NomenclatureDto> findFamilyNomenclature(String recherche);
+	List<NomenclatureDto> findFamilyNomenclatureByIdCompte(String idCompte, String recherche);
+	
+	List<NomenclatureDto> findNomenclatures(String idCompte, NomenclatureDto nomenclatureDto);
+
+	List<NomenclatureDto> getNomenclatureyIdCompteIdParent(String idCompte, String idParent);
+
+	List<NomenclatureDto> getNomenclatureyByIdCompteIdParentSorted(String idCompte, String idParent, String sortId, String sortWay);
 
 }

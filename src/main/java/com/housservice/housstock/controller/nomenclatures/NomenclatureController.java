@@ -10,12 +10,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,24 +54,52 @@ public class NomenclatureController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 	  
-	  @GetMapping("/nomenclature/Familles/{idCompte}")
+	  @GetMapping("/nomenclature/{idCompte}/{idParent}")
 	  @ResponseBody
 	  @ApiOperation(value = "service to get All Nomenclatures for an account with Family type.")
-	  public ResponseEntity<List < NomenclatureDto >> getAllNomenclatureFamillesRacine(
+	  public ResponseEntity<List < NomenclatureDto >> getNomenclatureyIdCompteIdParent(
 			  @ApiParam(name = "idCompte", value="id of account", required = true)
-			  @PathVariable(value = "idCompte", required = true) @NotEmpty(message = "{http.error.0001}") String idCompte) {
-		  List<NomenclatureDto> listNomenclatureDto = nomenclatureService.getAllFamily(idCompte, Nomenclature.TYPE_FAMILLE, "");
+			  @PathVariable(value = "idCompte", required = true) @NotEmpty(message = "{http.error.0001}") String idCompte,
+			  @ApiParam(name = "idParent", value="id of parent", required = true)
+			  @PathVariable(value = "idParent", required = true) @NotEmpty(message = "{http.error.0001}") String idParent) {
+		  List<NomenclatureDto> listNomenclatureDto = nomenclatureService.getNomenclatureyIdCompteIdParent(idCompte, idParent);
 	      return ResponseEntity.ok().body(listNomenclatureDto);
 	  }
 	  
-	  @GetMapping("/famille-search/{recherche}")
+	  @GetMapping("/nomenclature/{idCompte}/{idParent}/{sortId}/{sortWay}")
+	  @ResponseBody
+	  @ApiOperation(value = "service to get All Nomenclatures for an account with Family type.")
+	  public ResponseEntity<List < NomenclatureDto >> getAllSortedNomenclature(
+			  @ApiParam(name = "idCompte", value="id of account", required = true)
+			  @PathVariable(value = "idCompte", required = true) @NotEmpty(message = "{http.error.0001}") String idCompte,
+			  @ApiParam(name = "idParent", value="id of parent", required = true)
+			  @PathVariable(value = "idParent", required = true) @NotEmpty(message = "{http.error.0001}") String idParent,
+			  @ApiParam(name = "sortId", value="id of colonne will sorted by", required = false)
+			  @PathVariable(value = "sortId", required = false) String sortId,
+			  @ApiParam(name = "sortWay", value="the sens of sort way (ASC, DESC)", required = false)
+			  @PathVariable(value = "sortWay", required = false) String sortWay) {
+		  List<NomenclatureDto> listNomenclatureDto = nomenclatureService.getNomenclatureyByIdCompteIdParentSorted(idCompte, idParent, sortId, sortWay);
+	      return ResponseEntity.ok().body(listNomenclatureDto);
+	  }
+	  
+	  @GetMapping("/famille-search/{idCompte}/{recherche}")
 	  @ApiOperation(value = "service to search Nomenclatures by name or description .")
 	  public ResponseEntity<List <NomenclatureDto>> getFamilleSearch(
+			  @ApiParam(name = "idCompte", value="id of account", required = true)
+			  @PathVariable(value = "idCompte", required = true) @NotEmpty(message = "{http.error.0001}") String idCompte,
 			  @ApiParam(name = "recherche", value="word used to search a Nomenclature", required = true)
 			  @PathVariable(value = "recherche") @Size(min = 3, message = "{http.error.0006}") String recherche) {
-	      return ResponseEntity.ok().body(nomenclatureService.findFamilyNomenclature(recherche));
-//		  return nomenclatureRepository.findByNomLikeOrDescriptionLikeAndTypeAllIgnoreCase(recherche, recherche, Nomenclature.TYPE_FAMILLE);
+	      return ResponseEntity.ok().body(nomenclatureService.findFamilyNomenclatureByIdCompte(idCompte, recherche));
 	  }	  
+	  
+	  @PostMapping("/nomenclature/search/{idCompte}")
+	  @ApiOperation(value = "service to search Nomenclatures.")
+	  public ResponseEntity<List <NomenclatureDto>> getNomenclaturesSearch(
+			  @ApiParam(name = "idCompte", value="id of account", required = true)
+			  @PathVariable(value = "idCompte", required = true) @NotEmpty(message = "{http.error.0001}") String idCompte,
+			  @RequestBody NomenclatureDto nomenclatureDto) {
+	      return ResponseEntity.ok().body(nomenclatureService.findNomenclatures(idCompte, nomenclatureDto));
+	  }	
 
 	  @GetMapping("/nomenclature/{id}")
 	  @ApiOperation(value = "service to get one Nomenclature by Id.")
