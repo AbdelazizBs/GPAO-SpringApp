@@ -8,11 +8,17 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 
  * @author houssem.khadraoui@gmail.com
  *
  */
+@Getter
+@Setter
 @Document(collection = "Comptes")
 public class Comptes {
 
@@ -32,47 +38,6 @@ public class Comptes {
     @Indexed(unique = true)
     private String siren;
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the raisonSocial
-	 */
-	public String getRaisonSocial() {
-		return raisonSocial;
-	}
-
-	/**
-	 * @param raisonSocial the raisonSocial to set
-	 */
-	public void setRaisonSocial(String raisonSocial) {
-		this.raisonSocial = raisonSocial;
-	}
-
-	/**
-	 * @return the siren
-	 */
-	public String getSiren() {
-		return siren;
-	}
-
-	/**
-	 * @param siren the siren to set
-	 */
-	public void setSiren(String siren) {
-		this.siren = siren;
-	}
-    
+   
     
 }
