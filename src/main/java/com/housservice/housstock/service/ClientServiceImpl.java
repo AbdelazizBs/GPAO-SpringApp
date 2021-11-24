@@ -12,10 +12,8 @@ import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.repository.ClientRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
 
-@Slf4j
 @Service
 public class ClientServiceImpl implements ClientService {
 

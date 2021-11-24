@@ -1,10 +1,12 @@
 package com.housservice.housstock.conroller.etapeProduction;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,64 +19,89 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.EtapeProduction;
-import com.housservice.housstock.repository.EtapeProductionRepository;
-import com.housservice.housstock.service.SequenceGeneratorService;
+import com.housservice.housstock.model.dto.EtapeProductionDto;
+import com.housservice.housstock.service.EtapeProductionService;
+
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class EtapeProductionController {
 	
-	@Autowired
-	 private EtapeProductionRepository etapeProductionRepository;
+	@Autowired 
+	private EtapeProductionService etapeProductionService;
 	
-	@Autowired
-	 private SequenceGeneratorService sequenceGeneratorService;
+	  private final MessageHttpErrorProperties messageHttpErrorProperties;
+		
 	
+	  @Autowired
+	  public EtapeProductionController(EtapeProductionService etapeProductionService, MessageHttpErrorProperties messageHttpErrorProperties) {
+		this.etapeProductionService = etapeProductionService;
+		this.messageHttpErrorProperties = messageHttpErrorProperties;
+	  }
 
-	@GetMapping("/etapeProduction")
-	 public List<EtapeProduction> getAllEtapeProduction() {
-		 return etapeProductionRepository.findAll();
-		 
-	 }
-	
-	
-	 @PutMapping("/etapeProduction")
-	 public EtapeProduction createEtapeProduction(@Valid @RequestBody EtapeProduction etapeProduction)
-	 {
-		 etapeProduction.setId("" + sequenceGeneratorService.generateSequence(EtapeProduction.SEQUENCE_NAME));
-		 return etapeProductionRepository.save(etapeProduction);
+	 
+	 @GetMapping("/etapeProduction")
+	 public List< EtapeProduction > getAllEtapeProduction() {
+		 		
+		 return etapeProductionService.getAllEtapeProduction();
+	 
 	 }
 	 
+
+	  @GetMapping("/etapeProduction/{id}")
+	  @ApiOperation(value = "service to get one EtapeProduction by Id.")
+	  public ResponseEntity < EtapeProduction > getEtapeProductionById(
+			  @ApiParam(name = "id", value="id of etapeProduction", required = true)
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String etapeProductionId)
+	  throws ResourceNotFoundException {
+		  EtapeProduction etapeProduction = etapeProductionService.getEtapeProductionById(etapeProductionId)
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), etapeProductionId)));
+	      return ResponseEntity.ok().body(etapeProduction);
+	  }
+
+
+	  
+	  @PutMapping("/etapeProduction")
+	  public ResponseEntity<String> createEtapeProduction(@Valid @RequestBody EtapeProductionDto etapeProductionDto) {
+		  
+		  etapeProductionService.createNewEtapeProduction(etapeProductionDto);
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0003());
+	  }
+	  
+	  
 	 
-	 @PutMapping("/etapeProduction/{id}")
-	 public ResponseEntity < EtapeProduction > updateEtapeProduction (@PathVariable(value = "id")String etapeProductionId,
-			 @Valid @RequestBody EtapeProduction etapeProductionData) throws ResourceNotFoundException {
-		 EtapeProduction etapeProduction = etapeProductionRepository.findById(etapeProductionId).orElseThrow(()-> new ResourceNotFoundException("Etape production non trouvé pour cet id : " + etapeProductionId));
-		 
-		 etapeProduction.setId(etapeProductionData.getId());
-		 etapeProduction.setNom_etape(etapeProductionData.getNom_etape());
-		 etapeProduction.setType_etape(etapeProductionData.getType_etape());
-		 final EtapeProduction updateEtapeProduction = etapeProductionRepository.save(etapeProduction);
-		 return ResponseEntity.ok(updateEtapeProduction);
-	 }
+	  @PutMapping("/etapeProduction/{id}")
+	  public ResponseEntity <String> updateEtapeProduction(
+			  @ApiParam(name = "id", value="id of etapeProduction", required = true)
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String etapeProductionId,
+	      @Valid @RequestBody(required = true) EtapeProductionDto etapeProductionDto) throws ResourceNotFoundException {
+		  
+		  etapeProductionService.updateEtapeProduction(etapeProductionDto);
+	      
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0004());
+	  }
 	 
+	  @DeleteMapping("/etapeProduction/{id}")
+	  @ApiOperation(value = "service to delete one EtapeProduction by Id.")
+	  public Map < String, Boolean > deleteetapeProduction(
+			  @ApiParam(name = "id", value="id of etapeProduction", required = true)
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String etapeProductionId)
+	  throws ResourceNotFoundException {
+	      EtapeProduction etapeProduction = etapeProductionService.getEtapeProductionById(etapeProductionId)
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), etapeProductionId)));
+
+	      etapeProductionService.deleteEtapeProduction(etapeProduction);
+	      Map < String, Boolean > response = new HashMap < > ();
+	      response.put("deleted", Boolean.TRUE);
+	      return response;
+	  }
 	 
-	 
-	 @DeleteMapping("/etapeProduction/{id}")
-		public Map <String , Boolean> deleteEtapeProduction(@PathVariable(value = "id") String etapeProductionId)
-			 throws ResourceNotFoundException{
-		 EtapeProduction etapeProduction = etapeProductionRepository.findById(etapeProductionId)
-						 .orElseThrow(() -> new ResourceNotFoundException("Etape production non trouvé pour cet id :" + etapeProductionId));
-				 
-		 etapeProductionRepository.delete(etapeProduction);
-				 Map < String, Boolean > response = new HashMap < > ();
-				 response.put("deleted", Boolean.TRUE);
-				 return response;
-		 }
-	
-	
 
 }

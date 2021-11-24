@@ -46,7 +46,7 @@ public class Machine {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")	
-	private LocalDate dateMaintenance = LocalDate.now();
+	private LocalDate dateMaintenance;
 	
 	
 	@NotBlank

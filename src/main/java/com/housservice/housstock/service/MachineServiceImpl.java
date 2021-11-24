@@ -14,10 +14,7 @@ import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.repository.MachineRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
-
-@Slf4j
 @Service
 public class MachineServiceImpl implements MachineService {
 
@@ -72,7 +69,6 @@ public class MachineServiceImpl implements MachineService {
 		
 		machineRepository.save(buildMachineFromMachineDto(machineDto));
 	}
-	
 	
 	private Machine buildMachineFromMachineDto(MachineDto machineDto) {
 		Machine machine = new Machine();

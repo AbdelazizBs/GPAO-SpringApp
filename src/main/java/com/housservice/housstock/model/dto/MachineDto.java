@@ -1,8 +1,6 @@
 package com.housservice.housstock.model.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -12,7 +10,6 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.EtapeProduction;
 
 import lombok.Getter;
@@ -52,7 +49,7 @@ public class MachineDto {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")	
-	private LocalDate dateMaintenance = LocalDate.now();
+	private LocalDate dateMaintenance;
 	
 	
 	@NotBlank
