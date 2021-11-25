@@ -71,7 +71,7 @@ public class ClientController {
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String clientId)
 	  throws ResourceNotFoundException {
 		  Client client = clientService.getClientById(clientId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), clientId)));
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
 	      return ResponseEntity.ok().body(client);
 	  }
 
@@ -94,7 +94,7 @@ public class ClientController {
 	  public ResponseEntity<String> createClient(@Valid @RequestBody ClientDto clientDto) {
 		  
 		  clientService.createNewClient(clientDto);
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0003());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
 	  
 	  
@@ -107,7 +107,7 @@ public class ClientController {
 		  
 		  clientService.updateClient(clientDto);
 	      
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0004());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 	 
 	  @DeleteMapping("/client/{id}")
@@ -117,7 +117,7 @@ public class ClientController {
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String clientId)
 	  throws ResourceNotFoundException {
 	      Client client = clientService.getClientById(clientId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), clientId)));
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
 
 	      clientService.deleteClient(client);
 	      Map < String, Boolean > response = new HashMap < > ();

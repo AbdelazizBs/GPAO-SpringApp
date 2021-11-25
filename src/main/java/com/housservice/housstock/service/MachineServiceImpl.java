@@ -3,6 +3,8 @@ package com.housservice.housstock.service;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -60,15 +62,18 @@ public class MachineServiceImpl implements MachineService {
 
 	
 	@Override
-	public Optional<Machine> getMachineById(String machineId) {
-		return machineRepository.findById(machineId);
+	public MachineDto getMachineById(String machineId) {
+		Optional<Machine> machineOpt = machineRepository.findById(machineId);
+		if (machineOpt.isPresent()) {
+			return buildMachineDtoFromMachine(machineOpt.get());
+		}
+		return null;
 	}
 
 	
 	@Override
-	public void deleteMachine(Machine machine) {
-		machineRepository.delete(machine);
-		
+	public void deleteMachine(String machineId) {
+		machineRepository.deleteById(machineId);
 	}
 
 	@Override
@@ -93,8 +98,8 @@ public class MachineServiceImpl implements MachineService {
 	@Override
 	public void updateMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException {
 		
-		Machine machine = getMachineById(machineDto.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(),  machineDto.getId())));
+		Machine machine = machineRepository.findById(machineDto.getId())
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  machineDto.getId())));
 
 		machine.setReference(machineDto.getReference());		
 		machine.setLibelle(machineDto.getLibelle());
@@ -111,15 +116,26 @@ public class MachineServiceImpl implements MachineService {
 	}
 
 	@Override
-	public List<Machine> findMachineActif() {
-		return machineRepository.findMachineActif();
+	public List<MachineDto> findMachineActif() {
+		List<Machine> listMachine = machineRepository.findMachineActif();
+		
+		return listMachine.stream()
+				.map(machine -> buildMachineDtoFromMachine(machine))
+				.filter(machine -> machine != null)
+				.collect(Collectors.toList());
 		
 	}
 
 
 	@Override
-	public List<Machine> findMachineNotActif() {
-		 return machineRepository.findMachineNotActif();
+	public List<MachineDto> findMachineNotActif() {
+		 List<Machine> listMachine = machineRepository.findMachineNotActif();
+			
+			return listMachine.stream()
+					.map(machine -> buildMachineDtoFromMachine(machine))
+					.filter(machine -> machine != null)
+					.collect(Collectors.toList());
+					
 	}
 
 

@@ -105,7 +105,7 @@ public class ClientServiceImpl implements ClientService {
 	public void updateClient(@Valid ClientDto clientDto) throws ResourceNotFoundException {
 		
 		Client client = getClientById(clientDto.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(),  clientDto.getId())));
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  clientDto.getId())));
 		
 		client.setRaisonSocial(clientDto.getRaisonSocial());		
 		client.setRegime(clientDto.getRegime());

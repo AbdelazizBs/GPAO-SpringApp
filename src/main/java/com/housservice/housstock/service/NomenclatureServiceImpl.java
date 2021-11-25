@@ -123,7 +123,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	@Override
 	public void updateNomenclature(@Valid NomenclatureDto nomenclatureDto) throws ResourceNotFoundException {
 		Nomenclature nomenclature = getNomenclatureById(nomenclatureDto.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(),  nomenclatureDto.getId())));
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  nomenclatureDto.getId())));
 		
 		nomenclature.setNom(nomenclatureDto.getNom());
 		nomenclature.setDescription(nomenclatureDto.getDescription());

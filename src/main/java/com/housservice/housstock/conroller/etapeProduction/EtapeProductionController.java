@@ -62,7 +62,7 @@ public class EtapeProductionController {
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String etapeProductionId)
 	  throws ResourceNotFoundException {
 		  EtapeProduction etapeProduction = etapeProductionService.getEtapeProductionById(etapeProductionId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), etapeProductionId)));
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), etapeProductionId)));
 	      return ResponseEntity.ok().body(etapeProduction);
 	  }
 
@@ -72,7 +72,7 @@ public class EtapeProductionController {
 	  public ResponseEntity<String> createEtapeProduction(@Valid @RequestBody EtapeProductionDto etapeProductionDto) {
 		  
 		  etapeProductionService.createNewEtapeProduction(etapeProductionDto);
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0003());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
 	  
 	  
@@ -85,7 +85,7 @@ public class EtapeProductionController {
 		  
 		  etapeProductionService.updateEtapeProduction(etapeProductionDto);
 	      
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0004());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 	 
 	  @DeleteMapping("/etapeProduction/{id}")
@@ -95,7 +95,7 @@ public class EtapeProductionController {
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String etapeProductionId)
 	  throws ResourceNotFoundException {
 	      EtapeProduction etapeProduction = etapeProductionService.getEtapeProductionById(etapeProductionId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), etapeProductionId)));
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), etapeProductionId)));
 
 	      etapeProductionService.deleteEtapeProduction(etapeProduction);
 	      Map < String, Boolean > response = new HashMap < > ();

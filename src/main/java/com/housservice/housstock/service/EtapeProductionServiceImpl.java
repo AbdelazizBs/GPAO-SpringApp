@@ -83,7 +83,7 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 	public void updateEtapeProduction(@Valid EtapeProductionDto etapeProductionDto) throws ResourceNotFoundException {
 		
 		EtapeProduction etapeProduction = getEtapeProductionById(etapeProductionDto.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(),  etapeProductionDto.getId())));
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  etapeProductionDto.getId())));
 		
 		etapeProduction.setNomEtape(etapeProductionDto.getNomEtape());		
 		etapeProduction.setTypeEtape(etapeProductionDto.getTypeEtape());

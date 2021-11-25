@@ -35,10 +35,9 @@ import io.swagger.annotations.ApiParam;
 @Api(tags = {"Machines Management"})
 public class MachineController {
 		
-	@Autowired 
 	private MachineService machineService;
 	
-	  private final MessageHttpErrorProperties messageHttpErrorProperties;
+	private final MessageHttpErrorProperties messageHttpErrorProperties;
 		
 	
 	  @Autowired
@@ -49,7 +48,7 @@ public class MachineController {
 
 	 
 	 @GetMapping("/machine")
-	 public List< Machine > getAllMachine() {
+	 public List< MachineDto > getAllMachine() {
 		 		
 		 return machineService.findMachineActif();
 		 
@@ -58,27 +57,29 @@ public class MachineController {
 	 }
 	 
 	 @GetMapping("/machineEnVeille")
-	 public List< Machine > getMachineEnVeille() {
+	 public List< MachineDto > getMachineEnVeille() {
 		 return machineService.findMachineNotActif();
 		 
 	 }
 
 	  @GetMapping("/machine/{id}")
 	  @ApiOperation(value = "service to get one Machine by Id.")
-	  public ResponseEntity < Machine > getMachineById(
+	  public ResponseEntity < MachineDto > getMachineById(
 			  @ApiParam(name = "id", value="id of machine", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId)
 	  throws ResourceNotFoundException {
-		  Machine machine = machineService.getMachineById(machineId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), machineId)));
+		  MachineDto machine = machineService.getMachineById(machineId);
+		  if (machine == null) {
+			  ResponseEntity.badRequest();
+		  }
 	      return ResponseEntity.ok().body(machine);
 	  }
 
 	  @PutMapping("/machine")
-	  public ResponseEntity<String> createMachine(@RequestBody MachineDto machineDto) {
+	  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) {
 		  
 		  machineService.createNewMachine(machineDto);
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0003());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
 	  
 	  
@@ -91,19 +92,16 @@ public class MachineController {
 		  
 		  machineService.updateMachine(machineDto);
 	      
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0004());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 	 
 	  @DeleteMapping("/machine/{id}")
 	  @ApiOperation(value = "service to delete one Machine by Id.")
 	  public Map < String, Boolean > deletemachine(
 			  @ApiParam(name = "id", value="id of machine", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId)
-	  throws ResourceNotFoundException {
-	      Machine machine = machineService.getMachineById(machineId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), machineId)));
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId) {
 
-	      machineService.deleteMachine(machine);
+	      machineService.deleteMachine(machineId);
 	      Map < String, Boolean > response = new HashMap < > ();
 	      response.put("deleted", Boolean.TRUE);
 	      return response;

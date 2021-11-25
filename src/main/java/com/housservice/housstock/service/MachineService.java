@@ -1,26 +1,27 @@
 package com.housservice.housstock.service;
 
 import java.util.List;
+
+import javax.validation.Valid;
+
+import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.dto.MachineDto;
-import java.util.Optional;
-import javax.validation.Valid;
-import com.housservice.housstock.exception.ResourceNotFoundException;
 
 public interface MachineService {
 
-	public List<Machine> findMachineActif();
+	public List<MachineDto> findMachineActif();
 	
-	public List<Machine> findMachineNotActif();
+	public List<MachineDto> findMachineNotActif();
 
-    Optional<Machine> getMachineById(String id);
+    public MachineDto getMachineById(String id);
 	
-	MachineDto buildMachineDtoFromMachine(Machine machine);
+    public MachineDto buildMachineDtoFromMachine(Machine machine);
 	
-	void deleteMachine(Machine machine);
+    public void deleteMachine(String machineId);
 	
-	void createNewMachine(@Valid MachineDto machineDto);
+    public void createNewMachine(@Valid MachineDto machineDto);
 	
-	void updateMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException;
+    public void updateMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException;
 
 }

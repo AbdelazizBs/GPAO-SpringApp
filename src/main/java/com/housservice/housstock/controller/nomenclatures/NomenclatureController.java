@@ -44,7 +44,6 @@ public class NomenclatureController {
 	  
 	  private NomenclatureService nomenclatureService;
 
-	  
 	  private final MessageHttpErrorProperties messageHttpErrorProperties;
 	  
 	  @Autowired
@@ -79,7 +78,7 @@ public class NomenclatureController {
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String nomenclatureId)
 	  throws ResourceNotFoundException {
 	      Nomenclature nomenclature = nomenclatureService.getNomenclatureById(nomenclatureId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), nomenclatureId)));
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomenclatureId)));
 	      return ResponseEntity.ok().body(nomenclature);
 	  }
 
@@ -87,7 +86,7 @@ public class NomenclatureController {
 	  public ResponseEntity<String> createNomenclature(@Valid @RequestBody NomenclatureDto nomenclatureDto) {
 		  
 		  nomenclatureService.createNewNomenclature(nomenclatureDto);
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0003());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
 	  	 
 	  @PutMapping("/nomenclature/{id}")
@@ -98,7 +97,7 @@ public class NomenclatureController {
 		  
 		  nomenclatureService.updateNomenclature(nomenclatureDto);
 	      
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0004());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 
 	  @DeleteMapping("/nomenclature/{id}")
@@ -108,7 +107,7 @@ public class NomenclatureController {
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String nomenclatureId)
 	  throws ResourceNotFoundException {
 	      Nomenclature nomenclature = nomenclatureService.getNomenclatureById(nomenclatureId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(), nomenclatureId)));
+	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomenclatureId)));
 
 	      nomenclatureService.deleteNomenclature(nomenclature);
 	      Map < String, Boolean > response = new HashMap < > ();
