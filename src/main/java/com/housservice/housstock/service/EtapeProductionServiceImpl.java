@@ -42,8 +42,8 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 		EtapeProductionDto etapeProductionDto = new EtapeProductionDto();
 		etapeProductionDto.setId(etapeProduction.getId());
 		
-		etapeProductionDto.setNom_etape(etapeProduction.getNom_etape());		
-		etapeProductionDto.setType_etape(etapeProduction.getType_etape());
+		etapeProductionDto.setNomEtape(etapeProduction.getNomEtape());		
+		etapeProductionDto.setTypeEtape(etapeProduction.getTypeEtape());
 		
 		return etapeProductionDto;
 	}
@@ -71,8 +71,8 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 	private EtapeProduction buildEtapeProductionFromEtapeProductionDto(EtapeProductionDto etapeProductionDto) {
 		EtapeProduction etapeProduction = new EtapeProduction();
 		etapeProduction.setId(""+sequenceGeneratorService.generateSequence(EtapeProduction.SEQUENCE_NAME));
-		etapeProduction.setNom_etape(etapeProductionDto.getNom_etape());		
-		etapeProduction.setType_etape(etapeProductionDto.getType_etape());
+		etapeProduction.setNomEtape(etapeProductionDto.getNomEtape());		
+		etapeProduction.setTypeEtape(etapeProductionDto.getTypeEtape());
 		
 		return etapeProduction;
 	
@@ -85,8 +85,8 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 		EtapeProduction etapeProduction = getEtapeProductionById(etapeProductionDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getErro0002(),  etapeProductionDto.getId())));
 		
-		etapeProduction.setNom_etape(etapeProductionDto.getNom_etape());		
-		etapeProduction.setType_etape(etapeProductionDto.getType_etape());
+		etapeProduction.setNomEtape(etapeProductionDto.getNomEtape());		
+		etapeProduction.setTypeEtape(etapeProductionDto.getTypeEtape());
 
 		etapeProductionRepository.save(etapeProduction);
 		

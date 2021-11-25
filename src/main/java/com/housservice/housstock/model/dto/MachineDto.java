@@ -27,7 +27,7 @@ public class MachineDto {
 	@Transient
 	public static final String SEQUENCE_NAME ="machine_sequence";
 	
-	@Id
+	
 	private String id;
 
 	@NotBlank
@@ -48,13 +48,15 @@ public class MachineDto {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")	
+	@JsonFormat(pattern="yyyy-MM-dd")	
 	private LocalDate dateMaintenance;
 	
 	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private EtapeProduction etapeProduction;
+	private String idEtapeProduction;
+	
+	private String nomEtapeProduction;
     
 }

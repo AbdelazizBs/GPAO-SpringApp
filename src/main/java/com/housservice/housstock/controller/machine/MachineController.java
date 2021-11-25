@@ -52,6 +52,8 @@ public class MachineController {
 	 public List< Machine > getAllMachine() {
 		 		
 		 return machineService.findMachineActif();
+		 
+		 
 	 
 	 }
 	 
@@ -73,7 +75,7 @@ public class MachineController {
 	  }
 
 	  @PutMapping("/machine")
-	  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) {
+	  public ResponseEntity<String> createMachine(@RequestBody MachineDto machineDto) {
 		  
 		  machineService.createNewMachine(machineDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getErro0003());

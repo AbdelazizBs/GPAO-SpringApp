@@ -24,12 +24,12 @@ public class EtapeProductionDto {
 	@NotBlank
 	@Size(max=100)
 	@Indexed(unique = true)
-	private String nom_etape;
+	private String nomEtape;
 	
 	@NotBlank
 	@Size(max=100)
 	@Indexed(unique = true)
-	private String type_etape;
+	private String typeEtape;
 	
 	   
 }

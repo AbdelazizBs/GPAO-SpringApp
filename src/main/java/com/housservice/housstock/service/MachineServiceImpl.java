@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.dto.MachineDto;
+import com.housservice.housstock.repository.EtapeProductionRepository;
 import com.housservice.housstock.repository.MachineRepository;
 
 
@@ -20,6 +23,8 @@ public class MachineServiceImpl implements MachineService {
 
 	private MachineRepository machineRepository;
 	
+	private EtapeProductionRepository etapeProductionRepository;
+	
 	private SequenceGeneratorService sequenceGeneratorService;
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
@@ -27,10 +32,11 @@ public class MachineServiceImpl implements MachineService {
 
 	@Autowired
 	public MachineServiceImpl(MachineRepository machineRepository, SequenceGeneratorService sequenceGeneratorService,
-									MessageHttpErrorProperties messageHttpErrorProperties) {
+									MessageHttpErrorProperties messageHttpErrorProperties, EtapeProductionRepository etapeProductionRepository) {
 		this.machineRepository = machineRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
+		this.etapeProductionRepository = etapeProductionRepository;
 	}
 	
 	
@@ -46,7 +52,8 @@ public class MachineServiceImpl implements MachineService {
 		machineDto.setLibelle(machine.getLibelle());
 		machineDto.setNbrConducteur(machine.getNbrConducteur());
 		machineDto.setDateMaintenance(machine.getDateMaintenance());
-		machineDto.setEtapeProduction(machine.getEtapeProduction());
+		machineDto.setIdEtapeProduction(machine.getEtapeProduction().getId());
+		machineDto.setNomEtapeProduction(machine.getEtapeProduction().getNomEtape());
 		
 		return machineDto;
 	}
@@ -77,9 +84,9 @@ public class MachineServiceImpl implements MachineService {
 		machine.setLibelle(machineDto.getLibelle());
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
-		machine.setEtapeProduction(machineDto.getEtapeProduction());
+		EtapeProduction etape = etapeProductionRepository.findById(machineDto.getIdEtapeProduction()).get();
+		machine.setEtapeProduction(etape);
 		return machine;
-	
 		}
 
 
@@ -93,8 +100,12 @@ public class MachineServiceImpl implements MachineService {
 		machine.setLibelle(machineDto.getLibelle());
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
-		machine.setEtapeProduction(machineDto.getEtapeProduction());
-
+		if ( machine.getEtapeProduction() == null || !StringUtils.equals(machineDto.getIdEtapeProduction(), machine.getEtapeProduction().getId()) )
+		{
+			EtapeProduction etape = etapeProductionRepository.findById(machineDto.getIdEtapeProduction()).get();
+			machine.setEtapeProduction(etape);
+		}
+	
 		machineRepository.save(machine);
 		
 	}
@@ -102,6 +113,7 @@ public class MachineServiceImpl implements MachineService {
 	@Override
 	public List<Machine> findMachineActif() {
 		return machineRepository.findMachineActif();
+		
 	}
 
 
