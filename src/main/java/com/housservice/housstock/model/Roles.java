@@ -9,32 +9,26 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
 
-@Document(collection="EtapeProduction")
-public class EtapeProduction {
+@Data
+@Builder 
+@Document(collection="Roles")
+public class Roles{
 	
 	@Transient
-	public static final String SEQUENCE_NAME = "etapeProduction_sequence";
+	public static final String SEQUENCE_NAME ="roles_sequence";
 	
 	@Id
 	private String id;
-	
+
 	@NotBlank
-	private String idCompte;
-	
-	@NotBlank
-	@Size(max=100)
+	@Size(max = 100)
 	@Indexed(unique = true)
-	private String nomEtape;
-	
-	@NotBlank
-	@Size(max=100)
-	@Indexed(unique = true)
-	private String typeEtape;
+	private String roleName;
+
+
+	private Utilisateur utilisateur;
 	
 }

@@ -12,12 +12,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 
-@Getter
-@Setter
+@Data
 @Document(collection="Machine")
 public class Machine {
 	
@@ -48,10 +49,7 @@ public class Machine {
 	@JsonFormat(pattern="dd/MM/yyyy")	
 	private LocalDate dateMaintenance;
 	
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private EtapeProduction etapeProduction;
 	
 

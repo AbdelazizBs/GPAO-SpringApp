@@ -8,17 +8,16 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * 
  * @author houssem.khadraoui@gmail.com
  *
  */
-@Getter
-@Setter
+@Data
+@Builder
 @Document(collection = "Comptes")
 public class Comptes {
 
@@ -38,6 +37,15 @@ public class Comptes {
     @Indexed(unique = true)
     private String siren;
 
+	/*
+	 * email
+	 * 
+	 * Login
+	 * 
+	 * pwd
+	 */
+    
+    
    
     
 }

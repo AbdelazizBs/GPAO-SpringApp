@@ -1,6 +1,5 @@
 package com.housservice.housstock.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,38 +11,30 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
-@Document(collection = "Utilisateur")
-public class Utilisateur {
+@Builder 
 
+@Document(collection="Entreprise")
+public class Entreprise{
+	
 	@Transient
-	public static final String SEQUENCE_NAME = "utilisateur_sequence";
-
+	public static final String SEQUENCE_NAME ="entreprise_sequence";
+	
 	@Id
 	private String id;
-
+	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String nom;
-
+	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String prenom;
-
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate dateDeNaissance;
-
+	private String description;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -53,16 +44,31 @@ public class Utilisateur {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
+	private String codeFiscal;
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
 	private String photo;
 	
-
-	private Entreprise entreprise;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String email;
 	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String numTel;
 	
-	private Comptes compte;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String siteWeb;
 	
+	@NotBlank
+	private String idCompte;
 	
-	private List<Roles> role = new ArrayList<>();
-		
+	private List<Utilisateur> utilisateurs = new ArrayList<>();
 
 }

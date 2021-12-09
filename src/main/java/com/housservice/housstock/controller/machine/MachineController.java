@@ -51,8 +51,7 @@ public class MachineController {
 	 public List< MachineDto > getAllMachine() {
 		 		
 		 return machineService.findMachineActif();
-		 
-		 
+		 	 
 	 
 	 }
 	 

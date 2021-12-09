@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Groupe;
 import com.housservice.housstock.model.Utilisateur;
 import com.housservice.housstock.repository.UtilisateurRepository; 
 import com.housservice.housstock.service.SequenceGeneratorService;
@@ -57,14 +55,6 @@ public class UtilisateurController {
 	  {
 		  utilisateur.setId("" + sequenceGeneratorService.generateSequence(Utilisateur.SEQUENCE_NAME));
 		  
-		  if (utilisateur.getListGroupes() != null)
-		  {
-			for (Groupe groupe : utilisateur.getListGroupes())
-			{
-				groupe.setId(utilisateur.getId() + "-" + sequenceGeneratorService.generateSequence(Utilisateur.SEQUENCE_NAME));
-			}
-		  }
-
 	      return utilisateurRepository.save(utilisateur);
 	  }
 
@@ -78,17 +68,6 @@ public class UtilisateurController {
 		 utilisateur.setNom(utilisateurData.getNom());
 		 utilisateur.setPrenom(utilisateurData.getPrenom());
 		 
-		  for (Groupe groupe : utilisateurData.getListGroupes()) 
-	      {
-			if (StringUtils.isEmpty(groupe.getId()))
-			{
-				groupe.setId(utilisateur.getId() + "-" + sequenceGeneratorService.generateSequence(Groupe.SEQUENCE_NAME));
-			}
-	      }
-	      
-		  utilisateur.setListGroupes(utilisateurData.getListGroupes());
-	      
-
 		 final Utilisateur updateUtilisateur = utilisateurRepository.save(utilisateur);
 		 return ResponseEntity.ok(updateUtilisateur);
 		 	 

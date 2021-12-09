@@ -1,5 +1,7 @@
 package com.housservice.housstock.model;
 
+import java.math.BigDecimal;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -9,32 +11,31 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-
-@Document(collection="EtapeProduction")
-public class EtapeProduction {
-	
+@Data
+@Builder 
+@Document(collection="LigneCommandeClient")
+public class LigneCommandeClient{
 	@Transient
-	public static final String SEQUENCE_NAME = "etapeProduction_sequence";
+	public static final String SEQUENCE_NAME ="ligneCommandeClient_sequence";
 	
 	@Id
 	private String id;
 	
+
 	@NotBlank
-	private String idCompte;
-	
-	@NotBlank
-	@Size(max=100)
+	@Size(max = 100)
 	@Indexed(unique = true)
-	private String nomEtape;
-	
+	private BigDecimal quantite;
+
 	@NotBlank
-	@Size(max=100)
+	@Size(max = 100)
 	@Indexed(unique = true)
-	private String typeEtape;
+	private BigDecimal prixUnitaire;
+	
+	private Article article;
+	
+	private CommandeClient commandeClient;
 	
 }

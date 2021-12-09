@@ -97,8 +97,7 @@ public class ClientController {
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
 	  
-	  
-	 
+	   
 	  @PutMapping("/client/{id}")
 	  public ResponseEntity <String> updateClient(
 			  @ApiParam(name = "id", value="id of client", required = true)
@@ -124,9 +123,6 @@ public class ClientController {
 	      response.put("deleted", Boolean.TRUE);
 	      return response;
 	  }
-	 
-	 
-	 
 	 
 	
 }

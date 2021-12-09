@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Client;
@@ -39,24 +40,43 @@ public class ClientServiceImpl implements ClientService {
 			return null;
 		}
 		
-		ClientDto clientDto = new ClientDto();
-		clientDto.setId(client.getId());
+		/*
+		 * ClientDto clientDto = new ClientDto(); clientDto.setId(client.getId());
+		 * 
+		 * clientDto.setRaisonSocial(client.getRaisonSocial());
+		 * clientDto.setRegime(client.getRegime());
+		 * clientDto.setAdresseFacturation(client.getAdresseFacturation());
+		 * clientDto.setAdresseLivraison(client.getAdresseLivraison());
+		 * clientDto.setIncoterm(client.getIncoterm());
+		 * clientDto.setEcheance(client.getEcheance());
+		 * clientDto.setModePaiement(client.getModePaiement());
+		 * clientDto.setNomBanque(client.getNomBanque());
+		 * clientDto.setAdresseBanque(client.getAdresseBanque());
+		 * clientDto.setRib(client.getRib()); clientDto.setSwift(client.getSwift());
+		 * clientDto.setBrancheActivite(client.getBrancheActivite());
+		 * clientDto.setSecteurActivite(client.getSecteurActivite());
+		 */
 		
-		clientDto.setRaisonSocial(client.getRaisonSocial());		
-		clientDto.setRegime(client.getRegime());
-		clientDto.setAdresseFacturation(client.getAdresseFacturation());
-		clientDto.setAdresseLivraison(client.getAdresseLivraison());
-		clientDto.setIncoterm(client.getIncoterm());
-		clientDto.setEcheance(client.getEcheance());
-		clientDto.setModePaiement(client.getModePaiement());
-		clientDto.setNomBanque(client.getNomBanque());
-		clientDto.setAdresseBanque(client.getAdresseBanque());
-		clientDto.setRib(client.getRib());
-		clientDto.setSwift(client.getSwift());
-		clientDto.setBrancheActivite(client.getBrancheActivite());
-		clientDto.setSecteurActivite(client.getSecteurActivite());
+			
+			return ClientDto.builder()
+					.id(client.getId())
+					.raisonSocial(client.getRaisonSocial())
+					.regime(client.getRegime())
+					.adresseFacturation(client.getAdresseFacturation())
+					.adresseLivraison(client.getAdresseLivraison())
+					.incoterm(client.getIncoterm())
+					.echeance(client.getEcheance())
+					.modePaiement(client.getModePaiement())
+					.nomBanque(client.getNomBanque())
+					.adresseBanque(client.getAdresseBanque())
+					.rib(client.getRib())
+					.swift(client.getSwift())
+					.brancheActivite(client.getBrancheActivite())
+					.secteurActivite(client.getSecteurActivite())
+					.build();
 		
-		return clientDto;
+		
+		//return clientDto;
 	}
 
 	

@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.housservice.housstock.model.CommandeClient;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,11 +24,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Builder
 public class ClientDto {
 	
 	@Id
 	private String id;
-	
 
 	@NotBlank
 	@Size(max = 100)
@@ -131,7 +132,5 @@ public class ClientDto {
 	
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 	
-    
-   // private List<ClientDto> listClientChildren = new ArrayList<>();
     
 }
