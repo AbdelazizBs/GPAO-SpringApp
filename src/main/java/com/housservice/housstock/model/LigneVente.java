@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.Data;
 @Data
 @Builder 
-
 @Document(collection="LigneVente")
 public class LigneVente{
 	@Transient
