@@ -1,0 +1,27 @@
+package com.housservice.housstock.model.dto;
+
+import java.math.BigDecimal;
+
+import javax.validation.constraints.Size;
+
+import org.springframework.data.annotation.Id;
+
+import com.housservice.housstock.model.Article;
+
+import lombok.Data;
+
+@Data
+public class LigneCommandeFournisseurDto {
+	@Id
+	private String id;
+	
+	@Size(max = 100)
+	private BigDecimal quantite;
+	
+	@Size(max = 100)
+	private BigDecimal prixUnitaire;
+	
+	private ArticleDto article;
+	
+	private CommandeFournisseurDto commandeFournisseurs;
+}

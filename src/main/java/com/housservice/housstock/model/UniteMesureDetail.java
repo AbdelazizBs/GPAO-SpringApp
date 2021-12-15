@@ -19,7 +19,6 @@ import lombok.Setter;
  *
  */
 @Data
-@Builder
 @Document
 public class UniteMesureDetail {
 	@Transient

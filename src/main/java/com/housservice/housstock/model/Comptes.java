@@ -36,16 +36,5 @@ public class Comptes {
     @Size(max = 100)
     @Indexed(unique = true)
     private String siren;
-
-	/*
-	 * email
-	 * 
-	 * Login
-	 * 
-	 * pwd
-	 */
-    
-    
-   
     
 }

@@ -15,12 +15,12 @@ public interface ClientService {
 
     Optional<Client> getClientById(String id);
 	
-	ClientDto buildClientDtoFromClient(Client client);
+	public ClientDto buildClientDtoFromClient(Client client);
+
+	public void createNewClient(@Valid ClientDto clientDto);
 	
-	void deleteClient(Client client);
+	public void updateClient(@Valid ClientDto clientDto) throws ResourceNotFoundException;
 	
-	void createNewClient(@Valid ClientDto clientDto);
-	
-	void updateClient(@Valid ClientDto clientDto) throws ResourceNotFoundException;
+	public void deleteClient(Client client);
 
 }

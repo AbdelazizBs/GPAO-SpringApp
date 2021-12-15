@@ -14,10 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.Builder;
 import lombok.Data;
-
-
-
 
 @Data
 @Document(collection="Client")

@@ -56,6 +56,6 @@ public class Article{
 	private String photo;
 
 	
-	private Categorie category;
+	private Categorie categorie;
 	
 }

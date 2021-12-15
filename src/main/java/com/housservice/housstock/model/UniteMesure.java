@@ -11,10 +11,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 
@@ -22,7 +19,6 @@ import lombok.Setter;
  *
  */
 @Data
-@Builder
 @Document(collection = "UniteMesure")
 public class UniteMesure {
 	
@@ -51,6 +47,5 @@ public class UniteMesure {
     private List<UniteMesureDetail> listMultiple = new ArrayList<>();
 
     private List<UniteMesureDetail> listSousMultiple = new ArrayList<>();
-    
-    
+   
 }

@@ -38,8 +38,7 @@ public class MachineDto {
 	
 	@JsonFormat(pattern="yyyy-MM-dd")	
 	private LocalDate dateMaintenance;
-	
-	
+		
 	private String idEtapeProduction;
 	
 	private String nomEtapeProduction;

@@ -1,4 +1,4 @@
-package com.housservice.housstock.conroller.etapeProduction;
+package com.housservice.housstock.controller.etapeProduction;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @RequestMapping("/api/v1")
 public class EtapeProductionController {
-	
+
 	@Autowired 
 	private EtapeProductionService etapeProductionService;
 	
@@ -48,7 +48,7 @@ public class EtapeProductionController {
 
 	 
 	 @GetMapping("/etapeProduction")
-	 public List< EtapeProduction > getAllEtapeProduction() {
+	 public List< EtapeProductionDto > getAllEtapeProduction() {
 		 		
 		 return etapeProductionService.getAllEtapeProduction();
 	 
@@ -103,5 +103,6 @@ public class EtapeProductionController {
 	      return response;
 	  }
 	 
-
+	
+	
 }

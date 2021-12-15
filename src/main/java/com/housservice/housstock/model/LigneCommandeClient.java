@@ -23,7 +23,6 @@ public class LigneCommandeClient{
 	@Id
 	private String id;
 	
-
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)

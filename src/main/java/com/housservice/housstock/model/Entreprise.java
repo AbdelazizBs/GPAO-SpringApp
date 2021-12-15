@@ -61,10 +61,6 @@ public class Entreprise{
 	@Indexed(unique = true)
 	private String numTel;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String siteWeb;
 	
 	@NotBlank
 	private String idCompte;

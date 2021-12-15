@@ -3,11 +3,14 @@ package com.housservice.housstock.service;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.dto.EtapeProductionDto;
 import com.housservice.housstock.repository.EtapeProductionRepository;
@@ -93,12 +96,16 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 
 
 	@Override
-	public List<EtapeProduction> getAllEtapeProduction() {
-		return etapeProductionRepository.findAll();
+	public List<EtapeProductionDto> getAllEtapeProduction() {
+			
+		List<EtapeProduction> listEtapeProduction = etapeProductionRepository.findAll();
+		
+		return listEtapeProduction.stream()
+				.map(etapeProduction -> buildEtapeProductionDtoFromEtapeProduction(etapeProduction))
+				.filter(etapeProduction -> etapeProduction != null)
+				.collect(Collectors.toList());
+		
 	}
-
-
-
 
 
 }
