@@ -2,18 +2,14 @@ package com.housservice.housstock.model.dto;
 
 import java.math.BigDecimal;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Ventes;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
-
-@Data
+@Getter
+@Setter
 public class LigneVenteDto {
 
 	@Id

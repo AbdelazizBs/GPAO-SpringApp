@@ -1,5 +1,6 @@
 package com.housservice.housstock.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +12,13 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Builder 
-
+@Getter
+@Setter
 @Document(collection="Fournisseur")
 public class Fournisseur{
 	
@@ -26,16 +27,17 @@ public class Fournisseur{
 	
 	@Id
 	private String id;
-
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String nom;
 	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String prenom;
+	@JsonFormat(pattern="dd/MM/yyyy")	
+	private LocalDate date = LocalDate.now();
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String raisonSocial;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -45,7 +47,7 @@ public class Fournisseur{
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String photo;
+	private String modePaiement;
 
 	@NotBlank
 	@Size(max = 100)
@@ -57,5 +59,5 @@ public class Fournisseur{
 	@Indexed(unique = true)
 	private String numTel;
 
-	private List<CommandeFournisseur> commandeFournisseurs = new ArrayList<>();
+	private List<CommandeFournisseur> listCommandes = new ArrayList<>();
 }

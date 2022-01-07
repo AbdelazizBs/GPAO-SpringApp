@@ -73,7 +73,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 																		.map(nomenclatureId -> buildNomenclatureDtoFromNomenlcature(getNomenclatureById(nomenclatureId)))
 																		.filter(nomenclatur -> nomenclatur != null)
 																		.collect(Collectors.toList());
-					
+			
 			nomenclatureDto.setListNomenclatureChildren(listNomenclatureDtoChild);
 		}
 		

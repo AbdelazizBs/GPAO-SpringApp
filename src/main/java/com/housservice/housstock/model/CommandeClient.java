@@ -1,9 +1,8 @@
 package com.housservice.housstock.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -15,11 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Builder
+@Getter
+@Setter
 @Document(collection="CommandeClient")
 public class CommandeClient {
 	
@@ -28,8 +27,7 @@ public class CommandeClient {
 	
 	@Id
 	private String id;
-	
-	
+		
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -59,8 +57,6 @@ public class CommandeClient {
 	
 	private Client client;
 
-	private List<LigneCommandeClient> ligneCommandeClients = new ArrayList<>();
+	private Set<String> listIdLigneCommandeClient = new HashSet<>();
 	
-
-
 }

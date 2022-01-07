@@ -2,11 +2,9 @@ package com.housservice.housstock.model.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
-
 
 import lombok.Data;
 

@@ -10,12 +10,11 @@ import javax.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-import com.housservice.housstock.model.Fournisseur;
-import com.housservice.housstock.model.LigneCommandeFournisseur;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
-
-@Data
+@Getter
+@Setter
 public class CommandeFournisseurDto {
 	
 	@Id

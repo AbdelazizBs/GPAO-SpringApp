@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @RequestMapping("/api/v1")
 public class EtapeProductionController {
-
+	
 	@Autowired 
 	private EtapeProductionService etapeProductionService;
 	
@@ -103,6 +103,5 @@ public class EtapeProductionController {
 	      return response;
 	  }
 	 
-	
-	
+
 }

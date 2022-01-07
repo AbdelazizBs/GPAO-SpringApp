@@ -10,10 +10,11 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Builder;
-import lombok.Data;
-@Data
-@Builder 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Document(collection="LigneVente")
 public class LigneVente{
 	@Transient

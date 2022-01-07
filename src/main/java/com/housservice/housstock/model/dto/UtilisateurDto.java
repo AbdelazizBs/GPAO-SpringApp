@@ -4,20 +4,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.housservice.housstock.model.Comptes;
-import com.housservice.housstock.model.Entreprise;
-import com.housservice.housstock.model.Roles;
+
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UtilisateurDto {
 
 	@Id

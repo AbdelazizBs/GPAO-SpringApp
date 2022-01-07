@@ -1,7 +1,7 @@
 package com.housservice.housstock.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -11,13 +11,11 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-
-@Data
-@Builder
-
+@Getter
+@Setter
 @Document(collection="Categorie")
 public class Categorie {
 	@Transient
@@ -35,6 +33,6 @@ public class Categorie {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String designation;
-
-	private List<Article> listArticles = new ArrayList<>();
+	
+	private Set<String> listIdArticles = new HashSet<>();
 }

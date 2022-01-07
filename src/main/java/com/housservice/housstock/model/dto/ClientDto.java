@@ -10,8 +10,8 @@ import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -19,8 +19,8 @@ import lombok.Data;
  * @author houssem.khadraoui@gmail.com
  *
  */
-@Data
-@Builder
+@Getter
+@Setter
 public class ClientDto {
 	
 	@Id

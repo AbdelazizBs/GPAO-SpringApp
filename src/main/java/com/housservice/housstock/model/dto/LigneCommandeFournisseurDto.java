@@ -6,11 +6,11 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
 
-import com.housservice.housstock.model.Article;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
-
-@Data
+@Getter
+@Setter
 public class LigneCommandeFournisseurDto {
 	@Id
 	private String id;
@@ -21,7 +21,7 @@ public class LigneCommandeFournisseurDto {
 	@Size(max = 100)
 	private BigDecimal prixUnitaire;
 	
-	private ArticleDto article;
+	//private ArticleDto article;
 	
 	private CommandeFournisseurDto commandeFournisseurs;
 }

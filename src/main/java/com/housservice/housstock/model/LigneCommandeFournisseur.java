@@ -10,12 +10,11 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-
-@Data
-@Builder 
+@Getter
+@Setter 
 @Document(collection="LigneCommandeFournisseur")
 public class LigneCommandeFournisseur{
 	@Transient
@@ -34,7 +33,7 @@ public class LigneCommandeFournisseur{
 	@Indexed(unique = true)
 	private BigDecimal prixUnitaire;
 	
-	private Article article;
+	//private Article article;
 	
 	private CommandeFournisseur commandeFournisseurs;
 }

@@ -61,6 +61,7 @@ public class NomenclatureController {
 		  List<NomenclatureDto> listNomenclatureDto = nomenclatureService.getAllFamily(idCompte, Nomenclature.TYPE_FAMILLE, "");
 	      return ResponseEntity.ok().body(listNomenclatureDto);
 	  }
+	
 	  
 	  @GetMapping("/famille-search/{recherche}")
 	  @ApiOperation(value = "service to search Nomenclatures by name or description .")

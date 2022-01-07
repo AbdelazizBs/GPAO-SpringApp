@@ -4,7 +4,11 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class RolesDto {
 
 	@Id

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.dto.EtapeProductionDto;
 import com.housservice.housstock.repository.EtapeProductionRepository;

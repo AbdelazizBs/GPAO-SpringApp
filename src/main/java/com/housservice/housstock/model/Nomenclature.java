@@ -23,7 +23,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-
 @Document(collection = "Nomenclature")
 public class Nomenclature {
 	

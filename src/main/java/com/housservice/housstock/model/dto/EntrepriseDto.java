@@ -8,8 +8,11 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
 
-import com.housservice.housstock.model.Utilisateur;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class EntrepriseDto {
 
 	@Id

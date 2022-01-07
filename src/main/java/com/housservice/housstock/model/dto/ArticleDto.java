@@ -1,16 +1,15 @@
 package com.housservice.housstock.model.dto;
 
 import java.math.BigDecimal;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Builder
+@Getter
+@Setter
 public class ArticleDto {
 	
 	@Id
@@ -33,7 +32,6 @@ public class ArticleDto {
 	
 	@Size(max = 100)
 	private String photo;
-
 	
     private String idCategorie;
 	

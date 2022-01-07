@@ -12,11 +12,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Builder 
+@Getter
+@Setter 
 @Document(collection="Ventes")
 public class Ventes{
 	

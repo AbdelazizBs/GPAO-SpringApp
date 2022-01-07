@@ -7,9 +7,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
@@ -19,6 +17,10 @@ import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.CategorieRepository;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
 public class ArticleServiceImpl implements ArticleService{
 	
 	private ArticleRepository articleRepository;
@@ -37,6 +39,46 @@ public class ArticleServiceImpl implements ArticleService{
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.categorieRepository = categorieRepository;
+	}
+	
+	
+	@Override
+	public ArticleDto buildArticleDtoFromArticle(Article article) {
+		if (article == null)
+		{
+			return null;
+		}
+			
+		ArticleDto articleDto = new ArticleDto();
+		articleDto.setId(article.getId());
+		articleDto.setCodeArticle(article.getCodeArticle());
+		articleDto.setDesignation(article.getDesignation());
+		articleDto.setPrixUnitaireHt(article.getPrixUnitaireHt());
+		articleDto.setTauxTva(article.getTauxTva());
+		articleDto.setPrixUnitaireTtc(article.getPrixUnitaireTtc());
+		articleDto.setPhoto(article.getPhoto());
+		articleDto.setIdCategorie(article.getCategorie().getId());
+		articleDto.setDesignationCategorie(article.getCategorie().getDesignation());
+		
+		return articleDto;
+		
+	}
+
+	
+	private Article buildArticleFromArticleDto(ArticleDto articleDto) {
+		
+		Article article = new Article();
+		article.setId(""+sequenceGeneratorService.generateSequence(Article.SEQUENCE_NAME));	
+		article.setCodeArticle(articleDto.getCodeArticle());
+		article.setDesignation(articleDto.getDesignation());
+		article.setPrixUnitaireHt(articleDto.getPrixUnitaireHt());
+		article.setTauxTva(articleDto.getTauxTva());
+		article.setPrixUnitaireTtc(articleDto.getPrixUnitaireTtc());
+		article.setPhoto(articleDto.getPhoto());
+		Categorie cat = categorieRepository.findById(articleDto.getIdCategorie()).get();
+		article.setCategorie(cat);
+		return article;
+		
 	}
 	
 	
@@ -61,47 +103,11 @@ public class ArticleServiceImpl implements ArticleService{
 		return null;
 	}
 
-	@Override
-	public ArticleDto buildArticleDtoFromArticle(Article article) {
-		if (article == null)
-		{
-			return null;
-		}
-		
-		return ArticleDto.builder()
-				.id(article.getId())
-				.codeArticle(article.getCodeArticle())
-				.designation(article.getDesignation())
-				.prixUnitaireHt(article.getPrixUnitaireHt())
-				.tauxTva(article.getTauxTva())
-				.prixUnitaireTtc(article.getPrixUnitaireTtc())
-				.photo(article.getPhoto())
-				.idCategorie(article.getCategorie().getId())
-				.designationCategorie(article.getCategorie().getDesignation())	
-				.build();
-	}
-
-	
-	private Article buildArticleFomArticleDto(ArticleDto articleDto) {
-		
-		return Article.builder()
-				.id(""+sequenceGeneratorService.generateSequence(Article.SEQUENCE_NAME))
-				.codeArticle(articleDto.getCodeArticle())
-				.designation(articleDto.getDesignation())
-				.prixUnitaireHt(articleDto.getPrixUnitaireHt())
-				.tauxTva(articleDto.getTauxTva())
-				.prixUnitaireTtc(articleDto.getPrixUnitaireTtc())
-				.photo(articleDto.getPhoto())
-				.categorie(categorieRepository.findById(articleDto.getIdCategorie()).get())
-				.build();
-		
-	}
-	
 	
 	@Override
 	public void createNewArticle(@Valid ArticleDto articleDto) {
 	
-		articleRepository.save(buildArticleFomArticleDto(articleDto));
+		articleRepository.save(buildArticleFromArticleDto(articleDto));
 		
 	}
 
@@ -131,6 +137,7 @@ public class ArticleServiceImpl implements ArticleService{
 	public void deleteArticle(String articleId) {
 		
 		articleRepository.deleteById(articleId);
+
 		
 	}
 

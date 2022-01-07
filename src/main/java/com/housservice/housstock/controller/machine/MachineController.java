@@ -78,8 +78,6 @@ public class MachineController {
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
 	  
-	  
-	 
 	  @PutMapping("/machine/{id}")
 	  public ResponseEntity <String> updateMachine(
 			  @ApiParam(name = "id", value="id of machine", required = true)
@@ -93,7 +91,7 @@ public class MachineController {
 	 
 	  @DeleteMapping("/machine/{id}")
 	  @ApiOperation(value = "service to delete one Machine by Id.")
-	  public Map < String, Boolean > deletemachine(
+	  public Map < String, Boolean > deleteMachine(
 			  @ApiParam(name = "id", value="id of machine", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId) {
 

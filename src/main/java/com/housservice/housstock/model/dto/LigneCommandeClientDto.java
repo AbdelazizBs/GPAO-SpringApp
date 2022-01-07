@@ -6,9 +6,11 @@ import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class LigneCommandeClientDto {
 	@Id
 	private String id;
