@@ -1,7 +1,5 @@
 package com.housservice.housstock.controller.commandeClient;
 
-
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

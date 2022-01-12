@@ -1,6 +1,6 @@
 package com.housservice.housstock.model;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +11,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,9 +36,9 @@ public class CommandeFournisseur{
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private Instant dateCommande;
+	@JsonFormat(pattern="dd/MM/yyyy")
+	private LocalDate  dateCommande;
 	
-
 	private Fournisseur fournisseur;
 	
 

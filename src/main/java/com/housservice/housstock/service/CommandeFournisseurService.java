@@ -10,7 +10,7 @@ import com.housservice.housstock.model.dto.CommandeFournisseurDto;
 
 public interface CommandeFournisseurService {
 	
-	public List<CommandeFournisseurDto> getAllCommandeFournisseur();
+	public List<CommandeFournisseurDto> getAllCommandeFournisseur();  
 	
     public CommandeFournisseurDto getCommandeFournisseurById(String id);
 	

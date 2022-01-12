@@ -70,8 +70,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		
 		commandeClient.setId(""+sequenceGeneratorService.generateSequence(CommandeClient.SEQUENCE_NAME));	
 		commandeClient.setId(commandeClientDto.getId());
-		
-		
 		commandeClient.setType_cmd(commandeClientDto.getType_cmd());
 		commandeClient.setNum_cmd(commandeClientDto.getNum_cmd());
 		commandeClient.setEtat(commandeClientDto.getEtat());

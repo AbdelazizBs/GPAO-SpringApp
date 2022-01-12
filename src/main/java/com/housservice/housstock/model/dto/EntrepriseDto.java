@@ -3,7 +3,6 @@ package com.housservice.housstock.model.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
@@ -19,7 +18,7 @@ public class EntrepriseDto {
 	private String id;
 	
 	@Size(max = 100)
-	private String nom;
+	private String raisonSocial;
 	
 	@Size(max = 100)
 	private String description;
@@ -38,9 +37,10 @@ public class EntrepriseDto {
 	
 	@Size(max = 100)
 	private String numTel;
-		
-	@NotBlank
+
 	private String idCompte;
+	
+	private String raisonSocialCompte;
 	
 	private List<UtilisateurDto> utilisateurs = new ArrayList<>();
 }

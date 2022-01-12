@@ -19,4 +19,12 @@ public class ComptesDto {
 	    
 	    @Size(max = 100)
 	    private String siren;
+	    
+	    private String idEntreprise;
+		
+		private String raisonSocialEntreprise;
+		
+		private String idUtilisateur;
+		
+		private String nomUtilisateur;
 }

@@ -9,8 +9,6 @@ import javax.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,7 +38,7 @@ public class UtilisateurDto {
 	private EntrepriseDto entreprise;
 	
 	
-	private ComptesDto compte;
+	//private ComptesDto compte;
 	
 	
 	private List<RolesDto> role = new ArrayList<>();

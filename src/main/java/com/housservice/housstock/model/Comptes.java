@@ -37,4 +37,8 @@ public class Comptes {
     @Indexed(unique = true)
     private String siren;
     
+	private Entreprise entreprise;
+	
+	private Utilisateur utilisateur;
+    
 }

@@ -28,7 +28,7 @@ public class Entreprise{
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String nom;
+	private String raisonSocial;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -61,8 +61,7 @@ public class Entreprise{
 	private String numTel;
 	
 	
-	@NotBlank
-	private String idCompte;
+	private Comptes compte;
 	
 	private List<Utilisateur> utilisateurs = new ArrayList<>();
 

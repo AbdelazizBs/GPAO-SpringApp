@@ -33,7 +33,7 @@ public class LigneCommandeClient{
 	@Indexed(unique = true)
 	private BigDecimal prixUnitaire;
 	
-	private Article article;
+	//private Article article;
 	
 	private CommandeClient commandeClient;
 	
