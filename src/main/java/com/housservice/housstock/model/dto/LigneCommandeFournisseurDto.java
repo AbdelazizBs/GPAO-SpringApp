@@ -21,7 +21,11 @@ public class LigneCommandeFournisseurDto {
 	@Size(max = 100)
 	private BigDecimal prixUnitaire;
 	
-	//private ArticleDto article;
+	private String idArticle;
 	
-	private CommandeFournisseurDto commandeFournisseurs;
+	private String designationArticle;
+	
+	private String idCommandeFournisseur;
+	
+	private String codeCmdFournisseur;
 }

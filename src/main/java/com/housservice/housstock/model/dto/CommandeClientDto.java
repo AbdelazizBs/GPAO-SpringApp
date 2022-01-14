@@ -20,20 +20,20 @@ public class CommandeClientDto {
 	private String id;
 		
 	@Size(max = 100)
-	private String type_cmd;
+	private String typeCmd;
 	
 	@Size(max = 100)
-	private String num_cmd;
+	private String numCmd;
 	
 	@Size(max = 100)
 	private String etat;
 	
 
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate  date_cmd;
+	private LocalDate  dateCmd;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate date_creation_cmd;
+	private LocalDate dateCreationCmd;
 	
 	private String idClient;
 	

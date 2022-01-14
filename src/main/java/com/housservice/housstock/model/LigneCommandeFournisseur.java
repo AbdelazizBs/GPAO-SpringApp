@@ -33,7 +33,7 @@ public class LigneCommandeFournisseur{
 	@Indexed(unique = true)
 	private BigDecimal prixUnitaire;
 	
-	//private Article article;
+	private Article article;
 	
-	private CommandeFournisseur commandeFournisseurs;
+	private CommandeFournisseur commandeFournisseur;
 }

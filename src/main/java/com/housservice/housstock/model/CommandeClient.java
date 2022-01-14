@@ -31,12 +31,12 @@ public class CommandeClient {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String type_cmd;
+	private String typeCmd;
 	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String num_cmd;
+	private String numCmd;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -47,13 +47,13 @@ public class CommandeClient {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate  date_cmd;
+	private LocalDate  dateCmd;
 	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate date_creation_cmd;
+	private LocalDate dateCreationCmd;
 	
 	private Client client;
 

@@ -7,11 +7,13 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.Entreprise;
 import com.housservice.housstock.model.dto.EntrepriseDto;
 import com.housservice.housstock.repository.EntrepriseRepository;
@@ -57,7 +59,7 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 		entrepriseDto.setIdCompte(entreprise.getCompte().getId());
 		entrepriseDto.setRaisonSocialCompte(entreprise.getCompte().getRaisonSocial());
 		
-		//TODO Liste Clients
+		//TODO Liste utilisateurs
 		
 		return entrepriseDto;
 		
@@ -67,13 +69,17 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 	private Entreprise buildEntrepriseFromEntrepriseDto(EntrepriseDto entrepriseDto) {
 		
 		Entreprise entreprise = new Entreprise();
-		entreprise.setId(""+sequenceGeneratorService.generateSequence(Entreprise.SEQUENCE_NAME));	
-		//entreprise.setCodeentreprise(entrepriseDto.getCodeArticle());
-		//entreprise.setDesignation(entrepriseDto.getDesignation());
-	
+		entreprise.setId(""+sequenceGeneratorService.generateSequence(Entreprise.SEQUENCE_NAME));
+		entreprise.setRaisonSocial(entrepriseDto.getRaisonSocial());
+		entreprise.setDescription(entrepriseDto.getDescription());
+		entreprise.setAdresse(entrepriseDto.getAdresse());
+		entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
+		entreprise.setPhoto(entrepriseDto.getPhoto());
+		entreprise.setEmail(entrepriseDto.getEmail());
+		entreprise.setNumTel(entrepriseDto.getNumTel());			
+		Comptes cpt = comptesRepository.findById(entrepriseDto.getIdCompte()).get();
+		entreprise.setCompte(cpt);
 		
-		//Comptes cpt = categorieRepository.findById(articleDto.getIdCategorie()).get();
-		//article.setCategorie(cat);
 		return entreprise;
 		
 	}
@@ -114,15 +120,19 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 		Entreprise entreprise = entrepriseRepository.findById(entrepriseDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), entrepriseDto.getId())));
 		
-	//	entreprise.setCodeEntreprise(entrepriseDto.getCodeEntreprise());
-		//entreprise.setDesignation(entrepriseDto.getDesignation());
-	
+		entreprise.setRaisonSocial(entrepriseDto.getRaisonSocial());
+		entreprise.setDescription(entrepriseDto.getDescription());
+		entreprise.setAdresse(entrepriseDto.getAdresse());
+		entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
+		entreprise.setPhoto(entrepriseDto.getPhoto());
+		entreprise.setEmail(entrepriseDto.getEmail());
+		entreprise.setNumTel(entrepriseDto.getNumTel());
 		
-	//	if(article.getCategorie() == null || !StringUtils.equals(articleDto.getIdCategorie(), article.getCategorie().getId())) 
-	//	{
-	//		Categorie categorie = categorieRepository.findById(articleDto.getIdCategorie()).get();
-	//		article.setCategorie(categorie);
-	//	}
+		if(entreprise.getCompte() == null || !StringUtils.equals(entrepriseDto.getIdCompte(), entreprise.getCompte().getId())) 
+		{
+			Comptes cpt = comptesRepository.findById(entrepriseDto.getIdCompte()).get();
+			entreprise.setCompte(cpt);
+		}
 		
 		entrepriseRepository.save(entreprise);
 	}

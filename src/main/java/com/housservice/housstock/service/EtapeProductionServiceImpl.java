@@ -50,25 +50,6 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 	}
 
 	
-	@Override
-	public Optional<EtapeProduction> getEtapeProductionById(String etapeProductionId) {
-		return etapeProductionRepository.findById(etapeProductionId);
-	}
-
-	
-	@Override
-	public void deleteEtapeProduction(EtapeProduction etapeProduction) {
-		etapeProductionRepository.delete(etapeProduction);
-		
-	}
-
-	@Override
-	public void createNewEtapeProduction(@Valid EtapeProductionDto etapeProductionDto) {
-		
-		etapeProductionRepository.save(buildEtapeProductionFromEtapeProductionDto(etapeProductionDto));
-	}
-	
-	
 	private EtapeProduction buildEtapeProductionFromEtapeProductionDto(EtapeProductionDto etapeProductionDto) {
 		EtapeProduction etapeProduction = new EtapeProduction();
 		etapeProduction.setId(""+sequenceGeneratorService.generateSequence(EtapeProduction.SEQUENCE_NAME));
@@ -78,8 +59,30 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 		return etapeProduction;
 	
 		}
+	
+	@Override
+	public List<EtapeProductionDto> getAllEtapeProduction() {
+			
+		List<EtapeProduction> listEtapeProduction = etapeProductionRepository.findAll();
+		
+		return listEtapeProduction.stream()
+				.map(etapeProduction -> buildEtapeProductionDtoFromEtapeProduction(etapeProduction))
+				.filter(etapeProduction -> etapeProduction != null)
+				.collect(Collectors.toList());
+		
+	}
+	
+	@Override
+	public Optional<EtapeProduction> getEtapeProductionById(String etapeProductionId) {
+		return etapeProductionRepository.findById(etapeProductionId);
+	}
 
-
+	@Override
+	public void createNewEtapeProduction(@Valid EtapeProductionDto etapeProductionDto) {
+		
+		etapeProductionRepository.save(buildEtapeProductionFromEtapeProductionDto(etapeProductionDto));
+	}
+	
 	@Override
 	public void updateEtapeProduction(@Valid EtapeProductionDto etapeProductionDto) throws ResourceNotFoundException {
 		
@@ -92,19 +95,14 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 		etapeProductionRepository.save(etapeProduction);
 		
 	}
-
-
+	
+	
 	@Override
-	public List<EtapeProductionDto> getAllEtapeProduction() {
-			
-		List<EtapeProduction> listEtapeProduction = etapeProductionRepository.findAll();
-		
-		return listEtapeProduction.stream()
-				.map(etapeProduction -> buildEtapeProductionDtoFromEtapeProduction(etapeProduction))
-				.filter(etapeProduction -> etapeProduction != null)
-				.collect(Collectors.toList());
+	public void deleteEtapeProduction(EtapeProduction etapeProduction) {
+		etapeProductionRepository.delete(etapeProduction);
 		
 	}
+
 
 
 }

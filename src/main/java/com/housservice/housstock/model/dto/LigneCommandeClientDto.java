@@ -21,7 +21,11 @@ public class LigneCommandeClientDto {
 	@Size(max = 100)
 	private BigDecimal prixUnitaire;
 	
-	private ArticleDto article;
+	private String idArticle;
+		
+	private String designationArticle;
 	
-	private CommandeClientDto commandeClient;
+	private String idCommandeClient;
+	
+	private String numCmdClient;
 }

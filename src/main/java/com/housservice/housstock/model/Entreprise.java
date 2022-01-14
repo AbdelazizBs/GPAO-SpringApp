@@ -59,8 +59,7 @@ public class Entreprise{
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String numTel;
-	
-	
+		
 	private Comptes compte;
 	
 	private List<Utilisateur> utilisateurs = new ArrayList<>();

@@ -73,12 +73,13 @@ public class ComptesServiceImpl implements ComptesService {
 		comptes.setId(comptesDto.getId());		
 		comptes.setRaisonSocial(comptesDto.getRaisonSocial());
 		comptes.setSiren(comptesDto.getSiren());
-	
-		Entreprise etr = entrepriseRepository.findById(comptesDto.getIdEntreprise()).get();
-		comptes.setEntreprise(etr);
-		Utilisateur ut = utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
+
+		Entreprise etr =
+		entrepriseRepository.findById(comptesDto.getIdEntreprise()).get();
+		comptes.setEntreprise(etr); Utilisateur ut =
+		utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
 		comptes.setUtilisateur(ut);
-				
+		
 		return comptes;
 	}
 
@@ -122,18 +123,17 @@ public class ComptesServiceImpl implements ComptesService {
 		comptes.setRaisonSocial(comptesDto.getRaisonSocial());
 		comptes.setSiren(comptesDto.getSiren());
 	
-		if(comptes.getEntreprise() == null || !StringUtils.equals(comptesDto.getIdEntreprise(), comptes.getEntreprise().getId())) 
-		{
-			Entreprise etr = entrepriseRepository.findById(comptesDto.getIdEntreprise()).get();
-			comptes.setEntreprise(etr);
-		}
 		
-		if(comptes.getUtilisateur() == null || !StringUtils.equals(comptesDto.getIdUtilisateur(), comptes.getUtilisateur().getId())) 
-		{
-			Utilisateur ut = utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
-			comptes.setUtilisateur(ut);
-		}
-		
+		  if(comptes.getEntreprise() == null ||!StringUtils.equals(comptesDto.getIdEntreprise(),comptes.getEntreprise().getId()))
+		  { 
+			  Entreprise etr = entrepriseRepository.findById(comptesDto.getIdEntreprise()).get();
+			  comptes.setEntreprise(etr); }
+		  
+		  if(comptes.getUtilisateur() == null ||!StringUtils.equals(comptesDto.getIdUtilisateur(),comptes.getUtilisateur().getId()))
+		  {
+			  Utilisateur ut = utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
+		      comptes.setUtilisateur(ut); }
+		 
 		comptesRepository.save(comptes);
 		
 	}

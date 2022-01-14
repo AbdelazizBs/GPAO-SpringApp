@@ -50,11 +50,11 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 			
 		CommandeClientDto commandeClientDto = new CommandeClientDto();
 		commandeClientDto.setId(commandeClient.getId());
-		commandeClientDto.setType_cmd(commandeClient.getType_cmd());
-		commandeClientDto.setNum_cmd(commandeClient.getNum_cmd());
+		commandeClientDto.setTypeCmd(commandeClient.getTypeCmd());
+		commandeClientDto.setNumCmd(commandeClient.getNumCmd());
 		commandeClientDto.setEtat(commandeClient.getEtat());
-		commandeClientDto.setDate_cmd(commandeClient.getDate_cmd());
-		commandeClientDto.setDate_creation_cmd(commandeClient.getDate_creation_cmd());
+		commandeClientDto.setDateCmd(commandeClient.getDateCmd());
+		commandeClientDto.setDateCreationCmd(commandeClient.getDateCreationCmd());
 		commandeClientDto.setIdClient(commandeClient.getClient().getId());
 		commandeClientDto.setRaisonSocialClient(commandeClient.getClient().getRaisonSocial());
 		//TODO
@@ -70,11 +70,11 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		
 		commandeClient.setId(""+sequenceGeneratorService.generateSequence(CommandeClient.SEQUENCE_NAME));	
 		commandeClient.setId(commandeClientDto.getId());
-		commandeClient.setType_cmd(commandeClientDto.getType_cmd());
-		commandeClient.setNum_cmd(commandeClientDto.getNum_cmd());
+		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
+		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
 		commandeClient.setEtat(commandeClientDto.getEtat());
-		commandeClient.setDate_cmd(commandeClientDto.getDate_cmd());
-		commandeClient.setDate_creation_cmd(commandeClientDto.getDate_creation_cmd());
+		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
+		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
 		Client cl = clientRepository.findById(commandeClientDto.getIdClient()).get();
 		commandeClient.setClient(cl);
 		
@@ -122,11 +122,11 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		CommandeClient commandeClient = commandeClientRepository.findById(commandeClientDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), commandeClientDto.getId())));
 		
-		commandeClient.setType_cmd(commandeClientDto.getType_cmd());
-		commandeClient.setNum_cmd(commandeClientDto.getNum_cmd());
+		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
+		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
 		commandeClient.setEtat(commandeClientDto.getEtat());
-		commandeClient.setDate_cmd(commandeClientDto.getDate_cmd());
-		commandeClient.setDate_creation_cmd(commandeClientDto.getDate_creation_cmd());
+		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
+		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
 	
 		
 		if(commandeClient.getClient() == null || !StringUtils.equals(commandeClientDto.getIdClient(), commandeClient.getClient().getId())) 

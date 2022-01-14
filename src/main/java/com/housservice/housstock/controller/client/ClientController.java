@@ -31,7 +31,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 
-
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
