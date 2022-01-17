@@ -33,7 +33,7 @@ public class LigneVente{
 	@Indexed(unique = true)
 	private BigDecimal prixUnitaire;
 	
-	//private Ventes vente;
+	private Ventes vente;
 	
 	private Client client;
 

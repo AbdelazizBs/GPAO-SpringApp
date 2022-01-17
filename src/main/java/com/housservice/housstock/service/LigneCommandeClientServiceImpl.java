@@ -35,13 +35,14 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 	private CommandeClientRepository commandeClientRepository;
 	
 	@Autowired
-	public LigneCommandeClientServiceImpl (LigneCommandeClientRepository ligneCommandeClientRepository,SequenceGeneratorService sequenceGeneratorService,
-			MessageHttpErrorProperties messageHttpErrorProperties,ArticleRepository articleRepository)
-	{
+	public LigneCommandeClientServiceImpl(LigneCommandeClientRepository ligneCommandeClientRepository,
+			SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
+			ArticleRepository articleRepository, CommandeClientRepository commandeClientRepository) {
 		this.ligneCommandeClientRepository = ligneCommandeClientRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.articleRepository = articleRepository;
+		this.commandeClientRepository = commandeClientRepository;
 	}
 
 	@Override

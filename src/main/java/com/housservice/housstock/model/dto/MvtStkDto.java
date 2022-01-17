@@ -25,10 +25,11 @@ public class MvtStkDto {
 	@Size(max = 100)
 	private BigDecimal quantite;
 	
-	
 	@Size(max = 100)
 	private String typeMvt;
 
-	private ArticleDto article;
+	private String idArticle;
+	
+	private String designationArticle;
 	
 }

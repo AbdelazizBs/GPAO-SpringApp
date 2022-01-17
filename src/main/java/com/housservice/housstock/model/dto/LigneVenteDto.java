@@ -21,8 +21,12 @@ public class LigneVenteDto {
 	@Size(max = 100)
 	private BigDecimal prixUnitaire;
 	
-	private VentesDto vente;
+    private String idVentes;
 	
-	private ClientDto client;
+	private String codeVentes;
+	
+    private String idClient;
+	
+	private String raisonSocialClient;
 	
 }

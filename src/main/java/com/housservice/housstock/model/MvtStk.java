@@ -38,7 +38,6 @@ public class MvtStk{
 	@Indexed(unique = true)
 	private BigDecimal quantite;
 	
-	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
