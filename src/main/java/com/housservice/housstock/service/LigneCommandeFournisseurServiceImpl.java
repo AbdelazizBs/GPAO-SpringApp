@@ -24,7 +24,7 @@ import com.housservice.housstock.repository.LigneCommandeFournisseurRepository;
 @Service
 public class LigneCommandeFournisseurServiceImpl implements LigneCommandeFournisseurService {
 
-private LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository;
+	private LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository;
 	
 	private SequenceGeneratorService sequenceGeneratorService;
 	
@@ -33,15 +33,17 @@ private LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository;
 	private ArticleRepository articleRepository;
 	
 	private CommandeFournisseurRepository commandeFournisseurRepository;
-	
+
 	@Autowired
-	public LigneCommandeFournisseurServiceImpl (LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository,SequenceGeneratorService sequenceGeneratorService,
-			MessageHttpErrorProperties messageHttpErrorProperties,ArticleRepository articleRepository)
-	{
+	public LigneCommandeFournisseurServiceImpl(LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository,
+			SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
+			ArticleRepository articleRepository, CommandeFournisseurRepository commandeFournisseurRepository) {
+		
 		this.ligneCommandeFournisseurRepository = ligneCommandeFournisseurRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.articleRepository = articleRepository;
+		this.commandeFournisseurRepository = commandeFournisseurRepository;
 	}
 
 	@Override

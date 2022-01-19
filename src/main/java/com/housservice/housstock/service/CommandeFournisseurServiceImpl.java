@@ -22,7 +22,7 @@ import com.housservice.housstock.repository.CommandeFournisseurRepository;
 @Service
 public class CommandeFournisseurServiceImpl implements CommandeFournisseurService {
 	
-private CommandeFournisseurRepository commandeFournisseurRepository;
+	private CommandeFournisseurRepository commandeFournisseurRepository;
 	
 	private SequenceGeneratorService sequenceGeneratorService;
 	

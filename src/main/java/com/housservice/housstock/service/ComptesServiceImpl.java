@@ -34,17 +34,18 @@ public class ComptesServiceImpl implements ComptesService {
 	
 	private UtilisateurRepository utilisateurRepository;
 	
-	
 	@Autowired
-	public ComptesServiceImpl (ComptesRepository ComptesRepository,SequenceGeneratorService sequenceGeneratorService,
-			MessageHttpErrorProperties messageHttpErrorProperties)
+	public ComptesServiceImpl(ComptesRepository comptesRepository, SequenceGeneratorService sequenceGeneratorService,
+			MessageHttpErrorProperties messageHttpErrorProperties, EntrepriseRepository entrepriseRepository,
+			UtilisateurRepository utilisateurRepository) 
 	{
-		this.comptesRepository = ComptesRepository;
+		this.comptesRepository = comptesRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
+		this.entrepriseRepository = entrepriseRepository;
+		this.utilisateurRepository = utilisateurRepository;
 	}
-	
-	
+
 	@Override
 	public ComptesDto buildComptesDtoFromComptes(Comptes comptes) {
 		if (comptes == null)

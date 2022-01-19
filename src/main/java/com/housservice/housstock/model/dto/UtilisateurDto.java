@@ -35,12 +35,16 @@ public class UtilisateurDto {
 	private String photo;
 	
 
-	private EntrepriseDto entreprise;
+    private String idEntreprise;
+	
+	private String raisonSocialEntreprise;
 	
 	
-	//private ComptesDto compte;
+    private String idComptes;
+	
+	private String raisonSocialComptes;
 	
 	
-	private List<RolesDto> role = new ArrayList<>();
+	private List<RolesDto> listRoles = new ArrayList<>();
 	
 }

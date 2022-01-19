@@ -38,6 +38,7 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 	public LigneCommandeClientServiceImpl(LigneCommandeClientRepository ligneCommandeClientRepository,
 			SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
 			ArticleRepository articleRepository, CommandeClientRepository commandeClientRepository) {
+		
 		this.ligneCommandeClientRepository = ligneCommandeClientRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;

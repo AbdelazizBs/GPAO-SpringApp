@@ -136,7 +136,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	}
 
 
-	private void addIdNomenclatureToPere(String nomenclatureId, String parentId) {
+	private void addIdNomenclatureToPere(String nomenclatureId, String parentId)
+	{
 		Update update = new Update().addToSet("listIdChildren", nomenclatureId);
 		final Query query = new Query(new Criteria().andOperator(Criteria.where("_id").is(parentId)));
 		UpdateResult updateResult = mongoOperations.updateFirst(query, update, Nomenclature.class);

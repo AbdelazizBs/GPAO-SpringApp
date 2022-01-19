@@ -25,7 +25,7 @@ public class Roles{
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String libelle;
+	private String nom;
 
 
 	private Utilisateur utilisateur;

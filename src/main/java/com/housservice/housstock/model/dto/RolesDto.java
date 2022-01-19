@@ -15,9 +15,10 @@ public class RolesDto {
 	private String id;
 
 	@Size(max = 100)
-	private String libelle;
+	private String nom;
 
-
-	private UtilisateurDto utilisateur;
+	private String idUtilisateur;
+	
+	private String nomUtilisateur;
 	
 }
