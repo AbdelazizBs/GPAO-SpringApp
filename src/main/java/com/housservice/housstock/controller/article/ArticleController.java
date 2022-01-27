@@ -54,7 +54,7 @@ public class ArticleController {
 	
 	    
 	    @GetMapping("/article/{id}")
-		  @ApiOperation(value = "service to get one Article by Id.")
+		@ApiOperation(value = "service to get one Article by Id.")
 		  public ResponseEntity < ArticleDto > getArticleById(
 				  @ApiParam(name = "id", value="id of article", required = true)
 				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String articleId)
