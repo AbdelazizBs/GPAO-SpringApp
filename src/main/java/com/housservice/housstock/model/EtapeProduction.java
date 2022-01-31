@@ -21,10 +21,7 @@ public class EtapeProduction {
 	
 	@Id
 	private String id;
-	
-	@NotBlank
-	private String idCompte;
-	
+		
 	@NotBlank
 	@Size(max=100)
 	@Indexed(unique = true)

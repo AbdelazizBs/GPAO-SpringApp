@@ -53,7 +53,6 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 		entrepriseDto.setDescription(entreprise.getDescription());
 		entrepriseDto.setAdresse(entreprise.getAdresse());
 		entrepriseDto.setCodeFiscal(entreprise.getCodeFiscal());
-		entrepriseDto.setPhoto(entreprise.getPhoto());
 		entrepriseDto.setEmail(entreprise.getEmail());
 		entrepriseDto.setNumTel(entreprise.getNumTel());
 		entrepriseDto.setIdCompte(entreprise.getCompte().getId());
@@ -74,7 +73,6 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 		entreprise.setDescription(entrepriseDto.getDescription());
 		entreprise.setAdresse(entrepriseDto.getAdresse());
 		entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
-		entreprise.setPhoto(entrepriseDto.getPhoto());
 		entreprise.setEmail(entrepriseDto.getEmail());
 		entreprise.setNumTel(entrepriseDto.getNumTel());			
 		Comptes cpt = comptesRepository.findById(entrepriseDto.getIdCompte()).get();
@@ -124,7 +122,6 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 		entreprise.setDescription(entrepriseDto.getDescription());
 		entreprise.setAdresse(entrepriseDto.getAdresse());
 		entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
-		entreprise.setPhoto(entrepriseDto.getPhoto());
 		entreprise.setEmail(entrepriseDto.getEmail());
 		entreprise.setNumTel(entrepriseDto.getNumTel());
 		

@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.Matiere;
 import com.housservice.housstock.model.CommandeFournisseur;
 import com.housservice.housstock.model.LigneCommandeFournisseur;
 import com.housservice.housstock.model.dto.LigneCommandeFournisseurDto;
-import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.CommandeFournisseurRepository;
 import com.housservice.housstock.repository.LigneCommandeFournisseurRepository;
+import com.housservice.housstock.repository.MatiereRepository;
 
 @Service
 public class LigneCommandeFournisseurServiceImpl implements LigneCommandeFournisseurService {
@@ -30,19 +30,19 @@ public class LigneCommandeFournisseurServiceImpl implements LigneCommandeFournis
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	
-	private ArticleRepository articleRepository;
+	private MatiereRepository matiereRepository;
 	
 	private CommandeFournisseurRepository commandeFournisseurRepository;
 
 	@Autowired
 	public LigneCommandeFournisseurServiceImpl(LigneCommandeFournisseurRepository ligneCommandeFournisseurRepository,
 			SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
-			ArticleRepository articleRepository, CommandeFournisseurRepository commandeFournisseurRepository) {
+			MatiereRepository matiererepository, CommandeFournisseurRepository commandeFournisseurRepository) {
 		
 		this.ligneCommandeFournisseurRepository = ligneCommandeFournisseurRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
-		this.articleRepository = articleRepository;
+		this.matiereRepository = matiereRepository;
 		this.commandeFournisseurRepository = commandeFournisseurRepository;
 	}
 
@@ -57,8 +57,8 @@ public class LigneCommandeFournisseurServiceImpl implements LigneCommandeFournis
 		ligneCommandeFournisseurDto.setId(ligneCommandeFournisseur.getId());
 		ligneCommandeFournisseurDto.setQuantite(ligneCommandeFournisseur.getQuantite());
 		ligneCommandeFournisseurDto.setPrixUnitaire(ligneCommandeFournisseur.getPrixUnitaire());
-		ligneCommandeFournisseurDto.setIdArticle(ligneCommandeFournisseur.getArticle().getId());
-		ligneCommandeFournisseurDto.setDesignationArticle(ligneCommandeFournisseur.getArticle().getDesignation());
+		ligneCommandeFournisseurDto.setIdMatiere(ligneCommandeFournisseur.getMatiere().getId());
+		ligneCommandeFournisseurDto.setDesignationMatiere(ligneCommandeFournisseur.getMatiere().getDesignation());
 		ligneCommandeFournisseurDto.setIdCommandeFournisseur(ligneCommandeFournisseur.getCommandeFournisseur().getId());
 		ligneCommandeFournisseurDto.setCodeCmdFournisseur(ligneCommandeFournisseur.getCommandeFournisseur().getCode());
 		
@@ -72,8 +72,8 @@ public class LigneCommandeFournisseurServiceImpl implements LigneCommandeFournis
 		ligneCommandeFournisseur.setId(""+sequenceGeneratorService.generateSequence(LigneCommandeFournisseur.SEQUENCE_NAME));	
 		ligneCommandeFournisseur.setQuantite(ligneCommandeFournisseurDto.getQuantite());
 		ligneCommandeFournisseur.setPrixUnitaire(ligneCommandeFournisseurDto.getPrixUnitaire());
-		Article art = articleRepository.findById(ligneCommandeFournisseurDto.getIdArticle()).get();
-		ligneCommandeFournisseur.setArticle(art);
+		Matiere mat = matiereRepository.findById(ligneCommandeFournisseurDto.getIdMatiere()).get();
+		ligneCommandeFournisseur.setMatiere(mat);
 		CommandeFournisseur cmdFr = commandeFournisseurRepository.findById(ligneCommandeFournisseurDto.getIdCommandeFournisseur()).get();
 		ligneCommandeFournisseur.setCommandeFournisseur(cmdFr);
 
@@ -118,10 +118,11 @@ public class LigneCommandeFournisseurServiceImpl implements LigneCommandeFournis
 		ligneCommandeFournisseur.setQuantite(ligneCommandeFournisseurDto.getQuantite());
 		ligneCommandeFournisseur.setPrixUnitaire(ligneCommandeFournisseurDto.getPrixUnitaire());
 	
-		if(ligneCommandeFournisseur.getArticle() == null || !StringUtils.equals(ligneCommandeFournisseurDto.getIdArticle(), ligneCommandeFournisseur.getArticle().getId())) 
+		if(ligneCommandeFournisseur.getMatiere() == null || !StringUtils.equals(ligneCommandeFournisseurDto.getIdMatiere(), ligneCommandeFournisseur.getMatiere().getId())) 
 		{
-			Article article = articleRepository.findById(ligneCommandeFournisseurDto.getIdArticle()).get();
-			ligneCommandeFournisseur.setArticle(article);
+			Matiere mat = matiereRepository.findById(ligneCommandeFournisseurDto.getIdMatiere()).get();
+			ligneCommandeFournisseur.setMatiere(mat);
+			
 		}
 		
 		if(ligneCommandeFournisseur.getCommandeFournisseur() == null || !StringUtils.equals(ligneCommandeFournisseurDto.getIdCommandeFournisseur(), ligneCommandeFournisseur.getCommandeFournisseur().getId())) 

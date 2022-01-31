@@ -28,10 +28,7 @@ public class EntrepriseDto {
 	
 	@Size(max = 100)
 	private String codeFiscal;
-	
-	@Size(max = 100)
-	private String photo;
-	
+		
 	@Size(max = 100)
 	private String email;
 	

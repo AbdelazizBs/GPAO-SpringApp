@@ -11,21 +11,27 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LigneCommandeFournisseurDto {
+public class MatiereDto {
+	
 	@Id
 	private String id;
 	
 	@Size(max = 100)
-	private BigDecimal quantite;
+	private String codeMatiere;
+
+	@Size(max = 100)
+	private String designation;
 	
 	@Size(max = 100)
-	private BigDecimal prixUnitaire;
+	private BigDecimal prixUnitaireHt;
+
+	@Size(max = 100)
+	private BigDecimal tauxTva;
 	
-	private String idMatiere;
+	@Size(max = 100)
+	private BigDecimal prixUnitaireTtc;
 	
-	private String designationMatiere;
-	
-	private String idCommandeFournisseur;
-	
-	private String codeCmdFournisseur;
+	@Size(max = 100)
+	private String photo;
+
 }

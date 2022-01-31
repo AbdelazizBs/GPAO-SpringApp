@@ -44,12 +44,7 @@ public class Entreprise{
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String codeFiscal;
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String photo;
-	
+		
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)

@@ -14,11 +14,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter 
-@Document(collection="LigneCommandeFournisseur")
-public class LigneCommandeFournisseur{
+@Setter
+@Document(collection="Matiere")
+public class Matiere {
+	
 	@Transient
-	public static final String SEQUENCE_NAME ="ligneCommandeFournisseur_sequence";
+	public static final String SEQUENCE_NAME ="matiere_sequence";
 	
 	@Id
 	private String id;
@@ -26,14 +27,32 @@ public class LigneCommandeFournisseur{
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private BigDecimal quantite;
+	private String codeMatiere;
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String designation;
 	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private BigDecimal prixUnitaire;
+	private BigDecimal prixUnitaireHt;
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private BigDecimal tauxTva;
 	
-	private Matiere matiere;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private BigDecimal prixUnitaireTtc;
 	
-	private CommandeFournisseur commandeFournisseur;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String photo;
+
+
 }
