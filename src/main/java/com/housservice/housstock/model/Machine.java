@@ -39,7 +39,7 @@ public class Machine {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String nbrConducteur;
+	private int nbrConducteur;
 	
 	@NotBlank
 	@Size(max = 100)

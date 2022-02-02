@@ -54,7 +54,6 @@ public class Article{
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String photo;
-
 	
 	private Categorie categorie;
 	

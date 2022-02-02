@@ -34,7 +34,7 @@ public class MachineDto {
 	private String libelle;
 	
 	@Size(max = 100)
-	private String nbrConducteur;
+	private int nbrConducteur;
 	
 	@JsonFormat(pattern="yyyy-MM-dd")	
 	private LocalDate dateMaintenance;
