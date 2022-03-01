@@ -56,7 +56,6 @@ public class ArticleServiceImpl implements ArticleService{
 		articleDto.setPrixUnitaireHt(article.getPrixUnitaireHt());
 		articleDto.setTauxTva(article.getTauxTva());
 		articleDto.setPrixUnitaireTtc(article.getPrixUnitaireTtc());
-		articleDto.setPhoto(article.getPhoto());
 		articleDto.setIdCategorie(article.getCategorie().getId());
 		articleDto.setDesignationCategorie(article.getCategorie().getDesignation());
 		
@@ -64,7 +63,7 @@ public class ArticleServiceImpl implements ArticleService{
 		
 	}
 
-	
+
 	private Article buildArticleFromArticleDto(ArticleDto articleDto) {
 		
 		Article article = new Article();
@@ -74,7 +73,6 @@ public class ArticleServiceImpl implements ArticleService{
 		article.setPrixUnitaireHt(articleDto.getPrixUnitaireHt());
 		article.setTauxTva(articleDto.getTauxTva());
 		article.setPrixUnitaireTtc(articleDto.getPrixUnitaireTtc());
-		article.setPhoto(articleDto.getPhoto());
 		Categorie cat = categorieRepository.findById(articleDto.getIdCategorie()).get();
 		article.setCategorie(cat);
 		return article;
@@ -122,7 +120,6 @@ public class ArticleServiceImpl implements ArticleService{
 		article.setPrixUnitaireHt(articleDto.getPrixUnitaireHt());
 		article.setTauxTva(articleDto.getTauxTva());
 		article.setPrixUnitaireTtc(articleDto.getPrixUnitaireTtc());
-		article.setPhoto(articleDto.getPhoto());
 		
 		if(article.getCategorie() == null || !StringUtils.equals(articleDto.getIdCategorie(), article.getCategorie().getId())) 
 		{

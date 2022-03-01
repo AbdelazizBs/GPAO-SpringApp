@@ -39,5 +39,17 @@ public class EntrepriseDto {
 	
 	private String raisonSocialCompte;
 	
-	private List<UtilisateurDto> utilisateurs = new ArrayList<>();
+	private List<PersonnelDto> personnels = new ArrayList<>();
+	
+	private List<ClientDto> clients = new ArrayList<>();
+	
+	private List<FournisseurDto> fournisseurs = new ArrayList<>();
+	
+	private List<ArticleDto> articles = new ArrayList<>();
+	
+	private List<EtapeProductionDto> etapeProductions = new ArrayList<>();
+	
+	private List<VentesDto> ventes = new ArrayList<>();
+	
+	private List<MachineDto> machines = new ArrayList<>();
 }

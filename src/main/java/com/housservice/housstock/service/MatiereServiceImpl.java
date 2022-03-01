@@ -51,7 +51,6 @@ public class MatiereServiceImpl implements MatiereService {
 		MatiereDto.setPrixUnitaireHt(Matiere.getPrixUnitaireHt());
 		MatiereDto.setTauxTva(Matiere.getTauxTva());
 		MatiereDto.setPrixUnitaireTtc(Matiere.getPrixUnitaireTtc());
-		MatiereDto.setPhoto(Matiere.getPhoto());
 		
 		return MatiereDto;
 		
@@ -67,7 +66,6 @@ public class MatiereServiceImpl implements MatiereService {
 		Matiere.setPrixUnitaireHt(MatiereDto.getPrixUnitaireHt());
 		Matiere.setTauxTva(MatiereDto.getTauxTva());
 		Matiere.setPrixUnitaireTtc(MatiereDto.getPrixUnitaireTtc());
-		Matiere.setPhoto(MatiereDto.getPhoto());
 		
 		return Matiere;
 		
@@ -114,7 +112,7 @@ public class MatiereServiceImpl implements MatiereService {
 		Matiere.setPrixUnitaireHt(MatiereDto.getPrixUnitaireHt());
 		Matiere.setTauxTva(MatiereDto.getTauxTva());
 		Matiere.setPrixUnitaireTtc(MatiereDto.getPrixUnitaireTtc());
-		Matiere.setPhoto(MatiereDto.getPhoto());
+
 		
 		MatiereRepository.save(Matiere);
 	}

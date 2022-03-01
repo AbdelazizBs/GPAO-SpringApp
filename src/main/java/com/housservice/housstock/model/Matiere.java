@@ -49,10 +49,5 @@ public class Matiere {
 	@Indexed(unique = true)
 	private BigDecimal prixUnitaireTtc;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String photo;
-
 
 }

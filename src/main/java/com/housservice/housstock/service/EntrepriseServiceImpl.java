@@ -58,7 +58,7 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 		entrepriseDto.setIdCompte(entreprise.getCompte().getId());
 		entrepriseDto.setRaisonSocialCompte(entreprise.getCompte().getRaisonSocial());
 		
-		//TODO Liste utilisateurs
+		//TODO Liste personnels / Etape de production /client / fournisseurs
 		
 		return entrepriseDto;
 		

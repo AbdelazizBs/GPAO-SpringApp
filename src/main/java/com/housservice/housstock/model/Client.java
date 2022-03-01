@@ -115,19 +115,6 @@ public class Client {
 	private int blocage;
 	
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private int miseEnVeille;
-	
-
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate dateMiseEnVeille;
-	
-	
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 	
 

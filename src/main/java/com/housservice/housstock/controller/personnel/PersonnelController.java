@@ -43,14 +43,14 @@ public class PersonnelController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
-    @GetMapping("/Personnel")
+    @GetMapping("/personnel")
 	 public List< PersonnelDto > getAllPersonnel() {
 		 		
 		 return PersonnelService.getAllPersonnel();
 		 	 
 	 }
 
-      @GetMapping("/Personnel/{id}")
+      @GetMapping("/personnel/{id}")
 	  @ApiOperation(value = "service to get one Personnel by Id.")
 	  public ResponseEntity < PersonnelDto > getPersonnelById(
 			  @ApiParam(name = "id", value="id of Personnel", required = true)
@@ -63,14 +63,14 @@ public class PersonnelController {
 	      return ResponseEntity.ok().body(Personnel);
 	  }
     
-      @PutMapping("/Personnel")
+      @PutMapping("/personnel")
 	  public ResponseEntity<String> createPersonnel(@Valid @RequestBody PersonnelDto PersonnelDto) {
 		  
     	  PersonnelService.createNewPersonnel(PersonnelDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
     
-      @PutMapping("/Personnel/{id}")
+      @PutMapping("/personnel/{id}")
 	  public ResponseEntity <String> updatePersonnel(
 			  @ApiParam(name = "id", value="id of Personnel", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String PersonnelId,
@@ -82,7 +82,7 @@ public class PersonnelController {
 	  }
 
     
-	  @DeleteMapping("/Personnel/{id}")
+	  @DeleteMapping("/personnel/{id}")
 	  @ApiOperation(value = "service to delete one Personnel by Id.")
 	  public Map < String, Boolean > deletePersonnel(
 			  @ApiParam(name = "id", value="id of Personnel", required = true)

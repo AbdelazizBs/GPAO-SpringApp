@@ -31,7 +31,5 @@ public class MatiereDto {
 	@Size(max = 100)
 	private BigDecimal prixUnitaireTtc;
 	
-	@Size(max = 100)
-	private String photo;
 
 }

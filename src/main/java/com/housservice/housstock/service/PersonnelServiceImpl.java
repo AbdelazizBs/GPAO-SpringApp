@@ -44,12 +44,13 @@ public class PersonnelServiceImpl implements PersonnelService{
 			
 		PersonnelDto personnelDto = new PersonnelDto();
 		personnelDto.setId(personnel.getId());
+		personnelDto.setCin(personnel.getCin());
 		personnelDto.setNom(personnel.getNom());
 		personnelDto.setPrenom(personnel.getPrenom());
+		personnelDto.setSexe(personnel.getSexe());
 		personnelDto.setDateDeNaissance(personnel.getDateDeNaissance());
 		personnelDto.setAdresse(personnel.getAdresse());
-		personnelDto.setPhoto(personnel.getPhoto());
-		
+		personnelDto.setRib(personnel.getRib());
 		personnelDto.setPoste(personnel.getPoste());
 		personnelDto.setDateDeEmbauche(personnel.getDateDeEmbauche());
 		personnelDto.setEchelon(personnel.getEchelon());
@@ -65,18 +66,19 @@ public class PersonnelServiceImpl implements PersonnelService{
 		Personnel personnel = new Personnel();
 		
 		personnel.setId(""+sequenceGeneratorService.generateSequence(Personnel.SEQUENCE_NAME));	
-		personnel.setId(personnelDto.getId());		
+		personnel.setId(personnelDto.getId());
+		personnel.setCin(personnelDto.getCin());
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
+		personnel.setSexe(personnelDto.getSexe());
 		personnel.setDateDeNaissance(personnelDto.getDateDeNaissance());
 		personnel.setAdresse(personnelDto.getAdresse());
-		personnel.setPhoto(personnelDto.getPhoto());
-
+		personnel.setRib(personnelDto.getRib());
 		personnel.setPoste(personnelDto.getPoste());
 		personnel.setDateDeEmbauche(personnelDto.getDateDeEmbauche());
 		personnel.setEchelon(personnelDto.getEchelon());
 		personnel.setCategorie(personnelDto.getCategorie());
-		
+				
 		return personnel;
 	}
 
@@ -117,12 +119,13 @@ public class PersonnelServiceImpl implements PersonnelService{
 		Personnel personnel = personnelRepository.findById(personnelDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
 		
+		personnel.setCin(personnelDto.getCin());
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
+		personnel.setSexe(personnelDto.getSexe());
 		personnel.setDateDeNaissance(personnelDto.getDateDeNaissance());
 		personnel.setAdresse(personnelDto.getAdresse());
-		personnel.setPhoto(personnelDto.getPhoto());
-		
+		personnel.setRib(personnelDto.getRib());
 		personnel.setPoste(personnelDto.getPoste());
 		personnel.setDateDeEmbauche(personnelDto.getDateDeEmbauche());
 		personnel.setEchelon(personnelDto.getEchelon());

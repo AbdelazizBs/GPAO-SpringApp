@@ -57,6 +57,17 @@ public class Entreprise{
 		
 	private Comptes compte;
 	
-	private List<Utilisateur> utilisateurs = new ArrayList<>();
-
+	private List<Personnel> personnels = new ArrayList<>();
+	
+	private List<Client> clients = new ArrayList<>();
+	
+	private List<Fournisseur> fournisseurs = new ArrayList<>();
+	
+	private List<Article> articles = new ArrayList<>();
+	
+	private List<EtapeProduction> etapeProductions = new ArrayList<>();
+		
+	private List<Ventes> ventes = new ArrayList<>();
+	
+	private List<Machine> machines = new ArrayList<>();
 }

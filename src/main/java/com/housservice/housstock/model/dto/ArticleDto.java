@@ -1,6 +1,7 @@
 package com.housservice.housstock.model.dto;
 
 import java.math.BigDecimal;
+
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
@@ -29,10 +30,7 @@ public class ArticleDto {
 	
 	@Size(max = 100)
 	private BigDecimal prixUnitaireTtc;
-	
-	@Size(max = 100)
-	private String photo;
-	
+		
     private String idCategorie;
 	
 	private String designationCategorie;
