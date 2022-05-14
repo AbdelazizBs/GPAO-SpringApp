@@ -96,13 +96,22 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 		
 	}
 	
-	
 	@Override
 	public void deleteEtapeProduction(EtapeProduction etapeProduction) {
 		etapeProductionRepository.delete(etapeProduction);
 		
 	}
 
-
+	@Override
+	public String getIdEtapeProductionFromEtapeProductionDto(EtapeProductionDto etapeProductionDto) {
+		if (etapeProductionDto == null) {
+			return null; 
+			}
+		  
+		  String IdEtapeProduction = etapeProductionDto.getId();
+		  
+		  return IdEtapeProduction;
+	}
+	
 
 }

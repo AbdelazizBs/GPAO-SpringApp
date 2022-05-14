@@ -1,7 +1,7 @@
 package com.housservice.housstock.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -54,20 +54,26 @@ public class Entreprise{
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String numTel;
+	
+	private Set<String> listIdEtapeProductions = new HashSet<>();
+	
+	//private Set<String> listIdPersonnel = new HashSet<>();
 		
-	private Comptes compte;
-	
-	private List<Personnel> personnels = new ArrayList<>();
-	
-	private List<Client> clients = new ArrayList<>();
-	
-	private List<Fournisseur> fournisseurs = new ArrayList<>();
-	
-	private List<Article> articles = new ArrayList<>();
-	
-	private List<EtapeProduction> etapeProductions = new ArrayList<>();
-		
-	private List<Ventes> ventes = new ArrayList<>();
-	
-	private List<Machine> machines = new ArrayList<>();
+	/*
+	 * private Comptes compte;
+	 * 
+	 * private List<Personnel> personnels = new ArrayList<>();
+	 * 
+	 * private List<Client> clients = new ArrayList<>();
+	 * 
+	 * private List<Fournisseur> fournisseurs = new ArrayList<>();
+	 * 
+	 * private List<Article> articles = new ArrayList<>();
+	 * 
+	 * private List<EtapeProduction> etapeProductions = new ArrayList<>();
+	 * 
+	 * private List<Ventes> ventes = new ArrayList<>();
+	 * 
+	 * private List<Machine> machines = new ArrayList<>();
+	 */
 }

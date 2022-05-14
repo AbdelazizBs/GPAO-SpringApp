@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @Document(collection="Article")
@@ -29,6 +28,7 @@ public class Article{
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String codeArticle;
+	
 
 	@NotBlank
 	@Size(max = 100)

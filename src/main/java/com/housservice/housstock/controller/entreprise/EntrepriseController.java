@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
-@Api(tags = {"Entreprise Management"})
+@Api(tags = {"Entreprises Management"})
 public class EntrepriseController {
 	
 	private EntrepriseService entrepriseService;
@@ -51,8 +51,7 @@ public class EntrepriseController {
 		 	 
 	 }
 
-   
-   @GetMapping("/entreprise/{id}")
+      @GetMapping("/entreprise/{id}")
 	  @ApiOperation(value = "service to get one Entreprise by Id.")
 	  public ResponseEntity < EntrepriseDto > getEntrepriseById(
 			  @ApiParam(name = "id", value="id of entreprise", required = true)

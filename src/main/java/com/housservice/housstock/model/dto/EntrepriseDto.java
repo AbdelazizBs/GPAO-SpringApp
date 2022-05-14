@@ -34,22 +34,28 @@ public class EntrepriseDto {
 	
 	@Size(max = 100)
 	private String numTel;
+	
+	private List<EtapeProductionDto> listEtapeProduction = new ArrayList<>();
+	
+	//private List<PersonnelDto> listPersonnel = new ArrayList<>();
 
-	private String idCompte;
-	
-	private String raisonSocialCompte;
-	
-	private List<PersonnelDto> personnels = new ArrayList<>();
-	
-	private List<ClientDto> clients = new ArrayList<>();
-	
-	private List<FournisseurDto> fournisseurs = new ArrayList<>();
-	
-	private List<ArticleDto> articles = new ArrayList<>();
-	
-	private List<EtapeProductionDto> etapeProductions = new ArrayList<>();
-	
-	private List<VentesDto> ventes = new ArrayList<>();
-	
-	private List<MachineDto> machines = new ArrayList<>();
+	/*
+	 * private String idCompte;
+	 * 
+	 * private String raisonSocialCompte;
+	 * 
+	 * private List<PersonnelDto> personnels = new ArrayList<>();
+	 * 
+	 * private List<ClientDto> clients = new ArrayList<>();
+	 * 
+	 * private List<FournisseurDto> fournisseurs = new ArrayList<>();
+	 * 
+	 * private List<ArticleDto> articles = new ArrayList<>();
+	 * 
+	 * private List<EtapeProductionDto> etapeProductions = new ArrayList<>();
+	 * 
+	 * private List<VentesDto> ventes = new ArrayList<>();
+	 * 
+	 * private List<MachineDto> machines = new ArrayList<>();
+	 */
 }

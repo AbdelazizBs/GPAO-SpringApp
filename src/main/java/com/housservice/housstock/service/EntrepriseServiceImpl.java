@@ -1,52 +1,55 @@
 package com.housservice.housstock.service;
 
 import java.text.MessageFormat;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.Entreprise;
+import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.dto.EntrepriseDto;
+import com.housservice.housstock.model.dto.EtapeProductionDto;
 import com.housservice.housstock.repository.EntrepriseRepository;
-import com.housservice.housstock.repository.ComptesRepository;
 
 @Service
-public class EntrepriseServiceImpl implements EntrepriseService{
+public class EntrepriseServiceImpl implements EntrepriseService {
 
 	private EntrepriseRepository entrepriseRepository;
-	
+
+	//private EtapeProductionRepository etapeProductionRepository;
+
 	private SequenceGeneratorService sequenceGeneratorService;
-	
+
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	
-	private ComptesRepository comptesRepository;
-	
+	private EtapeProductionService etapeProductionservice;
+
 	@Autowired
-	public EntrepriseServiceImpl (EntrepriseRepository entrepriseRepository,SequenceGeneratorService sequenceGeneratorService,
-			MessageHttpErrorProperties messageHttpErrorProperties,ComptesRepository comptesRepository)
-	{
+	public EntrepriseServiceImpl(EntrepriseRepository entrepriseRepository, SequenceGeneratorService sequenceGeneratorService,
+			MessageHttpErrorProperties messageHttpErrorProperties,EtapeProductionService etapeProductionservice) {
 		this.entrepriseRepository = entrepriseRepository;
+		//this.etapeProductionRepository = etapeProductionRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
-		this.comptesRepository = comptesRepository;
+		this.etapeProductionservice = etapeProductionservice ;
+
 	}
-	
+
 	@Override
 	public EntrepriseDto buildEntrepriseDtoFromEntreprise(Entreprise entreprise) {
-		if (entreprise == null)
-		{
+		if (entreprise == null) {
 			return null;
 		}
-			
+
 		EntrepriseDto entrepriseDto = new EntrepriseDto();
 		entrepriseDto.setId(entreprise.getId());
 		entrepriseDto.setRaisonSocial(entreprise.getRaisonSocial());
@@ -55,39 +58,97 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 		entrepriseDto.setCodeFiscal(entreprise.getCodeFiscal());
 		entrepriseDto.setEmail(entreprise.getEmail());
 		entrepriseDto.setNumTel(entreprise.getNumTel());
-		entrepriseDto.setIdCompte(entreprise.getCompte().getId());
-		entrepriseDto.setRaisonSocialCompte(entreprise.getCompte().getRaisonSocial());
-		
-		//TODO Liste personnels / Etape de production /client / fournisseurs
-		
+
+		if (entreprise.getListIdEtapeProductions() != null) {
+
+			List<EtapeProductionDto> listEtapeProductionDtoChild = entreprise.getListIdEtapeProductions().stream()
+					.map(etapeProductionId -> buildEtapeProductionDtoFromEtapeProduction(etapeProductionservice.getEtapeProductionById(etapeProductionId)))
+					.filter(etapeProd -> etapeProd != null)
+					.collect(Collectors.toList());
+
+			entrepriseDto.setListEtapeProduction(listEtapeProductionDtoChild);
+		}
+
 		return entrepriseDto;
-		
+
 	}
 
+	private EtapeProductionDto buildEtapeProductionDtoFromEtapeProduction(Optional<EtapeProduction> etapeProductionOp) {
+		
+		if (etapeProductionOp.isPresent()) {
+			
+			return etapeProductionservice.buildEtapeProductionDtoFromEtapeProduction(etapeProductionOp.get());
+			
+		}
+		return null;
+	}
+
+	/*
+	 * private EtapeProductionDto
+	 * buildEtapeProductionDtoFromEtapeProduction(EtapeProduction etapeProduction) {
+	 * 
+	 * if (etapeProduction == null) { return null; }
+	 * 
+	 * EtapeProductionDto etapeProductionDto = new EtapeProductionDto();
+	 * etapeProductionDto.setId(etapeProduction.getId());
+	 * 
+	 * etapeProductionDto.setNomEtape(etapeProduction.getNomEtape());
+	 * etapeProductionDto.setTypeEtape(etapeProduction.getTypeEtape());
+	 * 
+	 * return etapeProductionDto; }
+	 */
+
 	
+	/*
+	 * @Override
+	 * public Optional<EtapeProduction> getEtapeProductionById(String
+	 * etapeProductionId) { return
+	 * etapeProductionRepository.findById(etapeProductionId); }
+	 */
+
 	private Entreprise buildEntrepriseFromEntrepriseDto(EntrepriseDto entrepriseDto) {
 		
-		Entreprise entreprise = new Entreprise();
-		entreprise.setId(""+sequenceGeneratorService.generateSequence(Entreprise.SEQUENCE_NAME));
-		entreprise.setRaisonSocial(entrepriseDto.getRaisonSocial());
-		entreprise.setDescription(entrepriseDto.getDescription());
-		entreprise.setAdresse(entrepriseDto.getAdresse());
-		entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
-		entreprise.setEmail(entrepriseDto.getEmail());
-		entreprise.setNumTel(entrepriseDto.getNumTel());			
-		Comptes cpt = comptesRepository.findById(entrepriseDto.getIdCompte()).get();
-		entreprise.setCompte(cpt);
-		
-		return entreprise;
-		
+		  Entreprise entreprise = new Entreprise();
+		  entreprise.setId(""+sequenceGeneratorService.generateSequence(Entreprise.
+		  SEQUENCE_NAME)); entreprise.setRaisonSocial(entrepriseDto.getRaisonSocial());
+		  entreprise.setDescription(entrepriseDto.getDescription());
+		  entreprise.setAdresse(entrepriseDto.getAdresse());
+		  entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
+		  entreprise.setEmail(entrepriseDto.getEmail());
+		  entreprise.setNumTel(entrepriseDto.getNumTel());
+		  
+		  if (entrepriseDto.getListEtapeProduction() != null)
+		  {
+			  Set<String> listIdEtapeProductions = new HashSet<>(entrepriseDto.getListEtapeProduction().stream()
+						  .map(IdEtapeProductionDto -> etapeProductionservice.getIdEtapeProductionFromEtapeProductionDto(IdEtapeProductionDto)) 
+						  .filter(IdEtapeProd -> IdEtapeProd!= null) 
+						  .collect(Collectors.toList()));
+			  	  
+			  entreprise.setListIdEtapeProductions(listIdEtapeProductions);
+		  }
+		    
+		  return entreprise;
 	}
 	
+
+	/*
+	 * @Override public String
+	 * getIdEtapeProductionFromEtapeProductionDto(EtapeProductionDto
+	 * etapeProductionDto) {
+	 * 
+	 * if (etapeProductionDto == null) { return null; }
+	 * 
+	 * String IdEtapeProduction = etapeProductionDto.getId();
+	 * 
+	 * return IdEtapeProduction; }
+	 */
 	
+
 	@Override
 	public List<EntrepriseDto> getAllEntreprise() {
-		
+
 		List<Entreprise> listEntreprise = entrepriseRepository.findAll();
-		
+
 		return listEntreprise.stream()
 				.map(entreprise -> buildEntrepriseDtoFromEntreprise(entreprise))
 				.filter(entreprise -> entreprise != null)
@@ -96,49 +157,41 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 
 	@Override
 	public EntrepriseDto getEntrepriseById(String id) {
-		
-	    Optional<Entreprise> entrepriseOpt = entrepriseRepository.findById(id);
-		if(entrepriseOpt.isPresent()) {
+
+		Optional<Entreprise> entrepriseOpt = entrepriseRepository.findById(id);
+		if (entrepriseOpt.isPresent()) {
 			return buildEntrepriseDtoFromEntreprise(entrepriseOpt.get());
 		}
 		return null;
 	}
 
-	
 	@Override
 	public void createNewEntreprise(@Valid EntrepriseDto entrepriseDto) {
-	
 		entrepriseRepository.save(buildEntrepriseFromEntrepriseDto(entrepriseDto));
 		
 	}
 
 	@Override
 	public void updateEntreprise(@Valid EntrepriseDto entrepriseDto) throws ResourceNotFoundException {
-		
+
 		Entreprise entreprise = entrepriseRepository.findById(entrepriseDto.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), entrepriseDto.getId())));
-		
+				.orElseThrow(() -> new ResourceNotFoundException(
+						MessageFormat.format(messageHttpErrorProperties.getError0002(), entrepriseDto.getId())));
+
 		entreprise.setRaisonSocial(entrepriseDto.getRaisonSocial());
 		entreprise.setDescription(entrepriseDto.getDescription());
 		entreprise.setAdresse(entrepriseDto.getAdresse());
 		entreprise.setCodeFiscal(entrepriseDto.getCodeFiscal());
 		entreprise.setEmail(entrepriseDto.getEmail());
 		entreprise.setNumTel(entrepriseDto.getNumTel());
-		
-		if(entreprise.getCompte() == null || !StringUtils.equals(entrepriseDto.getIdCompte(), entreprise.getCompte().getId())) 
-		{
-			Comptes cpt = comptesRepository.findById(entrepriseDto.getIdCompte()).get();
-			entreprise.setCompte(cpt);
-		}
-		
+
 		entrepriseRepository.save(entreprise);
 	}
 
 	@Override
 	public void deleteEntreprise(String entrepriseId) {
-		
 		entrepriseRepository.deleteById(entrepriseId);
-
 		
 	}
+
 }

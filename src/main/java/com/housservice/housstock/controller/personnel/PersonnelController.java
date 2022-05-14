@@ -33,20 +33,20 @@ import io.swagger.annotations.ApiParam;
 @Api(tags = {"Personnels Management"})
 public class PersonnelController {
 	
-	private PersonnelService PersonnelService;
+	private PersonnelService personnelService;
 	  
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     
     @Autowired
 	  public PersonnelController(PersonnelService PersonnelService, MessageHttpErrorProperties messageHttpErrorProperties) {
-		this.PersonnelService = PersonnelService;
+		this.personnelService = PersonnelService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
     @GetMapping("/personnel")
 	 public List< PersonnelDto > getAllPersonnel() {
 		 		
-		 return PersonnelService.getAllPersonnel();
+		 return personnelService.getAllPersonnel();
 		 	 
 	 }
 
@@ -56,7 +56,7 @@ public class PersonnelController {
 			  @ApiParam(name = "id", value="id of Personnel", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String PersonnelId)
 	  throws ResourceNotFoundException {
-    	PersonnelDto Personnel = PersonnelService.getPersonnelById(PersonnelId);
+    	PersonnelDto Personnel = personnelService.getPersonnelById(PersonnelId);
 		  if (Personnel == null) {
 			  ResponseEntity.badRequest();
 		  }
@@ -66,7 +66,7 @@ public class PersonnelController {
       @PutMapping("/personnel")
 	  public ResponseEntity<String> createPersonnel(@Valid @RequestBody PersonnelDto PersonnelDto) {
 		  
-    	  PersonnelService.createNewPersonnel(PersonnelDto);
+    	  personnelService.createNewPersonnel(PersonnelDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
     
@@ -76,7 +76,7 @@ public class PersonnelController {
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String PersonnelId,
 	          @Valid @RequestBody(required = true) PersonnelDto PersonnelDto) throws ResourceNotFoundException {
 		  
-    	  PersonnelService.updatePersonnel(PersonnelDto);
+    	  personnelService.updatePersonnel(PersonnelDto);
 	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
@@ -88,7 +88,7 @@ public class PersonnelController {
 			  @ApiParam(name = "id", value="id of Personnel", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String PersonnelId) {
 
-		  PersonnelService.deletePersonnel(PersonnelId);
+		  personnelService.deletePersonnel(PersonnelId);
 	      Map < String, Boolean > response = new HashMap < > ();
 	      response.put("deleted", Boolean.TRUE);
 	      return response;

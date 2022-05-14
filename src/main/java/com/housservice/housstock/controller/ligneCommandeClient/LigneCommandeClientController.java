@@ -83,7 +83,7 @@ public class LigneCommandeClientController {
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 
-    
+     
 	  @DeleteMapping("/ligneCommandeClient/{id}")
 	  @ApiOperation(value = "service to delete one LigneCommandeClient by Id.")
 	  public Map < String, Boolean > deleteLigneCommandeClient(
@@ -94,7 +94,7 @@ public class LigneCommandeClientController {
 	      Map < String, Boolean > response = new HashMap < > ();
 	      response.put("deleted", Boolean.TRUE);
 	      return response;
+	      
 	  }
-  
-
+	  
 }

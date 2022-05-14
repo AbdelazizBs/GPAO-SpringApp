@@ -14,6 +14,8 @@ public interface EtapeProductionService {
 	public List<EtapeProductionDto> getAllEtapeProduction();
 
     Optional<EtapeProduction> getEtapeProductionById(String id);
+    
+    public String getIdEtapeProductionFromEtapeProductionDto(EtapeProductionDto etapeProductionDto);
 	
 	public EtapeProductionDto buildEtapeProductionDtoFromEtapeProduction(EtapeProduction etapeProduction);
 

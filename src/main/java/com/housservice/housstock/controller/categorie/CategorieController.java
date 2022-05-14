@@ -50,7 +50,7 @@ public class CategorieController {
 			 return categorieService.getAllCategorie();
 			 	 
 		 }
-	  	  
+	  
 	  @GetMapping("/categorie/{id}")
 	  @ApiOperation(value = "service to get one Categorie by Id.")
 	  public ResponseEntity < CategorieDto > getCategorieById(

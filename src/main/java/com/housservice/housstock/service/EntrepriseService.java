@@ -1,7 +1,6 @@
 package com.housservice.housstock.service;
 
 import java.util.List;
-
 import javax.validation.Valid;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
@@ -13,6 +12,10 @@ public interface EntrepriseService {
 	public List<EntrepriseDto> getAllEntreprise();
 	
     public EntrepriseDto getEntrepriseById(String id);
+    
+   // Optional<EtapeProduction> getEtapeProductionById(String id);
+    
+   // public String getIdEtapeProductionFromEtapeProductionDto(EtapeProductionDto etapeProductionDto);
 	
     public EntrepriseDto buildEntrepriseDtoFromEntreprise(Entreprise entreprise);
 	
