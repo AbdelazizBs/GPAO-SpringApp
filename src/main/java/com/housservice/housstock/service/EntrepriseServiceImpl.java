@@ -25,8 +25,6 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 
 	private EntrepriseRepository entrepriseRepository;
 
-	//private EtapeProductionRepository etapeProductionRepository;
-
 	private SequenceGeneratorService sequenceGeneratorService;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
@@ -37,11 +35,10 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 	public EntrepriseServiceImpl(EntrepriseRepository entrepriseRepository, SequenceGeneratorService sequenceGeneratorService,
 			MessageHttpErrorProperties messageHttpErrorProperties,EtapeProductionService etapeProductionservice) {
 		this.entrepriseRepository = entrepriseRepository;
-		//this.etapeProductionRepository = etapeProductionRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.etapeProductionservice = etapeProductionservice ;
-
+	
 	}
 
 	@Override
@@ -83,29 +80,6 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 		return null;
 	}
 
-	/*
-	 * private EtapeProductionDto
-	 * buildEtapeProductionDtoFromEtapeProduction(EtapeProduction etapeProduction) {
-	 * 
-	 * if (etapeProduction == null) { return null; }
-	 * 
-	 * EtapeProductionDto etapeProductionDto = new EtapeProductionDto();
-	 * etapeProductionDto.setId(etapeProduction.getId());
-	 * 
-	 * etapeProductionDto.setNomEtape(etapeProduction.getNomEtape());
-	 * etapeProductionDto.setTypeEtape(etapeProduction.getTypeEtape());
-	 * 
-	 * return etapeProductionDto; }
-	 */
-
-	
-	/*
-	 * @Override
-	 * public Optional<EtapeProduction> getEtapeProductionById(String
-	 * etapeProductionId) { return
-	 * etapeProductionRepository.findById(etapeProductionId); }
-	 */
-
 	private Entreprise buildEntrepriseFromEntrepriseDto(EntrepriseDto entrepriseDto) {
 		
 		  Entreprise entreprise = new Entreprise();
@@ -129,19 +103,6 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 		    
 		  return entreprise;
 	}
-	
-
-	/*
-	 * @Override public String
-	 * getIdEtapeProductionFromEtapeProductionDto(EtapeProductionDto
-	 * etapeProductionDto) {
-	 * 
-	 * if (etapeProductionDto == null) { return null; }
-	 * 
-	 * String IdEtapeProduction = etapeProductionDto.getId();
-	 * 
-	 * return IdEtapeProduction; }
-	 */
 	
 
 	@Override
