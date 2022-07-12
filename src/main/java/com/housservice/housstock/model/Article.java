@@ -1,6 +1,6 @@
 package com.housservice.housstock.model;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -9,6 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,30 +29,29 @@ public class Article{
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String codeArticle;
+	private String referenceIris;
 	
-
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String numFicheTechnique;
+	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String designation;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private BigDecimal prixUnitaireHt;
-
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private BigDecimal tauxTva;
 	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private BigDecimal prixUnitaireTtc;
+	private String typeProduit;
 	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	@JsonFormat(pattern="dd/MM/yyyy")	
+	private LocalDate dateCreationArticle = LocalDate.now();
 	
-	private Categorie categorie;
 	
 }

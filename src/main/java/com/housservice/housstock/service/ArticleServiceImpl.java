@@ -5,17 +5,14 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
-import com.housservice.housstock.model.Categorie;
 import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.repository.ArticleRepository;
-import com.housservice.housstock.repository.CategorieRepository;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,16 +26,14 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	
-	private CategorieRepository categorieRepository;
 	
 	@Autowired
 	public ArticleServiceImpl (ArticleRepository articleRepository,SequenceGeneratorService sequenceGeneratorService,
-			MessageHttpErrorProperties messageHttpErrorProperties,CategorieRepository categorieRepository)
+			MessageHttpErrorProperties messageHttpErrorProperties)
 	{
 		this.articleRepository = articleRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
-		this.categorieRepository = categorieRepository;
 	}
 	
 	
@@ -51,13 +46,10 @@ public class ArticleServiceImpl implements ArticleService{
 			
 		ArticleDto articleDto = new ArticleDto();
 		articleDto.setId(article.getId());
-		articleDto.setCodeArticle(article.getCodeArticle());
+		articleDto.setReferenceIris(article.getReferenceIris());
+		articleDto.setNumFicheTechnique(article.getNumFicheTechnique());
 		articleDto.setDesignation(article.getDesignation());
-		articleDto.setPrixUnitaireHt(article.getPrixUnitaireHt());
-		articleDto.setTauxTva(article.getTauxTva());
-		articleDto.setPrixUnitaireTtc(article.getPrixUnitaireTtc());
-		articleDto.setIdCategorie(article.getCategorie().getId());
-		articleDto.setDesignationCategorie(article.getCategorie().getDesignation());
+		articleDto.setTypeProduit(article.getTypeProduit());
 		
 		return articleDto;
 		
@@ -68,13 +60,10 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		Article article = new Article();
 		article.setId(""+sequenceGeneratorService.generateSequence(Article.SEQUENCE_NAME));	
-		article.setCodeArticle(articleDto.getCodeArticle());
+		article.setReferenceIris(articleDto.getReferenceIris());
+		article.setNumFicheTechnique(articleDto.getNumFicheTechnique());
 		article.setDesignation(articleDto.getDesignation());
-		article.setPrixUnitaireHt(articleDto.getPrixUnitaireHt());
-		article.setTauxTva(articleDto.getTauxTva());
-		article.setPrixUnitaireTtc(articleDto.getPrixUnitaireTtc());
-		Categorie cat = categorieRepository.findById(articleDto.getIdCategorie()).get();
-		article.setCategorie(cat);
+		article.setTypeProduit(articleDto.getTypeProduit());
 		return article;
 		
 	}
@@ -115,18 +104,11 @@ public class ArticleServiceImpl implements ArticleService{
 		Article article = articleRepository.findById(articleDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), articleDto.getId())));
 		
-		article.setCodeArticle(articleDto.getCodeArticle());
+		article.setReferenceIris(articleDto.getReferenceIris());
+		article.setNumFicheTechnique(articleDto.getNumFicheTechnique());
 		article.setDesignation(articleDto.getDesignation());
-		article.setPrixUnitaireHt(articleDto.getPrixUnitaireHt());
-		article.setTauxTva(articleDto.getTauxTva());
-		article.setPrixUnitaireTtc(articleDto.getPrixUnitaireTtc());
-		
-		if(article.getCategorie() == null || !StringUtils.equals(articleDto.getIdCategorie(), article.getCategorie().getId())) 
-		{
-			Categorie categorie = categorieRepository.findById(articleDto.getIdCategorie()).get();
-			article.setCategorie(categorie);
-		}
-		
+		article.setTypeProduit(articleDto.getTypeProduit());
+	
 		articleRepository.save(article);
 	}
 
@@ -135,7 +117,6 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		articleRepository.deleteById(articleId);
 
-		
 	}
 
 }

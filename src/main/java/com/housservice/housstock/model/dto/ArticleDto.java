@@ -1,10 +1,9 @@
 package com.housservice.housstock.model.dto;
 
-import java.math.BigDecimal;
-
+import java.time.LocalDate;
 import javax.validation.constraints.Size;
-
 import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,21 +16,23 @@ public class ArticleDto {
 	private String id;
 	
 	@Size(max = 100)
-	private String codeArticle;
+	private String referenceIris;
+	
+
+	@Size(max = 100)
+	private String numFicheTechnique;
+	
 
 	@Size(max = 100)
 	private String designation;
 	
-	@Size(max = 100)
-	private BigDecimal prixUnitaireHt;
 
 	@Size(max = 100)
-	private BigDecimal tauxTva;
+	private String typeProduit;
 	
-	@Size(max = 100)
-	private BigDecimal prixUnitaireTtc;
+	
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate dateCreationArticle = LocalDate.now();
+	
 		
-    private String idCategorie;
-	
-	private String designationCategorie;
 }
