@@ -28,11 +28,10 @@ public class CommandeClientDto {
 	@Size(max = 100)
 	private String etat;
 	
-
-	@JsonFormat(pattern="dd/MM/yyyy")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate  dateCmd;
 	
-	@JsonFormat(pattern="dd/MM/yyyy")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateCreationCmd;
 	
 	private String idClient;
