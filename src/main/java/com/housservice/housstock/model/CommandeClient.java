@@ -57,6 +57,6 @@ public class CommandeClient {
 	
 	private Client client;
 
-	private Set<String> listIdLigneCommandeClient = new HashSet<>();
+	//private Set<String> listIdLigneCommandeClient = new HashSet<>();
 	
 }

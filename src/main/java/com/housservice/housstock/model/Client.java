@@ -113,9 +113,7 @@ public class Client {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private int blocage;
-	
-	
+		
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 	
-
 }

@@ -38,5 +38,5 @@ public class CommandeClientDto {
 	
 	private String raisonSocialClient;
 
-	private List<LigneCommandeClientDto> ligneCommandeClients = new ArrayList<>();
+	//private List<LigneCommandeClientDto> ligneCommandeClients = new ArrayList<>();
 }
