@@ -72,9 +72,10 @@ public class MachineServiceImpl implements MachineService {
 
 	
 	@Override
-	public void deleteMachine(String machineId) {
+	public void deleteMachine(final String machineId) {
 		machineRepository.deleteById(machineId);
 	}
+
 
 	@Override
 	public void createNewMachine(@Valid MachineDto machineDto) {

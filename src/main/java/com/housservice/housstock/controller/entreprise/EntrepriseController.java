@@ -66,7 +66,7 @@ public class EntrepriseController {
    
    @PutMapping("/entreprise")
 	  public ResponseEntity<String> createEntreprise(@Valid @RequestBody EntrepriseDto entrepriseDto) {
-		  
+
    	  entrepriseService.createNewEntreprise(entrepriseDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }

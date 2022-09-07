@@ -100,6 +100,14 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 			}
 			return null;
 	}
+	@Override
+	public LigneCommandeClient getLignCmdByIdArticleAndIdCmd(
+			final String idArticle,
+			final String idCmd) throws ResourceNotFoundException {
+		final Article article = articleRepository.findById(idArticle).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idArticle)));
+		final CommandeClient commande  = commandeClientRepository.findById(idCmd).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idCmd)));
+		return ligneCommandeClientRepository.findLigneCommandeClientByCommandeClientAndArticle(commande,article).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),"")));
+	}
 
 
 	@Override

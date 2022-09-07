@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -102,14 +103,11 @@ public class MachineController {
 		 
 		  @DeleteMapping("/machine/{id}")
 		  @ApiOperation(value = "service to delete one Machine by Id.")
-		  public Map < String, Boolean > deleteMachine(
+		  public ResponseEntity<Void>  deleteMachine(
 				  @ApiParam(name = "id", value="id of machine", required = true)
 				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId) {
-	
 		      machineService.deleteMachine(machineId);
-		      Map < String, Boolean > response = new HashMap < > ();
-		      response.put("deleted", Boolean.TRUE);
-		      return response;
+			  return ResponseEntity.noContent().build();
 		  }
 
 }

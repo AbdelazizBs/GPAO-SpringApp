@@ -1,5 +1,6 @@
 package com.housservice.housstock.controller.ligneCommandeClient;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.housservice.housstock.model.LigneCommandeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,7 +52,12 @@ public class LigneCommandeClientController {
 		 return ligneCommandeClientService.getAllLigneCommandeClient();
 		 	 
 	 }
-
+	@GetMapping("/getLignCmdByIdArticleAndIdCmd/{idArticle}/{idCmd}")
+	public LigneCommandeClient getLignCmdByIdArticleAndIdCmd(
+			@PathVariable(value = "idArticle") final String idArticle,
+			@PathVariable(value = "idCmd") final String idCmd) throws ResourceNotFoundException {
+		return ligneCommandeClientService.getLignCmdByIdArticleAndIdCmd(idArticle,idCmd);
+	}
     
     @GetMapping("/ligneCommandeClient/{id}")
 	  @ApiOperation(value = "service to get one LigneCommandeClient by Id.")
