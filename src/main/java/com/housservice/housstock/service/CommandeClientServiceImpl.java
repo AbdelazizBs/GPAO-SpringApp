@@ -87,9 +87,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
 	@Override
 	public List<CommandeClientDto> getAllCommandeClient() {
-		
 	List<CommandeClient> listCommandeClient = commandeClientRepository.findAll();
-		
 		return listCommandeClient.stream()
 				.map(commandeclient -> buildCommandeClientDtoFromCommandeClient(commandeclient))
 				.filter(commandeclient -> commandeclient != null)

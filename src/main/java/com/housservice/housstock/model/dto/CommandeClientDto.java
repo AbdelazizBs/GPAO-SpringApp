@@ -35,8 +35,8 @@ public class CommandeClientDto {
 	private LocalDate dateCreationCmd;
 	
 	private String idClient;
-	
-	private String raisonSocialClient;
+
+		private String raisonSocialClient;
 
 	//private List<LigneCommandeClientDto> ligneCommandeClients = new ArrayList<>();
 }

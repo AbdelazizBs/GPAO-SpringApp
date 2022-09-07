@@ -52,11 +52,10 @@ public class LigneCommandeClientController {
 		 return ligneCommandeClientService.getAllLigneCommandeClient();
 		 	 
 	 }
-	@GetMapping("/getLignCmdByIdArticleAndIdCmd/{idArticle}/{idCmd}")
-	public LigneCommandeClient getLignCmdByIdArticleAndIdCmd(
-			@PathVariable(value = "idArticle") final String idArticle,
+	@GetMapping("/getLignCmdByIdArticleAndIdCmd/{idCmd}")
+	public List<LigneCommandeClient> getLignCmdByIdArticleAndIdCmd(
 			@PathVariable(value = "idCmd") final String idCmd) throws ResourceNotFoundException {
-		return ligneCommandeClientService.getLignCmdByIdArticleAndIdCmd(idArticle,idCmd);
+		return ligneCommandeClientService.getLignCmdByIdArticleAndIdCmd(idCmd);
 	}
     
     @GetMapping("/ligneCommandeClient/{id}")
