@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/ligneCommandeClient")
 @Api(tags = {"Ligne Commande Client Management"})
 public class LigneCommandeClientController {
 	
@@ -46,19 +46,19 @@ public class LigneCommandeClientController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
-    @GetMapping("/ligneCommandeClient")
+    @GetMapping("/getAllLigneCommandeClient")
 	 public List< LigneCommandeClientDto > getAllLigneCommandeClient() {
 		 		
 		 return ligneCommandeClientService.getAllLigneCommandeClient();
 		 	 
 	 }
-	@GetMapping("/getLignCmdByIdArticleAndIdCmd/{idCmd}")
-	public List<LigneCommandeClient> getLignCmdByIdArticleAndIdCmd(
+	@GetMapping("/getLignCmdByIdCmd/{idCmd}")
+	public List<LigneCommandeClient> getLignCmdByIdCmd(
 			@PathVariable(value = "idCmd") final String idCmd) throws ResourceNotFoundException {
-		return ligneCommandeClientService.getLignCmdByIdArticleAndIdCmd(idCmd);
+		return ligneCommandeClientService.getLignCmdByIdCmd(idCmd);
 	}
     
-    @GetMapping("/ligneCommandeClient/{id}")
+		@GetMapping("/getLigneCommandeClientById/{id}")
 	  @ApiOperation(value = "service to get one LigneCommandeClient by Id.")
 	  public ResponseEntity < LigneCommandeClientDto > getLigneCommandeClientById(
 			  @ApiParam(name = "id", value="id of ligneCommandeClient", required = true)
@@ -71,14 +71,14 @@ public class LigneCommandeClientController {
 	      return ResponseEntity.ok().body(ligneCommandeClient);
 	  }
     
-    @PutMapping("/ligneCommandeClient")
+    @PutMapping("/createLigneCommandeClient")
 	  public ResponseEntity<String> createLigneCommandeClient(@Valid @RequestBody LigneCommandeClientDto ligneCommandeClientDto) {
 		  
     	  ligneCommandeClientService.createNewLigneCommandeClient(ligneCommandeClientDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
     
-    @PutMapping("/ligneCommandeClient/{id}")
+    @PutMapping("/updateLigneCommandeClient/{id}")
 	  public ResponseEntity <String> updateLigneCommandeClient(
 			  @ApiParam(name = "id", value="id of ligneCommandeClient", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String ligneCommandeClientId,
@@ -90,7 +90,7 @@ public class LigneCommandeClientController {
 	  }
 
      
-	  @DeleteMapping("/ligneCommandeClient/{id}")
+	  @DeleteMapping("/deleteLigneCmd/{id}")
 	  @ApiOperation(value = "service to delete one LigneCommandeClient by Id.")
 	  public Map < String, Boolean > deleteLigneCommandeClient(
 			  @ApiParam(name = "id", value="id of ligneCommandeClient", required = true)

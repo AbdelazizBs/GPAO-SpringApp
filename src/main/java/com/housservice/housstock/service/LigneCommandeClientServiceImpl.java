@@ -61,7 +61,8 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 		ligneCommandeClientDto.setDesignationArticle(ligneCommandeClient.getArticle().getDesignation());
 		ligneCommandeClientDto.setIdCommandeClient(ligneCommandeClient.getCommandeClient().getId());
 		ligneCommandeClientDto.setNumCmdClient(ligneCommandeClient.getCommandeClient().getNumCmd());
-		
+		ligneCommandeClientDto.setDelai(ligneCommandeClient.getDelai());
+
 		return ligneCommandeClientDto;
 	}
 	
@@ -72,6 +73,7 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 		ligneCommandeClient.setId(""+sequenceGeneratorService.generateSequence(LigneCommandeClient.SEQUENCE_NAME));	
 		ligneCommandeClient.setQuantite(ligneCommandeClientDto.getQuantite());
 		ligneCommandeClient.setPrixUnitaire(ligneCommandeClientDto.getPrixUnitaire());
+		ligneCommandeClient.setDelai(ligneCommandeClientDto.getDelai());
 		Article art = articleRepository.findById(ligneCommandeClientDto.getIdArticle()).get();
 		ligneCommandeClient.setArticle(art);
 		CommandeClient cmdCl = commandeClientRepository.findById(ligneCommandeClientDto.getIdCommandeClient()).get();
@@ -101,7 +103,7 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 			return null;
 	}
 	@Override
-	public List<LigneCommandeClient> getLignCmdByIdArticleAndIdCmd(
+	public List<LigneCommandeClient> getLignCmdByIdCmd(
 			final String idCmd) throws ResourceNotFoundException {
 		final CommandeClient commande  = commandeClientRepository.findById(idCmd).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idCmd)));
 		return ligneCommandeClientRepository.findLigneCommandeClientByCommandeClient(commande) ;
@@ -123,7 +125,8 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 		
 		ligneCommandeClient.setQuantite(ligneCommandeClientDto.getQuantite());
 		ligneCommandeClient.setPrixUnitaire(ligneCommandeClientDto.getPrixUnitaire());
-	
+		ligneCommandeClient.setDelai(ligneCommandeClientDto.getDelai());
+
 		if(ligneCommandeClient.getArticle() == null || !StringUtils.equals(ligneCommandeClientDto.getIdArticle(), ligneCommandeClient.getArticle().getId())) 
 		{
 			Article article = articleRepository.findById(ligneCommandeClientDto.getIdArticle()).get();

@@ -13,7 +13,7 @@ public interface LigneCommandeClientService {
 	public List<LigneCommandeClientDto> getAllLigneCommandeClient();
 	
     public LigneCommandeClientDto getLigneCommandeClientById(String id);
-    public List<LigneCommandeClient> getLignCmdByIdArticleAndIdCmd(String idCmd) throws ResourceNotFoundException;
+    public List<LigneCommandeClient> getLignCmdByIdCmd(String idCmd) throws ResourceNotFoundException;
 
     public LigneCommandeClientDto buildLigneCommandeClientDtoFromLigneCommandeClient(LigneCommandeClient ligneCommandeClient);
 
