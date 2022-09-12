@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/client")
 @Api(tags = {"Clients Management"})
 public class ClientController {
 		
@@ -49,7 +49,20 @@ public class ClientController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
-	 
+	@GetMapping("/getIdClients/{raisonSociale}")
+	@ApiOperation(value = "service to get one Commande Client by Id.")
+
+	public String getIdClients(  @ApiParam(name = "raisonSociale", value="raisonSociale of clients", required = true)
+								 @PathVariable(value = "raisonSociale", required = true) @NotEmpty(message = "{http.error.0001}") String raisonSociale) throws ResourceNotFoundException {
+		return clientService.getIdClients(raisonSociale);
+
+	}
+	@GetMapping("/getRaisonSociales")
+	@ApiOperation(value = "service to get one Commande Client by Id.")
+	public List<String> getIdClients() {
+		return clientService.getRaisonSociales();
+
+	}
 	 @GetMapping("/client")
 	 public List< Client > getAllClient() {
 		 		

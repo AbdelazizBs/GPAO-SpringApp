@@ -49,6 +49,8 @@ public class CommandeClientController {
 			 return commandeClientService.getAllCommandeClient();
 			 	 
 		 }
+
+
     
     @GetMapping("/commandeClient/{id}")
 	  @ApiOperation(value = "service to get one Commande Client by Id.")

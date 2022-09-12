@@ -1,9 +1,15 @@
 package com.housservice.housstock.service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
+
+import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.dto.CommandeClientDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -122,7 +128,19 @@ public class ClientServiceImpl implements ClientService {
 		clientRepository.save(client);
 		
 	}
+	@Override
+	public String getIdClients(String raisonSociale) throws ResourceNotFoundException {
+		Client client = clientRepository.findClientByRaisonSocial(raisonSociale).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSociale)));
+		return client.getId() ;
+	}
 
+	@Override
+	public List<String> getRaisonSociales( )   {
+		List<Client> clients = clientRepository.findAll();
+		return clients.stream()
+				.map(Client::getRaisonSocial)
+				.collect(Collectors.toList());
+	}
 
 	@Override
 	public List<Client> findClientActif() {

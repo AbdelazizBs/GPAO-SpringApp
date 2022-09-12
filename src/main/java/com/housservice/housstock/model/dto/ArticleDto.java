@@ -2,6 +2,8 @@ package com.housservice.housstock.model.dto;
 
 import java.time.LocalDate;
 import javax.validation.constraints.Size;
+
+import com.housservice.housstock.model.Client;
 import org.springframework.data.annotation.Id;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -29,7 +31,11 @@ public class ArticleDto {
 
 	@Size(max = 100)
 	private String typeProduit;
-	
+
+
+	private String idClient ;
+	private String refClient ;
+	private String raisonSocial ;
 	
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateCreationArticle = LocalDate.now();

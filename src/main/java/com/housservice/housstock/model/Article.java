@@ -46,7 +46,12 @@ public class Article{
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String typeProduit;
-	
+
+		private Client client ;
+	private String refClient ;
+
+
+
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)

@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/article")
 @Api(tags = {"Articles Management"})
 public class ArticleController {
 	
@@ -67,7 +67,7 @@ public class ArticleController {
 		  }
 	    
 	    @PutMapping("/article")
-		  public ResponseEntity<String> createArticle(@Valid @RequestBody ArticleDto articleDto) {
+		  public ResponseEntity<String> createArticle(@Valid @RequestBody ArticleDto articleDto) throws ResourceNotFoundException {
 			  
 	    	  articleService.createNewArticle(articleDto);
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
@@ -96,6 +96,25 @@ public class ArticleController {
 		      response.put("deleted", Boolean.TRUE);
 		      return response;
 		  }
+
+
+	@GetMapping("/getDesignationArticleCient/{idClient}")
+	@ApiOperation(value = "service to get List of  designation ArticleClient  by idClient.")
+	public List < String > getDesignationArticleCient(
+			@ApiParam(name = "idClient", value="id of client", required = true)
+			@PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
+			throws ResourceNotFoundException {
+		return articleService.getDesignationArticleCient(idClient);
+	}
+
+		@GetMapping("/getRefIrisAndClient/{designation}")
+	@ApiOperation(value = "service to get Ref Iris .")
+	public List<String>  getRefIrisAndClientAndIdArticle(
+			@ApiParam(name = "designation", value="designation of article", required = true)
+			@PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
+			throws ResourceNotFoundException {
+		return articleService.getRefIrisAndClientAndIdArticle(idClient);
+	}
 	  
 }
 	  
