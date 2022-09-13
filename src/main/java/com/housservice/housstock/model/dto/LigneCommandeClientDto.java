@@ -19,10 +19,10 @@ public class LigneCommandeClientDto {
 	private String id;
 	
 	@Size(max = 100)
-	private BigDecimal quantite;
+	private String quantite;
 
 	@Size(max = 100)
-	private BigDecimal prixUnitaire;
+	private String prixUnitaire;
 	
 	private String idArticle;
 		

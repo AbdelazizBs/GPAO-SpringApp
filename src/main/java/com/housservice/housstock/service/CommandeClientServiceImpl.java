@@ -1,6 +1,9 @@
 package com.housservice.housstock.service;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -86,14 +89,22 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
 
 	@Override
-	public List<CommandeClientDto> getAllCommandeClient() {
-	List<CommandeClient> listCommandeClient = commandeClientRepository.findAll();
-		return listCommandeClient.stream()
+	public List<CommandeClientDto> getAllCommandeClientNonFermer() {
+		return commandeClientRepository.findAll().stream()
+			.filter(commandeClient -> commandeClient.getEtat().equals("Non Fermer"))
 				.map(commandeclient -> buildCommandeClientDtoFromCommandeClient(commandeclient))
 				.filter(commandeclient -> commandeclient != null)
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<CommandeClientDto> getAllCommandeClientFermer() {
+		return commandeClientRepository.findAll().stream()
+				.filter(commandeClient -> commandeClient.getEtat().equals("Fermer"))
+				.map(commandeclient -> buildCommandeClientDtoFromCommandeClient(commandeclient))
+				.filter(commandeclient -> commandeclient != null)
+				.collect(Collectors.toList());
+	}
 
 	@Override
 	public CommandeClientDto getCommandeClientById(String id) {
@@ -108,9 +119,11 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
 	@Override
 	public void createNewCommandeClient(@Valid CommandeClientDto commandeClientDto) {
-		
+			commandeClientDto.setDateCreationCmd(LocalDate.now());
+			commandeClientDto.setEtat("Non Fermer");
 		commandeClientRepository.save(buildCommandeClientFromCommandeClientDto(commandeClientDto));
-		
+
+
 	}
 
 

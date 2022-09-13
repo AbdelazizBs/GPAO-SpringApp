@@ -108,12 +108,21 @@ public class ArticleController {
 	}
 
 		@GetMapping("/getRefIrisAndClient/{designation}")
-	@ApiOperation(value = "service to get Ref Iris .")
+	@ApiOperation(value = "service to get Ref Iris And Client  .")
 	public List<String>  getRefIrisAndClientAndIdArticle(
 			@ApiParam(name = "designation", value="designation of article", required = true)
-			@PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
+			@PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}") String designation)
 			throws ResourceNotFoundException {
-		return articleService.getRefIrisAndClientAndIdArticle(idClient);
+		return articleService.getRefIrisAndClientAndIdArticle(designation);
+	}
+
+	@GetMapping("/getIdArticleWithDesignation/{designation}")
+	@ApiOperation(value = "service to get id Article .")
+	public String  getIdArticleWithDesignation(
+			@ApiParam(name = "designation", value="designation of article", required = true)
+			@PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}") String designation)
+			throws ResourceNotFoundException {
+		return articleService.getIdArticleWithDesignation(designation);
 	}
 	  
 }

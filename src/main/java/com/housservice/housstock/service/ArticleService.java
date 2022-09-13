@@ -13,6 +13,7 @@ public interface ArticleService {
 	public List<ArticleDto> getAllArticle();
 	public List<String> getDesignationArticleCient(String idClient) throws ResourceNotFoundException;
 	public List<String>  getRefIrisAndClientAndIdArticle(String designation) throws ResourceNotFoundException;
+	public String getIdArticleWithDesignation(String designation) throws ResourceNotFoundException;
 
     public ArticleDto getArticleById(String id);
 	

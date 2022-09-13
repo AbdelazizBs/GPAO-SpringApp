@@ -2,6 +2,7 @@ package com.housservice.housstock.model.dto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.Size;
@@ -29,7 +30,7 @@ public class CommandeClientDto {
 	private String etat;
 	
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private LocalDate  dateCmd;
+	private Date dateCmd;
 	
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateCreationCmd;

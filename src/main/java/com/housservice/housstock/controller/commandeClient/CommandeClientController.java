@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/commandeClient")
 @Api(tags = {"Commandes Clients Management"})
 public class CommandeClientController {
 
@@ -43,11 +43,17 @@ public class CommandeClientController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
     
-    @GetMapping("/commandeClient")
-		 public List< CommandeClientDto > getAllCommandeClient() {
+    @GetMapping("/getAllCommandeClientNonFermer")
+		 public List< CommandeClientDto > getAllCommandeClientNonFermer() {
 			 		
-			 return commandeClientService.getAllCommandeClient();
+			 return commandeClientService.getAllCommandeClientNonFermer();
 			 	 
+		 }
+		 @GetMapping("/getAllCommandeClientFermer")
+		 public List< CommandeClientDto > getAllCommandeClientFermer() {
+
+			 return commandeClientService.getAllCommandeClientFermer();
+
 		 }
 
 
@@ -65,15 +71,17 @@ public class CommandeClientController {
 	      return ResponseEntity.ok().body(commandeClient);
 	  }
     
-    @PutMapping("/commandeClient")
+    @PutMapping("/addCmdClient")
 	  public ResponseEntity<String> createCommandeClient(@Valid @RequestBody CommandeClientDto commandeClientDto) {
 		  
   	  commandeClientService.createNewCommandeClient(commandeClientDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+
+
 	  }
 
     
-    @PutMapping("/commandeClient/{id}")
+    @PutMapping("/updateCommandeClient/{id}")
 	  public ResponseEntity <String> updateCommandeClient(
 			  @ApiParam(name = "id", value="id of commandeClient", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String commandeClientId,
@@ -85,7 +93,7 @@ public class CommandeClientController {
 	  }
     
     
-    @DeleteMapping("/commandeClient/{id}")
+    @DeleteMapping("/deleteCommandeClient/{id}")
 	  @ApiOperation(value = "service to delete one Commande Client by Id.")
 	  public Map < String, Boolean > deleteCommandeClient(
 			  @ApiParam(name = "id", value="id of commandeClient", required = true)

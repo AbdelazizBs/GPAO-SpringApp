@@ -109,6 +109,12 @@ public class ArticleServiceImpl implements ArticleService{
 		refIrisAndClient.add(article.getRefClient());
 		return refIrisAndClient ;
 	}
+
+	@Override
+	public String getIdArticleWithDesignation(String designation) throws ResourceNotFoundException  {
+		Article article  = articleRepository.findArticleByDesignation(designation).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), designation)));
+		return article.getId() ;
+	}
 	@Override
 	public ArticleDto getArticleById(String id) {
 		

@@ -29,12 +29,12 @@ public class LigneCommandeClient{
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private BigDecimal quantite;
+	private String quantite;
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private BigDecimal prixUnitaire;
+	private String prixUnitaire;
 	
 	private Article article;
 	
