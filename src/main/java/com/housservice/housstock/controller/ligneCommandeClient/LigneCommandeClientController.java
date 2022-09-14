@@ -72,7 +72,7 @@ public class LigneCommandeClientController {
 	  }
     
     @PutMapping("/createLigneCommandeClient")
-	  public ResponseEntity<String> createLigneCommandeClient(@Valid @RequestBody LigneCommandeClientDto ligneCommandeClientDto) {
+	  public ResponseEntity<String> createLigneCommandeClient(@Valid @RequestBody LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
 		  
     	  ligneCommandeClientService.createNewLigneCommandeClient(ligneCommandeClientDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
@@ -94,7 +94,7 @@ public class LigneCommandeClientController {
 	  @ApiOperation(value = "service to delete one LigneCommandeClient by Id.")
 	  public Map < String, Boolean > deleteLigneCommandeClient(
 			  @ApiParam(name = "id", value="id of ligneCommandeClient", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String ligneCommandeClientId) {
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String ligneCommandeClientId) throws ResourceNotFoundException {
 
 		  ligneCommandeClientService.deleteLigneCommandeClient(ligneCommandeClientId);
 	      Map < String, Boolean > response = new HashMap < > ();

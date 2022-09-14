@@ -58,6 +58,8 @@ public class CommandeClient {
 	
 	private Client client;
 
+	private Boolean haveLc;
+
 	//private Set<String> listIdLigneCommandeClient = new HashSet<>();
 	
 }

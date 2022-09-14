@@ -103,16 +103,19 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 			return null;
 	}
 	@Override
-	public List<LigneCommandeClient> getLignCmdByIdCmd(
-			final String idCmd) throws ResourceNotFoundException {
+	public List<LigneCommandeClient> getLignCmdByIdCmd(final String idCmd) throws ResourceNotFoundException {
 		final CommandeClient commande  = commandeClientRepository.findById(idCmd).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idCmd)));
 		return ligneCommandeClientRepository.findLigneCommandeClientByCommandeClient(commande) ;
 	}
 
 
 	@Override
-	public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) {
-		
+	public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
+
+		CommandeClient commandeClient = commandeClientRepository.findById(ligneCommandeClientDto.getIdCommandeClient())
+		.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getIdCommandeClient())));
+	commandeClient.setHaveLc(true);
+commandeClientRepository.save(commandeClient);
 		ligneCommandeClientRepository.save(buildLigneCommandeClientFromLigneCommandeClientDto(ligneCommandeClientDto));
 		
 	}
@@ -144,10 +147,14 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 	}
 
 	@Override
-	public void deleteLigneCommandeClient(String ligneCommandeClientId) {
-		
+	public void deleteLigneCommandeClient(String ligneCommandeClientId) throws ResourceNotFoundException {
+		LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findById(ligneCommandeClientId)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientId)));
+		CommandeClient cmdClient = ligneCommandeClient.getCommandeClient();
+		List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByCommandeClient(cmdClient);
+		if (ligneCommandeClients.size()==0) cmdClient.setHaveLc(false);
+		commandeClientRepository.save(cmdClient);
 		ligneCommandeClientRepository.deleteById(ligneCommandeClientId);
-		
-	}
+		}
 
 }

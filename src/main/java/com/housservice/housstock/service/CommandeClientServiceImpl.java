@@ -56,6 +56,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClientDto.setTypeCmd(commandeClient.getTypeCmd());
 		commandeClientDto.setNumCmd(commandeClient.getNumCmd());
 		commandeClientDto.setEtat(commandeClient.getEtat());
+		commandeClientDto.setHaveLc(commandeClient.getHaveLc());
 		commandeClientDto.setDateCmd(commandeClient.getDateCmd());
 		commandeClientDto.setDateCreationCmd(commandeClient.getDateCreationCmd());
 		commandeClientDto.setIdClient(commandeClient.getClient().getId());
@@ -77,6 +78,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
 		commandeClient.setEtat(commandeClientDto.getEtat());
 		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
+		commandeClient.setHaveLc(commandeClientDto.getHaveLc());
 		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
 		Client cl = clientRepository.findById(commandeClientDto.getIdClient()).get();
 		commandeClient.setClient(cl);
@@ -121,6 +123,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 	public void createNewCommandeClient(@Valid CommandeClientDto commandeClientDto) {
 			commandeClientDto.setDateCreationCmd(LocalDate.now());
 			commandeClientDto.setEtat("Non Fermer");
+			commandeClientDto.setHaveLc(false);
 		commandeClientRepository.save(buildCommandeClientFromCommandeClientDto(commandeClientDto));
 
 

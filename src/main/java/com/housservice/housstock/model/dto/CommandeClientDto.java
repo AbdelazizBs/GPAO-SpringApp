@@ -29,15 +29,17 @@ public class CommandeClientDto {
 	@Size(max = 100)
 	private String etat;
 	
-	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date dateCmd;
 	
-	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateCreationCmd;
 	
 	private String idClient;
 
 		private String raisonSocialClient;
+
+		private Boolean haveLc;
+
+
 
 	//private List<LigneCommandeClientDto> ligneCommandeClients = new ArrayList<>();
 }

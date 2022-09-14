@@ -17,9 +17,9 @@ public interface LigneCommandeClientService {
 
     public LigneCommandeClientDto buildLigneCommandeClientDtoFromLigneCommandeClient(LigneCommandeClient ligneCommandeClient);
 
-    public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto);
+    public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException;
 	
     public void updateLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException;
     
-    public void deleteLigneCommandeClient(String ligneCommandeClientId);
+    public void deleteLigneCommandeClient(String ligneCommandeClientId) throws ResourceNotFoundException;
 }
