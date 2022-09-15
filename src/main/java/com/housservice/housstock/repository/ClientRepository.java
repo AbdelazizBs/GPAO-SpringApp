@@ -3,6 +3,7 @@ package com.housservice.housstock.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.housservice.housstock.model.Contact;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -17,4 +18,6 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 	    List<Client> findClientNotActif();
 
 		Optional<Client> findClientByRaisonSocial(String raisonSociale) ;
+		Optional<Client> findClientByContactId(String idContact ) ;
+
 }

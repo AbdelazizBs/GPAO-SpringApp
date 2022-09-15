@@ -1,6 +1,7 @@
 package com.housservice.housstock.service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -111,7 +112,6 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 
 	@Override
 	public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
-
 		CommandeClient commandeClient = commandeClientRepository.findById(ligneCommandeClientDto.getIdCommandeClient())
 		.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getIdCommandeClient())));
 	commandeClient.setHaveLc(true);
@@ -152,9 +152,12 @@ commandeClientRepository.save(commandeClient);
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientId)));
 		CommandeClient cmdClient = ligneCommandeClient.getCommandeClient();
 		List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByCommandeClient(cmdClient);
-		if (ligneCommandeClients.size()==0) cmdClient.setHaveLc(false);
+		 if(ligneCommandeClients.size()==1) cmdClient.setHaveLc(false);
 		commandeClientRepository.save(cmdClient);
 		ligneCommandeClientRepository.deleteById(ligneCommandeClientId);
 		}
+
+
+
 
 }

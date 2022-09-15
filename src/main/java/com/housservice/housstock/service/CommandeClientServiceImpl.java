@@ -58,6 +58,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClientDto.setEtat(commandeClient.getEtat());
 		commandeClientDto.setHaveLc(commandeClient.getHaveLc());
 		commandeClientDto.setDateCmd(commandeClient.getDateCmd());
+		commandeClientDto.setEtatProduction(commandeClient.getEtatProduction());
 		commandeClientDto.setDateCreationCmd(commandeClient.getDateCreationCmd());
 		commandeClientDto.setIdClient(commandeClient.getClient().getId());
 		commandeClientDto.setRaisonSocialClient(commandeClient.getClient().getRaisonSocial());
@@ -77,6 +78,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
 		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
 		commandeClient.setEtat(commandeClientDto.getEtat());
+		commandeClient.setEtatProduction(commandeClientDto.getEtatProduction());
 		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
 		commandeClient.setHaveLc(commandeClientDto.getHaveLc());
 		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
@@ -139,6 +141,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
 		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
 		commandeClient.setEtat(commandeClientDto.getEtat());
+		commandeClient.setEtatProduction(commandeClientDto.getEtatProduction());
 		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
 		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
 	

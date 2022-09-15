@@ -28,7 +28,9 @@ public class CommandeClientDto {
 	
 	@Size(max = 100)
 	private String etat;
-	
+
+	private String etatProduction;
+
 	private Date dateCmd;
 	
 	private LocalDate dateCreationCmd;

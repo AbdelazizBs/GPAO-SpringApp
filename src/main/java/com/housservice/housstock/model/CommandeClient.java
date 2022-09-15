@@ -60,6 +60,9 @@ public class CommandeClient {
 
 	private Boolean haveLc;
 
+	private String etatProduction;
+
+
 	//private Set<String> listIdLigneCommandeClient = new HashSet<>();
 	
 }

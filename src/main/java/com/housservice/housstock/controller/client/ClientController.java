@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.housservice.housstock.model.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -63,7 +64,7 @@ public class ClientController {
 		return clientService.getRaisonSociales();
 
 	}
-	 @GetMapping("/client")
+	 @GetMapping("/getAllClient")
 	 public List< Client > getAllClient() {
 		 		
 		 return clientService.findClientActif();
@@ -102,26 +103,34 @@ public class ClientController {
 		 */
 	  
 	  
-	  @PutMapping("/client")
+	  @PutMapping("/addClient")
 	  public ResponseEntity<String> createClient(@Valid @RequestBody ClientDto clientDto) {
-		  
 		  clientService.createNewClient(clientDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
 	  
 	   
-	  @PutMapping("/client/{id}")
+	  @PutMapping("/updateClient/{idClient}")
 	  public ResponseEntity <String> updateClient(
-			  @ApiParam(name = "id", value="id of client", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String clientId,
+			  @ApiParam(name = "idClient", value="id of client", required = true)
+			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
 	      @Valid @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
 		  
 		  clientService.updateClient(clientDto);
 	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
+
+	  @PutMapping("/updateContactClient/{idContact}")
+	  public ResponseEntity <String> updateContactClient(
+			  @ApiParam(name = "idContact", value="id of contact", required = true)
+			  @PathVariable(value = "idContact", required = true) @NotEmpty(message = "{http.error.0001}")  String idContact,
+	      @Valid @RequestBody(required = true) Contact contact ) throws ResourceNotFoundException {
+		  clientService.updateContactClient(contact,idContact);
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	  }
 	 
-	  @DeleteMapping("/client/{id}")
+	  @DeleteMapping("/deleteClient/{id}")
 	  @ApiOperation(value = "service to delete one Client by Id.")
 	  public Map < String, Boolean > deleteclient(
 			  @ApiParam(name = "id", value="id of client", required = true)
@@ -131,6 +140,18 @@ public class ClientController {
 	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
 
 	      clientService.deleteClient(client);
+	      Map < String, Boolean > response = new HashMap < > ();
+	      response.put("deleted", Boolean.TRUE);
+	      return response;
+	  }
+
+	  @DeleteMapping("/deleteContactClient/{idContact}")
+	  @ApiOperation(value = "service to delete one Client by Id.")
+	  public Map < String, Boolean > deleteContactClient(
+			  @ApiParam(name = "idContact", value="id of client", required = true)
+			  @PathVariable(value = "idContact", required = true) @NotEmpty(message = "{http.error.0001}") String idContact)
+	  throws ResourceNotFoundException {
+	      clientService.deleteContactClient(idContact);
 	      Map < String, Boolean > response = new HashMap < > ();
 	      response.put("deleted", Boolean.TRUE);
 	      return response;

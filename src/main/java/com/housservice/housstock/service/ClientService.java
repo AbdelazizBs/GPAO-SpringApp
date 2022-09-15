@@ -2,6 +2,7 @@ package com.housservice.housstock.service;
 
 import java.util.List;
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.dto.ClientDto;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -22,7 +23,9 @@ public interface ClientService {
 	public void createNewClient(@Valid ClientDto clientDto);
 
 	public void updateClient(@Valid ClientDto clientDto) throws ResourceNotFoundException;
+	public void updateContactClient(@Valid Contact contact, String idContact) throws ResourceNotFoundException;
 
 	public void deleteClient(Client client);
+	public void deleteContactClient(String idContact) throws ResourceNotFoundException;
 
 }

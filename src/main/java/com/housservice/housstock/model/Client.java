@@ -1,6 +1,7 @@
 package com.housservice.housstock.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.time.LocalDate;
 
@@ -32,7 +33,7 @@ public class Client {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")	
-	private LocalDate date = LocalDate.now();
+	private LocalDate date ;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -107,13 +108,22 @@ public class Client {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String swift;
-	
-    
+
+
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private Date dateMiseEnVeille;
+
+
+
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private int blocage;
 
+	private Contact contact;
 
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 	

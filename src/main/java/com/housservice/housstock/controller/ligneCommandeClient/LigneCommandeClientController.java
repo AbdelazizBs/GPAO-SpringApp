@@ -90,11 +90,11 @@ public class LigneCommandeClientController {
 	  }
 
      
-	  @DeleteMapping("/deleteLigneCmd/{id}")
+	  @DeleteMapping("/deleteLigneCmd/{ligneCommandeClientId}")
 	  @ApiOperation(value = "service to delete one LigneCommandeClient by Id.")
 	  public Map < String, Boolean > deleteLigneCommandeClient(
 			  @ApiParam(name = "id", value="id of ligneCommandeClient", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String ligneCommandeClientId) throws ResourceNotFoundException {
+			  @PathVariable(value = "ligneCommandeClientId", required = true) @NotEmpty(message = "{http.error.0001}") String ligneCommandeClientId) throws ResourceNotFoundException {
 
 		  ligneCommandeClientService.deleteLigneCommandeClient(ligneCommandeClientId);
 	      Map < String, Boolean > response = new HashMap < > ();
