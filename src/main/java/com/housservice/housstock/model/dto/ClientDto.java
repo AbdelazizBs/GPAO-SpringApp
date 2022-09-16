@@ -81,11 +81,8 @@ public class ClientDto {
 	
     
 	@Size(max = 100)
-	private int blocage;
-	
-	
-	@Size(max = 100)
 	private int miseEnVeille;
+
 	
 
 	@JsonFormat(pattern="dd/MM/yyyy")
@@ -94,6 +91,6 @@ public class ClientDto {
 	
 	private List<CommandeClientDto> listCommandes = new ArrayList<>();
 
-	private Contact contact;
+	private List<Contact> contact;
     
 }

@@ -11,7 +11,9 @@ import javax.validation.Valid;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.model.dto.CommandeClientDto;
+import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,8 @@ import com.housservice.housstock.repository.ClientRepository;
 public class ClientServiceImpl implements ClientService {
 
 	private ClientRepository clientRepository;
-	
+	private final ArticleRepository articleRepository ;
+
 	private SequenceGeneratorService sequenceGeneratorService;
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
@@ -35,11 +38,12 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	public ClientServiceImpl(ClientRepository clientRepository, SequenceGeneratorService sequenceGeneratorService,
-							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository) {
+							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository) {
 		this.clientRepository = clientRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
+		this.articleRepository = articleRepository;
 	}
 	
 	
@@ -58,6 +62,7 @@ public class ClientServiceImpl implements ClientService {
 		  clientDto.setIncoterm(client.getIncoterm());
 		  clientDto.setContact(client.getContact());
 		  clientDto.setEcheance(client.getEcheance());
+		  clientDto.setMiseEnVeille(client.getMiseEnVeille());
 		  clientDto.setModePaiement(client.getModePaiement());
 		  clientDto.setNomBanque(client.getNomBanque());
 		  clientDto.setAdresseBanque(client.getAdresseBanque());
@@ -75,6 +80,15 @@ public class ClientServiceImpl implements ClientService {
 		return clientRepository.findById(clientId);
 	}
 
+
+	@Override
+	public List<Article> getArticles(String clientId) throws ResourceNotFoundException {
+		Client client = clientRepository.findById(clientId)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
+		List<Article> articles = articleRepository.findArticleByClient(client);
+		return articles;
+	}
+
 	
 	@Override
 	public void deleteClient(Client client) {
@@ -85,14 +99,23 @@ public class ClientServiceImpl implements ClientService {
 	public void deleteContactClient(String idContact) throws ResourceNotFoundException {
 		Client client = clientRepository.findClientByContactId(idContact)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
-		client.setContact(new Contact());
-		clientRepository.save(client);
 		contactRepository.deleteById(idContact);
+		List<Contact> contacts = new ArrayList<>();
+		Contact contact = contactRepository.findById(idContact)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
+		contacts.addAll(client.getContact());
+		client.setContact(contacts);
+		clientRepository.save(client);
 	}
 
 	@Override
 	public void createNewClient(@Valid ClientDto clientDto) {
 clientDto.setDate( LocalDate.now());
+clientDto.setMiseEnVeille(0);
+List<Contact> contacts = new ArrayList<>();
+if (clientDto.getContact()==null){
+	clientDto.setContact(contacts);
+}
 clientRepository.save(buildClientFromClientDto(clientDto));
 	}
 	
@@ -106,6 +129,7 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 		client.setAdresseFacturation(clientDto.getAdresseFacturation());
 		client.setAdresseLivraison(clientDto.getAdresseLivraison());
 		client.setIncoterm(clientDto.getIncoterm());
+		client.setMiseEnVeille(clientDto.getMiseEnVeille());
 		client.setEcheance(clientDto.getEcheance());
 		client.setModePaiement(clientDto.getModePaiement());
 		client.setNomBanque(clientDto.getNomBanque());
@@ -121,30 +145,53 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 
 
 	@Override
-	public void updateClient(@Valid ClientDto clientDto) throws ResourceNotFoundException {
-		
+	public void updateClient(@Valid ClientDto clientDto ) throws ResourceNotFoundException {
 		Client client = getClientById(clientDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  clientDto.getId())));
-		
 		client.setRaisonSocial(clientDto.getRaisonSocial());		
 		client.setRegime(clientDto.getRegime());
+		client.setMiseEnVeille(clientDto.getMiseEnVeille());
+		client.setDate(client.getDate());
+		client.setDateMiseEnVeille(client.getDateMiseEnVeille());
 		client.setAdresseFacturation(clientDto.getAdresseFacturation());
 		client.setAdresseLivraison(clientDto.getAdresseLivraison());
 		client.setIncoterm(clientDto.getIncoterm());
 		client.setEcheance(clientDto.getEcheance());
 		client.setModePaiement(clientDto.getModePaiement());
-		Contact contact = contactRepository.findById(clientDto.getContact().getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  clientDto.getContact().getId())));
-		client.setContact(contact);
 		client.setNomBanque(clientDto.getNomBanque());
 		client.setAdresseBanque(clientDto.getAdresseBanque());
 		client.setRib(clientDto.getRib());
 		client.setSwift(clientDto.getSwift());
 		client.setBrancheActivite(clientDto.getBrancheActivite());
 		client.setSecteurActivite(clientDto.getSecteurActivite());
-
 		clientRepository.save(client);
 		
+	}
+
+	@Override
+	public void addContactClient(@Valid Contact contact ,String idClient ) throws ResourceNotFoundException {
+		Client client = getClientById(idClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idClient)));
+		Contact contact1 = new Contact();
+		List<Contact> contacts = new ArrayList<>();
+		if(client.getContact()==null){
+			contact1.setNom(contact.getNom());
+			contact1.setEmail(contact.getEmail());
+			contact1.setMobile(contact.getMobile());
+			contact1.setAddress(contact.getAddress());
+			contact1.setFonction(contact.getFonction());
+			contact1.setPhone(contact.getPhone());
+			contacts.add(contact1);
+			contactRepository.save(contact);
+			client.setContact(contacts);
+			clientRepository.save(client);
+		}
+		contactRepository.save(contact);
+		contacts.add(contact);
+		contacts.addAll(client.getContact());
+		client.setContact(contacts);
+		clientRepository.save(client);
+
 	}
 
 	@Override
@@ -160,7 +207,10 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 		contactToUpdate.setFonction(contact.getFonction());
 		contactToUpdate.setPhone(contact.getPhone());
 		contactRepository.save(contactToUpdate);
-		client.setContact(contactToUpdate);
+		List<Contact>  contactList= new ArrayList<>();
+		contactList.add(contactToUpdate);
+		contactList.addAll(client.getContact());
+		client.setContact(contactList);
 		clientRepository.save(client);
 
 	}
@@ -181,6 +231,11 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 	@Override
 	public List<Client> findClientActif() {
 		return clientRepository.findClientActif();
+	}
+
+	@Override
+	public List<Client> findClientNonActive() {
+		return clientRepository.findClientNotActif();
 	}
 
 

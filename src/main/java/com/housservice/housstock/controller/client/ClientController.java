@@ -8,7 +8,9 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.dto.ArticleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -70,6 +72,12 @@ public class ClientController {
 		 return clientService.findClientActif();
 	 
 	 }
+
+	 @GetMapping("/getAllClientNonActive")
+	 public List< Client > getAllClientNonActive() {
+		 return clientService.findClientNonActive();
+
+	 }
 	 
 	 @GetMapping("/clientEnVeille")
 	 public List< Client > getClientEnVeille() {
@@ -86,6 +94,17 @@ public class ClientController {
 		  Client client = clientService.getClientById(clientId)
 	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
 	      return ResponseEntity.ok().body(client);
+	  }
+
+
+	  @GetMapping("/getArticles/{idClient}")
+	  @ApiOperation(value = "service to get one Client by Id.")
+	  public List <Article> getArticles(
+			  @ApiParam(name = "idClient", value="id of client", required = true)
+			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
+	  throws ResourceNotFoundException {
+		  return  clientService.getArticles(idClient) ;
+
 	  }
 
 	   
@@ -118,6 +137,17 @@ public class ClientController {
 		  
 		  clientService.updateClient(clientDto);
 	      
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	  }
+
+	  @PutMapping("/addContactClient/{idClient}")
+	  public ResponseEntity <String> addContactClient(
+			  @ApiParam(name = "idClient", value="id of client", required = true)
+			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
+	      @Valid @RequestBody(required = true) Contact contact) throws ResourceNotFoundException {
+
+		  clientService.addContactClient(contact,idClient);
+
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 

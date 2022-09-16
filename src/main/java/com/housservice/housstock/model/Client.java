@@ -121,9 +121,14 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private int blocage;
+	private int miseEnVeille;
 
-	private Contact contact;
+
+
+
+
+
+	private List <Contact> contact;
 
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 	
