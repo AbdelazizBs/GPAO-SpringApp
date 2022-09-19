@@ -1,5 +1,7 @@
 package com.housservice.housstock.controller.article;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ import com.housservice.housstock.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController
@@ -67,19 +70,36 @@ public class ArticleController {
 		  }
 	    
 	    @PutMapping("/article")
-		  public ResponseEntity<String> createArticle(@Valid @RequestBody ArticleDto articleDto) throws ResourceNotFoundException {
+		  public ResponseEntity<String> createArticle(final  String referenceIris,
+													  final  String numFicheTechnique,
+													  final  String designation,
+													  final  String typeProduit,
+													  final  String idClient,
+													  final  String refClient,
+													  final  String raisonSocial,
+													  final  String prix
+				, MultipartFile file) throws ResourceNotFoundException, IOException {
 			  
-	    	  articleService.createNewArticle(articleDto);
+	    	  articleService.createNewArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,file);
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }
 	    
-	    @PutMapping("/article/{id}")
+	    @PutMapping("/updateArticle/{articleId}")
 		  public ResponseEntity <String> updateArticle(
 				  @ApiParam(name = "id", value="id of article", required = true)
-				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String articleId,
-		          @Valid @RequestBody(required = true) ArticleDto articleDto) throws ResourceNotFoundException {
+				  @PathVariable(value = "articleId", required = true) @NotEmpty(message = "{http.error.0001}")
+				  String articleId,
+				  final  String referenceIris,
+				  final  String numFicheTechnique,
+				  final  String designation,
+				  final  String typeProduit,
+				  final  String idClient,
+				  final  String refClient,
+				  final  String raisonSocial,
+				  final  String prix,
+				  MultipartFile file) throws ResourceNotFoundException, IOException {
 			  
-	    	  articleService.updateArticle(articleDto);
+	    	  articleService.updateArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,articleId,file);
 		      
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 		  }

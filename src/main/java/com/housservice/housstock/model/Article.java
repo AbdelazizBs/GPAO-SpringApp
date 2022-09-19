@@ -35,6 +35,11 @@ public class Article{
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String numFicheTechnique;
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String prix;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -49,6 +54,8 @@ public class Article{
 
 		private Client client ;
 	private String refClient ;
+
+private  Picture picture ;
 
 
 

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.Size;
 
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Picture;
 import org.springframework.data.annotation.Id;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -36,7 +37,10 @@ public class ArticleDto {
 	private String idClient ;
 	private String refClient ;
 	private String raisonSocial ;
-	
+	private String prix ;
+
+	private Picture picture ;
+
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateCreationArticle = LocalDate.now();
 	

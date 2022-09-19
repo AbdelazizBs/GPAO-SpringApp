@@ -1,5 +1,7 @@
 package com.housservice.housstock.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,6 +9,7 @@ import javax.validation.Valid;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.dto.ArticleDto;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ArticleService {
 	
@@ -19,9 +22,24 @@ public interface ArticleService {
 	
     public ArticleDto buildArticleDtoFromArticle(Article article);
 
-    public void createNewArticle(@Valid ArticleDto articleDto) throws ResourceNotFoundException;
+    public void createNewArticle(String referenceIris,
+                                 String numFicheTechnique,
+                                 String designation,
+                                 String typeProduit,
+                                 String idClient,
+                                 String refClient,
+                                 String raisonSocial,
+                                 String prix, MultipartFile file) throws ResourceNotFoundException, IOException;
 	
-    public void updateArticle(@Valid ArticleDto articleDto) throws ResourceNotFoundException;
+    public void updateArticle(String referenceIris,
+                              String numFicheTechnique,
+                              String designation,
+                              String typeProduit,
+                              String idClient,
+                              String refClient,
+                              String raisonSocial,
+                              String prix,
+                              String id,MultipartFile file) throws ResourceNotFoundException, IOException;
     
     public void deleteArticle(String articleId);
 

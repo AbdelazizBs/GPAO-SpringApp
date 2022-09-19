@@ -107,6 +107,15 @@ public class ClientController {
 
 	  }
 
+	  @GetMapping("/getArticlesByRaisons/{raisonS}")
+	  @ApiOperation(value = "service to get one Client by Id.")
+	  public List <Article> getArticlesByRaisons(
+			  @ApiParam(name = "raisonS", value="raison sociale of client", required = true)
+			  @PathVariable(value = "raisonS", required = true) @NotEmpty(message = "{http.error.0001}") String raisonS)
+	  throws ResourceNotFoundException {
+		  return  clientService.getArticlesByRaisons(raisonS) ;
+	  }
+
 	   
 		/*
 		 * @PutMapping("/client") public Client createClient(@Valid @RequestBody Client

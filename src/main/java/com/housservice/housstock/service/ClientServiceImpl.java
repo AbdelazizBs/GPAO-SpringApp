@@ -1,11 +1,15 @@
 package com.housservice.housstock.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 import javax.validation.Valid;
 
 import com.housservice.housstock.model.Article;
@@ -45,7 +49,22 @@ public class ClientServiceImpl implements ClientService {
 		this.contactRepository = contactRepository;
 		this.articleRepository = articleRepository;
 	}
-	
+	public static byte[] decompressBytes(byte[] data) {
+		Inflater inflater = new Inflater();
+		inflater.setInput(data);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+		byte[] buffer = new byte[1024];
+		try {
+			while (!inflater.finished()) {
+				int count = inflater.inflate(buffer);
+				outputStream.write(buffer, 0, count);
+			}
+			outputStream.close();
+		} catch (IOException ioe) {
+		} catch (DataFormatException e) {
+		}
+		return outputStream.toByteArray();
+	}
 	
 	@Override
 	public ClientDto buildClientDtoFromClient(Client client) {
@@ -88,6 +107,14 @@ public class ClientServiceImpl implements ClientService {
 		List<Article> articles = articleRepository.findArticleByClient(client);
 		return articles;
 	}
+	@Override
+	public List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException {
+		Client client = clientRepository.findClientByRaisonSocial(raison)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), raison)));
+		List<Article> articles = articleRepository.findArticleByClient(client);
+//		articles.stream().map(article -> decompressBytes(article.getPicture().getBytes()));
+		return articles;
+	}
 
 	
 	@Override
@@ -99,13 +126,14 @@ public class ClientServiceImpl implements ClientService {
 	public void deleteContactClient(String idContact) throws ResourceNotFoundException {
 		Client client = clientRepository.findClientByContactId(idContact)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
-		contactRepository.deleteById(idContact);
-		List<Contact> contacts = new ArrayList<>();
 		Contact contact = contactRepository.findById(idContact)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
-		contacts.addAll(client.getContact());
+		List<Contact> contacts ;
+		contacts = client.getContact();
+		contacts.remove(contact);
 		client.setContact(contacts);
 		clientRepository.save(client);
+		contactRepository.deleteById(idContact);
 	}
 
 	@Override
