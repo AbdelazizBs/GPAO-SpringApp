@@ -48,7 +48,7 @@ public class ArticleController {
 			this.messageHttpErrorProperties = messageHttpErrorProperties;
 		  }
 	
-	    @GetMapping("/article")
+	    @GetMapping("/getAllArticles")
 		 public List< ArticleDto > getAllArticle() {
 			 		
 			 return articleService.getAllArticle();
@@ -69,7 +69,7 @@ public class ArticleController {
 		      return ResponseEntity.ok().body(article);
 		  }
 	    
-	    @PutMapping("/article")
+	    @PutMapping("/addArticle")
 		  public ResponseEntity<String> createArticle(final  String referenceIris,
 													  final  String numFicheTechnique,
 													  final  String designation,
@@ -78,9 +78,9 @@ public class ArticleController {
 													  final  String refClient,
 													  final  String raisonSocial,
 													  final  String prix
-				, MultipartFile file) throws ResourceNotFoundException, IOException {
+				, MultipartFile picture) throws ResourceNotFoundException, IOException {
 			  
-	    	  articleService.createNewArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,file);
+	    	  articleService.createNewArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,picture);
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }
 	    

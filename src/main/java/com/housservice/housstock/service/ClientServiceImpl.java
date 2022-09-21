@@ -128,12 +128,12 @@ public class ClientServiceImpl implements ClientService {
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
 		Contact contact = contactRepository.findById(idContact)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
-		List<Contact> contacts ;
-		contacts = client.getContact();
-		contacts.remove(contact);
-		client.setContact(contacts);
+		List<Contact> contactList = new ArrayList<>(client.getContact());
+		contactList.remove(contact);
+		client.setContact(contactList);
 		clientRepository.save(client);
 		contactRepository.deleteById(idContact);
+
 	}
 
 	@Override
