@@ -40,8 +40,7 @@ import io.swagger.annotations.ApiParam;
 @Api(tags = {"Clients Management"})
 public class ClientController {
 		
-	@Autowired 
-	private ClientService clientService;
+	private final ClientService clientService;
 	
 	  private final MessageHttpErrorProperties messageHttpErrorProperties;
 		
@@ -184,17 +183,7 @@ public class ClientController {
 	      return response;
 	  }
 
-	  @DeleteMapping("/deleteContactClient/{idContact}")
-	  @ApiOperation(value = "service to delete one Client by Id.")
-	  public Map < String, Boolean > deleteContactClient(
-			  @ApiParam(name = "idContact", value="id of client", required = true)
-			  @PathVariable(value = "idContact", required = true) @NotEmpty(message = "{http.error.0001}") String idContact)
-	  throws ResourceNotFoundException {
-	      clientService.deleteContactClient(idContact);
-	      Map < String, Boolean > response = new HashMap < > ();
-	      response.put("deleted", Boolean.TRUE);
-	      return response;
-	  }
+
 	 
 	
 }

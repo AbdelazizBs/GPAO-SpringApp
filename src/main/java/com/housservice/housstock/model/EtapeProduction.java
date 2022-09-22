@@ -31,5 +31,6 @@ public class EtapeProduction {
 	@Size(max=100)
 	@Indexed(unique = true)
 	private String typeEtape;
+
 	
 }

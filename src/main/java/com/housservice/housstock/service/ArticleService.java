@@ -8,6 +8,8 @@ import javax.validation.Valid;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.dto.ArticleDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,7 +42,8 @@ public interface ArticleService {
                               String raisonSocial,
                               String prix,
                               String id,MultipartFile file) throws ResourceNotFoundException, IOException;
-    
+    public void addEtapeToArticle(@Valid List<EtapeProduction> etapeProductions, String idArticle ) throws ResourceNotFoundException;
+
     public void deleteArticle(String articleId);
 
 }

@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.EtapeProduction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,7 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ArticleController {
 	
 	  	private ArticleService articleService;
-	  
+
 	    private final MessageHttpErrorProperties messageHttpErrorProperties;
 	    
 	    
@@ -83,7 +85,7 @@ public class ArticleController {
 	    	  articleService.createNewArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,picture);
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }
-	    
+
 	    @PutMapping("/updateArticle/{articleId}")
 		  public ResponseEntity <String> updateArticle(
 				  @ApiParam(name = "id", value="id of article", required = true)
@@ -143,6 +145,15 @@ public class ArticleController {
 			@PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}") String designation)
 			throws ResourceNotFoundException {
 		return articleService.getIdArticleWithDesignation(designation);
+	}
+
+	@PutMapping("/addEtapeToArticle/{idArticle}")
+	public ResponseEntity <String> addEtapeToArticle(
+			@ApiParam(name = "idArticle", value="id of client", required = true)
+			@PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}")  String idArticle,
+			@Valid @RequestBody(required = true) List<EtapeProduction> productions) throws ResourceNotFoundException {
+		articleService.addEtapeToArticle(productions,idArticle);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
 	  
 }

@@ -1,6 +1,7 @@
 package com.housservice.housstock.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -57,6 +58,7 @@ public class Article{
 
 private  Picture picture ;
 
+private  List<EtapeProduction> etapeProductions ;
 
 
 	@NotBlank

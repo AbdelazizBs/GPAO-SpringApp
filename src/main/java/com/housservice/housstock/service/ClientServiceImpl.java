@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.model.dto.CommandeClientDto;
 import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.ContactRepository;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -121,19 +123,6 @@ public class ClientServiceImpl implements ClientService {
 	public void deleteClient(Client client) {
 		clientRepository.delete(client);
 		
-	}
-	@Override
-	public void deleteContactClient(String idContact) throws ResourceNotFoundException {
-		Client client = clientRepository.findClientByContactId(idContact)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
-		Contact contact = contactRepository.findById(idContact)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
-		List<Contact> contactList = new ArrayList<>(client.getContact());
-		contactList.remove(contact);
-		client.setContact(contactList);
-		clientRepository.save(client);
-		contactRepository.deleteById(idContact);
-
 	}
 
 	@Override

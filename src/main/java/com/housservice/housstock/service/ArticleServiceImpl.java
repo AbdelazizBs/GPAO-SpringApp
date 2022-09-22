@@ -6,8 +6,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Picture;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +14,15 @@ import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.repository.ArticleRepository;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -65,6 +65,7 @@ public class ArticleServiceImpl implements ArticleService{
 		articleDto.setReferenceIris(article.getReferenceIris());
 		articleDto.setRefClient(article.getRefClient());
 		articleDto.setPrix(article.getPrix());
+		articleDto.setEtapeProductions(article.getEtapeProductions());
 		articleDto.setPicture(article.getPicture());
 		articleDto.setNumFicheTechnique(article.getNumFicheTechnique());
 		articleDto.setIdClient(article.getClient().getId());
@@ -90,6 +91,7 @@ public class ArticleServiceImpl implements ArticleService{
 		Picture picture = pictureRepository.findById(articleDto.getPicture().getId()).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),articleDto.getPicture().getId())));
 		article.setPicture(picture);
 		article.setDesignation(articleDto.getDesignation());
+		article.setEtapeProductions(articleDto.getEtapeProductions());
 		article.setTypeProduit(articleDto.getTypeProduit());
 		return article;
 		
@@ -180,6 +182,8 @@ public class ArticleServiceImpl implements ArticleService{
 	articleDto.setReferenceIris(referenceIris);
 	articleDto.setTypeProduit(typeProduit);
 	articleDto.setRaisonSocial(raisonSocial);
+	List<EtapeProduction> productions = new ArrayList<>();
+	articleDto.setEtapeProductions(productions);
 	articleDto.setNumFicheTechnique(numFicheTechnique);
 
 		articleRepository.save(buildArticleFromArticleDto(articleDto));
@@ -197,7 +201,6 @@ public class ArticleServiceImpl implements ArticleService{
 							  String prix,
 							  String id,
 							  MultipartFile file) throws ResourceNotFoundException, IOException {
-		
 		Article article = articleRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
 		Picture picture = pictureRepository.findPictureByBytes(compressBytes(file.getBytes()));
@@ -222,6 +225,36 @@ public class ArticleServiceImpl implements ArticleService{
 	
 		articleRepository.save(article);
 	}
+
+
+	@Override
+	public void addEtapeToArticle(@Valid List<EtapeProduction> etapeProductions , String idArticle ) throws ResourceNotFoundException {
+		Article article = articleRepository.findById(idArticle)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idArticle)));
+		article.setEtapeProductions(etapeProductions);
+		articleRepository.save(article);
+	}
+
+//	@Override
+//	public void updateContactClient(@Valid Contact contact,String idContact) throws ResourceNotFoundException {
+//		Client client =clientRepository.findClientByContactId(idContact)
+//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  contact)));
+//		Contact contactToUpdate = contactRepository.findById(idContact)
+//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  contact.getId())));
+//		contactToUpdate.setNom(contact.getNom());
+//		contactToUpdate.setEmail(contact.getEmail());
+//		contactToUpdate.setMobile(contact.getMobile());
+//		contactToUpdate.setAddress(contact.getAddress());
+//		contactToUpdate.setFonction(contact.getFonction());
+//		contactToUpdate.setPhone(contact.getPhone());
+//		contactRepository.save(contactToUpdate);
+//		List<Contact>  contactList= new ArrayList<>();
+//		contactList.add(contactToUpdate);
+//		contactList.addAll(client.getContact());
+//		client.setContact(contactList);
+//		clientRepository.save(client);
+//
+//	}
 
 	@Override
 	public void deleteArticle(String articleId) {
