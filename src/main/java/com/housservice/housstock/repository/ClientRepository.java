@@ -14,4 +14,7 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 	
 	    @Query("{ 'MiseEnVeille' : 1}")
 	    List<Client> findClientNotActif();
+	    
+	    
+	   // Client findClientById(String id);
 }

@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.housservice.housstock.model.Machine;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -42,5 +43,6 @@ public class MachineDto {
 	private String idEtapeProduction;
 	
 	private String nomEtapeProduction;
+
     
 }

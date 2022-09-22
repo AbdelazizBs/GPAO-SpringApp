@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.dto.ArticleDto;
+import com.housservice.housstock.model.dto.NomenclatureDto;
 import com.housservice.housstock.service.ArticleService;
 
 
@@ -65,6 +67,21 @@ public class ArticleController {
 			  }
 		      return ResponseEntity.ok().body(article);
 		  }
+	    
+	    
+//	    @GetMapping("/article/{idClient}")
+//		@ApiOperation(value = "service to get list Article by idClient.")
+//		  public ResponseEntity <List< ArticleDto >> getArticleByIdClient(
+//				  @ApiParam(name = "idClient", value="id of client", required = true)
+//				  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
+//		   {
+//	    	
+//	    	
+//	    	 List<ArticleDto> listArticleDto = articleService.getArticleByIdClient(idClient);
+//		      return ResponseEntity.ok().body(listArticleDto); 	
+//	    	
+//		   }
+//	    
 	    
 	    @PutMapping("/article")
 		  public ResponseEntity<String> createArticle(@Valid @RequestBody ArticleDto articleDto) {

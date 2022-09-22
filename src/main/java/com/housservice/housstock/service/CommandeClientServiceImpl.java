@@ -54,7 +54,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClientDto.setNumCmd(commandeClient.getNumCmd());
 		commandeClientDto.setEtat(commandeClient.getEtat());
 		commandeClientDto.setDateCmd(commandeClient.getDateCmd());
-		commandeClientDto.setDateCreationCmd(commandeClient.getDateCreationCmd());
 		commandeClientDto.setIdClient(commandeClient.getClient().getId());
 		commandeClientDto.setRaisonSocialClient(commandeClient.getClient().getRaisonSocial());
 		//TODO
@@ -72,9 +71,8 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClient.setId(commandeClientDto.getId());
 		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
 		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
-		commandeClient.setEtat(commandeClientDto.getEtat());
+		commandeClient.setEtat("en attente");
 		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
-		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
 		Client cl = clientRepository.findById(commandeClientDto.getIdClient()).get();
 		commandeClient.setClient(cl);
 		
@@ -126,7 +124,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
 		commandeClient.setEtat(commandeClientDto.getEtat());
 		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
-		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
 	
 		
 		if(commandeClient.getClient() == null || !StringUtils.equals(commandeClientDto.getIdClient(), commandeClient.getClient().getId())) 
@@ -147,6 +144,5 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		
 	}
 	
-	
-	
+		
 }

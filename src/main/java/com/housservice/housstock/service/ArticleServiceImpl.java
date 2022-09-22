@@ -5,14 +5,17 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.repository.ArticleRepository;
+import com.housservice.housstock.repository.ClientRepository;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,16 +25,19 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	private ArticleRepository articleRepository;
 	
+	private ClientRepository clientRepository;
+	
 	private SequenceGeneratorService sequenceGeneratorService;
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	
 	
 	@Autowired
-	public ArticleServiceImpl (ArticleRepository articleRepository,SequenceGeneratorService sequenceGeneratorService,
+	public ArticleServiceImpl (ArticleRepository articleRepository,ClientRepository clientRepository,SequenceGeneratorService sequenceGeneratorService,
 			MessageHttpErrorProperties messageHttpErrorProperties)
 	{
 		this.articleRepository = articleRepository;
+		this.clientRepository = clientRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	}
@@ -47,9 +53,12 @@ public class ArticleServiceImpl implements ArticleService{
 		ArticleDto articleDto = new ArticleDto();
 		articleDto.setId(article.getId());
 		articleDto.setReferenceIris(article.getReferenceIris());
+		articleDto.setReferenceClient(article.getReferenceClient());
 		articleDto.setNumFicheTechnique(article.getNumFicheTechnique());
 		articleDto.setDesignation(article.getDesignation());
 		articleDto.setTypeProduit(article.getTypeProduit());
+		articleDto.setIdClient(article.getClient().getId());
+		articleDto.setRaisonSocial(article.getClient().getRaisonSocial());
 		
 		return articleDto;
 		
@@ -61,9 +70,13 @@ public class ArticleServiceImpl implements ArticleService{
 		Article article = new Article();
 		article.setId(""+sequenceGeneratorService.generateSequence(Article.SEQUENCE_NAME));	
 		article.setReferenceIris(articleDto.getReferenceIris());
+		article.setReferenceClient(articleDto.getReferenceClient());
 		article.setNumFicheTechnique(articleDto.getNumFicheTechnique());
 		article.setDesignation(articleDto.getDesignation());
 		article.setTypeProduit(articleDto.getTypeProduit());
+	    Client client = clientRepository.findById(articleDto.getIdClient()).get();
+	    article.setClient(client);
+		
 		return article;
 		
 	}
@@ -89,8 +102,18 @@ public class ArticleServiceImpl implements ArticleService{
 		}
 		return null;
 	}
-
 	
+//	@Override
+//	 public List<ArticleDto> getArticleByIdClient(final String idClient) {
+//		   final Optional<Client> client = clientRepository.findById(idClient);
+//		   
+//		    return articleRepository.findArticleByClient(client)
+//		    		.stream()
+//		    		.map(article -> buildArticleDtoFromArticle(article))
+//		    		.collect(Collectors.toList());
+//		     
+//		  }
+
 	@Override
 	public void createNewArticle(@Valid ArticleDto articleDto) {
 	
@@ -108,6 +131,13 @@ public class ArticleServiceImpl implements ArticleService{
 		article.setNumFicheTechnique(articleDto.getNumFicheTechnique());
 		article.setDesignation(articleDto.getDesignation());
 		article.setTypeProduit(articleDto.getTypeProduit());
+		
+		if ( article.getClient() == null || !StringUtils.equals(articleDto.getIdClient(), article.getClient().getId()) )
+		{
+			Client client = clientRepository.findById(articleDto.getIdClient()).get();
+			article.setClient(client);
+		}
+	
 	
 		articleRepository.save(article);
 	}

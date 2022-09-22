@@ -31,6 +31,10 @@ public class Article{
 	@Indexed(unique = true)
 	private String referenceIris;
 	
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String referenceClient;
+	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -52,6 +56,8 @@ public class Article{
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")	
 	private LocalDate dateCreationArticle = LocalDate.now();
+	
+	private Client client;
 	
 	
 }

@@ -69,12 +69,19 @@ public class MachineServiceImpl implements MachineService {
 		}
 		return null;
 	}
-
 	
+
 	@Override
-	public void deleteMachine(String machineId) {
-		machineRepository.deleteById(machineId);
+	public Optional<Machine> getMachineParId(String id) {
+		return machineRepository.findById(id);
 	}
+
+
+	@Override
+	public void deleteMachine(Machine machine) {
+		machineRepository.delete(machine);	
+	}
+	
 
 	@Override
 	public void createNewMachine(@Valid MachineDto machineDto) {
@@ -137,6 +144,8 @@ public class MachineServiceImpl implements MachineService {
 					.collect(Collectors.toList());
 					
 	}
+
+
 
 
 }

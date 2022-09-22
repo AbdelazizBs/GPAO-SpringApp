@@ -31,8 +31,8 @@ public class CommandeClientDto {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate  dateCmd;
 	
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private LocalDate dateCreationCmd;
+	@JsonFormat(pattern="dd/MM/yyyy")	
+	private LocalDate dateCreationCmd = LocalDate.now();
 	
 	private String idClient;
 	

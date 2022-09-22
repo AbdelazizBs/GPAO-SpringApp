@@ -18,6 +18,7 @@ public class ArticleDto {
 	@Size(max = 100)
 	private String referenceIris;
 	
+	private String referenceClient;
 
 	@Size(max = 100)
 	private String numFicheTechnique;
@@ -33,6 +34,12 @@ public class ArticleDto {
 	
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateCreationArticle = LocalDate.now();
+	
+	@Size(max = 100)
+	private String idClient;
+	
+	@Size(max = 100)
+	private String raisonSocial;
 	
 		
 }

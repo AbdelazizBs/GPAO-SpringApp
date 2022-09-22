@@ -13,6 +13,8 @@ public interface ArticleService {
 	public List<ArticleDto> getAllArticle();
 	
     public ArticleDto getArticleById(String id);
+       
+   // public List <ArticleDto> getArticleByIdClient(final String idClient);
 	
     public ArticleDto buildArticleDtoFromArticle(Article article);
 

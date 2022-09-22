@@ -1,5 +1,6 @@
 package com.housservice.housstock.controller.machine;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.service.MachineService;
 
@@ -75,11 +77,12 @@ public class MachineController {
 		  throws ResourceNotFoundException {
 			  MachineDto machine = machineService.getMachineById(machineId);
 			  if (machine == null) {
-				  ResponseEntity.badRequest();
+				  ResponseEntity.badRequest().body("not found");
 			  }
 		      return ResponseEntity.ok().body(machine);
 		  }
-	
+		  
+		 
 		  @PutMapping("/machine")
 		  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) {
 			  
@@ -100,16 +103,23 @@ public class MachineController {
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 		  }
 		 
+		  
 		  @DeleteMapping("/machine/{id}")
 		  @ApiOperation(value = "service to delete one Machine by Id.")
 		  public Map < String, Boolean > deleteMachine(
 				  @ApiParam(name = "id", value="id of machine", required = true)
-				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId) {
-	
-		      machineService.deleteMachine(machineId);
+				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId) 
+		 throws ResourceNotFoundException {
+			  
+			   Machine machine = machineService.getMachineParId(machineId)
+			    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format("Not found", machineId)));
+	   
+			  machineService.deleteMachine(machine);
 		      Map < String, Boolean > response = new HashMap < > ();
 		      response.put("deleted", Boolean.TRUE);
 		      return response;
 		  }
+		  
+	  
 
 }

@@ -1,8 +1,6 @@
 package com.housservice.housstock.model;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -52,8 +50,8 @@ public class CommandeClient {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate dateCreationCmd;
+	@JsonFormat(pattern="dd/MM/yyyy")	
+	private LocalDate dateCreationCmd = LocalDate.now();
 	
 	private Client client;
 

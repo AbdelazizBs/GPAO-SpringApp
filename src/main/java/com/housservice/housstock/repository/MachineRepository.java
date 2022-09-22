@@ -14,4 +14,5 @@ public interface MachineRepository extends MongoRepository<Machine, String> {
 	
 	    @Query("{ 'MiseEnVeille' : 1}")
 	    List<Machine> findMachineNotActif();
+
 }
