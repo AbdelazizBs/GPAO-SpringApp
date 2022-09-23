@@ -1,9 +1,11 @@
 package com.housservice.housstock.model.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.constraints.Size;
 
+import com.housservice.housstock.model.EtatMachine;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
@@ -40,7 +42,8 @@ public class MachineDto {
 	private LocalDate dateMaintenance;
 		
 	private String idEtapeProduction;
-	
+	private EtatMachine etatMachine;
+
 	private String nomEtapeProduction;
     
 }

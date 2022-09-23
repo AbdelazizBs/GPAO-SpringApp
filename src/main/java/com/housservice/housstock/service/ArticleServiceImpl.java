@@ -71,6 +71,7 @@ public class ArticleServiceImpl implements ArticleService{
 		articleDto.setIdClient(article.getClient().getId());
 		articleDto.setRaisonSocial(article.getClient().getRaisonSocial());
 		articleDto.setDesignation(article.getDesignation());
+		articleDto.setMiseEnVeille(article.getMiseEnVeille());
 		articleDto.setTypeProduit(article.getTypeProduit());
 		
 		return articleDto;
@@ -91,6 +92,7 @@ public class ArticleServiceImpl implements ArticleService{
 		Picture picture = pictureRepository.findById(articleDto.getPicture().getId()).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),articleDto.getPicture().getId())));
 		article.setPicture(picture);
 		article.setDesignation(articleDto.getDesignation());
+		article.setMiseEnVeille(articleDto.getMiseEnVeille());
 		article.setEtapeProductions(articleDto.getEtapeProductions());
 		article.setTypeProduit(articleDto.getTypeProduit());
 		return article;
@@ -131,6 +133,12 @@ public class ArticleServiceImpl implements ArticleService{
 		Article article  = articleRepository.findArticleByDesignation(designation).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), designation)));
 		return article.getId() ;
 	}
+
+	@Override
+	public List<EtapeProduction> getTargetEtapesArticle(String idArticle) throws ResourceNotFoundException  {
+		Article article  = articleRepository.findById(idArticle).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idArticle)));
+		return article.getEtapeProductions() ;
+	}
 	@Override
 	public ArticleDto getArticleById(String id) {
 		
@@ -140,7 +148,10 @@ public class ArticleServiceImpl implements ArticleService{
 		}
 		return null;
 	}
-
+	@Override
+	public List<Article> getArticleEnveille() {
+		return articleRepository.finArticleEnVeille();
+	}
 	public static byte[] compressBytes(byte[] data) {
 		Deflater deflater = new Deflater();
 		deflater.setInput(data);
@@ -178,6 +189,7 @@ public class ArticleServiceImpl implements ArticleService{
 		articleDto.setDesignation(designation);
 	articleDto.setPrix(prix);
 	articleDto.setIdClient(idClient);
+	articleDto.setMiseEnVeille(0);
 	articleDto.setRefClient(refClient);
 	articleDto.setReferenceIris(referenceIris);
 	articleDto.setTypeProduit(typeProduit);
@@ -218,6 +230,7 @@ public class ArticleServiceImpl implements ArticleService{
 		article.setNumFicheTechnique(numFicheTechnique);
 		article.setDesignation(designation);
 		article.setPrix(prix);
+		article.setMiseEnVeille(1);
 		article.setPrix(idClient);
 		article.setPrix(refClient);
 		article.setPrix(raisonSocial);

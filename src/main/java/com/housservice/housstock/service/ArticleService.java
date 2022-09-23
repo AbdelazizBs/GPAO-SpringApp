@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.dto.ArticleDto;
@@ -19,6 +20,8 @@ public interface ArticleService {
 	public List<String> getDesignationArticleCient(String idClient) throws ResourceNotFoundException;
 	public List<String>  getRefIrisAndClientAndIdArticle(String designation) throws ResourceNotFoundException;
 	public String getIdArticleWithDesignation(String designation) throws ResourceNotFoundException;
+	public List<EtapeProduction> getTargetEtapesArticle(String idArticle) throws ResourceNotFoundException;
+    public List<Article> getArticleEnveille();
 
     public ArticleDto getArticleById(String id);
 	

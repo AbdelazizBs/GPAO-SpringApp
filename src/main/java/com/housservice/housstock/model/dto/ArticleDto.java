@@ -43,6 +43,7 @@ public class ArticleDto {
 	private String refClient ;
 	private String raisonSocial ;
 	private String prix ;
+	private int miseEnVeille;
 
 	private Picture picture ;
 

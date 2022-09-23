@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/machine")
 @Api(tags = {"Machines Management"})
 public class MachineController {
 		
@@ -45,7 +45,7 @@ public class MachineController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
-	  @GetMapping("/machine")
+	  @GetMapping("/getAllMachine")
 	  public List< MachineDto> getAllMachine() {
 			
 		return machineService.findMachineActif();
@@ -81,7 +81,7 @@ public class MachineController {
 		      return ResponseEntity.ok().body(machine);
 		  }
 	
-		  @PutMapping("/machine")
+		  @PutMapping("/addMachine")
 		  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) {
 			  
 			  machineService.createNewMachine(machineDto);
@@ -109,5 +109,49 @@ public class MachineController {
 		      machineService.deleteMachine(machineId);
 			  return ResponseEntity.noContent().build();
 		  }
+
+	@PutMapping("/setEtatEnmarche/{idMachine}")
+	public ResponseEntity <String> setEtatEnmarche(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnmarche(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
+
+	@PutMapping("/setEtatEnPause/{idMachine}")
+	public ResponseEntity <String> setEtatEnPause(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnPause(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}	@PutMapping("/setEtatEnRepos/{idMachine}")
+	public ResponseEntity <String> setEtatEnRepos(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnRepos(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}	@PutMapping("/setEtatEnMaintenance/{idMachine}")
+	public ResponseEntity <String> setEtatEnMaintenance(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnMaintenance(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}	@PutMapping("/setEtatEnPanne/{idMachine}")
+	public ResponseEntity <String> setEtatEnPanne(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnPanne(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
 
 }

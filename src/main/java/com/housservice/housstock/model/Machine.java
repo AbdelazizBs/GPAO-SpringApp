@@ -1,6 +1,7 @@
 package com.housservice.housstock.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -35,6 +36,11 @@ public class Machine {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String libelle;
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private EtatMachine etatMachine;
 	
 	@NotBlank
 	@Size(max = 100)

@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.EtapeProduction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,6 +156,22 @@ public class ArticleController {
 			@Valid @RequestBody(required = true) List<EtapeProduction> productions) throws ResourceNotFoundException {
 		articleService.addEtapeToArticle(productions,idArticle);
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
+
+
+	@GetMapping("/getTargetEtapesArticle/{idArticle}")
+	@ApiOperation(value = "service to get id Article .")
+	public List<EtapeProduction>  getTargetEtapesArticle(
+			@ApiParam(name = "idArticle", value="idARTICLE of article", required = true)
+			@PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}") String idArticle)
+			throws ResourceNotFoundException {
+		return articleService.getTargetEtapesArticle(idArticle);
+	}
+
+
+	@GetMapping("/getArticleEnveille")
+	public List<Article> getArticleEnveille() {
+		return articleService.getArticleEnveille();
 	}
 	  
 }

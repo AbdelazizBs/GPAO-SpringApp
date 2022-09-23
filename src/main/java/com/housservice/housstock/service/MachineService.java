@@ -20,7 +20,12 @@ public interface MachineService {
     public void createNewMachine(@Valid MachineDto machineDto);
 	
     public void updateMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException;
-    
+    public void setEtatEnmarche(String idMachine) throws ResourceNotFoundException;
+    public void setEtatEnPause(String idMachine) throws ResourceNotFoundException;
+    public void setEtatEnRepos(String idMachine) throws ResourceNotFoundException;
+    public void setEtatEnMaintenance(String idMachine) throws ResourceNotFoundException;
+    public void setEtatEnPanne(String idMachine) throws ResourceNotFoundException;
+
     public void deleteMachine(String machineId);
 
 }

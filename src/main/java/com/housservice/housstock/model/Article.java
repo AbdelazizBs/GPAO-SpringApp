@@ -66,6 +66,7 @@ private  List<EtapeProduction> etapeProductions ;
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")	
 	private LocalDate dateCreationArticle = LocalDate.now();
-	
-	
+	private int miseEnVeille;
+
+
 }
