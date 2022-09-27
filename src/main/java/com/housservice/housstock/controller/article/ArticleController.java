@@ -60,7 +60,7 @@ public class ArticleController {
 		 }
 	
 	    
-	    @GetMapping("/article/{id}")
+	    @GetMapping("/getArticleById/{id}")
 		@ApiOperation(value = "service to get one Article by Id.")
 		  public ResponseEntity < ArticleDto > getArticleById(
 				  @ApiParam(name = "id", value="id of article", required = true)
@@ -109,7 +109,7 @@ public class ArticleController {
 		  }
 
 	    
-		  @DeleteMapping("/article/{id}")
+		  @DeleteMapping("/deleteArticle/{id}")
 		  @ApiOperation(value = "service to delete one Article by Id.")
 		  public Map < String, Boolean > deleteArticle(
 				  @ApiParam(name = "id", value="id of article", required = true)

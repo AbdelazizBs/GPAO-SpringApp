@@ -55,12 +55,12 @@ public class ComptesServiceImpl implements ComptesService {
 			
 		ComptesDto comptesDto = new ComptesDto();
 		comptesDto.setId(comptes.getId());
-		comptesDto.setRaisonSocial(comptes.getRaisonSocial());
-		comptesDto.setSiren(comptes.getSiren());
+		comptesDto.setEmail(comptes.getEmail());
+		comptesDto.setPassword(comptes.getPassword());
 		comptesDto.setIdEntreprise(comptes.getEntreprise().getId());
 		comptesDto.setRaisonSocialEntreprise(comptes.getEntreprise().getRaisonSocial());
-		comptesDto.setIdUtilisateur(comptes.getUtilisateur().getId());
-		comptesDto.setNomUtilisateur(comptes.getUtilisateur().getNom());
+//		comptesDto.setIdUtilisateur(comptes.getUtilisateur().getId());
+//		comptesDto.setNomUtilisateur(comptes.getUtilisateur().getNom());
 		
 		return comptesDto;
 		
@@ -72,14 +72,14 @@ public class ComptesServiceImpl implements ComptesService {
 		
 		comptes.setId(""+sequenceGeneratorService.generateSequence(Comptes.SEQUENCE_NAME));	
 		comptes.setId(comptesDto.getId());		
-		comptes.setRaisonSocial(comptesDto.getRaisonSocial());
-		comptes.setSiren(comptesDto.getSiren());
+		comptes.setEmail(comptesDto.getEmail());
+		comptes.setPassword(comptesDto.getPassword());
 
 		Entreprise etr =
 		entrepriseRepository.findById(comptesDto.getIdEntreprise()).get();
-		comptes.setEntreprise(etr); Utilisateur ut =
-		utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
-		comptes.setUtilisateur(ut);
+//		comptes.setEntreprise(etr); Utilisateur ut =
+//		utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
+//		comptes.setUtilisateur(ut);
 		
 		return comptes;
 	}
@@ -121,8 +121,8 @@ public class ComptesServiceImpl implements ComptesService {
 		Comptes comptes = comptesRepository.findById(comptesDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), comptesDto.getId())));
 		
-		comptes.setRaisonSocial(comptesDto.getRaisonSocial());
-		comptes.setSiren(comptesDto.getSiren());
+		comptes.setEmail(comptesDto.getEmail());
+		comptes.setPassword(comptesDto.getPassword());
 	
 		
 		  if(comptes.getEntreprise() == null ||!StringUtils.equals(comptesDto.getIdEntreprise(),comptes.getEntreprise().getId()))
@@ -130,10 +130,10 @@ public class ComptesServiceImpl implements ComptesService {
 			  Entreprise etr = entrepriseRepository.findById(comptesDto.getIdEntreprise()).get();
 			  comptes.setEntreprise(etr); }
 		  
-		  if(comptes.getUtilisateur() == null ||!StringUtils.equals(comptesDto.getIdUtilisateur(),comptes.getUtilisateur().getId()))
-		  {
-			  Utilisateur ut = utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
-		      comptes.setUtilisateur(ut); }
+//		  if(comptes.getUtilisateur() == null ||!StringUtils.equals(comptesDto.getIdUtilisateur(),comptes.getUtilisateur().getId()))
+//		  {
+//			  Utilisateur ut = utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
+//		      comptes.setUtilisateur(ut); }
 		 
 		comptesRepository.save(comptes);
 		

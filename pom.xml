@@ -46,7 +46,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20220924</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>5.7.3</version>
+		</dependency>
+
 		<dependency>
 		  <groupId>javax.validation</groupId>
 		  <artifactId>validation-api</artifactId>
@@ -75,19 +87,34 @@
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
-            <version>2.2.3</version>
+            <version>3.1.0</version>
         </dependency>
 
-        <!--  <dependency>
-           <groupId>org.springframework.boot</groupId>
-           <artifactId>spring-boot-starter-security</artifactId>
-       </dependency>
+		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
-       <dependency>
-           <groupId>org.springframework.security</groupId>
-           <artifactId>spring-security-test</artifactId>
-           <scope>test</scope>
-       </dependency> -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>5.7.3</version>
+		</dependency>
 
 	</dependencies>
 
