@@ -1,64 +1,17 @@
 package com.housservice.housstock.configuration;
 //
 //import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+//import org.springframework.web.servlet.config.annotation.CorsRegistry;
+//import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //
 //@Configuration
-//@EnableWebSecurity // (1)
-//public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // (1)
-//
+//@EnableWebMvc
+//public class WebSecurityConfig implements WebMvcConfigurer {
 //    @Override
-//    protected void configure(HttpSecurity http) throws Exception {  // (2)
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/", "/api/v1/article")
-//                .permitAll() // (3)
-////                .anyRequest().authenticated() // (4)
-////                .and()
-////                .authorizeRequests()
-////                .antMatchers("/", "/home")
-////                .permitAll() // (3)
-////
-////                .anyRequest().authenticated() // (4)
-////                .and()
-////                .authorizeRequests()
-////                .antMatchers("/", "/home")
-////                .permitAll() // (3)
-////                .anyRequest().authenticated() // (4)
-////                .and()
-////                .authorizeRequests()
-////                .antMatchers("/", "/home")
-////                .permitAll() // (3)
-////                .anyRequest().authenticated() // (4)
-////                .and()   .authorizeRequests()
-////                .antMatchers("/", "/home")
-////                .permitAll() // (3)
-////                .anyRequest().authenticated() // (4)
-////                .and()
-////                .authorizeRequests()
-////                .antMatchers("/", "/home")
-////                .permitAll() // (3)
-////                .anyRequest().authenticated() // (4)
-////                .and()
-////                .authorizeRequests()
-////                .antMatchers("/", "/home")
-////                .permitAll() // (3)
-////                .anyRequest().authenticated() // (4)
-////                .and()
-////                .authorizeRequests()
-////                .antMatchers("/", "/home")
-////                .permitAll() // (3)
-//                .anyRequest().authenticated() // (4)
-//                .and()
-//                .formLogin() // (5)
-//                .loginPage("/login") // (5)
-//                .permitAll()
-//                .and()
-//                .logout() // (6)
-//                .permitAll()
-//                .and()
-//                .httpBasic(); // (7)
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/api/v1/**")
+//                .allowedOrigins("*")
+//                .allowedMethods("GET","POST","PUT" ,"OPTIONS");
 //    }
 //}
