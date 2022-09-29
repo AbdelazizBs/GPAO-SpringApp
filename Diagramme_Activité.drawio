@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-09-29T10:21:53.314Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="3VWHmvC5Bq7g7bkCZMIQ" version="20.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2022-09-29T10:22:19.154Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="ED8T-Fb7E9r2_oZtuLs9" version="20.3.7" type="gitlab">
   <diagram name="Page-1" id="0783ab3e-0a74-02c8-0abd-f7b4e66b4bec">
     <mxGraphModel dx="2628" dy="2103" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
       <root>
@@ -127,7 +127,7 @@
           <mxGeometry x="62" y="280" width="150" height="40" as="geometry" />
         </mxCell>
         <mxCell id="vng6xJ7LsZXrnbO5BIpu-127" value="Traiter la commande" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;arcSize=50;" vertex="1" parent="rXU0wnX43YHr5uZH1frn-1">
-          <mxGeometry x="134.5" y="93" width="100" height="30" as="geometry" />
+          <mxGeometry x="80" y="90" width="114.5" height="33" as="geometry" />
         </mxCell>
         <mxCell id="vng6xJ7LsZXrnbO5BIpu-67" value="Planifier les&amp;nbsp;&lt;b&gt;OF&lt;/b&gt;s" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;arcSize=50;" vertex="1" parent="rXU0wnX43YHr5uZH1frn-1">
           <mxGeometry x="142" y="1088" width="142" height="50" as="geometry" />
