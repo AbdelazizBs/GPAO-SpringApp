@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-09-29T13:15:46.041Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="93Bh8GnWYEKKAtDVHamn" version="20.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2022-09-29T13:16:44.465Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="qpVeeHcaPMPYnjoINrZk" version="20.3.7" type="gitlab">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
-    <mxGraphModel dx="1422" dy="1902" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
+    <mxGraphModel dx="677" dy="1482" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -48,7 +48,12 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="FwX2CeR1oTPyir31EzKj-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.008;entryY=0.375;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="FwX2CeR1oTPyir31EzKj-6" target="FwX2CeR1oTPyir31EzKj-38">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="830" y="310" />
+              <mxPoint x="830" y="370" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="FwX2CeR1oTPyir31EzKj-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="FwX2CeR1oTPyir31EzKj-6" target="FwX2CeR1oTPyir31EzKj-39">
           <mxGeometry relative="1" as="geometry">
@@ -115,13 +120,13 @@
           <mxGeometry x="619" y="250" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="FwX2CeR1oTPyir31EzKj-37" value="Gérer les planning des OFs" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="614" y="540" width="120" height="80" as="geometry" />
+          <mxGeometry x="614" y="541" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="FwX2CeR1oTPyir31EzKj-38" value="Gérer les opérateurs" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="619" y="340" width="120" height="80" as="geometry" />
+          <mxGeometry x="616" y="340" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="FwX2CeR1oTPyir31EzKj-39" value="Gérer le rendement pour chaque opérateur par machine" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="614" y="440" width="136" height="80" as="geometry" />
+          <mxGeometry x="600" y="440" width="150" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
