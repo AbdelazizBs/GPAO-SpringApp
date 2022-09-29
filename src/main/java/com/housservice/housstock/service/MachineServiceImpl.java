@@ -61,7 +61,6 @@ public class MachineServiceImpl implements MachineService {
 		machineDto.setEtatMachine(machine.getEtatMachine());
 		machineDto.setNbrConducteur(machine.getNbrConducteur());
 		machineDto.setDateMaintenance(machine.getDateMaintenance());
-		machineDto.setIdEtapeProduction(machine.getEtapeProduction().getId());
 		machineDto.setNomEtapeProduction(machine.getEtapeProduction().getNomEtape());
 		
 		return machineDto;
@@ -93,6 +92,7 @@ public class MachineServiceImpl implements MachineService {
 		EtatMachine etatMachine = new EtatMachine("en repos",LocalDate.now(), LocalDate.of(2026,10,10),machine.getId());
 		etatMachineRepository.save(etatMachine);
 		machine.setEtatMachine(etatMachine);
+		machine.setEnVeille(false);
 		machineRepository.save(machine);
 	}
 	
@@ -101,10 +101,11 @@ public class MachineServiceImpl implements MachineService {
 		machine.setId(""+sequenceGeneratorService.generateSequence(Machine.SEQUENCE_NAME));	
 		machine.setReference(machineDto.getReference());		
 		machine.setLibelle(machineDto.getLibelle());
+		machine.setEnVeille(machineDto.getEnVeille());
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
 		machine.setEtatMachine(machineDto.getEtatMachine());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
-		EtapeProduction etape = etapeProductionRepository.findById(machineDto.getIdEtapeProduction()).get();
+		EtapeProduction etape = etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction());
 		machine.setEtapeProduction(etape);
 		return machine;
 		}
@@ -118,23 +119,21 @@ public class MachineServiceImpl implements MachineService {
 
 		machine.setReference(machineDto.getReference());		
 		machine.setLibelle(machineDto.getLibelle());
+		machine.setEnVeille(machineDto.getEnVeille());
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
 		machine.setEtatMachine(machineDto.getEtatMachine());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
-		if ( machine.getEtapeProduction() == null || !StringUtils.equals(machineDto.getIdEtapeProduction(), machine.getEtapeProduction().getId()) )
-		{
-			EtapeProduction etape = etapeProductionRepository.findById(machineDto.getIdEtapeProduction()).get();
-			machine.setEtapeProduction(etape);
-		}
-	
+		machine.setEnVeille(machineDto.getEnVeille());
+	machine.setEtapeProduction(etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction()));
+
 		machineRepository.save(machine);
-		
+
 	}
 
+
 	@Override
-	public List<MachineDto> findMachineActif() {
-		List<Machine> listMachine = machineRepository.findMachineActif();
-		
+	public List<MachineDto> getAllMachine() {
+		List<Machine> listMachine = machineRepository.findByEnVeille(false);
 		return listMachine.stream()
 				.map(machine -> buildMachineDtoFromMachine(machine))
 				.filter(machine -> machine != null)
@@ -144,9 +143,8 @@ public class MachineServiceImpl implements MachineService {
 
 
 	@Override
-	public List<MachineDto> findMachineNotActif() {
-		 List<Machine> listMachine = machineRepository.findMachineNotActif();
-			
+	public List<MachineDto> getMachineEnVeille() {
+		 List<Machine> listMachine = machineRepository.findByEnVeille(true);
 			return listMachine.stream()
 					.map(machine -> buildMachineDtoFromMachine(machine))
 					.filter(machine -> machine != null)
@@ -173,6 +171,15 @@ public class MachineServiceImpl implements MachineService {
 //		machine.setEtat("En panne");
 //		return MachineMapper.MAPPER.toMachineDTO(machineRepository.save(machine));
 //	}
+
+	@Override
+	public void setMachineEnVeille(final String idMachine) throws ResourceNotFoundException {
+		final Machine machine = machineRepository.findById(idMachine)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			machine.setEnVeille(true);
+		  machineRepository.save(machine);
+	}
+
 
 	@Override
 	public void setEtatEnmarche(final String idMachine) throws ResourceNotFoundException {

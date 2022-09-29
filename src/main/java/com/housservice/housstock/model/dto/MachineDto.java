@@ -1,6 +1,7 @@
 package com.housservice.housstock.model.dto;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.Size;
@@ -39,11 +40,10 @@ public class MachineDto {
 	private int nbrConducteur;
 	
 	@JsonFormat(pattern="yyyy-MM-dd")	
-	private LocalDate dateMaintenance;
+	private Date dateMaintenance;
 		
-	private String idEtapeProduction;
 	private EtatMachine etatMachine;
-
+private Boolean enVeille ;
 	private String nomEtapeProduction;
     
 }

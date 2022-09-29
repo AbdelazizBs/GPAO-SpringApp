@@ -58,8 +58,16 @@ public class ArticleController {
 			 return articleService.getAllArticle();
 			 	 
 		 }
-	
-	    
+
+	@PutMapping("/setArticleEnVeille/{idArticle}")
+	public ResponseEntity <String> setArticleEnVeille(
+			@ApiParam(name = "idArticle", value="id of machine", required = true)
+			@PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}")  String idArticle) throws ResourceNotFoundException {
+
+		articleService.setArticleEnVeille(idArticle);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
 	    @GetMapping("/getArticleById/{id}")
 		@ApiOperation(value = "service to get one Article by Id.")
 		  public ResponseEntity < ArticleDto > getArticleById(
@@ -81,7 +89,7 @@ public class ArticleController {
 													  final  String idClient,
 													  final  String refClient,
 													  final  String raisonSocial,
-													  final  String prix
+													  final  Double prix
 				, MultipartFile picture) throws ResourceNotFoundException, IOException {
 			  
 	    	  articleService.createNewArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,picture);
@@ -92,7 +100,7 @@ public class ArticleController {
 		  public ResponseEntity <String> updateArticle(
 				  @ApiParam(name = "id", value="id of article", required = true)
 				  @PathVariable(value = "articleId", required = true) @NotEmpty(message = "{http.error.0001}")
-				  String articleId,
+				  final  String articleId,
 				  final  String referenceIris,
 				  final  String numFicheTechnique,
 				  final  String designation,
@@ -100,7 +108,7 @@ public class ArticleController {
 				  final  String idClient,
 				  final  String refClient,
 				  final  String raisonSocial,
-				  final  String prix,
+				  final  Double prix,
 				  MultipartFile file) throws ResourceNotFoundException, IOException {
 			  
 	    	  articleService.updateArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,articleId,file);

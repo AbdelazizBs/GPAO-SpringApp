@@ -68,6 +68,15 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 				.collect(Collectors.toList());
 		
 	}
+
+	@Override
+	public List<String> getNomEtapes() {
+		List<EtapeProduction> listEtapeProduction = etapeProductionRepository.findAll();
+		return listEtapeProduction.stream().map(EtapeProduction::getNomEtape)
+				.collect(Collectors.toList());
+
+
+	}
 	
 	@Override
 	public Optional<EtapeProduction> getEtapeProductionById(String etapeProductionId) {

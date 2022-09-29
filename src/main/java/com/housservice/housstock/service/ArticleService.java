@@ -17,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ArticleService {
 	
 	public List<ArticleDto> getAllArticle();
-	public List<String> getDesignationArticleCient(String idClient) throws ResourceNotFoundException;
+    public void setArticleEnVeille(String idMachine) throws ResourceNotFoundException;
+
+    public List<String> getDesignationArticleCient(String idClient) throws ResourceNotFoundException;
 	public List<String>  getRefIrisAndClientAndIdArticle(String designation) throws ResourceNotFoundException;
 	public String getIdArticleWithDesignation(String designation) throws ResourceNotFoundException;
 	public List<EtapeProduction> getTargetEtapesArticle(String idArticle) throws ResourceNotFoundException;
@@ -34,7 +36,7 @@ public interface ArticleService {
                                  String idClient,
                                  String refClient,
                                  String raisonSocial,
-                                 String prix, MultipartFile file) throws ResourceNotFoundException, IOException;
+                                 Double prix, MultipartFile file) throws ResourceNotFoundException, IOException;
 	
     public void updateArticle(String referenceIris,
                               String numFicheTechnique,
@@ -43,7 +45,7 @@ public interface ArticleService {
                               String idClient,
                               String refClient,
                               String raisonSocial,
-                              String prix,
+                              Double prix,
                               String id,MultipartFile file) throws ResourceNotFoundException, IOException;
     public void addEtapeToArticle(@Valid List<EtapeProduction> etapeProductions, String idArticle ) throws ResourceNotFoundException;
 

@@ -52,6 +52,12 @@ public class EtapeProductionController {
 		 return etapeProductionService.getAllEtapeProduction();
 	 
 	 }
+
+	 @GetMapping("/getNomEtapes")
+	 public List< String > getNomEtapes() {
+		 return etapeProductionService.getNomEtapes();
+
+	 }
 	 
 
 	  @GetMapping("/etapeProduction/{id}")

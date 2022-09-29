@@ -47,7 +47,7 @@ public class MachineController {
 	  @GetMapping("/getAllMachine")
 	  public List< MachineDto> getAllMachine() {
 			
-		return machineService.findMachineActif();
+		return machineService.getAllMachine();
 			
 		}
 
@@ -62,9 +62,9 @@ public class MachineController {
 		 * }
 		 */
 	 
-		 @GetMapping("/machineEnVeille")
+		 @GetMapping("/getMachineEnVeille")
 		 public List< MachineDto > getMachineEnVeille() {
-			 return machineService.findMachineNotActif();
+			 return machineService.getMachineEnVeille();
 			 
 		 }
 	
@@ -89,7 +89,7 @@ public class MachineController {
 		
 		  }
 		  
-		  @PutMapping("/machine/{id}")
+		  @PutMapping("/updateMachine/{id}")
 		  public ResponseEntity <String> updateMachine(
 				  @ApiParam(name = "id", value="id of machine", required = true)
 				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String machineId,
@@ -109,6 +109,15 @@ public class MachineController {
 			  return ResponseEntity.noContent().build();
 		  }
 
+	@PutMapping("/setMachineEnVeille/{idMachine}")
+	public ResponseEntity <String> setMachineEnVeille(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setMachineEnVeille(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
 	@PutMapping("/setEtatEnmarche/{idMachine}")
 	public ResponseEntity <String> setEtatEnmarche(
 			@ApiParam(name = "idMachine", value="id of machine", required = true)

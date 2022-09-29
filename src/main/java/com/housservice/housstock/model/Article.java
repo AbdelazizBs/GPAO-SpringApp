@@ -40,7 +40,7 @@ public class Article{
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String prix;
+	private Double prix;
 	
 	@NotBlank
 	@Size(max = 100)

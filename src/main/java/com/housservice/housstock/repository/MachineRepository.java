@@ -9,9 +9,6 @@ import com.housservice.housstock.model.Machine;
 
 public interface MachineRepository extends MongoRepository<Machine, String> {
 
-	   @Query("{ 'MiseEnVeille' : { $ne: 1}}")
-	    List<Machine> findMachineActif();
-	
-	    @Query("{ 'MiseEnVeille' : 1}")
-	    List<Machine> findMachineNotActif();
+	List<Machine> findByEnVeille(Boolean aBoolean) ;
+
 }

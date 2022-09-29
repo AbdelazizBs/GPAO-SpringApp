@@ -102,13 +102,19 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Override
 	public List<ArticleDto> getAllArticle() {
-		
-		List<Article> listArticle = articleRepository.findAll();
-		
+		List<Article> listArticle = articleRepository.findArticleByMiseEnVeille(0);
 		return listArticle.stream()
 				.map(article -> buildArticleDtoFromArticle(article))
 				.filter(article -> article != null)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void setArticleEnVeille(final String idArticle) throws ResourceNotFoundException {
+		final Article article = articleRepository.findById(idArticle)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idArticle)));
+		article.setMiseEnVeille(1);
+		articleRepository.save(article);
 	}
 	@Override
 	public List<String> getDesignationArticleCient(String idClient) throws ResourceNotFoundException  {
@@ -150,7 +156,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	@Override
 	public List<Article> getArticleEnveille() {
-		return articleRepository.finArticleEnVeille();
+		return articleRepository.findArticleByMiseEnVeille(1);
 	}
 	public static byte[] compressBytes(byte[] data) {
 		Deflater deflater = new Deflater();
@@ -180,7 +186,7 @@ public class ArticleServiceImpl implements ArticleService{
 								 String idClient,
 								 String refClient,
 								 String raisonSocial,
-								 String prix,
+								 Double prix,
 								 MultipartFile file) throws ResourceNotFoundException, IOException {
 		ArticleDto articleDto = new ArticleDto();
 		final Picture fileDBB = new Picture(file.getOriginalFilename(), file.getBytes(),file.getContentType());
@@ -197,7 +203,7 @@ public class ArticleServiceImpl implements ArticleService{
 	List<EtapeProduction> productions = new ArrayList<>();
 	articleDto.setEtapeProductions(productions);
 	articleDto.setNumFicheTechnique(numFicheTechnique);
-
+	articleDto.setMiseEnVeille(0);
 		articleRepository.save(buildArticleFromArticleDto(articleDto));
 		
 	}
@@ -210,7 +216,7 @@ public class ArticleServiceImpl implements ArticleService{
 							  String idClient,
 							  String refClient,
 							  String raisonSocial,
-							  String prix,
+							  Double prix,
 							  String id,
 							  MultipartFile file) throws ResourceNotFoundException, IOException {
 		Article article = articleRepository.findById(id)
@@ -226,14 +232,15 @@ public class ArticleServiceImpl implements ArticleService{
 			pictureRepository.save(fileDBB);
 			article.setPicture(fileDBB);
 		}
+		Client client = clientRepository.findById(idClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
 		article.setReferenceIris(referenceIris);
 		article.setNumFicheTechnique(numFicheTechnique);
 		article.setDesignation(designation);
 		article.setPrix(prix);
 		article.setMiseEnVeille(1);
-		article.setPrix(idClient);
-		article.setPrix(refClient);
-		article.setPrix(raisonSocial);
+		article.setClient(client);
+		article.setRefClient(refClient);
 		article.setTypeProduit(typeProduit);
 	
 		articleRepository.save(article);
