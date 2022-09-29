@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-09-29T09:48:41.488Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="RFF1xGO2lAJ0E3Kd_der" version="20.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2022-09-29T10:05:20.510Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="5TXLkxbelEG8Vlc2gbax" version="20.3.7" type="gitlab">
   <diagram name="Page-1" id="0783ab3e-0a74-02c8-0abd-f7b4e66b4bec">
     <mxGraphModel dx="2628" dy="2103" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
       <root>
@@ -135,7 +135,7 @@
         <mxCell id="vng6xJ7LsZXrnbO5BIpu-124" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="rXU0wnX43YHr5uZH1frn-1" source="rXU0wnX43YHr5uZH1frn-139" target="vng6xJ7LsZXrnbO5BIpu-65">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="rXU0wnX43YHr5uZH1frn-139" value="Préparer un&amp;nbsp; ordre de fabrication &lt;b&gt;OF&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;arcSize=50;" parent="rXU0wnX43YHr5uZH1frn-1" vertex="1">
+        <mxCell id="rXU0wnX43YHr5uZH1frn-139" value="Préparer les&amp;nbsp; ordres de fabrication &lt;b&gt;OF&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;arcSize=50;" parent="rXU0wnX43YHr5uZH1frn-1" vertex="1">
           <mxGeometry x="113.5" y="810" width="142" height="50" as="geometry" />
         </mxCell>
         <mxCell id="rXU0wnX43YHr5uZH1frn-133" value="Définir la quantité à produire" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12;align=center;arcSize=50;" parent="rXU0wnX43YHr5uZH1frn-1" vertex="1">
