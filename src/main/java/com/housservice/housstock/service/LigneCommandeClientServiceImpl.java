@@ -62,6 +62,7 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 		ligneCommandeClientDto.setDesignationArticle(ligneCommandeClient.getArticle().getDesignation());
 		ligneCommandeClientDto.setIdCommandeClient(ligneCommandeClient.getCommandeClient().getId());
 		ligneCommandeClientDto.setNumCmdClient(ligneCommandeClient.getCommandeClient().getNumCmd());
+		ligneCommandeClientDto.setRefIris(ligneCommandeClient.getArticle().getReferenceIris());
 		ligneCommandeClientDto.setDelai(ligneCommandeClient.getDelai());
 
 		return ligneCommandeClientDto;
@@ -91,6 +92,15 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 		return listLigneCommandeClient.stream()
 				.map(ligneCommandeClient -> buildLigneCommandeClientDtoFromLigneCommandeClient(ligneCommandeClient))
 				.filter(ligneCommandeClient -> ligneCommandeClient != null)
+				.collect(Collectors.toList());
+	}
+	@Override
+	public List<LigneCommandeClientDto> getAllLigneCommandeClientFermer() {
+		List<LigneCommandeClient> listLigneCommandeClient = ligneCommandeClientRepository.findAll();
+
+		return listLigneCommandeClient.stream()
+				.filter(ligneCommandeClient -> ligneCommandeClient != null && ligneCommandeClient.getCommandeClient().getEtat().equals("Fermer"))
+				.map(ligneCommandeClient -> buildLigneCommandeClientDtoFromLigneCommandeClient(ligneCommandeClient))
 				.collect(Collectors.toList());
 	}
 

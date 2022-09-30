@@ -31,6 +31,7 @@ public class LigneCommandeClientDto {
 	private String idCommandeClient;
 	
 	private String numCmdClient;
+	private String refIris;
 
 
 	private Date delai;

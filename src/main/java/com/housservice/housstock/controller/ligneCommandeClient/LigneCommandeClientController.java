@@ -52,6 +52,13 @@ public class LigneCommandeClientController {
 		 return ligneCommandeClientService.getAllLigneCommandeClient();
 		 	 
 	 }
+
+    @GetMapping("/getAllLigneCommandeClientFermer")
+	 public List< LigneCommandeClientDto > getAllLigneCommandeClientFermer() {
+
+		 return ligneCommandeClientService.getAllLigneCommandeClientFermer();
+
+	 }
 	@GetMapping("/getLignCmdByIdCmd/{idCmd}")
 	public List<LigneCommandeClient> getLignCmdByIdCmd(
 			@PathVariable(value = "idCmd") final String idCmd) throws ResourceNotFoundException {

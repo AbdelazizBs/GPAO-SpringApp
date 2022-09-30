@@ -11,7 +11,8 @@ import com.housservice.housstock.model.dto.LigneCommandeClientDto;
 public interface LigneCommandeClientService {
 
 	public List<LigneCommandeClientDto> getAllLigneCommandeClient();
-	
+	public List<LigneCommandeClientDto> getAllLigneCommandeClientFermer();
+
     public LigneCommandeClientDto getLigneCommandeClientById(String id);
     public List<LigneCommandeClient> getLignCmdByIdCmd(String idCmd) throws ResourceNotFoundException;
 
