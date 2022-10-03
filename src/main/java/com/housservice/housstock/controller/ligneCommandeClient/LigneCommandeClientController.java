@@ -1,5 +1,6 @@
 package com.housservice.housstock.controller.ligneCommandeClient;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.housservice.housstock.model.LigneCommandeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +31,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/ligneCommandeClient")
 @Api(tags = {"Ligne Commande Client Management"})
 public class LigneCommandeClientController {
 	
@@ -44,15 +46,26 @@ public class LigneCommandeClientController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
-    @GetMapping("/ligneCommandeClient")
+    @GetMapping("/getAllLigneCommandeClient")
 	 public List< LigneCommandeClientDto > getAllLigneCommandeClient() {
 		 		
 		 return ligneCommandeClientService.getAllLigneCommandeClient();
 		 	 
 	 }
 
+    @GetMapping("/getAllLigneCommandeClientFermer")
+	 public List< LigneCommandeClientDto > getAllLigneCommandeClientFermer() {
+
+		 return ligneCommandeClientService.getAllLigneCommandeClientFermer();
+
+	 }
+	@GetMapping("/getLignCmdByIdCmd/{idCmd}")
+	public List<LigneCommandeClient> getLignCmdByIdCmd(
+			@PathVariable(value = "idCmd") final String idCmd) throws ResourceNotFoundException {
+		return ligneCommandeClientService.getLignCmdByIdCmd(idCmd);
+	}
     
-    @GetMapping("/ligneCommandeClient/{id}")
+		@GetMapping("/getLigneCommandeClientById/{id}")
 	  @ApiOperation(value = "service to get one LigneCommandeClient by Id.")
 	  public ResponseEntity < LigneCommandeClientDto > getLigneCommandeClientById(
 			  @ApiParam(name = "id", value="id of ligneCommandeClient", required = true)
@@ -65,14 +78,14 @@ public class LigneCommandeClientController {
 	      return ResponseEntity.ok().body(ligneCommandeClient);
 	  }
     
-    @PutMapping("/ligneCommandeClient")
-	  public ResponseEntity<String> createLigneCommandeClient(@Valid @RequestBody LigneCommandeClientDto ligneCommandeClientDto) {
+    @PutMapping("/createLigneCommandeClient")
+	  public ResponseEntity<String> createLigneCommandeClient(@Valid @RequestBody LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
 		  
     	  ligneCommandeClientService.createNewLigneCommandeClient(ligneCommandeClientDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
     
-    @PutMapping("/ligneCommandeClient/{id}")
+    @PutMapping("/updateLigneCommandeClient/{id}")
 	  public ResponseEntity <String> updateLigneCommandeClient(
 			  @ApiParam(name = "id", value="id of ligneCommandeClient", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String ligneCommandeClientId,
@@ -84,11 +97,11 @@ public class LigneCommandeClientController {
 	  }
 
      
-	  @DeleteMapping("/ligneCommandeClient/{id}")
+	  @DeleteMapping("/deleteLigneCmd/{ligneCommandeClientId}")
 	  @ApiOperation(value = "service to delete one LigneCommandeClient by Id.")
 	  public Map < String, Boolean > deleteLigneCommandeClient(
 			  @ApiParam(name = "id", value="id of ligneCommandeClient", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String ligneCommandeClientId) {
+			  @PathVariable(value = "ligneCommandeClientId", required = true) @NotEmpty(message = "{http.error.0001}") String ligneCommandeClientId) throws ResourceNotFoundException {
 
 		  ligneCommandeClientService.deleteLigneCommandeClient(ligneCommandeClientId);
 	      Map < String, Boolean > response = new HashMap < > ();

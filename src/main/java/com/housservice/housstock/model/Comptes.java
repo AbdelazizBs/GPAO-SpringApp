@@ -1,5 +1,6 @@
 package com.housservice.housstock.model;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -30,15 +31,15 @@ public class Comptes {
     @NotBlank
     @Size(max = 100)
     @Indexed(unique = true)
-    private String raisonSocial;
+    private String email;
     
     @NotBlank
     @Size(max = 100)
     @Indexed(unique = true)
-    private String siren;
+    private String password;
     
 	private Entreprise entreprise;
 	
-	private Utilisateur utilisateur;
+//	private Utilisateur utilisateur;
     
 }

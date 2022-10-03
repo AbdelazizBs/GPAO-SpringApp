@@ -1,12 +1,16 @@
 package com.housservice.housstock.service;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.housservice.housstock.model.EtatMachine;
+import com.housservice.housstock.repository.EtatMachineRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,15 +34,17 @@ public class MachineServiceImpl implements MachineService {
 	private SequenceGeneratorService sequenceGeneratorService;
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
-	
+	final
+	EtatMachineRepository etatMachineRepository;
 
 	@Autowired
 	public MachineServiceImpl(MachineRepository machineRepository, SequenceGeneratorService sequenceGeneratorService,
-									MessageHttpErrorProperties messageHttpErrorProperties, EtapeProductionRepository etapeProductionRepository) {
+							  MessageHttpErrorProperties messageHttpErrorProperties, EtapeProductionRepository etapeProductionRepository, EtatMachineRepository etatMachineRepository) {
 		this.machineRepository = machineRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.etapeProductionRepository = etapeProductionRepository;
+		this.etatMachineRepository = etatMachineRepository;
 	}
 	
 	
@@ -52,9 +58,9 @@ public class MachineServiceImpl implements MachineService {
 		machineDto.setId(machine.getId());	
 		machineDto.setReference(machine.getReference());		
 		machineDto.setLibelle(machine.getLibelle());
+		machineDto.setEtatMachine(machine.getEtatMachine());
 		machineDto.setNbrConducteur(machine.getNbrConducteur());
 		machineDto.setDateMaintenance(machine.getDateMaintenance());
-		machineDto.setIdEtapeProduction(machine.getEtapeProduction().getId());
 		machineDto.setNomEtapeProduction(machine.getEtapeProduction().getNomEtape());
 		
 		return machineDto;
@@ -72,14 +78,22 @@ public class MachineServiceImpl implements MachineService {
 
 	
 	@Override
-	public void deleteMachine(String machineId) {
+	public void deleteMachine(final String machineId) {
 		machineRepository.deleteById(machineId);
 	}
 
+
+	// delay to update methode is the static LocalDate For EtatMachine
+
+
 	@Override
 	public void createNewMachine(@Valid MachineDto machineDto) {
-		
-		machineRepository.save(buildMachineFromMachineDto(machineDto));
+		Machine machine =machineRepository.save(buildMachineFromMachineDto(machineDto));
+		EtatMachine etatMachine = new EtatMachine("en repos",LocalDate.now(), LocalDate.of(2026,10,10),machine.getId());
+		etatMachineRepository.save(etatMachine);
+		machine.setEtatMachine(etatMachine);
+		machine.setEnVeille(false);
+		machineRepository.save(machine);
 	}
 	
 	private Machine buildMachineFromMachineDto(MachineDto machineDto) {
@@ -87,9 +101,11 @@ public class MachineServiceImpl implements MachineService {
 		machine.setId(""+sequenceGeneratorService.generateSequence(Machine.SEQUENCE_NAME));	
 		machine.setReference(machineDto.getReference());		
 		machine.setLibelle(machineDto.getLibelle());
+		machine.setEnVeille(machineDto.getEnVeille());
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
+		machine.setEtatMachine(machineDto.getEtatMachine());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
-		EtapeProduction etape = etapeProductionRepository.findById(machineDto.getIdEtapeProduction()).get();
+		EtapeProduction etape = etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction());
 		machine.setEtapeProduction(etape);
 		return machine;
 		}
@@ -103,22 +119,21 @@ public class MachineServiceImpl implements MachineService {
 
 		machine.setReference(machineDto.getReference());		
 		machine.setLibelle(machineDto.getLibelle());
+		machine.setEnVeille(machineDto.getEnVeille());
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
+		machine.setEtatMachine(machineDto.getEtatMachine());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
-		if ( machine.getEtapeProduction() == null || !StringUtils.equals(machineDto.getIdEtapeProduction(), machine.getEtapeProduction().getId()) )
-		{
-			EtapeProduction etape = etapeProductionRepository.findById(machineDto.getIdEtapeProduction()).get();
-			machine.setEtapeProduction(etape);
-		}
-	
+		machine.setEnVeille(machineDto.getEnVeille());
+	machine.setEtapeProduction(etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction()));
+
 		machineRepository.save(machine);
-		
+
 	}
 
+
 	@Override
-	public List<MachineDto> findMachineActif() {
-		List<Machine> listMachine = machineRepository.findMachineActif();
-		
+	public List<MachineDto> getAllMachine() {
+		List<Machine> listMachine = machineRepository.findByEnVeille(false);
 		return listMachine.stream()
 				.map(machine -> buildMachineDtoFromMachine(machine))
 				.filter(machine -> machine != null)
@@ -128,14 +143,106 @@ public class MachineServiceImpl implements MachineService {
 
 
 	@Override
-	public List<MachineDto> findMachineNotActif() {
-		 List<Machine> listMachine = machineRepository.findMachineNotActif();
-			
+	public List<MachineDto> getMachineEnVeille() {
+		 List<Machine> listMachine = machineRepository.findByEnVeille(true);
 			return listMachine.stream()
 					.map(machine -> buildMachineDtoFromMachine(machine))
 					.filter(machine -> machine != null)
 					.collect(Collectors.toList());
 					
+	}
+
+//	public MachineDto setEtatEnRepos(final String idMachine) throws ResourceNotFoundException {
+//		final Machine machine = machineRepository.findById(idMachine)
+//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+//
+//		machine.setEtat("En repos");
+//		return MachineMapper.MAPPER.toMachineDTO(machineRepository.save(machine));
+//	}
+//	public MachineDto setEtatEnMaintenance(final String idMachine) throws ResourceNotFoundException {
+//		final Machine machine = machineRepository.findById(idMachine)
+//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+//		machine.setEtat("En Maintenance");
+//		return MachineMapper.MAPPER.toMachineDTO(machineRepository.save(machine));
+//	}
+//	public MachineDto setEtatEnPanne(final String idMachine) throws ResourceNotFoundException {
+//		final Machine machine = machineRepository.findById(idMachine)
+//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+//		machine.setEtat("En panne");
+//		return MachineMapper.MAPPER.toMachineDTO(machineRepository.save(machine));
+//	}
+
+	@Override
+	public void setMachineEnVeille(final String idMachine) throws ResourceNotFoundException {
+		final Machine machine = machineRepository.findById(idMachine)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			machine.setEnVeille(true);
+		  machineRepository.save(machine);
+	}
+
+
+	@Override
+	public void setEtatEnmarche(final String idMachine) throws ResourceNotFoundException {
+		final Machine machine = machineRepository.findById(idMachine)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			etatMachineActuelle.setDateFin(LocalDate.now());
+			etatMachineRepository.save(etatMachineActuelle);
+		EtatMachine etatMachineEnMarche = new EtatMachine("en marche",LocalDate.now(), LocalDate.of(2026,10,10),idMachine);
+		machine.setEtatMachine(etatMachineEnMarche);
+		etatMachineRepository.save(etatMachineEnMarche);
+		  machineRepository.save(machine);
+	}
+
+	@Override
+	public void setEtatEnPause(final String idMachine) throws ResourceNotFoundException {
+		final Machine machine = machineRepository.findById(idMachine)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			etatMachineActuelle.setDateFin(LocalDate.now());
+			etatMachineRepository.save(etatMachineActuelle);
+		EtatMachine etatMachineEnMarche = new EtatMachine("en pause",LocalDate.now(), LocalDate.of(2026,10,10),idMachine);
+		machine.setEtatMachine(etatMachineEnMarche);
+		etatMachineRepository.save(etatMachineEnMarche);
+		  machineRepository.save(machine);
+	}	@Override
+	public void setEtatEnRepos(final String idMachine) throws ResourceNotFoundException {
+		final Machine machine = machineRepository.findById(idMachine)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			etatMachineActuelle.setDateFin(LocalDate.now());
+			etatMachineRepository.save(etatMachineActuelle);
+		EtatMachine etatMachineEnMarche = new EtatMachine("en repos",LocalDate.now(), LocalDate.of(2026,10,10),idMachine);
+		machine.setEtatMachine(etatMachineEnMarche);
+		etatMachineRepository.save(etatMachineEnMarche);
+		  machineRepository.save(machine);
+	}	@Override
+	public void setEtatEnMaintenance(final String idMachine) throws ResourceNotFoundException {
+		final Machine machine = machineRepository.findById(idMachine)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			etatMachineActuelle.setDateFin(LocalDate.now());
+			etatMachineRepository.save(etatMachineActuelle);
+		EtatMachine etatMachineEnMarche = new EtatMachine("en maintenance",LocalDate.now(), LocalDate.of(2026,10,10),idMachine);
+		machine.setEtatMachine(etatMachineEnMarche);
+		etatMachineRepository.save(etatMachineEnMarche);
+		  machineRepository.save(machine);
+	}	@Override
+	public void setEtatEnPanne(final String idMachine) throws ResourceNotFoundException {
+		final Machine machine = machineRepository.findById(idMachine)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
+			etatMachineActuelle.setDateFin(LocalDate.now());
+			etatMachineRepository.save(etatMachineActuelle);
+		EtatMachine etatMachineEnMarche = new EtatMachine("en panne",LocalDate.now(), LocalDate.of(2026,10,10),idMachine);
+		machine.setEtatMachine(etatMachineEnMarche);
+		etatMachineRepository.save(etatMachineEnMarche);
+		  machineRepository.save(machine);
 	}
 
 

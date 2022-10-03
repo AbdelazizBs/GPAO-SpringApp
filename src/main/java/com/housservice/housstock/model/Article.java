@@ -1,6 +1,7 @@
 package com.housservice.housstock.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -35,6 +36,11 @@ public class Article{
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String numFicheTechnique;
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private Double prix;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -46,12 +52,21 @@ public class Article{
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String typeProduit;
-	
+
+		private Client client ;
+	private String refClient ;
+
+private  Picture picture ;
+
+private  List<EtapeProduction> etapeProductions ;
+
+
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")	
 	private LocalDate dateCreationArticle = LocalDate.now();
-	
-	
+	private int miseEnVeille;
+
+
 }

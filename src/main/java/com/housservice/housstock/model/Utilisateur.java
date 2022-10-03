@@ -2,6 +2,7 @@ package com.housservice.housstock.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -42,7 +43,7 @@ public class Utilisateur {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate dateDeNaissance;
+	private Date dateDeNaissance;
 
 	
 	@NotBlank
@@ -56,13 +57,13 @@ public class Utilisateur {
 	private String photo;
 	
 
-	private Entreprise entreprise;
+//	private Entreprise entreprise;
 	
 	
 	private Comptes compte;
 	
 	
-	private List<Roles> role = new ArrayList<>();
+	private List<Roles> roles = new ArrayList<>();
 		
 
 }

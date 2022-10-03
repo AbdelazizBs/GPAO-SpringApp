@@ -28,6 +28,5 @@ public class Roles{
 	private String nom;
 
 
-	private Utilisateur utilisateur;
-	
+
 }

@@ -1,10 +1,13 @@
 package com.housservice.housstock.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -26,15 +29,17 @@ public class LigneCommandeClient{
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private BigDecimal quantite;
+	private String quantite;
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private BigDecimal prixUnitaire;
+	private String prixUnitaire;
 	
 	private Article article;
 	
 	private CommandeClient commandeClient;
-	
+
+	private Date delai;
+
 }

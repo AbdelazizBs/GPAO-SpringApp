@@ -1,7 +1,12 @@
 package com.housservice.housstock.model.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 import javax.validation.constraints.Size;
+
+import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.EtapeProduction;
+import com.housservice.housstock.model.Picture;
 import org.springframework.data.annotation.Id;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -25,12 +30,23 @@ public class ArticleDto {
 
 	@Size(max = 100)
 	private String designation;
-	
+
+
+	private List<EtapeProduction> etapeProductions ;
+
 
 	@Size(max = 100)
 	private String typeProduit;
-	
-	
+
+
+	private String idClient ;
+	private String refClient ;
+	private String raisonSocial ;
+	private Double prix ;
+	private int miseEnVeille;
+
+	private Picture picture ;
+
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateCreationArticle = LocalDate.now();
 	
