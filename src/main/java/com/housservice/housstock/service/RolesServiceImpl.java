@@ -51,8 +51,8 @@ public class RolesServiceImpl implements RolesService {
 		rolesDto.setId(roles.getId());
 		rolesDto.setNom(roles.getNom());
 
-		rolesDto.setIdUtilisateur(roles.getUtilisateur().getId());
-		rolesDto.setNomUtilisateur(roles.getUtilisateur().getNom());
+//		rolesDto.setIdUtilisateur(roles.getUtilisateur().getId());
+//		rolesDto.setNomUtilisateur(roles.getUtilisateur().getNom());
 		
 		return rolesDto;
 		
@@ -65,9 +65,9 @@ public class RolesServiceImpl implements RolesService {
 		roles.setId(""+sequenceGeneratorService.generateSequence(Roles.SEQUENCE_NAME));	
 		roles.setId(rolesDto.getId());		
 		roles.setNom(rolesDto.getNom());
-
-		Utilisateur ut = utilisateurRepository.findById(rolesDto.getIdUtilisateur()).get();
-		roles.setUtilisateur(ut);
+//
+//		Utilisateur ut = utilisateurRepository.findById(rolesDto.getIdUtilisateur()).get();
+//		roles.setUtilisateur(ut);
 		
 		return roles;
 	}
@@ -111,10 +111,10 @@ public class RolesServiceImpl implements RolesService {
 		
 		roles.setNom(rolesDto.getNom());
 	
-		  if(roles.getUtilisateur() == null ||!StringUtils.equals(rolesDto.getIdUtilisateur(),roles.getUtilisateur().getId()))
-		  {
-			  Utilisateur ut = utilisateurRepository.findById(rolesDto.getIdUtilisateur()).get();
-		      roles.setUtilisateur(ut); }
+//		  if(roles.getUtilisateur() == null ||!StringUtils.equals(rolesDto.getIdUtilisateur(),roles.getUtilisateur().getId()))
+//		  {
+//			  Utilisateur ut = utilisateurRepository.findById(rolesDto.getIdUtilisateur()).get();
+//		      roles.setUtilisateur(ut); }
 		 
 		rolesRepository.save(roles);
 		

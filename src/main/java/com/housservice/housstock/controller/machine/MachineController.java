@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/machine")
 @Api(tags = {"Machines Management"})
 public class MachineController {
 		
@@ -46,10 +46,10 @@ public class MachineController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
-	  @GetMapping("/machine")
+	  @GetMapping("/getAllMachine")
 	  public List< MachineDto> getAllMachine() {
 			
-		return machineService.findMachineActif();
+		return machineService.getAllMachine();
 			
 		}
 
@@ -64,26 +64,27 @@ public class MachineController {
 		 * }
 		 */
 	 
-		 @GetMapping("/machineEnVeille")
+		 @GetMapping("/getMachineEnVeille")
 		 public List< MachineDto > getMachineEnVeille() {
-			 return machineService.findMachineNotActif();
+			 return machineService.getMachineEnVeille();
 			 
 		 }
 	
-		  @GetMapping("/machine/{id}")
-		  @ApiOperation(value = "service to get one Machine by Id.")
-		  public ResponseEntity < MachineDto > getMachineById(@ApiParam(name = "id", value="id of machine", required = true)
-				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId)
-		  throws ResourceNotFoundException {
-			  MachineDto machine = machineService.getMachineById(machineId);
-			  if (machine == null) {
-				  ResponseEntity.badRequest().body("not found");
-			  }
-		      return ResponseEntity.ok().body(machine);
-		  }
-		  
-		 
-		  @PutMapping("/machine")
+			/*
+			 * @GetMapping("/machine/{id}")
+			 * 
+			 * @ApiOperation(value = "service to get one Machine by Id.") public
+			 * ResponseEntity < MachineDto > getMachineById(@ApiParam(name = "id",
+			 * value="id of machine", required = true)
+			 * 
+			 * @PathVariable(value = "id", required = true) @NotEmpty(message =
+			 * "{http.error.0001}") String machineId) throws ResourceNotFoundException {
+			 * MachineDto machine = machineService.getMachineById(machineId); if (machine ==
+			 * null) { ResponseEntity.badRequest().body("not found"); } return
+			 * ResponseEntity.ok().body(machine); }
+			 */
+	
+		  @PutMapping("/addMachine")
 		  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) {
 			  
 			  machineService.createNewMachine(machineDto);
@@ -92,7 +93,7 @@ public class MachineController {
 		
 		  }
 		  
-		  @PutMapping("/machine/{id}")
+		  @PutMapping("/updateMachine/{id}")
 		  public ResponseEntity <String> updateMachine(
 				  @ApiParam(name = "id", value="id of machine", required = true)
 				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String machineId,
@@ -106,20 +107,67 @@ public class MachineController {
 		  
 		  @DeleteMapping("/machine/{id}")
 		  @ApiOperation(value = "service to delete one Machine by Id.")
-		  public Map < String, Boolean > deleteMachine(
+		  public ResponseEntity<Void>  deleteMachine(
 				  @ApiParam(name = "id", value="id of machine", required = true)
-				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId) 
-		 throws ResourceNotFoundException {
-			  
-			   Machine machine = machineService.getMachineParId(machineId)
-			    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format("Not found", machineId)));
-	   
-			  machineService.deleteMachine(machine);
-		      Map < String, Boolean > response = new HashMap < > ();
-		      response.put("deleted", Boolean.TRUE);
-		      return response;
+				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId) {
+		      machineService.deleteMachine(machineId);
+			  return ResponseEntity.noContent().build();
+
 		  }
 		  
 	  
+
+	@PutMapping("/setMachineEnVeille/{idMachine}")
+	public ResponseEntity <String> setMachineEnVeille(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setMachineEnVeille(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
+	@PutMapping("/setEtatEnmarche/{idMachine}")
+	public ResponseEntity <String> setEtatEnmarche(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnmarche(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
+
+	@PutMapping("/setEtatEnPause/{idMachine}")
+	public ResponseEntity <String> setEtatEnPause(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnPause(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}	@PutMapping("/setEtatEnRepos/{idMachine}")
+	public ResponseEntity <String> setEtatEnRepos(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnRepos(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}	@PutMapping("/setEtatEnMaintenance/{idMachine}")
+	public ResponseEntity <String> setEtatEnMaintenance(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnMaintenance(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}	@PutMapping("/setEtatEnPanne/{idMachine}")
+	public ResponseEntity <String> setEtatEnPanne(
+			@ApiParam(name = "idMachine", value="id of machine", required = true)
+			@PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}")  String idMachine) throws ResourceNotFoundException {
+
+		machineService.setEtatEnPanne(idMachine);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
 
 }

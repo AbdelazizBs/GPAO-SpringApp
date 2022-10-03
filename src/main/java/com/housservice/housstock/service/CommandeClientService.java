@@ -10,8 +10,9 @@ import com.housservice.housstock.model.dto.CommandeClientDto;
 
 public interface CommandeClientService {
 	
-	public List<CommandeClientDto> getAllCommandeClient();
-	
+	public List<CommandeClientDto> getAllCommandeClientNonFermer();
+	public List<CommandeClientDto> getAllCommandeClientFermer();
+
     public CommandeClientDto getCommandeClientById(String id);
 	
     public CommandeClientDto buildCommandeClientDtoFromCommandeClient(CommandeClient commandeClient);

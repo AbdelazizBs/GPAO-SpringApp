@@ -42,7 +42,6 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 		
 		EtapeProductionDto etapeProductionDto = new EtapeProductionDto();
 		etapeProductionDto.setId(etapeProduction.getId());
-		
 		etapeProductionDto.setNomEtape(etapeProduction.getNomEtape());		
 		etapeProductionDto.setTypeEtape(etapeProduction.getTypeEtape());
 		
@@ -62,14 +61,21 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
 	
 	@Override
 	public List<EtapeProductionDto> getAllEtapeProduction() {
-			
 		List<EtapeProduction> listEtapeProduction = etapeProductionRepository.findAll();
-		
 		return listEtapeProduction.stream()
 				.map(etapeProduction -> buildEtapeProductionDtoFromEtapeProduction(etapeProduction))
 				.filter(etapeProduction -> etapeProduction != null)
 				.collect(Collectors.toList());
 		
+	}
+
+	@Override
+	public List<String> getNomEtapes() {
+		List<EtapeProduction> listEtapeProduction = etapeProductionRepository.findAll();
+		return listEtapeProduction.stream().map(EtapeProduction::getNomEtape)
+				.collect(Collectors.toList());
+
+
 	}
 	
 	@Override

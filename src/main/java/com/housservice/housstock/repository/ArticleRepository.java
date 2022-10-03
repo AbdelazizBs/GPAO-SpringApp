@@ -1,24 +1,19 @@
 package com.housservice.housstock.repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.housservice.housstock.model.Client;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.housservice.housstock.model.Article;
+import org.springframework.data.mongodb.repository.Query;
 
-import com.housservice.housstock.model.Client;
+import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository extends MongoRepository<Article, String>{
 
-	//Optional<Article> findByIdClient(String idClient);
-	
-	//List<Article> findArticleByClient(Optional<Client> client);
-		
-	//Optional  <Article> findArticleById(String id);
+    List<Article> findArticleByClient(Client client);
 
-	// Optional <Article> findArticleByReferenceIris(String referenceIris);
-
-	// List<Article> findArticleByClient(Client client);
+    List<Article> findArticleByMiseEnVeille(int i);
+   Optional <Article> findArticleByDesignation(String designation);
 
 }

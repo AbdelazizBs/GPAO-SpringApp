@@ -12,6 +12,7 @@ import com.housservice.housstock.model.dto.EtapeProductionDto;
 public interface EtapeProductionService {
 
 	public List<EtapeProductionDto> getAllEtapeProduction();
+	public List<String> getNomEtapes();
 
     Optional<EtapeProduction> getEtapeProductionById(String id);
     

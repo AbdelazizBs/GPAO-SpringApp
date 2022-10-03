@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/etapeProduction")
 public class EtapeProductionController {
 	
 	@Autowired 
@@ -47,11 +47,16 @@ public class EtapeProductionController {
 	  }
 
 	 
-	 @GetMapping("/etapeProduction")
+	 @GetMapping("/getAllEtapes")
 	 public List< EtapeProductionDto > getAllEtapeProduction() {
-		 		
 		 return etapeProductionService.getAllEtapeProduction();
 	 
+	 }
+
+	 @GetMapping("/getNomEtapes")
+	 public List< String > getNomEtapes() {
+		 return etapeProductionService.getNomEtapes();
+
 	 }
 	 
 

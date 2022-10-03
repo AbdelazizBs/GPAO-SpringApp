@@ -51,8 +51,8 @@ public class CompteController {
 		  Comptes compte = comptesRepository.findById(compteId)
 	          .orElseThrow(() -> new ResourceNotFoundException("Compte non trouvé pour cet id :: " + compteId));
 
-	      compte.setRaisonSocial(compteData.getRaisonSocial());
-	      compte.setSiren(compteData.getSiren());
+	      compte.setEmail(compteData.getEmail());
+	      compte.setPassword(compteData.getPassword());
 	      final Comptes updatedCompte = comptesRepository.save(compte);
 	      return ResponseEntity.ok(updatedCompte);
 	  }

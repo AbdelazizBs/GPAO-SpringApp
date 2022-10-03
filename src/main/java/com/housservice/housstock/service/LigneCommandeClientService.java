@@ -11,14 +11,16 @@ import com.housservice.housstock.model.dto.LigneCommandeClientDto;
 public interface LigneCommandeClientService {
 
 	public List<LigneCommandeClientDto> getAllLigneCommandeClient();
-	
+	public List<LigneCommandeClientDto> getAllLigneCommandeClientFermer();
+
     public LigneCommandeClientDto getLigneCommandeClientById(String id);
-	
+    public List<LigneCommandeClient> getLignCmdByIdCmd(String idCmd) throws ResourceNotFoundException;
+
     public LigneCommandeClientDto buildLigneCommandeClientDtoFromLigneCommandeClient(LigneCommandeClient ligneCommandeClient);
 
-    public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto);
+    public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException;
 	
     public void updateLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException;
     
-    public void deleteLigneCommandeClient(String ligneCommandeClientId);
+    public void deleteLigneCommandeClient(String ligneCommandeClientId) throws ResourceNotFoundException;
 }

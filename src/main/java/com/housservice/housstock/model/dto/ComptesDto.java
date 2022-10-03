@@ -1,5 +1,6 @@
 package com.housservice.housstock.model.dto;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
@@ -15,16 +16,16 @@ public class ComptesDto {
 	    private String id;
 
 	    @Size(max = 100)
-	    private String raisonSocial;
+	    private String email;
 	    
 	    @Size(max = 100)
-	    private String siren;
+	    private String password;
 	    
 	    private String idEntreprise;
 		
 		private String raisonSocialEntreprise;
 		
-		private String idUtilisateur;
+//		private String idUtilisateur;
 		
-		private String nomUtilisateur;
+//		private String nomUtilisateur;
 }

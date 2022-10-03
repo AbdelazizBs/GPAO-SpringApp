@@ -2,10 +2,12 @@ package com.housservice.housstock.model.dto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.Size;
 
+import com.housservice.housstock.model.Contact;
 import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -27,7 +29,7 @@ public class ClientDto {
 	private String id;
 
 	@JsonFormat(pattern="dd/MM/yyyy")	
-	private LocalDate date = LocalDate.now();
+	private LocalDate date ;
 	
 
 	@Size(max = 100)
@@ -79,18 +81,16 @@ public class ClientDto {
 	
     
 	@Size(max = 100)
-	private int blocage;
-	
-	
-	@Size(max = 100)
 	private int miseEnVeille;
+
 	
 
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate dateMiseEnVeille;
+	private Date dateMiseEnVeille;
 	
 	
 	private List<CommandeClientDto> listCommandes = new ArrayList<>();
-	
+
+	private List<Contact> contact;
     
 }

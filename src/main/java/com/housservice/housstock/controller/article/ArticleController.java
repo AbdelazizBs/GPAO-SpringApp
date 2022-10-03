@@ -1,5 +1,6 @@
 package com.housservice.housstock.controller.article;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,9 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.housservice.housstock.model.Article;
+
+import com.housservice.housstock.model.EtapeProduction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,24 +24,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.dto.ArticleDto;
-import com.housservice.housstock.model.dto.NomenclatureDto;
 import com.housservice.housstock.service.ArticleService;
 
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/article")
 @Api(tags = {"Articles Management"})
 public class ArticleController {
 	
 	  	private ArticleService articleService;
-	  
+
 	    private final MessageHttpErrorProperties messageHttpErrorProperties;
 	    
 	    
@@ -47,15 +50,23 @@ public class ArticleController {
 			this.messageHttpErrorProperties = messageHttpErrorProperties;
 		  }
 	
-	    @GetMapping("/article")
+	    @GetMapping("/getAllArticles")
 		 public List< ArticleDto > getAllArticle() {
 			 		
 			 return articleService.getAllArticle();
 			 	 
 		 }
-	
-	    
-	    @GetMapping("/article/{id}")
+
+	@PutMapping("/setArticleEnVeille/{idArticle}")
+	public ResponseEntity <String> setArticleEnVeille(
+			@ApiParam(name = "idArticle", value="id of machine", required = true)
+			@PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}")  String idArticle) throws ResourceNotFoundException {
+
+		articleService.setArticleEnVeille(idArticle);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
+	    @GetMapping("/getArticleById/{id}")
 		@ApiOperation(value = "service to get one Article by Id.")
 		  public ResponseEntity < ArticleDto > getArticleById(
 				  @ApiParam(name = "id", value="id of article", required = true)
@@ -68,41 +79,43 @@ public class ArticleController {
 		      return ResponseEntity.ok().body(article);
 		  }
 	    
-	    
-//	    @GetMapping("/article/{idClient}")
-//		@ApiOperation(value = "service to get list Article by idClient.")
-//		  public ResponseEntity <List< ArticleDto >> getArticleByIdClient(
-//				  @ApiParam(name = "idClient", value="id of client", required = true)
-//				  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
-//		   {
-//	    	
-//	    	
-//	    	 List<ArticleDto> listArticleDto = articleService.getArticleByIdClient(idClient);
-//		      return ResponseEntity.ok().body(listArticleDto); 	
-//	    	
-//		   }
-//	    
-	    
-	    @PutMapping("/article")
-		  public ResponseEntity<String> createArticle(@Valid @RequestBody ArticleDto articleDto) {
+	    @PutMapping("/addArticle")
+		  public ResponseEntity<String> createArticle(final  String referenceIris,
+													  final  String numFicheTechnique,
+													  final  String designation,
+													  final  String typeProduit,
+													  final  String idClient,
+													  final  String refClient,
+													  final  String raisonSocial,
+													  final  Double prix
+				, MultipartFile picture) throws ResourceNotFoundException, IOException {
 			  
-	    	  articleService.createNewArticle(articleDto);
+	    	  articleService.createNewArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,picture);
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }
-	    
-	    @PutMapping("/article/{id}")
+
+	    @PutMapping("/updateArticle/{articleId}")
 		  public ResponseEntity <String> updateArticle(
 				  @ApiParam(name = "id", value="id of article", required = true)
-				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String articleId,
-		          @Valid @RequestBody(required = true) ArticleDto articleDto) throws ResourceNotFoundException {
+				  @PathVariable(value = "articleId", required = true) @NotEmpty(message = "{http.error.0001}")
+				  final  String articleId,
+				  final  String referenceIris,
+				  final  String numFicheTechnique,
+				  final  String designation,
+				  final  String typeProduit,
+				  final  String idClient,
+				  final  String refClient,
+				  final  String raisonSocial,
+				  final  Double prix,
+				  MultipartFile file) throws ResourceNotFoundException, IOException {
 			  
-	    	  articleService.updateArticle(articleDto);
+	    	  articleService.updateArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,articleId,file);
 		      
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 		  }
 
 	    
-		  @DeleteMapping("/article/{id}")
+		  @DeleteMapping("/deleteArticle/{id}")
 		  @ApiOperation(value = "service to delete one Article by Id.")
 		  public Map < String, Boolean > deleteArticle(
 				  @ApiParam(name = "id", value="id of article", required = true)
@@ -113,6 +126,59 @@ public class ArticleController {
 		      response.put("deleted", Boolean.TRUE);
 		      return response;
 		  }
+
+
+	@GetMapping("/getDesignationArticleCient/{idClient}")
+	@ApiOperation(value = "service to get List of  designation ArticleClient  by idClient.")
+	public List < String > getDesignationArticleCient(
+			@ApiParam(name = "idClient", value="id of client", required = true)
+			@PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
+			throws ResourceNotFoundException {
+		return articleService.getDesignationArticleCient(idClient);
+	}
+
+		@GetMapping("/getRefIrisAndClient/{designation}")
+	@ApiOperation(value = "service to get Ref Iris And Client  .")
+	public List<String>  getRefIrisAndClientAndIdArticle(
+			@ApiParam(name = "designation", value="designation of article", required = true)
+			@PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}") String designation)
+			throws ResourceNotFoundException {
+		return articleService.getRefIrisAndClientAndIdArticle(designation);
+	}
+
+	@GetMapping("/getIdArticleWithDesignation/{designation}")
+	@ApiOperation(value = "service to get id Article .")
+	public String  getIdArticleWithDesignation(
+			@ApiParam(name = "designation", value="designation of article", required = true)
+			@PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}") String designation)
+			throws ResourceNotFoundException {
+		return articleService.getIdArticleWithDesignation(designation);
+	}
+
+	@PutMapping("/addEtapeToArticle/{idArticle}")
+	public ResponseEntity <String> addEtapeToArticle(
+			@ApiParam(name = "idArticle", value="id of client", required = true)
+			@PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}")  String idArticle,
+			@Valid @RequestBody(required = true) List<EtapeProduction> productions) throws ResourceNotFoundException {
+		articleService.addEtapeToArticle(productions,idArticle);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
+
+
+	@GetMapping("/getTargetEtapesArticle/{idArticle}")
+	@ApiOperation(value = "service to get id Article .")
+	public List<EtapeProduction>  getTargetEtapesArticle(
+			@ApiParam(name = "idArticle", value="idARTICLE of article", required = true)
+			@PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}") String idArticle)
+			throws ResourceNotFoundException {
+		return articleService.getTargetEtapesArticle(idArticle);
+	}
+
+
+	@GetMapping("/getArticleEnveille")
+	public List<Article> getArticleEnveille() {
+		return articleService.getArticleEnveille();
+	}
 	  
 }
 	  

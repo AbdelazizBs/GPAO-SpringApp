@@ -2,10 +2,13 @@ package com.housservice.housstock.model.dto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.Size;
 
+import com.housservice.housstock.model.Comptes;
+import com.housservice.housstock.model.Roles;
 import org.springframework.data.annotation.Id;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -26,7 +29,7 @@ public class UtilisateurDto {
 	private String prenom;
 
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate dateDeNaissance;
+	private Date dateDeNaissance;
 
 	@Size(max = 100)
 	private String adresse;
@@ -34,17 +37,16 @@ public class UtilisateurDto {
 	@Size(max = 100)
 	private String photo;
 	
+//
+//    private String idEntreprise;
+//
+//	private String raisonSocialEntreprise;
+//
+	
+    private Comptes comptes;
+	
 
-    private String idEntreprise;
 	
-	private String raisonSocialEntreprise;
-	
-	
-    private String idComptes;
-	
-	private String raisonSocialComptes;
-	
-	
-	private List<RolesDto> listRoles = new ArrayList<>();
+	private List<Roles> roles = new ArrayList<>();
 	
 }

@@ -1,6 +1,9 @@
 package com.housservice.housstock.service;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,7 +56,10 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClientDto.setTypeCmd(commandeClient.getTypeCmd());
 		commandeClientDto.setNumCmd(commandeClient.getNumCmd());
 		commandeClientDto.setEtat(commandeClient.getEtat());
+		commandeClientDto.setHaveLc(commandeClient.getHaveLc());
 		commandeClientDto.setDateCmd(commandeClient.getDateCmd());
+		commandeClientDto.setEtatProduction(commandeClient.getEtatProduction());
+		commandeClientDto.setDateCreationCmd(commandeClient.getDateCreationCmd());
 		commandeClientDto.setIdClient(commandeClient.getClient().getId());
 		commandeClientDto.setRaisonSocialClient(commandeClient.getClient().getRaisonSocial());
 		//TODO
@@ -71,8 +77,11 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClient.setId(commandeClientDto.getId());
 		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
 		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
-		commandeClient.setEtat("en attente");
+		commandeClient.setEtat(commandeClientDto.getEtat());
+		commandeClient.setEtatProduction(commandeClientDto.getEtatProduction());
 		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
+		commandeClient.setHaveLc(commandeClientDto.getHaveLc());
+		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
 		Client cl = clientRepository.findById(commandeClientDto.getIdClient()).get();
 		commandeClient.setClient(cl);
 		
@@ -84,16 +93,22 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
 
 	@Override
-	public List<CommandeClientDto> getAllCommandeClient() {
-		
-	List<CommandeClient> listCommandeClient = commandeClientRepository.findAll();
-		
-		return listCommandeClient.stream()
+	public List<CommandeClientDto> getAllCommandeClientNonFermer() {
+		return commandeClientRepository.findAll().stream()
+			.filter(commandeClient -> commandeClient.getEtat().equals("Non Fermer"))
 				.map(commandeclient -> buildCommandeClientDtoFromCommandeClient(commandeclient))
 				.filter(commandeclient -> commandeclient != null)
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<CommandeClientDto> getAllCommandeClientFermer() {
+		return commandeClientRepository.findAll().stream()
+				.filter(commandeClient -> commandeClient.getEtat().equals("Fermer"))
+				.map(commandeclient -> buildCommandeClientDtoFromCommandeClient(commandeclient))
+				.filter(commandeclient -> commandeclient != null)
+				.collect(Collectors.toList());
+	}
 
 	@Override
 	public CommandeClientDto getCommandeClientById(String id) {
@@ -108,9 +123,12 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
 	@Override
 	public void createNewCommandeClient(@Valid CommandeClientDto commandeClientDto) {
-		
+			commandeClientDto.setDateCreationCmd(LocalDate.now());
+			commandeClientDto.setEtat("Non Fermer");
+			commandeClientDto.setHaveLc(false);
 		commandeClientRepository.save(buildCommandeClientFromCommandeClientDto(commandeClientDto));
-		
+
+
 	}
 
 
@@ -123,7 +141,9 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
 		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
 		commandeClient.setEtat(commandeClientDto.getEtat());
+		commandeClient.setEtatProduction(commandeClientDto.getEtatProduction());
 		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
+		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
 	
 		
 		if(commandeClient.getClient() == null || !StringUtils.equals(commandeClientDto.getIdClient(), commandeClient.getClient().getId())) 
@@ -144,5 +164,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		
 	}
 	
-		
+	
+	
 }
