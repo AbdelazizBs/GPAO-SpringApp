@@ -1,5 +1,6 @@
 package com.housservice.housstock.service;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import com.housservice.housstock.model.Article;
@@ -33,5 +34,6 @@ public interface ClientService {
 	public void updateContactClient(@Valid Contact contact, String idContact) throws ResourceNotFoundException;
 
 	public void deleteClient(Client client);
+	public void deleteContactClient(String idContact) throws ResourceNotFoundException;
 
 }

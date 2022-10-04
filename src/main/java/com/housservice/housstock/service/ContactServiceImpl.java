@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -28,18 +31,6 @@ public class ContactServiceImpl implements ContactService {
         this.contactRepository = contactRepository;
     }
 
-    @Override
-    public void deleteContactClient(String idContact) throws ResourceNotFoundException {
-        Client client = clientRepository.findClientByContactId(idContact)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
-        Contact contact = contactRepository.findById(idContact)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
-        for (Contact contact1  : client.getContact())
-        { if (contact1.equals(contact)) { client.getContact().remove(contact); } }
-        client.setContact(new ArrayList<>());
-        clientRepository.save(client);
-        contactRepository.deleteById(idContact);
 
-    }
 
 }
