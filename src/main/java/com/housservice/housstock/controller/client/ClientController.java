@@ -156,7 +156,7 @@ public class ClientController {
 
 		  clientService.addContactClient(contact,idClient);
 
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	      return   ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 
 	  @PutMapping("/updateContactClient/{idContact}")
