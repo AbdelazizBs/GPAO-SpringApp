@@ -11,8 +11,8 @@ import java.util.Optional;
 
 public interface LigneCommandeClientRepository extends MongoRepository<LigneCommandeClient, String>{
 
-  Optional<LigneCommandeClient>   findLigneCommandeClientByCommandeClientAndArticle(CommandeClient commande, Article article) ;
+    Optional<LigneCommandeClient>   findLigneCommandeClientByCommandeClientAndArticle(CommandeClient commande, Article article) ;
 
-  List<LigneCommandeClient> findLigneCommandeClientByCommandeClient(CommandeClient commandeClient) ;
+    List<LigneCommandeClient> findLigneCommandeClientByCommandeClient(CommandeClient commandeClient) ;
 
 }

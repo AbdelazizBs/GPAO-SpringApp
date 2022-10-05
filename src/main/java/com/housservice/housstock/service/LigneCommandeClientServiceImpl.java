@@ -88,7 +88,6 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 	@Override
 	public List<LigneCommandeClientDto> getAllLigneCommandeClient() {
 		List<LigneCommandeClient> listLigneCommandeClient = ligneCommandeClientRepository.findAll();
-		
 		return listLigneCommandeClient.stream()
 				.map(ligneCommandeClient -> buildLigneCommandeClientDtoFromLigneCommandeClient(ligneCommandeClient))
 				.filter(ligneCommandeClient -> ligneCommandeClient != null)
@@ -97,7 +96,6 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 	@Override
 	public List<LigneCommandeClientDto> getAllLigneCommandeClientFermer() {
 		List<LigneCommandeClient> listLigneCommandeClient = ligneCommandeClientRepository.findAll();
-
 		return listLigneCommandeClient.stream()
 				.filter(ligneCommandeClient -> ligneCommandeClient != null && ligneCommandeClient.getCommandeClient().getEtat().equals("Fermer"))
 				.map(ligneCommandeClient -> buildLigneCommandeClientDtoFromLigneCommandeClient(ligneCommandeClient))

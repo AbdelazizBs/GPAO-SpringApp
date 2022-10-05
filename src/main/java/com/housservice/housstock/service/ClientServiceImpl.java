@@ -106,14 +106,14 @@ public class ClientServiceImpl implements ClientService {
 	public List<Article> getArticles(String clientId) throws ResourceNotFoundException {
 		Client client = clientRepository.findById(clientId)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
-		List<Article> articles = articleRepository.findArticleByClient(client);
+		List<Article> articles = articleRepository.findArticleByClientId(client.getId());
 		return articles;
 	}
 	@Override
 	public List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException {
 		Client client = clientRepository.findClientByRaisonSocial(raison)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), raison)));
-		List<Article> articles = articleRepository.findArticleByClient(client);
+		List<Article> articles = articleRepository.findArticleByClientId(client.getId());
 //		articles.stream().map(article -> decompressBytes(article.getPicture().getBytes()));
 		return articles;
 	}
@@ -217,6 +217,7 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  contact)));
 		Contact contactToUpdate = contactRepository.findById(idContact)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  contact.getId())));
+		client.getContact().removeIf(contact1 -> contact1.equals(contactToUpdate));
 		contactToUpdate.setNom(contact.getNom());
 		contactToUpdate.setEmail(contact.getEmail());
 		contactToUpdate.setMobile(contact.getMobile());
@@ -224,10 +225,7 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 		contactToUpdate.setFonction(contact.getFonction());
 		contactToUpdate.setPhone(contact.getPhone());
 		contactRepository.save(contactToUpdate);
-		List<Contact>  contactList= new ArrayList<>();
-		contactList.add(contactToUpdate);
-		contactList.addAll(client.getContact());
-		client.setContact(contactList);
+		client.getContact().add(contactToUpdate);
 		clientRepository.save(client);
 
 	}

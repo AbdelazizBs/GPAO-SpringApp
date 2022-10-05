@@ -3,6 +3,7 @@ package com.housservice.housstock.service;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,11 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.housservice.housstock.model.LigneCommandeClient;
+import com.housservice.housstock.model.PlanificationOf;
+import com.housservice.housstock.model.dto.PlanificationOfDTO;
+import com.housservice.housstock.repository.LigneCommandeClientRepository;
+import com.housservice.housstock.repository.PlanificationRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,15 +38,21 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	
 	private ClientRepository clientRepository;
+	final
+	LigneCommandeClientRepository ligneCommandeClientRepository ;
+
+	@Autowired
+	PlanificationRepository planificationRepository;
 	
 	@Autowired
-	public CommandeClientServiceImpl (CommandeClientRepository commandeClientRepository,SequenceGeneratorService sequenceGeneratorService,
-			MessageHttpErrorProperties messageHttpErrorProperties,ClientRepository clientRepository)
+	public CommandeClientServiceImpl (CommandeClientRepository commandeClientRepository, SequenceGeneratorService sequenceGeneratorService,
+									  MessageHttpErrorProperties messageHttpErrorProperties, ClientRepository clientRepository, LigneCommandeClientRepository ligneCommandeClientRepository)
 	{
 		this.commandeClientRepository = commandeClientRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.clientRepository = clientRepository;
+		this.ligneCommandeClientRepository = ligneCommandeClientRepository;
 	}
 	
 	
@@ -154,6 +166,49 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		
 		commandeClientRepository.save(commandeClient);
 		
+	}
+
+	@Override
+	public void fermeCmd(@Valid CommandeClientDto commandeClientDto) throws ResourceNotFoundException {
+
+		CommandeClient commandeClient = commandeClientRepository.findById(commandeClientDto.getId())
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), commandeClientDto.getId())));
+		List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByCommandeClient(commandeClient);
+		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
+		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
+		commandeClient.setEtat("Fermer");
+		commandeClient.setEtatProduction(commandeClientDto.getEtatProduction());
+		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
+		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
+		ligneCommandeClients.stream().forEach(ligneCommandeClient -> ligneCommandeClient.setCommandeClient(commandeClient));
+		ligneCommandeClients.stream().forEach(ligneCommandeClient -> ligneCommandeClientRepository.save(ligneCommandeClient));
+//		final LocalDate MAX_DATE = LocalDate.parse("2099-12-31");
+//		for (int x =0 ; x < ligneCommandeClients.size() ; x++){
+//			PlanificationOfDTO planificationOf = new PlanificationOfDTO(
+//					"",
+//					new ArrayList<>() ,
+//					 MAX_DATE ,
+//					new Date(),
+//					MAX_DATE,
+//					MAX_DATE,
+//					"",
+//					"",
+//					"",
+//					MAX_DATE,
+//					new  Date (),
+//					"",
+//					"",
+//					"",
+//					MAX_DATE);
+//		}
+		if(commandeClient.getClient() == null || !StringUtils.equals(commandeClientDto.getIdClient(), commandeClient.getClient().getId()))
+		{
+			Client client = clientRepository.findById(commandeClientDto.getIdClient()).get();
+			commandeClient.setClient(client);
+		}
+
+		commandeClientRepository.save(commandeClient);
+
 	}
 
 

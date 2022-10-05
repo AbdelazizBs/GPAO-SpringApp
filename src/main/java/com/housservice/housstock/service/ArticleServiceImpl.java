@@ -119,7 +119,7 @@ public class ArticleServiceImpl implements ArticleService{
 	@Override
 	public List<String> getDesignationArticleCient(String idClient) throws ResourceNotFoundException  {
 		Client client = clientRepository.findById(idClient).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
-		List<Article> listArticles = articleRepository.findArticleByClient(client);
+		List<Article> listArticles = articleRepository.findArticleByClientId(client.getId());
 		return listArticles.stream()
 				.map(Article::getDesignation)
 				.collect(Collectors.toList());

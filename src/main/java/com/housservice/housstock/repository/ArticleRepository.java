@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ArticleRepository extends MongoRepository<Article, String>{
 
-    List<Article> findArticleByClient(Client client);
+    List<Article> findArticleByClientId(String idClient);
 
     List<Article> findArticleByMiseEnVeille(int i);
    Optional <Article> findArticleByDesignation(String designation);

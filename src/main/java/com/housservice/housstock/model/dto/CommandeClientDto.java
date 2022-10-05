@@ -42,6 +42,4 @@ public class CommandeClientDto {
 		private Boolean haveLc;
 
 
-
-	//private List<LigneCommandeClientDto> ligneCommandeClients = new ArrayList<>();
 }
