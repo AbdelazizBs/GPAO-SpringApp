@@ -156,7 +156,8 @@ public class ClientController {
 
 		  clientService.addContactClient(contact,idClient);
 
-	      return   ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+
 	  }
 
 	  @PutMapping("/updateContactClient/{idContact}")
@@ -183,6 +184,7 @@ public class ClientController {
 	      return response;
 	  }
 
+
 	@DeleteMapping("/deleteContactClient/{idContact}")
 	@ApiOperation(value = "service to delete one Client by Id.")
 	public Map< String, Boolean > deleteContactClient(
@@ -194,6 +196,7 @@ public class ClientController {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
+
 
 	 
 	
