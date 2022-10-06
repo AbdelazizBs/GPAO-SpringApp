@@ -156,6 +156,7 @@ public class ClientController {
 		  clientService.addContactClient(contact,idClient);
 
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+
 	  }
 
 	  @PutMapping("/updateContactClient/{idContact}")
@@ -181,6 +182,19 @@ public class ClientController {
 	      response.put("deleted", Boolean.TRUE);
 	      return response;
 	  }
+
+
+	@DeleteMapping("/deleteContactClient/{idContact}")
+	@ApiOperation(value = "service to delete one Client by Id.")
+	public Map< String, Boolean > deleteContactClient(
+			@ApiParam(name = "idContact", value="id of client", required = true)
+			@PathVariable(value = "idContact", required = true) @NotEmpty(message = "{http.error.0001}") String idContact)
+			throws ResourceNotFoundException {
+		clientService.deleteContactClient(idContact);
+		Map < String, Boolean > response = new HashMap< >();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
 
 
 	 

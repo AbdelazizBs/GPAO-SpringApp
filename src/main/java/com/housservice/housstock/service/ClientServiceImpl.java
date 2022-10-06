@@ -262,5 +262,16 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 	}
 
 
-
+	@Override
+	public void deleteContactClient(String idContact) throws ResourceNotFoundException {
+		Client client = clientRepository.findClientByContactId(idContact)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
+		Contact contact = contactRepository.findById(idContact)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idContact)));
+		List<Contact> contactList = client.getContact();
+		contactList.removeIf(c -> c.equals(contact));
+		client.setContact(contactList);
+		clientRepository.save(client);
+		contactRepository.deleteById(idContact);
+	}
 }

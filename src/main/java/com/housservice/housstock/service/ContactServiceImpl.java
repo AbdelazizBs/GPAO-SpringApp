@@ -8,9 +8,9 @@ import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.ContactRepository;
 import org.springframework.stereotype.Service;
-
 import java.text.MessageFormat;
 import java.util.ArrayList;
+
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -27,7 +27,6 @@ public class ContactServiceImpl implements ContactService {
         this.clientRepository = clientRepository;
         this.contactRepository = contactRepository;
     }
-
     @Override
     public void deleteContactClient(String idContact) throws ResourceNotFoundException {
         Client client = clientRepository.findClientByContactId(idContact)
@@ -41,5 +40,4 @@ public class ContactServiceImpl implements ContactService {
         contactRepository.deleteById(idContact);
 
     }
-
 }
