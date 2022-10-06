@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.housservice.housstock.model.*;
 import com.housservice.housstock.repository.ClientRepository;
+import com.housservice.housstock.repository.LigneCommandeClientRepository;
 import com.housservice.housstock.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,18 +39,20 @@ public class ArticleServiceImpl implements ArticleService{
 
 	final
 	ClientRepository clientRepository ;
-
+final
+LigneCommandeClientRepository ligneCommandeClientRepository;
 	final
 	PictureRepository pictureRepository;
 	@Autowired
 	public ArticleServiceImpl (ArticleRepository articleRepository, SequenceGeneratorService sequenceGeneratorService,
-							   MessageHttpErrorProperties messageHttpErrorProperties, ClientRepository clientRepository, PictureRepository pictureRepository)
+							   MessageHttpErrorProperties messageHttpErrorProperties, ClientRepository clientRepository, PictureRepository pictureRepository, LigneCommandeClientRepository ligneCommandeClientRepository)
 	{
 		this.articleRepository = articleRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.clientRepository = clientRepository;
 		this.pictureRepository = pictureRepository;
+		this.ligneCommandeClientRepository = ligneCommandeClientRepository;
 	}
 	
 	
@@ -252,6 +255,10 @@ public class ArticleServiceImpl implements ArticleService{
 		Article article = articleRepository.findById(idArticle)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idArticle)));
 		article.setEtapeProductions(etapeProductions);
+		LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findLigneCommandeClientByArticleId(idArticle)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idArticle)));
+		ligneCommandeClient.setArticle(article);
+		ligneCommandeClientRepository.save(ligneCommandeClient);
 		articleRepository.save(article);
 	}
 

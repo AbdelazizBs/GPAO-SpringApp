@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.PlanificationOf;
 import com.housservice.housstock.model.dto.CommandeClientDto;
 
 public interface CommandeClientService {
@@ -20,7 +21,7 @@ public interface CommandeClientService {
     public void createNewCommandeClient(@Valid CommandeClientDto commandeClientDto);
 	
     public void updateCommandeClient(@Valid CommandeClientDto commandeClientDto) throws ResourceNotFoundException;
-    public void fermeCmd(@Valid CommandeClientDto commandeClientDto) throws ResourceNotFoundException;
+    public List<PlanificationOf> fermeCmd(@Valid String idCmd) throws ResourceNotFoundException;
 
     public void deleteCommandeClient(String commandeClientId);
 

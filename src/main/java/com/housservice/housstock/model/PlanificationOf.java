@@ -54,7 +54,25 @@ import java.util.List;
     @Size(max = 100)
     private String quantiteNonConforme;
 
-        @Size(max = 100)
+ public PlanificationOf(LigneCommandeClient ligneCommandeClient, EtapeProduction etapeProductions, Machine machine, List<Personnel> personnels, Date dateLancementPrevue, Date dateLancementReel, LocalDate heureDebutPrevue, LocalDate heureFinPrevue, LocalDate heureFinReel, LocalDate heureDebutReel, LocalDate duréeReelOperation, String quantiteInitiale, String quantiteConforme, String quantiteNonConforme, String commentaire) {
+  this.ligneCommandeClient = ligneCommandeClient;
+  this.etapeProductions = etapeProductions;
+  this.machine = machine;
+  this.personnels = personnels;
+  this.dateLancementPrevue = dateLancementPrevue;
+  this.dateLancementReel = dateLancementReel;
+  this.heureDebutPrevue = heureDebutPrevue;
+  this.heureFinPrevue = heureFinPrevue;
+  this.heureFinReel = heureFinReel;
+  this.heureDebutReel = heureDebutReel;
+  this.duréeReelOperation = duréeReelOperation;
+  this.quantiteInitiale = quantiteInitiale;
+  this.quantiteConforme = quantiteConforme;
+  this.quantiteNonConforme = quantiteNonConforme;
+  this.commentaire = commentaire;
+ }
+
+ @Size(max = 100)
     private String commentaire;
 
 }

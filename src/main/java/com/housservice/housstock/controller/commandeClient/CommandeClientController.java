@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.housservice.housstock.model.PlanificationOf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -92,14 +93,13 @@ public class CommandeClientController {
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
         @PutMapping("/fermeCmd/{id}")
-	  public ResponseEntity <String> fermeCmd(
+	  public List<PlanificationOf>fermeCmd(
 			  @ApiParam(name = "id", value="id of commandeClient", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String commandeClientId,
-	          @Valid @RequestBody(required = true) CommandeClientDto commandeClientDto) throws ResourceNotFoundException {
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String commandeClientId) throws ResourceNotFoundException {
 
-  	  commandeClientService.fermeCmd(commandeClientDto);
+			return  commandeClientService.fermeCmd(commandeClientId);
 
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+//	       ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 
     
