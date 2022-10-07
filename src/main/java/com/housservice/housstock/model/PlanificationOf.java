@@ -75,4 +75,7 @@ import java.util.List;
  @Size(max = 100)
     private String commentaire;
 
+ public PlanificationOf() {
+
+ }
 }

@@ -17,7 +17,7 @@ public interface MachineService {
 	
     public MachineDto buildMachineDtoFromMachine(Machine machine);
 
-    public void createNewMachine(@Valid MachineDto machineDto);
+    public void createNewMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException;
 	
     public void updateMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException;
     public void setEtatEnmarche(String idMachine) throws ResourceNotFoundException;

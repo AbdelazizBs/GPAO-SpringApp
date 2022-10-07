@@ -81,10 +81,8 @@ public class MachineController {
 		  }
 	
 		  @PutMapping("/addMachine")
-		  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) {
-			  
+		  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) throws ResourceNotFoundException {
 			  machineService.createNewMachine(machineDto);
-			  
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		
 		  }

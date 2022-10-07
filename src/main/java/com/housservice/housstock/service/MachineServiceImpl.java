@@ -87,7 +87,7 @@ public class MachineServiceImpl implements MachineService {
 
 
 	@Override
-	public void createNewMachine(@Valid MachineDto machineDto) {
+	public void createNewMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException {
 		Machine machine =machineRepository.save(buildMachineFromMachineDto(machineDto));
 		EtatMachine etatMachine = new EtatMachine("en repos",LocalDate.now(), LocalDate.of(2026,10,10),machine.getId());
 		etatMachineRepository.save(etatMachine);
@@ -96,7 +96,7 @@ public class MachineServiceImpl implements MachineService {
 		machineRepository.save(machine);
 	}
 	
-	private Machine buildMachineFromMachineDto(MachineDto machineDto) {
+	private Machine buildMachineFromMachineDto(MachineDto machineDto) throws ResourceNotFoundException {
 		Machine machine = new Machine();
 		machine.setId(""+sequenceGeneratorService.generateSequence(Machine.SEQUENCE_NAME));	
 		machine.setReference(machineDto.getReference());		
@@ -105,7 +105,8 @@ public class MachineServiceImpl implements MachineService {
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
 		machine.setEtatMachine(machineDto.getEtatMachine());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
-		EtapeProduction etape = etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction());
+		EtapeProduction etape = etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction())
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getNomEtapeProduction())));
 		machine.setEtapeProduction(etape);
 		return machine;
 		}
@@ -124,7 +125,8 @@ public class MachineServiceImpl implements MachineService {
 		machine.setEtatMachine(machineDto.getEtatMachine());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
 		machine.setEnVeille(machineDto.getEnVeille());
-	machine.setEtapeProduction(etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction()));
+	machine.setEtapeProduction(etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction())
+			.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getNomEtapeProduction()))));
 
 		machineRepository.save(machine);
 

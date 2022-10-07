@@ -64,7 +64,7 @@ public class PlanificationOfDTO {
 
     private String idLigneCommandeClient ;
 
-    private String idEtapeProductions;
+    private String nomEtape;
 
     private String idMachine;
 

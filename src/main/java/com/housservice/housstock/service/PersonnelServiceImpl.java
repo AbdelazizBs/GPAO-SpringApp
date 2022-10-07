@@ -94,6 +94,15 @@ public class PersonnelServiceImpl implements PersonnelService{
 				.collect(Collectors.toList());
 	}
 
+
+	@Override
+	public List<String> getAllNomPersonnel() {
+		List<Personnel> listPersonnel = personnelRepository.findAll();
+		return listPersonnel.stream()
+				.map(Personnel::getNom)
+				.collect(Collectors.toList());
+	}
+
 	@Override
 	public PersonnelDto getPersonnelById(String id) {
 		

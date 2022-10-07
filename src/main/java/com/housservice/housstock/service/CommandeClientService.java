@@ -21,7 +21,7 @@ public interface CommandeClientService {
     public void createNewCommandeClient(@Valid CommandeClientDto commandeClientDto);
 	
     public void updateCommandeClient(@Valid CommandeClientDto commandeClientDto) throws ResourceNotFoundException;
-    public List<PlanificationOf> fermeCmd(@Valid String idCmd) throws ResourceNotFoundException;
+    public void fermeCmd(@Valid String idCmd) throws ResourceNotFoundException;
 
     public void deleteCommandeClient(String commandeClientId);
 

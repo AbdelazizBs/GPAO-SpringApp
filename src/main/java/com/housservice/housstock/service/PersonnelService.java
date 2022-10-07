@@ -11,7 +11,8 @@ import com.housservice.housstock.model.dto.PersonnelDto;
 public interface PersonnelService {
 	
 	public List<PersonnelDto> getAllPersonnel();
-	
+	public List<String> getAllNomPersonnel();
+
     public PersonnelDto getPersonnelById(String id);
 	
     public PersonnelDto buildPersonnelDtoFromPersonnel(Personnel personnel);

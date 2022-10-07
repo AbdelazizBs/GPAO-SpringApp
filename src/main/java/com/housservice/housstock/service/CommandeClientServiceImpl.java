@@ -166,43 +166,8 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClientRepository.save(commandeClient);
 		
 	}
-
-//	public List<PlanificationOf> processPLanification(List<LigneCommandeClient> ligneCommandeClients) throws ResourceNotFoundException {
-//		final LocalDate MAX_DATE = LocalDate.parse("2099-12-31");
-//		List<LigneCommandeClient> lc = ligneCommandeClients;
-//		List<PlanificationOfDTO> planificationOfDTOS = new ArrayList<>();
-//for (int i=0 ;i<lc.size();i++){
-//	for (int j=0 ;j<ligneCommandeClients.get(i).getArticle().getEtapeProductions().size(); j++){
-//	PlanificationOfDTO planificationOfDTO = new PlanificationOfDTO(
-//			"",
-//			new ArrayList<>() ,
-//			MAX_DATE ,
-//			new Date(),
-//			MAX_DATE,
-//			MAX_DATE,
-//			"",
-//			"",
-//			"",
-//			MAX_DATE,
-//			new  Date (),
-//			lc.get(i).getId(),
-//			lc.get(i).getArticle().getEtapeProductions().get(j).getId(),
-//			"",
-//			MAX_DATE);
-//		planificationOfDTOS.add(planificationOfDTO);
-//}
-//	}
-//		return planificationOfDTOS.stream()
-//				.map(planification->planificationRepository.save(PlanificationOfMapper.MAPPER.toPlanificationOf(planification)))
-//				.collect(Collectors.toList());
-//}
-
-//		int x = ligneCommandeClients.stream().map(ligneCommandeClient -> ligneCommandeClient.getArticle().getEtapeProductions().size());
-//		return planificationRepository.save();
-
-
 	@Override
-	public List<PlanificationOf> fermeCmd(@Valid String idCmd) throws ResourceNotFoundException {
+	public void fermeCmd(@Valid String idCmd) throws ResourceNotFoundException {
 				CommandeClient commandeClient = commandeClientRepository.findById(idCmd)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idCmd)));
 		List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByCommandeClient(commandeClient);
@@ -213,15 +178,12 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 // 		processPLanification(ligneCommandeClients);
 		final LocalDate MAX_DATE = LocalDate.parse("2099-12-31");
 		List<LigneCommandeClient> lc = ligneCommandeClients;
-		List<PlanificationOf> planificationOfS = new ArrayList<>();
 		List<Personnel> personnels = new ArrayList<>();
-System.out.println(lc.size());
-		for (int i=1 ;i<=lc.size();i++){
-//			System.out.println(ligneCommandeClients.get(i).getArticle().getEtapeProductions().size());
-			for (int j=i-1 ;j<ligneCommandeClients.get(i-1).getArticle().getEtapeProductions().size(); j++){
+		for (int i=0 ;i<lc.size();i++){
+			for (int j=0 ;j<ligneCommandeClients.get(i).getArticle().getEtapeProductions().size(); j++){
 				PlanificationOf planificationOf = new PlanificationOf(
-						ligneCommandeClients.get(i-1),
-						ligneCommandeClients.get(i-1).getArticle().getEtapeProductions().get(j) ,
+						ligneCommandeClients.get(i),
+						ligneCommandeClients.get(i).getArticle().getEtapeProductions().get(j) ,
 						new Machine() ,
 						personnels,
 						new Date(),
@@ -236,7 +198,6 @@ System.out.println(lc.size());
 						"",
 						"");
 				planificationRepository.save(planificationOf);
-				planificationOfS.add(planificationOf);
 			}
 		}
 
@@ -247,7 +208,6 @@ System.out.println(lc.size());
 		}
 
 		commandeClientRepository.save(commandeClient);
-		return 	planificationOfS;
 	}
 
 

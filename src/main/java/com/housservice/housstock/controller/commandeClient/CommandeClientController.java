@@ -93,13 +93,13 @@ public class CommandeClientController {
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
         @PutMapping("/fermeCmd/{id}")
-	  public List<PlanificationOf>fermeCmd(
+	  public ResponseEntity <String>fermeCmd(
 			  @ApiParam(name = "id", value="id of commandeClient", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String commandeClientId) throws ResourceNotFoundException {
 
-			return  commandeClientService.fermeCmd(commandeClientId);
+			  commandeClientService.fermeCmd(commandeClientId);
 
-//	       ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+			return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 
     

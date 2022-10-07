@@ -65,8 +65,8 @@ public abstract class PlanificationOfMapper {
         planificationOf.setPersonnels(personnels);
         planificationOf.setMachine(machineRepository.findById(planificationOfDTO.getIdMachine())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getIdMachine()))));
-        planificationOf.setEtapeProductions(etapeProductionRepository.findById(planificationOfDTO.getIdEtapeProductions())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getIdEtapeProductions()))));
+        planificationOf.setEtapeProductions(etapeProductionRepository.findById(planificationOfDTO.getNomEtape())
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getNomEtape()))));
         planificationOf.setLigneCommandeClient(ligneCommandeClientRepository.findById(planificationOfDTO.getIdLigneCommandeClient())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getIdLigneCommandeClient()))));
 
@@ -80,7 +80,7 @@ public abstract class PlanificationOfMapper {
         List<String> idPersonnels = planificationOf.getPersonnels().stream().map(personnel -> personnel.getId()).collect(Collectors.toList());
         planificationOfDTO.setIdPersonnels(idPersonnels);
         planificationOfDTO.setIdLigneCommandeClient(planificationOf.getLigneCommandeClient().getId());
-        planificationOfDTO.setIdEtapeProductions(planificationOf.getEtapeProductions().getId());
+        planificationOfDTO.setNomEtape(planificationOf.getEtapeProductions().getNomEtape());
         planificationOfDTO.setIdMachine(planificationOf.getMachine().getId());
     }
 

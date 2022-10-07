@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/personnel")
 @Api(tags = {"Personnels Management"})
 public class PersonnelController {
 	
@@ -43,11 +43,15 @@ public class PersonnelController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
-    @GetMapping("/personnel")
+    @GetMapping("/getAllPersonnel")
 	 public List< PersonnelDto > getAllPersonnel() {
 		 		
 		 return personnelService.getAllPersonnel();
 		 	 
+	 }
+	 @GetMapping("/getAllNomPersonnel")
+	 public List< String > getAllNomPersonnel() {
+		 return personnelService.getAllNomPersonnel();
 	 }
 
       @GetMapping("/personnel/{id}")
