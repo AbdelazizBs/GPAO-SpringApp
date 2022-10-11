@@ -38,8 +38,11 @@ public class PlanificationOfController {
         return planificationService.getPlanificationByIdLc(idLc);
     }
 
-    @PutMapping("/updatePlanfication")
-    public ResponseEntity<String> updatePlanfication(@Valid @RequestBody PlanificationOfDTO  planificationOfDTO) throws ResourceNotFoundException {
+    @PutMapping("/updatePlanfication/{id}")
+    public ResponseEntity<String> updatePlanfication(
+            @ApiParam(name = "id", value="id of planification", required = true)
+            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String idPlanification,
+            @Valid @RequestBody PlanificationOfDTO  planificationOfDTO) throws ResourceNotFoundException {
         planificationService.updatePlanfication(planificationOfDTO);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 

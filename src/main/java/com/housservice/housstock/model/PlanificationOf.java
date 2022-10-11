@@ -33,11 +33,9 @@ import java.util.List;
 
     private List<Personnel> personnels;
 
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private Date dateLancementPrevue ;
+    private LocalDate dateLancementPrevue ;
 
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private Date dateLancementReel ;
+    private LocalDate dateLancementReel ;
     private LocalDate heureDebutPrevue ;
     private LocalDate heureFinPrevue ;
     private LocalDate heureFinReel ;
@@ -54,28 +52,15 @@ import java.util.List;
     @Size(max = 100)
     private String quantiteNonConforme;
 
- public PlanificationOf(LigneCommandeClient ligneCommandeClient, EtapeProduction etapeProductions, Machine machine, List<Personnel> personnels, Date dateLancementPrevue, Date dateLancementReel, LocalDate heureDebutPrevue, LocalDate heureFinPrevue, LocalDate heureFinReel, LocalDate heureDebutReel, LocalDate duréeReelOperation, String quantiteInitiale, String quantiteConforme, String quantiteNonConforme, String commentaire) {
-  this.ligneCommandeClient = ligneCommandeClient;
-  this.etapeProductions = etapeProductions;
-  this.machine = machine;
-  this.personnels = personnels;
-  this.dateLancementPrevue = dateLancementPrevue;
-  this.dateLancementReel = dateLancementReel;
-  this.heureDebutPrevue = heureDebutPrevue;
-  this.heureFinPrevue = heureFinPrevue;
-  this.heureFinReel = heureFinReel;
-  this.heureDebutReel = heureDebutReel;
-  this.duréeReelOperation = duréeReelOperation;
-  this.quantiteInitiale = quantiteInitiale;
-  this.quantiteConforme = quantiteConforme;
-  this.quantiteNonConforme = quantiteNonConforme;
-  this.commentaire = commentaire;
- }
+
 
  @Size(max = 100)
     private String commentaire;
 
  public PlanificationOf() {
 
+ }
+
+ public PlanificationOf(LigneCommandeClient ligneCommandeClient, EtapeProduction etapeProduction, Machine machine, List<Personnel> personnels, Date date, Date date1, LocalDate max_date, LocalDate max_date1, LocalDate max_date2, LocalDate max_date3, LocalDate max_date4, String s, String s1, String s2, String s3) {
  }
 }

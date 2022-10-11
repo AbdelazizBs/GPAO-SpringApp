@@ -14,32 +14,12 @@ public class PlanificationOfDTO {
 
     @Id
     private String id ;
-
-//    public PlanificationOfDTO(String commentaire, List<String> idPersonnels, LocalDate duréeReelOperation, Date dateLancementReel, LocalDate heureDebutPrevue, LocalDate heureFinReel, String quantiteInitiale, String quantiteConforme, String quantiteNonConforme, LocalDate heureDebutReel, Date dateLancementPrevue, String idLigneCommandeClient, String idEtapeProductions, String idMachine, LocalDate heureFinPrevue) {
-//        this.commentaire = commentaire;
-//        this.idPersonnels = idPersonnels;
-//        this.duréeReelOperation = duréeReelOperation;
-//        this.dateLancementReel = dateLancementReel;
-//        this.heureDebutPrevue = heureDebutPrevue;
-//        this.heureFinReel = heureFinReel;
-//        this.quantiteInitiale = quantiteInitiale;
-//        this.quantiteConforme = quantiteConforme;
-//        this.quantiteNonConforme = quantiteNonConforme;
-//        this.heureDebutReel = heureDebutReel;
-//        this.dateLancementPrevue = dateLancementPrevue;
-//        this.idLigneCommandeClient = idLigneCommandeClient;
-//        this.idEtapeProductions = idEtapeProductions;
-//        this.idMachine = idMachine;
-//        this.heureFinPrevue = heureFinPrevue;
-//    }
-
     @Size(max = 100)
     private String commentaire;
     private List<String> idPersonnels;
     private LocalDate duréeReelOperation ;
 
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private Date dateLancementReel ;
+    private LocalDate dateLancementReel ;
     private LocalDate heureDebutPrevue ;
     private LocalDate heureFinReel ;
 
@@ -59,8 +39,7 @@ public class PlanificationOfDTO {
 
 
     private LocalDate heureDebutReel ;
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private Date dateLancementPrevue ;
+    private LocalDate dateLancementPrevue ;
 
     private String idLigneCommandeClient ;
 

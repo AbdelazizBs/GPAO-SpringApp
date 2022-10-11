@@ -153,6 +153,15 @@ public class MachineServiceImpl implements MachineService {
 					.collect(Collectors.toList());
 					
 	}
+	@Override
+	public String getIdMachine(String  nomEtape) throws ResourceNotFoundException {
+		EtapeProduction etapeProduction = etapeProductionRepository.findByNomEtape(nomEtape)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  nomEtape)));
+		Machine machine = machineRepository.findMachineByEtapeProduction(etapeProduction)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  nomEtape)));
+		return machine.getId();
+
+	}
 
 //	public MachineDto setEtatEnRepos(final String idMachine) throws ResourceNotFoundException {
 //		final Machine machine = machineRepository.findById(idMachine)

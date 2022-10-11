@@ -67,6 +67,12 @@ public class MachineController {
 			 return machineService.getMachineEnVeille();
 			 
 		 }
+		 @GetMapping("/getIdMachine/{nomEtape}")
+		 public String  getIdMachine (
+				 @PathVariable(value = "nomEtape", required = true) @NotEmpty(message = "{http.error.0001}") String nomEtape) throws ResourceNotFoundException {
+			 return machineService.getIdMachine(nomEtape);
+
+		 }
 	
 		  @GetMapping("/machine/{id}")
 		  @ApiOperation(value = "service to get one Machine by Id.")
