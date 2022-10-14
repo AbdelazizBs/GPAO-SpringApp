@@ -1,57 +1,94 @@
 package com.housservice.housstock.model.dto;
-
-import java.time.LocalDate;
-
+import java.util.Date;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
+import com.housservice.housstock.model.Comptes;
 import org.springframework.data.annotation.Id;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @Getter
 @Setter
-public class PersonnelDto{
-	
+public class PersonnelDto {
+
 	@Id
 	private String id;
-	
-	@Size(max = 100)
-	private String cin;
 
+	@NotBlank
 	@Size(max = 100)
+	@Indexed(unique = true)
 	private String nom;
 
+	@NotBlank
 	@Size(max = 100)
+	@Indexed(unique = true)
 	private String prenom;
-	
-	@Size(max = 100)
-	private String sexe;
 
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private LocalDate dateDeNaissance;
-	
-
+	@NotBlank
 	@Size(max = 100)
+	@Indexed(unique = true)
+	@JsonFormat(pattern="dd/MM/yyyy")
+	private Date dateDeNaissance;
+
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
 	private String adresse;
 
-	
+	@NotBlank
 	@Size(max = 100)
+	@Indexed(unique = true)
+	private String photo;
+
+
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String cin;
+
+
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String sexe;
+
+
+
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
 	private String rib;
-	
+
+	@NotBlank
 	@Size(max = 100)
+	@Indexed(unique = true)
 	private String poste;
 
+	@NotBlank
 	@Size(max = 100)
+	@Indexed(unique = true)
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private LocalDate dateDeEmbauche;
-	
+	private Date dateDeEmbauche;
+
+	@NotBlank
 	@Size(max = 100)
-	private String echelon;
-	
+	@Indexed(unique = true)
+	private Long echelon;
+
+	@NotBlank
 	@Size(max = 100)
-	private String categorie;
+	@Indexed(unique = true)
+	private Long categorie;
+
+	private Comptes compte;
+
+
 
 }

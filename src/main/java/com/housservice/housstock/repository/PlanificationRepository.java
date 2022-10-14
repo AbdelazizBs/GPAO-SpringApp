@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface PlanificationRepository extends MongoRepository<PlanificationOf,String > {
-    List<PlanificationOf> findByLigneCommandeClientId(String idLc);
+    List<PlanificationOf> findByLigneCommandeClientIdAndEtapeProductionsTypeEtape(String idLc,String type);
 }

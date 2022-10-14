@@ -1,15 +1,24 @@
 package com.housservice.housstock.controller.personnel;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.housservice.housstock.model.Comptes;
+import com.housservice.housstock.model.Roles;
+import com.housservice.housstock.model.Personnel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,10 +36,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-@CrossOrigin
+import static java.util.Arrays.stream;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/api/v1/personnel")
-@Api(tags = {"Personnels Management"})
+@Api(tags = {"Utilisateurs Management"})
 public class PersonnelController {
 	
 	private PersonnelService personnelService;
@@ -38,64 +51,137 @@ public class PersonnelController {
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     
     @Autowired
-	  public PersonnelController(PersonnelService PersonnelService, MessageHttpErrorProperties messageHttpErrorProperties) {
-		this.personnelService = PersonnelService;
+	  public PersonnelController(PersonnelService personnelService, MessageHttpErrorProperties messageHttpErrorProperties) {
+		this.personnelService = personnelService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
     @GetMapping("/getAllPersonnel")
-	 public List< PersonnelDto > getAllPersonnel() {
+	 public List<PersonnelDto> getAllPersonnel() {
 		 		
 		 return personnelService.getAllPersonnel();
 		 	 
 	 }
-	 @GetMapping("/getAllNomPersonnel")
-	 public List< String > getAllNomPersonnel() {
-		 return personnelService.getAllNomPersonnel();
-	 }
 
-      @GetMapping("/personnel/{id}")
-	  @ApiOperation(value = "service to get one Personnel by Id.")
-	  public ResponseEntity < PersonnelDto > getPersonnelById(
-			  @ApiParam(name = "id", value="id of Personnel", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String PersonnelId)
+      @GetMapping("/getPersonnelById/{id}")
+	  @ApiOperation(value = "service to get one Utilisateur by Id.")
+	  public ResponseEntity <PersonnelDto> getPersonnelById(
+			  @ApiParam(name = "id", value="id of utilisateur", required = true)
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String utilisateurId)
 	  throws ResourceNotFoundException {
-    	PersonnelDto Personnel = personnelService.getPersonnelById(PersonnelId);
-		  if (Personnel == null) {
+    	PersonnelDto utilisateur = personnelService.getPersonnelById(utilisateurId);
+		  if (utilisateur == null) {
 			  ResponseEntity.badRequest();
 		  }
-	      return ResponseEntity.ok().body(Personnel);
+	      return ResponseEntity.ok().body(utilisateur);
 	  }
     
-      @PutMapping("/personnel")
-	  public ResponseEntity<String> createPersonnel(@Valid @RequestBody PersonnelDto PersonnelDto) {
+      @PutMapping("/createNewPersonnel")
+	  public ResponseEntity<String> createNewPersonnel(final String nom ,
+													  final String prenom ,
+													  final Date dateDeNaissance ,
+													  final String adresse ,
+													  final String photo ,
+													  final String email ,
+													  final String password,
+													  final String cin,
+													  final String sexe,
+													  final String rib,
+													  final String poste,
+													  final Date datedembauche,
+													  final Long echelon,
+													  final Long category
+													  ) throws ResourceNotFoundException {
 		  
-    	  personnelService.createNewPersonnel(PersonnelDto);
+    	  personnelService.createNewPersonnel(nom,
+				  prenom,
+				  dateDeNaissance,
+				  adresse,
+				  photo,
+				  email,
+				  password,
+				   cin,
+				   sexe,
+				   rib,
+				   poste,
+				   datedembauche,
+				   echelon,
+				   category
+				  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
+
+	  @GetMapping("token/refreshToken")
+	  public void refreshToken(HttpServletRequest request , HttpServletResponse response) throws IOException {
+		String authorizationHeader = request.getHeader(AUTHORIZATION);
+		  if (authorizationHeader!= null && authorizationHeader.startsWith("Bearer ")){
+			  try{
+				  String refreshToken = authorizationHeader.substring("Bearer ".length());
+				  Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+				  JWTVerifier verifier = JWT.require(algorithm).build();
+				  DecodedJWT decodedJWT = verifier.verify(refreshToken);
+				  String username =decodedJWT.getSubject();
+				  Personnel user = personnelService.getPersonnelByNom(username);
+				  String access_token = JWT.create()
+						  .withSubject(user.getNom())
+						  .withExpiresAt(new Date(System.currentTimeMillis() +10 *60 * 1000))
+						  .withIssuer(request.getRequestURL().toString())
+						  .withClaim("roles",user.getCompte().getRoles().stream().map(Roles::getNom).collect(Collectors.toList()))
+						  .sign(algorithm);
+				  Map<String,String> tokens = new HashMap<>();
+				  tokens.put("access_token",access_token);
+				  tokens.put("refresh_token",refreshToken);
+				  response.setContentType(APPLICATION_JSON_VALUE);
+				  new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+
+			  }catch (Exception exception){
+				  response.setHeader("error",exception.getMessage());
+				  response.setStatus(FORBIDDEN.value());
+				  Map<String,String> error = new HashMap<>();
+				  error.put("error_message",exception.getMessage());
+				  response.setContentType(APPLICATION_JSON_VALUE);
+				  new ObjectMapper().writeValue(response.getOutputStream(),error);
+			  }
+
+
+		  }else {
+			throw new  RuntimeException("Refresh token is missing");
+		  }
+	}
     
-      @PutMapping("/personnel/{id}")
+      @PutMapping("/updatePersonnel/{id}")
 	  public ResponseEntity <String> updatePersonnel(
-			  @ApiParam(name = "id", value="id of Personnel", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String PersonnelId,
-	          @Valid @RequestBody(required = true) PersonnelDto PersonnelDto) throws ResourceNotFoundException {
+			  @ApiParam(name = "id", value="id of utilisateur", required = true)
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String utilisateurId,
+	          @Valid @RequestBody(required = true) PersonnelDto personnelDto) throws ResourceNotFoundException {
 		  
-    	  personnelService.updatePersonnel(PersonnelDto);
+    	  personnelService.updatePersonnel(personnelDto);
 	      
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	  }
+      @PutMapping("/addCompte/{idPersonnel}")
+	  public ResponseEntity <String> addCompte(
+			  @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
+			  @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}") String idPersonnel,
+			  @Valid Comptes comptes
+			  ) throws ResourceNotFoundException {
+    	  personnelService.addCompte(idPersonnel,comptes);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 
     
-	  @DeleteMapping("/personnel/{id}")
-	  @ApiOperation(value = "service to delete one Personnel by Id.")
+	  @DeleteMapping("/deletePersonnel/{id}")
+	  @ApiOperation(value = "service to delete one Utilisateur by Id.")
 	  public Map < String, Boolean > deletePersonnel(
-			  @ApiParam(name = "id", value="id of Personnel", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String PersonnelId) {
+			  @ApiParam(name = "id", value="id of utilisateur", required = true)
+			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String utilisateurId) {
 
-		  personnelService.deletePersonnel(PersonnelId);
+		  personnelService.deletePersonnel(utilisateurId);
 	      Map < String, Boolean > response = new HashMap < > ();
 	      response.put("deleted", Boolean.TRUE);
 	      return response;
 	  }
-
+	
+	 
 }
+ 

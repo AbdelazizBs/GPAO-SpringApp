@@ -4,6 +4,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -12,6 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 
  * @author houssem.khadraoui@gmail.com
@@ -19,11 +24,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Document(collection = "Comptes")
+@Document(collection = "Compte")
 public class Comptes {
 
 	@Transient
-    public static final String SEQUENCE_NAME = "comptes_sequence";
+    public static final String SEQUENCE_NAME = "compte_sequence";
 	
     @Id
     private String id;
@@ -37,9 +42,10 @@ public class Comptes {
     @Size(max = 100)
     @Indexed(unique = true)
     private String password;
-    
-	private Entreprise entreprise;
-	
-//	private Utilisateur utilisateur;
-    
+    private List<Roles> roles = new ArrayList<>();
+
+
+    public Comptes() {
+
+    }
 }

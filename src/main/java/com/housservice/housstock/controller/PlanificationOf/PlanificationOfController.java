@@ -29,13 +29,21 @@ public class PlanificationOfController {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
     }
 
-    @GetMapping("/getPlanificationByIdLc/{idLc}")
+    @GetMapping("/getPlanificationMachineByIdLc/{idLc}")
     @ApiOperation(value = "service to get list of  planification  ligne cmd.")
-    public List<PlanificationOfDTO> getPlanificationByIdLc(
+    public List<PlanificationOfDTO> getPlanificationMachineByIdLc(
             @ApiParam(name = "idLc", value="id of Ligne Cmd", required = true)
             @PathVariable(value = "idLc", required = true) @NotEmpty(message = "{http.error.0001}") String idLc)
             throws ResourceNotFoundException {
-        return planificationService.getPlanificationByIdLc(idLc);
+        return planificationService.getPlanificationMachineByIdLc(idLc);
+    }
+    @GetMapping("/getPlanificationManuelleByIdLc/{idLc}")
+    @ApiOperation(value = "service to get list of  planification  ligne cmd.")
+    public List<PlanificationOfDTO> getPlanificationManuelleByIdLc(
+            @ApiParam(name = "idLc", value="id of Ligne Cmd", required = true)
+            @PathVariable(value = "idLc", required = true) @NotEmpty(message = "{http.error.0001}") String idLc)
+            throws ResourceNotFoundException {
+        return planificationService.getPlanificationManuelleByIdLc(idLc);
     }
 
     @PutMapping("/updatePlanfication/{id}")

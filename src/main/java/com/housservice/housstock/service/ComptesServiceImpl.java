@@ -7,19 +7,16 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Comptes;
-import com.housservice.housstock.model.Entreprise;
-import com.housservice.housstock.model.Utilisateur;
 import com.housservice.housstock.model.dto.ComptesDto;
 import com.housservice.housstock.repository.ComptesRepository;
 import com.housservice.housstock.repository.EntrepriseRepository;
-import com.housservice.housstock.repository.UtilisateurRepository;
+import com.housservice.housstock.repository.PersonnelRepository;
 
 @Service
 public class ComptesServiceImpl implements ComptesService {
@@ -32,18 +29,18 @@ public class ComptesServiceImpl implements ComptesService {
 	
 	private EntrepriseRepository entrepriseRepository;
 	
-	private UtilisateurRepository utilisateurRepository;
+	private PersonnelRepository personnelRepository;
 	
 	@Autowired
 	public ComptesServiceImpl(ComptesRepository comptesRepository, SequenceGeneratorService sequenceGeneratorService,
 			MessageHttpErrorProperties messageHttpErrorProperties, EntrepriseRepository entrepriseRepository,
-			UtilisateurRepository utilisateurRepository) 
+			PersonnelRepository personnelRepository)
 	{
 		this.comptesRepository = comptesRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.entrepriseRepository = entrepriseRepository;
-		this.utilisateurRepository = utilisateurRepository;
+		this.personnelRepository = personnelRepository;
 	}
 
 	@Override
@@ -57,10 +54,6 @@ public class ComptesServiceImpl implements ComptesService {
 		comptesDto.setId(comptes.getId());
 		comptesDto.setEmail(comptes.getEmail());
 		comptesDto.setPassword(comptes.getPassword());
-		comptesDto.setIdEntreprise(comptes.getEntreprise().getId());
-		comptesDto.setRaisonSocialEntreprise(comptes.getEntreprise().getRaisonSocial());
-//		comptesDto.setIdUtilisateur(comptes.getUtilisateur().getId());
-//		comptesDto.setNomUtilisateur(comptes.getUtilisateur().getNom());
 		
 		return comptesDto;
 		
@@ -75,11 +68,6 @@ public class ComptesServiceImpl implements ComptesService {
 		comptes.setEmail(comptesDto.getEmail());
 		comptes.setPassword(comptesDto.getPassword());
 
-		Entreprise etr =
-		entrepriseRepository.findById(comptesDto.getIdEntreprise()).get();
-//		comptes.setEntreprise(etr); Utilisateur ut =
-//		utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
-//		comptes.setUtilisateur(ut);
 		
 		return comptes;
 	}
@@ -123,17 +111,7 @@ public class ComptesServiceImpl implements ComptesService {
 		
 		comptes.setEmail(comptesDto.getEmail());
 		comptes.setPassword(comptesDto.getPassword());
-	
-		
-		  if(comptes.getEntreprise() == null ||!StringUtils.equals(comptesDto.getIdEntreprise(),comptes.getEntreprise().getId()))
-		  { 
-			  Entreprise etr = entrepriseRepository.findById(comptesDto.getIdEntreprise()).get();
-			  comptes.setEntreprise(etr); }
-		  
-//		  if(comptes.getUtilisateur() == null ||!StringUtils.equals(comptesDto.getIdUtilisateur(),comptes.getUtilisateur().getId()))
-//		  {
-//			  Utilisateur ut = utilisateurRepository.findById(comptesDto.getIdUtilisateur()).get();
-//		      comptes.setUtilisateur(ut); }
+
 		 
 		comptesRepository.save(comptes);
 		

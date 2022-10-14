@@ -12,7 +12,8 @@ public interface PlanificationService {
     PlanificationOfDTO buildPlanificationOfDTOFromPlanificationOf(PlanificationOf planificationOf);
 
     PlanificationOf buildPlanificationOfFromPlanificationOfDTO(PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException;
-public List<PlanificationOfDTO> getPlanificationByIdLc(String id);
+public List<PlanificationOfDTO> getPlanificationMachineByIdLc(String id);
+public List<PlanificationOfDTO> getPlanificationManuelleByIdLc(String id);
 
     public void updatePlanfication(@Valid PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException;
 

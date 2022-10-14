@@ -32,12 +32,6 @@ public class PlanificationOfDTO {
     @Size(max = 100)
     private String quantiteNonConforme;
 
-
-
-
-
-
-
     private LocalDate heureDebutReel ;
     private LocalDate dateLancementPrevue ;
 

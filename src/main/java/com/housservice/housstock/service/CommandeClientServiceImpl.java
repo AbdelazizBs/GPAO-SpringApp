@@ -10,9 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import com.housservice.housstock.mapper.PlanificationOfMapper;
 import com.housservice.housstock.model.*;
-import com.housservice.housstock.model.dto.PlanificationOfDTO;
 import com.housservice.housstock.repository.LigneCommandeClientRepository;
 import com.housservice.housstock.repository.PlanificationRepository;
 import org.apache.commons.lang3.StringUtils;

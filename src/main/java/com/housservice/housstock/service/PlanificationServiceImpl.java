@@ -3,20 +3,15 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.mapper.PlanificationOfMapper;
-import com.housservice.housstock.model.CommandeClient;
-import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.PlanificationOf;
-import com.housservice.housstock.model.dto.CommandeClientDto;
+import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PlanificationOfDTO;
 import com.housservice.housstock.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +20,7 @@ public class PlanificationServiceImpl implements  PlanificationService{
     final SequenceGeneratorService sequenceGeneratorService;
     private final MessageHttpErrorProperties messageHttpErrorProperties;
 final
-PersonnelRepository personnelRepository ;
+PersonnelRepository personnelRepository;
 
 final
 MachineRepository machineRepository ;
@@ -50,8 +45,13 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 
 
     @Override
-    public List<PlanificationOfDTO> getPlanificationByIdLc(String id) {
-         return planificationRepository.findByLigneCommandeClientId(id).stream().map(planificationOf ->
+    public List<PlanificationOfDTO> getPlanificationMachineByIdLc(String id) {
+         return planificationRepository.findByLigneCommandeClientIdAndEtapeProductionsTypeEtape(id,"Machine").stream().map(planificationOf ->
+             buildPlanificationOfDTOFromPlanificationOf(planificationOf)).collect(Collectors.toList());
+    }
+    @Override
+    public List<PlanificationOfDTO> getPlanificationManuelleByIdLc(String id) {
+         return planificationRepository.findByLigneCommandeClientIdAndEtapeProductionsTypeEtape(id,"Manuelle").stream().map(planificationOf ->
              buildPlanificationOfDTOFromPlanificationOf(planificationOf)).collect(Collectors.toList());
     }
     @Override
