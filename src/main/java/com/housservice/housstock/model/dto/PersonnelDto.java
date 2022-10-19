@@ -80,12 +80,12 @@ public class PersonnelDto {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private Long echelon;
+	private String echelon;
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private Long categorie;
+	private String category;
 
 	private Comptes compte;
 

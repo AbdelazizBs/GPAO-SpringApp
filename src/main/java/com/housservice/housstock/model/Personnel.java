@@ -36,7 +36,7 @@ public class Personnel {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date dateDeNaissance;
 
 	
@@ -86,12 +86,12 @@ public class Personnel {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private Long echelon;
+	private String echelon;
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private Long categorie;
+	private String category;
 	
 	private Comptes compte;
 	

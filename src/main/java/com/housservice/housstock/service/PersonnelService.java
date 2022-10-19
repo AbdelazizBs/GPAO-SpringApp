@@ -24,19 +24,17 @@ public interface PersonnelService {
                                      Date dateDeNaissance,
                                      String adresse,
                                      String photo,
-                                     String email,
-                                     String password,
                                      String cin,
                                      String sexe,
                                      String rib,
                                      String poste,
                                      Date datedembauche,
-                                     Long echelon,
-                                     Long category
+                                     String echelon,
+                                     String category
                                      ) throws ResourceNotFoundException;
 	
     public void updatePersonnel(@Valid PersonnelDto personnelDto) throws ResourceNotFoundException;
-    public void addCompte(String idPersonnel , Comptes comptes) throws ResourceNotFoundException;
+    public void addCompte(String idPersonnel ,String email, String password, List<String> roles) throws ResourceNotFoundException;
 
     public void deletePersonnel(String utilisateurId);
 

@@ -19,13 +19,7 @@ import com.housservice.housstock.model.Roles;
 import com.housservice.housstock.model.Personnel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
@@ -41,6 +35,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/personnel")
 @Api(tags = {"Utilisateurs Management"})
@@ -82,15 +77,13 @@ public class PersonnelController {
 													  final Date dateDeNaissance ,
 													  final String adresse ,
 													  final String photo ,
-													  final String email ,
-													  final String password,
 													  final String cin,
 													  final String sexe,
 													  final String rib,
 													  final String poste,
 													  final Date datedembauche,
-													  final Long echelon,
-													  final Long category
+													  final String echelon,
+													  final String category
 													  ) throws ResourceNotFoundException {
 		  
     	  personnelService.createNewPersonnel(nom,
@@ -98,8 +91,6 @@ public class PersonnelController {
 				  dateDeNaissance,
 				  adresse,
 				  photo,
-				  email,
-				  password,
 				   cin,
 				   sexe,
 				   rib,
@@ -163,9 +154,11 @@ public class PersonnelController {
 	  public ResponseEntity <String> addCompte(
 			  @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
 			  @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}") String idPersonnel,
-			  @Valid Comptes comptes
+			  final String  email,
+			  final String  password,
+			  final List<String>  roles
 			  ) throws ResourceNotFoundException {
-    	  personnelService.addCompte(idPersonnel,comptes);
+    	  personnelService.addCompte(idPersonnel,email,password,roles);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 

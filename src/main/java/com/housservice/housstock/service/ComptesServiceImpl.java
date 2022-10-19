@@ -24,7 +24,7 @@ public class ComptesServiceImpl implements ComptesService {
 	private ComptesRepository comptesRepository;
 	
 	private SequenceGeneratorService sequenceGeneratorService;
-	
+
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	
 	private EntrepriseRepository entrepriseRepository;
@@ -124,4 +124,6 @@ public class ComptesServiceImpl implements ComptesService {
 		comptesRepository.deleteById(comptesId);
 		
 	}
+
+
 }

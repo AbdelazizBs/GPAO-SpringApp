@@ -15,9 +15,10 @@ public interface ComptesService {
     public ComptesDto getComptesById(String id);
 	
     public ComptesDto buildComptesDtoFromComptes(Comptes comptes);
-	
+
     public void createNewComptes(@Valid ComptesDto comptesDto);
-	
+//    public void addCompte(String idPersonnel ,String email, String password, List<String> roles) throws ResourceNotFoundException;
+
     public void updateComptes(@Valid ComptesDto comptesDto) throws ResourceNotFoundException;
     
     public void deleteComptes(String comptesId);

@@ -42,10 +42,9 @@ public class Comptes {
     @Size(max = 100)
     @Indexed(unique = true)
     private String password;
-    private List<Roles> roles = new ArrayList<>();
 
 
-    public Comptes() {
+    private List<Roles> roles ;
 
-    }
+
 }

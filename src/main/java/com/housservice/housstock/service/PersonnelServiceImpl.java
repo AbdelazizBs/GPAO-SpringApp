@@ -82,7 +82,7 @@ public class PersonnelServiceImpl implements PersonnelService, UserDetailsServic
 		personnelDto.setPoste(personnel.getPoste());
 		personnelDto.setDateDeEmbauche(personnel.getDateDeEmbauche());
 		personnelDto.setEchelon(personnel.getEchelon());
-		personnelDto.setCategorie(personnel.getCategorie());
+		personnelDto.setCategory(personnel.getCategory());
 
 		//TODO Liste Roles
 		
@@ -96,15 +96,13 @@ public class PersonnelServiceImpl implements PersonnelService, UserDetailsServic
 								   Date dateDeNaissance,
 								   String adresse,
 								   String photo,
-								   String email,
-								   String password,
 									 String cin,
 									 String sexe,
 									 String rib,
 									 String poste,
 									 Date datedembauche,
-									 Long echelon,
-									 Long category
+									 String echelon,
+									 String category
 									 ) throws ResourceNotFoundException {
 
 		PersonnelDto personnelDto = new PersonnelDto();
@@ -118,7 +116,7 @@ public class PersonnelServiceImpl implements PersonnelService, UserDetailsServic
 		personnelDto.setPoste(poste);
 		personnelDto.setDateDeEmbauche(datedembauche);
 		personnelDto.setEchelon(echelon);
-		personnelDto.setCategorie(category);
+		personnelDto.setCategory(category);
 		personnelDto.setDateDeNaissance(dateDeNaissance);
 		personnelDto.setCompte(new Comptes());
 		personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
@@ -142,7 +140,7 @@ public class PersonnelServiceImpl implements PersonnelService, UserDetailsServic
 		personnel.setPoste(personnelDto.getPoste());
 		personnel.setDateDeEmbauche(personnelDto.getDateDeEmbauche());
 		personnel.setEchelon(personnelDto.getEchelon());
-		personnel.setCategorie(personnelDto.getCategorie());
+		personnel.setCategory(personnelDto.getCategory());
 		//TODO Liste Roles
 		
 		return personnel;
@@ -204,7 +202,7 @@ return  personnelRepository.findByNom(nom);
 		personnel.setPoste(personnelDto.getPoste());
 		personnel.setDateDeEmbauche(personnelDto.getDateDeEmbauche());
 		personnel.setEchelon(personnelDto.getEchelon());
-		personnel.setCategorie(personnelDto.getCategorie());
+		personnel.setCategory(personnelDto.getCategory());
 		personnel.setCompte(personnelDto.getCompte());
 		  if(personnel.getCompte() == null ||!StringUtils.equals(personnelDto.getCompte().getId(), personnel.getCompte().getId()))
 		  {
@@ -214,28 +212,28 @@ return  personnelRepository.findByNom(nom);
 	}
 
 	@Override
-	public void addCompte(String idPersonnel,Comptes comptes ) throws ResourceNotFoundException {
+	public void addCompte(String idPersonnel,String email, String password, List<String> roles) throws ResourceNotFoundException {
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idPersonnel)));
 //		boolean isValidEmail = emailValidator.test(request.getEmail());
 //		if (!isValidEmail) {
 //			throw new IllegalStateException("email not valid");
 //		}
-		if (comptesRepository.findByEmail(comptes.getEmail())!=null) {
-			throw  new ResourceNotFoundException(comptes.getEmail() + " exist in databse");
-		}
+//		if (comptesRepository.findByEmail(email)!=null) {
+//			throw  new ResourceNotFoundException(email + " exist in database");
+//		}
 		Comptes compte = new Comptes();
-		compte.setPassword(passwordEncoder.encode(comptes.getPassword()));
-		compte.setEmail(comptes.getEmail());
-		List<Roles> roles = comptes.getRoles().stream().map(roles1 -> {
+		List<Roles> rolesList = roles.stream().map(r -> {
 			try {
-				return rolesRepository.findByNom(String.valueOf(roles1))
-						.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), roles1)));
+				return rolesRepository.findByNom(r).orElseThrow(() ->
+						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), r)));
 			} catch (ResourceNotFoundException e) {
 				throw new RuntimeException(e);
 			}
 		}).collect(Collectors.toList());
-		compte.setRoles(roles);
+		compte.setPassword(passwordEncoder.encode(password));
+		compte.setEmail(email);
+		compte.setRoles(rolesList);
 		comptesRepository.save(compte);
 		personnel.setCompte(compte);
 		personnelRepository.save(personnel);
