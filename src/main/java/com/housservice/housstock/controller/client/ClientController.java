@@ -53,21 +53,19 @@ public class ClientController {
 
 	@GetMapping("/getIdClients/{raisonSociale}")
 	@ApiOperation(value = "service to get one Commande Client by Id.")
-
 	public String getIdClients(  @ApiParam(name = "raisonSociale", value="raisonSociale of clients", required = true)
 								 @PathVariable(value = "raisonSociale", required = true) @NotEmpty(message = "{http.error.0001}") String raisonSociale) throws ResourceNotFoundException {
 		return clientService.getIdClients(raisonSociale);
 
 	}
 	@GetMapping("/getRaisonSociales")
-	@ApiOperation(value = "service to get one Commande Client by Id.")
-	public List<String> getIdClients() {
+	@ApiOperation(value = "service to get one Raison Sociale")
+	public List<String> getRaisonSociales() {
 		return clientService.getRaisonSociales();
-
 	}
 	 @GetMapping("/getAllClient")
 	 public List< Client > getAllClient() {
-		 		
+
 		 return clientService.findClientActif();
 	 
 	 }

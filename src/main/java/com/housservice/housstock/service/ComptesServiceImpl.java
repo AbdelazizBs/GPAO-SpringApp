@@ -1,13 +1,27 @@
 package com.housservice.housstock.service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.housservice.housstock.mapper.CompteMapper;
+import com.housservice.housstock.model.Machine;
+import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.Roles;
+import com.housservice.housstock.model.dto.MachineDto;
+import com.housservice.housstock.repository.RolesRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
@@ -19,28 +33,33 @@ import com.housservice.housstock.repository.EntrepriseRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
 
 @Service
-public class ComptesServiceImpl implements ComptesService {
+public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 	
 	private ComptesRepository comptesRepository;
-	
+	private final PasswordEncoder passwordEncoder;
+
 	private SequenceGeneratorService sequenceGeneratorService;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
-	
+
+	final
+	RolesRepository rolesRepository;
 	private EntrepriseRepository entrepriseRepository;
 	
 	private PersonnelRepository personnelRepository;
 	
 	@Autowired
-	public ComptesServiceImpl(ComptesRepository comptesRepository, SequenceGeneratorService sequenceGeneratorService,
-			MessageHttpErrorProperties messageHttpErrorProperties, EntrepriseRepository entrepriseRepository,
-			PersonnelRepository personnelRepository)
+	public ComptesServiceImpl(ComptesRepository comptesRepository, PasswordEncoder passwordEncoder, SequenceGeneratorService sequenceGeneratorService,
+							  MessageHttpErrorProperties messageHttpErrorProperties, EntrepriseRepository entrepriseRepository,
+							  PersonnelRepository personnelRepository, RolesRepository rolesRepository)
 	{
 		this.comptesRepository = comptesRepository;
+		this.passwordEncoder = passwordEncoder;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.entrepriseRepository = entrepriseRepository;
 		this.personnelRepository = personnelRepository;
+		this.rolesRepository = rolesRepository;
 	}
 
 	@Override
@@ -125,5 +144,49 @@ public class ComptesServiceImpl implements ComptesService {
 		
 	}
 
+	@Override
+	public void addCompte(String idPersonnel,ComptesDto comptesDto) throws ResourceNotFoundException {
+		Personnel personnel = personnelRepository.findById(idPersonnel)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idPersonnel)));
+		comptesDto.setPassword(passwordEncoder.encode(comptesDto.getPassword()));
+		final Comptes comptes =  buildComptesFromComptesDto(comptesDto);
+		final List<Roles> rolesList = new ArrayList<>();
+		comptesDto
+				.getRoles()
+				.forEach(r -> {
+					try {
+						rolesList.add(rolesRepository.findByNom(r)
+								.orElseThrow(() -> new NotFoundException(r + " not found")));
+					} catch (NotFoundException e) {
+						throw new RuntimeException(e);
+					}
+				});
+		comptes.setRoles(rolesList);
+		comptesRepository.save(comptes);
+		personnel.setCompte(comptes);
+		personnelRepository.save(personnel);
+	}
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		Comptes comptes = comptesRepository.findByEmail(email);
+		Personnel personnel = personnelRepository.findByCompte(comptes);
+		if (personnel == null){
+			throw new UsernameNotFoundException("User not found in database");
+		}else {
+			System.out.println("user found in database");
+		}
+		Collection<SimpleGrantedAuthority> authorities =new ArrayList<>();
+		personnel.getCompte().getRoles().forEach(roles -> {authorities.add(new SimpleGrantedAuthority(roles.getNom()));
+		});
+		return new org.springframework.security.core.userdetails.User(personnel.getNom(), personnel.getCompte().getPassword(),authorities);
+	}
 
+
+	@Override
+	public List<String> getRoles(String email) {
+		Comptes comptes = comptesRepository.findByEmail(email);
+		return comptes.getRoles().stream().map(Roles::getNom)
+				.collect(Collectors.toList());
+
+	}
 }

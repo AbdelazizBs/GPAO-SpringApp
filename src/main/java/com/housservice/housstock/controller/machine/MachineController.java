@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
+import com.housservice.housstock.model.Machine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -71,6 +72,13 @@ public class MachineController {
 		 public String  getIdMachine (
 				 @PathVariable(value = "nomEtape", required = true) @NotEmpty(message = "{http.error.0001}") String nomEtape) throws ResourceNotFoundException {
 			 return machineService.getIdMachine(nomEtape);
+
+		 }
+
+		 @GetMapping("/getAllMachinesByEtapes/{nomEtape}")
+		 public List<Machine>  getAllMachinesByEtapes (
+				 @PathVariable(value = "nomEtape", required = true) @NotEmpty(message = "{http.error.0001}") String nomEtape) throws ResourceNotFoundException {
+			 return machineService.getAllMachinesByEtapes(nomEtape);
 
 		 }
 	

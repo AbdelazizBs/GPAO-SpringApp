@@ -12,7 +12,7 @@ import com.housservice.housstock.model.Machine;
 public interface MachineRepository extends MongoRepository<Machine, String> {
 
 	List<Machine> findByEnVeille(Boolean aBoolean) ;
-	Optional<Machine> findMachineByEtapeProduction(EtapeProduction etapeProduction);
+	List<Machine> findMachineByEtapeProduction(EtapeProduction etapeProduction);
 
 
 }

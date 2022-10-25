@@ -39,12 +39,11 @@ public class ClientServiceImpl implements ClientService {
 	private SequenceGeneratorService sequenceGeneratorService;
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
-	final
-	ContactRepository contactRepository ;
+	final  ContactRepository contactRepository ;
 
 	@Autowired
 	public ClientServiceImpl(ClientRepository clientRepository, SequenceGeneratorService sequenceGeneratorService,
-							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository) {
+					MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository) {
 		this.clientRepository = clientRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;

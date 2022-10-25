@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.Roles;
 import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.dto.ComptesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -150,17 +151,7 @@ public class PersonnelController {
 	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
-      @PutMapping("/addCompte/{idPersonnel}")
-	  public ResponseEntity <String> addCompte(
-			  @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
-			  @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}") String idPersonnel,
-			  final String  email,
-			  final String  password,
-			  final List<String>  roles
-			  ) throws ResourceNotFoundException {
-    	  personnelService.addCompte(idPersonnel,email,password,roles);
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
-	  }
+
 
     
 	  @DeleteMapping("/deletePersonnel/{id}")

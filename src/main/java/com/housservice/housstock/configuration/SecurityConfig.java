@@ -62,15 +62,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+    CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/api/v1/user/login");
     http.csrf().disable();
     http.sessionManagement().sessionCreationPolicy(STATELESS);
     http.authorizeRequests().antMatchers("/api/v1/personnel/login","/api/v1/personnel/token/refreshToken")
             .permitAll();
 //    http.authorizeRequests().antMatchers(PUT,"/api/v1/personnel/**").permitAll();
+//    http.authorizeRequests().antMatchers(PUT,"/api/v1/compte/**").permitAll();
 //    http.authorizeRequests().antMatchers(GET,"/api/v1/user/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
-//    http.authorizeRequests().antMatchers(GET,"/api/v1/commandeClient/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
+//    http.authorizeRequests().antMatchers(GET,"/api/v1/commandeClient/**"). ("ROLE_DEVELOPEMENT");
 //    http.authorizeRequests().antMatchers(GET,"/api/v1/commandeClient/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
 //    http.authorizeRequests().antMatchers(GET,"/api/v1/client/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
 //    http.authorizeRequests().antMatchers(GET,"/api/v1/personnel/**").hasAnyAuthority("ROLE_DEVELOPEMENT");

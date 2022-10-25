@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.crypto.Mac;
 import javax.validation.Valid;
 
 import com.housservice.housstock.model.EtatMachine;
@@ -157,10 +158,15 @@ public class MachineServiceImpl implements MachineService {
 	public String getIdMachine(String  nomEtape) throws ResourceNotFoundException {
 		EtapeProduction etapeProduction = etapeProductionRepository.findByNomEtape(nomEtape)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  nomEtape)));
-		Machine machine = machineRepository.findMachineByEtapeProduction(etapeProduction)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  nomEtape)));
-		return machine.getId();
+		List<Machine> machines = machineRepository.findMachineByEtapeProduction(etapeProduction);
+		return machines.stream().map(Machine::getId).toString();
 
+	}
+	@Override
+	public List<Machine> getAllMachinesByEtapes(String  nomEtape) throws ResourceNotFoundException {
+		EtapeProduction etapeProduction = etapeProductionRepository.findByNomEtape(nomEtape)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  nomEtape)));
+		return machineRepository.findMachineByEtapeProduction(etapeProduction);
 	}
 
 //	public MachineDto setEtatEnRepos(final String idMachine) throws ResourceNotFoundException {

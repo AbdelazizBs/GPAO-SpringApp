@@ -13,6 +13,7 @@ public interface MachineService {
 	
 	public List<MachineDto> getMachineEnVeille();
 	public String getIdMachine(String nomEtape) throws ResourceNotFoundException;
+	public List<Machine> getAllMachinesByEtapes(String nomEtape) throws ResourceNotFoundException;
 
     public MachineDto getMachineById(String id);
 	

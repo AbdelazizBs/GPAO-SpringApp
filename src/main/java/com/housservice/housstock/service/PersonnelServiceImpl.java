@@ -6,8 +6,11 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.housservice.housstock.mapper.CompteMapper;
 import com.housservice.housstock.model.Roles;
+import com.housservice.housstock.model.dto.ComptesDto;
 import com.housservice.housstock.repository.RolesRepository;
+import javassist.NotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,7 +30,7 @@ import com.housservice.housstock.repository.ComptesRepository;
 import com.housservice.housstock.repository.EntrepriseRepository;
 
 @Service
-public class PersonnelServiceImpl implements PersonnelService, UserDetailsService {
+public class PersonnelServiceImpl implements PersonnelService {
 	
 	private PersonnelRepository personnelRepository;
 	
@@ -39,7 +42,6 @@ public class PersonnelServiceImpl implements PersonnelService, UserDetailsServic
 //	private final EmailValidator emailValidator;
 
 
-	private final PasswordEncoder passwordEncoder;
 
 	final
 	RolesRepository rolesRepository;
@@ -48,13 +50,12 @@ public class PersonnelServiceImpl implements PersonnelService, UserDetailsServic
 	@Autowired
 	public PersonnelServiceImpl(PersonnelRepository personnelRepository,
 								SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
-								EntrepriseRepository entrepriseRepository, PasswordEncoder passwordEncoder, ComptesRepository comptesRepository, RolesRepository rolesRepository)
+								EntrepriseRepository entrepriseRepository,  ComptesRepository comptesRepository, RolesRepository rolesRepository)
 {
 		this.personnelRepository = personnelRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.entrepriseRepository = entrepriseRepository;
-		this.passwordEncoder = passwordEncoder;
 		this.comptesRepository = comptesRepository;
 		this.rolesRepository = rolesRepository;
 }
@@ -211,33 +212,7 @@ return  personnelRepository.findByNom(nom);
 		personnelRepository.save(personnel);
 	}
 
-	@Override
-	public void addCompte(String idPersonnel,String email, String password, List<String> roles) throws ResourceNotFoundException {
-		Personnel personnel = personnelRepository.findById(idPersonnel)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idPersonnel)));
-//		boolean isValidEmail = emailValidator.test(request.getEmail());
-//		if (!isValidEmail) {
-//			throw new IllegalStateException("email not valid");
-//		}
-//		if (comptesRepository.findByEmail(email)!=null) {
-//			throw  new ResourceNotFoundException(email + " exist in database");
-//		}
-		Comptes compte = new Comptes();
-		List<Roles> rolesList = roles.stream().map(r -> {
-			try {
-				return rolesRepository.findByNom(r).orElseThrow(() ->
-						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), r)));
-			} catch (ResourceNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-		}).collect(Collectors.toList());
-		compte.setPassword(passwordEncoder.encode(password));
-		compte.setEmail(email);
-		compte.setRoles(rolesList);
-		comptesRepository.save(compte);
-		personnel.setCompte(compte);
-		personnelRepository.save(personnel);
-	}
+
 
 
 	@Override
@@ -245,18 +220,5 @@ return  personnelRepository.findByNom(nom);
 		personnelRepository.deleteById(utilisateurId);
 	}
 
-	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Comptes comptes = comptesRepository.findByEmail(email);
-		Personnel personnel = personnelRepository.findByCompte(comptes);
-		if (personnel == null){
-			throw new UsernameNotFoundException("User not found in database");
-		}else {
-			System.out.println("user found in database");
-		}
-		Collection<SimpleGrantedAuthority> authorities =new ArrayList<>();
-		personnel.getCompte().getRoles().forEach(roles -> {authorities.add(new SimpleGrantedAuthority(roles.getNom()));
-		});
-		return new org.springframework.security.core.userdetails.User(personnel.getNom(), personnel.getCompte().getPassword(),authorities);
-	}
+
 }

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.dto.ComptesDto;
+import com.housservice.housstock.model.dto.MachineDto;
 
 public interface ComptesService {
 	
@@ -18,6 +19,8 @@ public interface ComptesService {
 
     public void createNewComptes(@Valid ComptesDto comptesDto);
 //    public void addCompte(String idPersonnel ,String email, String password, List<String> roles) throws ResourceNotFoundException;
+void addCompte(String idPersonnel , ComptesDto comptesDto) throws ResourceNotFoundException;
+    public List<String> getRoles(String  email);
 
     public void updateComptes(@Valid ComptesDto comptesDto) throws ResourceNotFoundException;
     

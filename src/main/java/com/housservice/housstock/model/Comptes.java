@@ -1,11 +1,9 @@
 package com.housservice.housstock.model;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -14,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +21,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 @Document(collection = "Compte")
 public class Comptes {
 
@@ -47,4 +45,7 @@ public class Comptes {
     private List<Roles> roles ;
 
 
+    public Comptes() {
+
+    }
 }

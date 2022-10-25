@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.dto.ComptesDto;
 import com.housservice.housstock.model.dto.PersonnelDto;
 
 public interface PersonnelService {
@@ -33,9 +34,8 @@ public interface PersonnelService {
                                      String category
                                      ) throws ResourceNotFoundException;
 	
-    public void updatePersonnel(@Valid PersonnelDto personnelDto) throws ResourceNotFoundException;
-    public void addCompte(String idPersonnel ,String email, String password, List<String> roles) throws ResourceNotFoundException;
+     void updatePersonnel(@Valid PersonnelDto personnelDto) throws ResourceNotFoundException;
 
-    public void deletePersonnel(String utilisateurId);
+     void deletePersonnel(String utilisateurId);
 
 }
