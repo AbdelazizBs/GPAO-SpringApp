@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,13 +14,12 @@ import java.util.zip.Inflater;
 import javax.validation.Valid;
 
 import com.housservice.housstock.model.Article;
-import com.housservice.housstock.model.CommandeClient;
+
 import com.housservice.housstock.model.Contact;
-import com.housservice.housstock.model.dto.ArticleDto;
-import com.housservice.housstock.model.dto.CommandeClientDto;
+
 import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.ContactRepository;
-import org.apache.commons.lang3.ArrayUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +33,14 @@ import com.housservice.housstock.repository.ClientRepository;
 public class ClientServiceImpl implements ClientService {
 
 	private ClientRepository clientRepository;
+	
 	private final ArticleRepository articleRepository ;
 
 	private SequenceGeneratorService sequenceGeneratorService;
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
-	final
-	ContactRepository contactRepository ;
+	
+	final ContactRepository contactRepository ;
 
 	@Autowired
 	public ClientServiceImpl(ClientRepository clientRepository, SequenceGeneratorService sequenceGeneratorService,
@@ -253,12 +253,6 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 	@Override
 	public List<Client> findClientNonActive() {
 		return clientRepository.findClientNotActif();
-	}
-
-
-	@Override
-	public List<Client> findClientNotActif() {
-		 return clientRepository.findClientNotActif();
 	}
 
 

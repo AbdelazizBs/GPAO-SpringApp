@@ -3,7 +3,6 @@ package com.housservice.housstock.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.housservice.housstock.model.Contact;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

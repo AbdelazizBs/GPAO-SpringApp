@@ -35,8 +35,7 @@ public class FournisseurController {
 	
 	private FournisseurService fournisseurService;
 	  
-    private final MessageHttpErrorProperties messageHttpErrorProperties;
-    
+    private final MessageHttpErrorProperties messageHttpErrorProperties;   
     
     @Autowired
 	  public FournisseurController(FournisseurService fournisseurService, MessageHttpErrorProperties messageHttpErrorProperties) {

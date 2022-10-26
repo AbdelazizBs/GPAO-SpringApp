@@ -1,8 +1,7 @@
 package com.housservice.housstock.model.dto;
 
-import java.time.LocalDate;
+
 import java.util.Date;
-import java.util.List;
 
 import javax.validation.constraints.Size;
 
@@ -11,7 +10,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.housservice.housstock.model.Machine;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,9 +1,6 @@
 package com.housservice.housstock.controller.machine;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.service.MachineService;
 

@@ -1,6 +1,5 @@
 package com.housservice.housstock.model;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
