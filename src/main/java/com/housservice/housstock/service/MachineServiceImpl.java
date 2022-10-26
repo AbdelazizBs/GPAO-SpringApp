@@ -169,25 +169,6 @@ public class MachineServiceImpl implements MachineService {
 		return machineRepository.findMachineByEtapeProduction(etapeProduction);
 	}
 
-//	public MachineDto setEtatEnRepos(final String idMachine) throws ResourceNotFoundException {
-//		final Machine machine = machineRepository.findById(idMachine)
-//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
-//
-//		machine.setEtat("En repos");
-//		return MachineMapper.MAPPER.toMachineDTO(machineRepository.save(machine));
-//	}
-//	public MachineDto setEtatEnMaintenance(final String idMachine) throws ResourceNotFoundException {
-//		final Machine machine = machineRepository.findById(idMachine)
-//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
-//		machine.setEtat("En Maintenance");
-//		return MachineMapper.MAPPER.toMachineDTO(machineRepository.save(machine));
-//	}
-//	public MachineDto setEtatEnPanne(final String idMachine) throws ResourceNotFoundException {
-//		final Machine machine = machineRepository.findById(idMachine)
-//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
-//		machine.setEtat("En panne");
-//		return MachineMapper.MAPPER.toMachineDTO(machineRepository.save(machine));
-//	}
 
 	@Override
 	public void setMachineEnVeille(final String idMachine) throws ResourceNotFoundException {

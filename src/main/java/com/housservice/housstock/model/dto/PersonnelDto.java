@@ -74,21 +74,22 @@ public class PersonnelDto {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dateDeEmbauche;
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String echelon;
+	private int echelon;
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String category;
+	private String categorie;
 
 	private Comptes compte;
 
+	private boolean miseEnVeille ;
 
 
 }

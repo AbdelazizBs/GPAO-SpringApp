@@ -86,16 +86,17 @@ public class Personnel {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String echelon;
+	private int echelon;
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String category;
+	private String categorie;
 	
 	private Comptes compte;
-	
-	
+	private boolean miseEnVeille ;
+
+
 
 
 }

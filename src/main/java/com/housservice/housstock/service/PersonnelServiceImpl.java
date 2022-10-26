@@ -83,7 +83,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setPoste(personnel.getPoste());
 		personnelDto.setDateDeEmbauche(personnel.getDateDeEmbauche());
 		personnelDto.setEchelon(personnel.getEchelon());
-		personnelDto.setCategory(personnel.getCategory());
+		personnelDto.setCategorie(personnel.getCategorie());
 
 		//TODO Liste Roles
 		
@@ -102,8 +102,8 @@ public class PersonnelServiceImpl implements PersonnelService {
 									 String rib,
 									 String poste,
 									 Date datedembauche,
-									 String echelon,
-									 String category
+								   int echelon,
+									 String categorie
 									 ) throws ResourceNotFoundException {
 
 		PersonnelDto personnelDto = new PersonnelDto();
@@ -116,10 +116,11 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setRib(rib);
 		personnelDto.setPoste(poste);
 		personnelDto.setDateDeEmbauche(datedembauche);
-		personnelDto.setEchelon(echelon);
-		personnelDto.setCategory(category);
+		personnelDto.setEchelon(1);
+		personnelDto.setCategorie(categorie);
 		personnelDto.setDateDeNaissance(dateDeNaissance);
 		personnelDto.setCompte(new Comptes());
+		personnelDto.setMiseEnVeille(false);
 		personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
 	}
 
@@ -141,7 +142,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setPoste(personnelDto.getPoste());
 		personnel.setDateDeEmbauche(personnelDto.getDateDeEmbauche());
 		personnel.setEchelon(personnelDto.getEchelon());
-		personnel.setCategory(personnelDto.getCategory());
+		personnel.setCategorie(personnelDto.getCategorie());
 		//TODO Liste Roles
 		
 		return personnel;
@@ -151,7 +152,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 	@Override
 	public List<PersonnelDto> getAllPersonnel() {
 		
-	List<Personnel> listPersonnel = personnelRepository.findAll();
+	List<Personnel> listPersonnel = personnelRepository.findPersonnelByMiseEnVeille(false);
 		
 		return listPersonnel.stream()
 				.map(utilisateur -> {
@@ -187,9 +188,10 @@ return  personnelRepository.findByNom(nom);
 
 
 
+
 	@Override
 	public void updatePersonnel(@Valid PersonnelDto personnelDto) throws ResourceNotFoundException {
-		
+
 		Personnel personnel = personnelRepository.findById(personnelDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
 		personnel.setNom(personnelDto.getNom());
@@ -203,7 +205,7 @@ return  personnelRepository.findByNom(nom);
 		personnel.setPoste(personnelDto.getPoste());
 		personnel.setDateDeEmbauche(personnelDto.getDateDeEmbauche());
 		personnel.setEchelon(personnelDto.getEchelon());
-		personnel.setCategory(personnelDto.getCategory());
+		personnel.setCategorie(personnelDto.getCategorie());
 		personnel.setCompte(personnelDto.getCompte());
 		  if(personnel.getCompte() == null ||!StringUtils.equals(personnelDto.getCompte().getId(), personnel.getCompte().getId()))
 		  {
@@ -212,7 +214,25 @@ return  personnelRepository.findByNom(nom);
 		personnelRepository.save(personnel);
 	}
 
+	@Override
+	public void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException {
 
+		Personnel personnel = personnelRepository.findById(idPersonnel)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
+		personnel.setMiseEnVeille(true);
+		personnelRepository.save(personnel);
+	}
+
+	@Override
+	public List<PersonnelDto> getAllPersonnelEnVeille() {
+		return  personnelRepository.findPersonnelByMiseEnVeille(true).stream().map(personnel -> {
+			try {
+				return buildPersonnelDtoFromPersonnel(personnel);
+			} catch (ResourceNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}).collect(Collectors.toList());
+	}
 
 
 	@Override

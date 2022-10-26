@@ -30,12 +30,17 @@ public interface PersonnelService {
                                      String rib,
                                      String poste,
                                      Date datedembauche,
-                                     String echelon,
-                                     String category
+                                   int echelon,
+                                     String categorie
                                      ) throws ResourceNotFoundException;
 	
      void updatePersonnel(@Valid PersonnelDto personnelDto) throws ResourceNotFoundException;
 
-     void deletePersonnel(String utilisateurId);
+    void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;
+    List<PersonnelDto> getAllPersonnelEnVeille() throws ResourceNotFoundException;
+
+
+
+    void deletePersonnel(String utilisateurId);
 
 }

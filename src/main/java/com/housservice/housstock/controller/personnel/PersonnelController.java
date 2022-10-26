@@ -83,8 +83,8 @@ public class PersonnelController {
 													  final String rib,
 													  final String poste,
 													  final Date datedembauche,
-													  final String echelon,
-													  final String category
+													  final int echelon,
+													  final String categorie
 													  ) throws ResourceNotFoundException {
 		  
     	  personnelService.createNewPersonnel(nom,
@@ -98,7 +98,7 @@ public class PersonnelController {
 				   poste,
 				   datedembauche,
 				   echelon,
-				   category
+				  categorie
 				  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
@@ -141,17 +141,26 @@ public class PersonnelController {
 		  }
 	}
     
-      @PutMapping("/updatePersonnel/{id}")
+      @PutMapping("/updatePersonnel/{idPersonnel}")
 	  public ResponseEntity <String> updatePersonnel(
-			  @ApiParam(name = "id", value="id of utilisateur", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String utilisateurId,
+			  @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
+			  @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}")  String idPersonnel,
 	          @Valid @RequestBody(required = true) PersonnelDto personnelDto) throws ResourceNotFoundException {
-		  
     	  personnelService.updatePersonnel(personnelDto);
-	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
-
+	  @PutMapping("/mettreEnVeille/{idPersonnel}")
+	  public ResponseEntity <String> mettreEnVeille(
+			  @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
+			  @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}")  String idPersonnel) throws ResourceNotFoundException {
+    	  personnelService.mettreEnVeille(idPersonnel);
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	  }
+	@GetMapping("/getAllPersonnelEnVeille")
+	@ApiOperation(value = "service to get get All Personnel En Veille ")
+	public List <PersonnelDto> getAllPersonnelEnVeille()throws ResourceNotFoundException {
+		return personnelService.getAllPersonnelEnVeille();
+	}
 
     
 	  @DeleteMapping("/deletePersonnel/{id}")
