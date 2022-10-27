@@ -1,21 +1,21 @@
 package com.housservice.housstock.controller.machine;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import com.housservice.housstock.model.Machine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
@@ -26,7 +26,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/machine")
 @Api(tags = {"Machines Management"})
@@ -44,11 +43,13 @@ public class MachineController {
 	  }
 
 	  @GetMapping("/getAllMachine")
-	  public List< MachineDto> getAllMachine() {
+	  public ResponseEntity<Map<String, Object>> getAllMachine(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 			
-		return machineService.getAllMachine();
+		return machineService.getAllMachine(page,size);
 			
 		}
+
+
 
 		/*
 		 * @GetMapping("/machine")
@@ -62,8 +63,8 @@ public class MachineController {
 		 */
 	 
 		 @GetMapping("/getMachineEnVeille")
-		 public List< MachineDto > getMachineEnVeille() {
-			 return machineService.getMachineEnVeille();
+		 public ResponseEntity<Map<String, Object>> getMachineEnVeille(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+			 return machineService.getMachineEnVeille(page,size);
 			 
 		 }
 		 @GetMapping("/getIdMachine/{nomEtape}")
@@ -75,9 +76,9 @@ public class MachineController {
 
 		 @GetMapping("/getAllMachinesByEtapes/{nomEtape}")
 		 public List<Machine>  getAllMachinesByEtapes (
-				 @PathVariable(value = "nomEtape", required = true) @NotEmpty(message = "{http.error.0001}") String nomEtape) throws ResourceNotFoundException {
+				 @PathVariable(value = "nomEtape", required = true) @NotEmpty(message = "{http.error.0001}") String nomEtape)
+				 throws ResourceNotFoundException {
 			 return machineService.getAllMachinesByEtapes(nomEtape);
-
 		 }
 	
 			/*
@@ -101,14 +102,9 @@ public class MachineController {
 		
 		  }
 		  
-		  @PutMapping("/updateMachine/{id}")
-		  public ResponseEntity <String> updateMachine(
-				  @ApiParam(name = "id", value="id of machine", required = true)
-				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String machineId,
-		      @Valid @RequestBody(required = true) MachineDto machineDto) throws ResourceNotFoundException {
-			  
+		  @PutMapping("/updateMachine")
+		  public ResponseEntity <String> updateMachine(@Valid @RequestBody MachineDto machineDto) throws ResourceNotFoundException {
 			  machineService.updateMachine(machineDto);
-		      
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 		  }
 		 

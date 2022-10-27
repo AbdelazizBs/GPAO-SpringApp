@@ -1,17 +1,20 @@
 package com.housservice.housstock.service;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.dto.MachineDto;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 public interface MachineService {
 
-	public List<MachineDto> getAllMachine();
+	public ResponseEntity<Map<String, Object>> getAllMachine(int page , int size);
 	
-	public List<MachineDto> getMachineEnVeille();
+	public ResponseEntity<Map<String, Object>>getMachineEnVeille( int page,int size);
 	public String getIdMachine(String nomEtape) throws ResourceNotFoundException;
 	public List<Machine> getAllMachinesByEtapes(String nomEtape) throws ResourceNotFoundException;
 

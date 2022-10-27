@@ -2,9 +2,7 @@ package com.housservice.housstock.service;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.crypto.Mac;
@@ -14,6 +12,11 @@ import com.housservice.housstock.model.EtatMachine;
 import com.housservice.housstock.repository.EtatMachineRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
@@ -23,6 +26,8 @@ import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.repository.EtapeProductionRepository;
 import com.housservice.housstock.repository.MachineRepository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Service
@@ -115,43 +120,67 @@ public class MachineServiceImpl implements MachineService {
 
 	@Override
 	public void updateMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException {
-		
 		Machine machine = machineRepository.findById(machineDto.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  machineDto.getId())));
-
-		machine.setReference(machineDto.getReference());		
+		machine.setReference(machineDto.getReference());
 		machine.setLibelle(machineDto.getLibelle());
 		machine.setEnVeille(machineDto.getEnVeille());
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
-		machine.setEtatMachine(machineDto.getEtatMachine());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
-		machine.setEnVeille(machineDto.getEnVeille());
 	machine.setEtapeProduction(etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction())
 			.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getNomEtapeProduction()))));
-
 		machineRepository.save(machine);
-
 	}
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getAllMachine(int page,int size) {
+		try {
+			List<MachineDto> machines = new ArrayList<MachineDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<Machine> pageTuts;
+			pageTuts = machineRepository.findByEnVeille(false,paging);
+			machines = pageTuts.getContent().stream().map(machine -> buildMachineDtoFromMachine(machine)).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("machines", machines);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+//	@Override
+//	public List<MachineDto> getAllMachine() {
+//		List<Machine> listMachine = machineRepository.findByEnVeille(false);
+//		return listMachine.stream()
+//				.map(machine -> buildMachineDtoFromMachine(machine))
+//				.filter(machine -> machine != null)
+//				.collect(Collectors.toList());
+//
+//	}
 
 
 	@Override
-	public List<MachineDto> getAllMachine() {
-		List<Machine> listMachine = machineRepository.findByEnVeille(false);
-		return listMachine.stream()
-				.map(machine -> buildMachineDtoFromMachine(machine))
-				.filter(machine -> machine != null)
-				.collect(Collectors.toList());
-		
-	}
+	public ResponseEntity<Map<String, Object>> getMachineEnVeille(int page,int size) {
 
+		try {
+			List<MachineDto> machines = new ArrayList<MachineDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<Machine> pageTuts;
+			pageTuts = machineRepository.findByEnVeille(true,paging);
+			machines = pageTuts.getContent().stream().map(machine -> buildMachineDtoFromMachine(machine)).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("machines", machines);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
 
-	@Override
-	public List<MachineDto> getMachineEnVeille() {
-		 List<Machine> listMachine = machineRepository.findByEnVeille(true);
-			return listMachine.stream()
-					.map(machine -> buildMachineDtoFromMachine(machine))
-					.filter(machine -> machine != null)
-					.collect(Collectors.toList());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 					
 	}
 	@Override
