@@ -1,5 +1,6 @@
 package com.housservice.housstock.repository;
 
+
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.CommandeClient;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -13,7 +14,8 @@ public interface LigneCommandeClientRepository extends MongoRepository<LigneComm
 
     Optional<LigneCommandeClient>   findLigneCommandeClientByCommandeClientAndArticle(CommandeClient commande, Article article) ;
 
+    Optional<LigneCommandeClient> findLigneCommandeClientByArticleId(String idArticle) ;
+
     List<LigneCommandeClient> findLigneCommandeClientByCommandeClient(CommandeClient commandeClient) ;
-    Optional<LigneCommandeClient> findLigneCommandeClientByArticleId(String  idArticle) ;
 
 }

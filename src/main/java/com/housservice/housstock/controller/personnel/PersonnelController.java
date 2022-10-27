@@ -69,9 +69,10 @@ public class PersonnelController {
 		  if (utilisateur == null) {
 			  ResponseEntity.badRequest();
 		  }
+
 	      return ResponseEntity.ok().body(utilisateur);
 	  }
-    
+
       @PutMapping("/createNewPersonnel")
 	  public ResponseEntity<String> createNewPersonnel(final String nom ,
 													  final String prenom ,

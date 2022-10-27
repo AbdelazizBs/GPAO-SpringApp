@@ -1,8 +1,6 @@
 package com.housservice.housstock.controller.machine;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -82,17 +80,19 @@ public class MachineController {
 
 		 }
 	
-		  @GetMapping("/machine/{id}")
-		  @ApiOperation(value = "service to get one Machine by Id.")
-		  public ResponseEntity < MachineDto > getMachineById(@ApiParam(name = "id", value="id of machine", required = true)
-				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId)
-		  throws ResourceNotFoundException {
-			  MachineDto machine = machineService.getMachineById(machineId);
-			  if (machine == null) {
-				  ResponseEntity.badRequest();
-			  }
-		      return ResponseEntity.ok().body(machine);
-		  }
+			/*
+			 * @GetMapping("/machine/{id}")
+			 * 
+			 * @ApiOperation(value = "service to get one Machine by Id.") public
+			 * ResponseEntity < MachineDto > getMachineById(@ApiParam(name = "id",
+			 * value="id of machine", required = true)
+			 * 
+			 * @PathVariable(value = "id", required = true) @NotEmpty(message =
+			 * "{http.error.0001}") String machineId) throws ResourceNotFoundException {
+			 * MachineDto machine = machineService.getMachineById(machineId); if (machine ==
+			 * null) { ResponseEntity.badRequest().body("not found"); } return
+			 * ResponseEntity.ok().body(machine); }
+			 */
 	
 		  @PutMapping("/addMachine")
 		  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) throws ResourceNotFoundException {
@@ -112,6 +112,7 @@ public class MachineController {
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 		  }
 		 
+		  
 		  @DeleteMapping("/machine/{id}")
 		  @ApiOperation(value = "service to delete one Machine by Id.")
 		  public ResponseEntity<Void>  deleteMachine(
@@ -119,7 +120,10 @@ public class MachineController {
 				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String machineId) {
 		      machineService.deleteMachine(machineId);
 			  return ResponseEntity.noContent().build();
+
 		  }
+		  
+	  
 
 	@PutMapping("/setMachineEnVeille/{idMachine}")
 	public ResponseEntity <String> setMachineEnVeille(

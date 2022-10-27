@@ -1,6 +1,5 @@
 package com.housservice.housstock.controller.article;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -10,8 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import com.housservice.housstock.model.Article;
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Contact;
+
 import com.housservice.housstock.model.EtapeProduction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

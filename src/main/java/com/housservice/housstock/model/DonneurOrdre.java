@@ -1,9 +1,8 @@
 package com.housservice.housstock.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.time.LocalDate;
+
+import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -20,11 +19,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Document(collection="Client")
-public class Client {
+@Document(collection="DonneurOrdre")
+public class DonneurOrdre {
 	
 	@Transient
-	public static final String SEQUENCE_NAME ="client_sequence";
+	public static final String SEQUENCE_NAME ="donneurOrdre_sequence";
 	
 	@Id
 	private String id;
@@ -40,7 +39,6 @@ public class Client {
 	@Indexed(unique = true)
 	private String raisonSocial;
 	
-    
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -56,7 +54,6 @@ public class Client {
 	@Indexed(unique = true)
 	private String brancheActivite;
 	
-	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -67,7 +64,6 @@ public class Client {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String adresseLivraison;
-	
 	
 	@NotBlank
 	@Size(max = 100)
@@ -86,7 +82,6 @@ public class Client {
 	@Indexed(unique = true)
 	private String modePaiement;
 	
-    
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -108,24 +103,21 @@ public class Client {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String swift;
-
-
-
+	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private Date dateMiseEnVeille;
 
 
-
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private int miseEnVeille;
-
-
-	private List <Contact> contact;
-
-	private List<CommandeClient> listCommandes = new ArrayList<>();
 	
+	//private List <ContactDonneurOrdre> contactDonneurOrdre;
+	
+	//private List<CommandeDonneurOrdre> listCommandes = new ArrayList<>();
+
+
 }

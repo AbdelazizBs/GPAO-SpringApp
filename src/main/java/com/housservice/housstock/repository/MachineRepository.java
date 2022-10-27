@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.housservice.housstock.model.EtapeProduction;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 
 import com.housservice.housstock.model.Machine;
 
@@ -13,6 +12,7 @@ public interface MachineRepository extends MongoRepository<Machine, String> {
 
 	List<Machine> findByEnVeille(Boolean aBoolean) ;
 	List<Machine> findMachineByEtapeProduction(EtapeProduction etapeProduction);
+
 
 
 }

@@ -10,7 +10,6 @@ import javax.validation.constraints.NotEmpty;
 
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Contact;
-import com.housservice.housstock.model.dto.ArticleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,11 +39,10 @@ import io.swagger.annotations.ApiParam;
 @Api(tags = {"Clients Management"})
 public class ClientController {
 		
-	private final ClientService clientService;
+	  private final ClientService clientService;
 	
 	  private final MessageHttpErrorProperties messageHttpErrorProperties;
 		
-	
 	  @Autowired
 	  public ClientController(ClientService clientService, MessageHttpErrorProperties messageHttpErrorProperties) {
 		this.clientService = clientService;
@@ -52,17 +50,20 @@ public class ClientController {
 	  }
 
 	@GetMapping("/getIdClients/{raisonSociale}")
-	@ApiOperation(value = "service to get one Commande Client by Id.")
+
+	@ApiOperation(value = "service to get Id Client by raisonSociale.")
+
 	public String getIdClients(  @ApiParam(name = "raisonSociale", value="raisonSociale of clients", required = true)
 								 @PathVariable(value = "raisonSociale", required = true) @NotEmpty(message = "{http.error.0001}") String raisonSociale) throws ResourceNotFoundException {
 		return clientService.getIdClients(raisonSociale);
-
 	}
+	
 	@GetMapping("/getRaisonSociales")
 	@ApiOperation(value = "service to get one Raison Sociale")
 	public List<String> getRaisonSociales() {
 		return clientService.getRaisonSociales();
 	}
+	
 	 @GetMapping("/getAllClient")
 	 public List< Client > getAllClient() {
 
@@ -76,11 +77,6 @@ public class ClientController {
 
 	 }
 	 
-	 @GetMapping("/clientEnVeille")
-	 public List< Client > getClientEnVeille() {
-		 return clientService.findClientNotActif();
-		 
-	 }
 
 	  @GetMapping("/client/{id}")
 	  @ApiOperation(value = "service to get one Client by Id.")
@@ -154,7 +150,8 @@ public class ClientController {
 
 		  clientService.addContactClient(contact,idClient);
 
-	      return   ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+
 	  }
 
 	  @PutMapping("/updateContactClient/{idContact}")
@@ -181,6 +178,7 @@ public class ClientController {
 	      return response;
 	  }
 
+
 	@DeleteMapping("/deleteContactClient/{idContact}")
 	@ApiOperation(value = "service to delete one Client by Id.")
 	public Map< String, Boolean > deleteContactClient(
@@ -192,6 +190,7 @@ public class ClientController {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
+
 
 	 
 	

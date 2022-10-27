@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import javax.validation.constraints.Size;
 
-import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.Picture;
 import org.springframework.data.annotation.Id;

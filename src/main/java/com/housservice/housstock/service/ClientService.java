@@ -1,12 +1,11 @@
 package com.housservice.housstock.service;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
-import com.housservice.housstock.model.dto.ArticleDto;
+
 import com.housservice.housstock.model.dto.ClientDto;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -18,7 +17,6 @@ public interface ClientService {
 	public List<Client> findClientNonActive();
 	public String getIdClients(String raisonSociale) throws ResourceNotFoundException;
 
-	public List<Client> findClientNotActif();
 	public List<String> getRaisonSociales();
 
     Optional<Client> getClientById(String id);
