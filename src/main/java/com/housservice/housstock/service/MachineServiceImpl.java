@@ -64,7 +64,7 @@ public class MachineServiceImpl implements MachineService {
 		machineDto.setId(machine.getId());	
 		machineDto.setReference(machine.getReference());		
 		machineDto.setLibelle(machine.getLibelle());
-		machineDto.setIdEtatMachine(machine.getEtatMachine().getIdMachine());
+		machineDto.setIdEtatMachine(machine.getEtatMachine().getId());
 		machineDto.setNomEtatMachine(machine.getEtatMachine().getNomEtat());
 		machineDto.setNbrConducteur(machine.getNbrConducteur());
 		machineDto.setDateMaintenance(machine.getDateMaintenance());
