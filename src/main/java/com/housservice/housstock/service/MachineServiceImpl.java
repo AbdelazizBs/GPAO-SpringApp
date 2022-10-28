@@ -64,7 +64,8 @@ public class MachineServiceImpl implements MachineService {
 		machineDto.setId(machine.getId());	
 		machineDto.setReference(machine.getReference());		
 		machineDto.setLibelle(machine.getLibelle());
-		machineDto.setEtatMachine(machine.getEtatMachine());
+		machineDto.setIdEtatMachine(machine.getEtatMachine().getIdMachine());
+		machineDto.setNomEtatMachine(machine.getEtatMachine().getNomEtat());
 		machineDto.setNbrConducteur(machine.getNbrConducteur());
 		machineDto.setDateMaintenance(machine.getDateMaintenance());
 		machineDto.setNomEtapeProduction(machine.getEtapeProduction().getNomEtape());
@@ -109,7 +110,8 @@ public class MachineServiceImpl implements MachineService {
 		machine.setLibelle(machineDto.getLibelle());
 		machine.setEnVeille(machineDto.getEnVeille());
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
-		machine.setEtatMachine(machineDto.getEtatMachine());
+		machine.setEtatMachine(etatMachineRepository.findById(machineDto.getIdEtatMachine())
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getIdEtatMachine()))));
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
 		EtapeProduction etape = etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction())
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getNomEtapeProduction())));
@@ -124,9 +126,11 @@ public class MachineServiceImpl implements MachineService {
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  machineDto.getId())));
 		machine.setReference(machineDto.getReference());
 		machine.setLibelle(machineDto.getLibelle());
-		machine.setEnVeille(machineDto.getEnVeille());
+		machine.setEnVeille(false);
 		machine.setNbrConducteur(machineDto.getNbrConducteur());
 		machine.setDateMaintenance(machineDto.getDateMaintenance());
+		machine.setEtatMachine(etatMachineRepository.findById(machineDto.getIdEtatMachine())
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getIdEtatMachine()))));
 	machine.setEtapeProduction(etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction())
 			.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getNomEtapeProduction()))));
 		machineRepository.save(machine);
@@ -234,7 +238,9 @@ public class MachineServiceImpl implements MachineService {
 		machine.setEtatMachine(etatMachineEnMarche);
 		etatMachineRepository.save(etatMachineEnMarche);
 		  machineRepository.save(machine);
-	}	@Override
+	}
+
+	@Override
 	public void setEtatEnRepos(final String idMachine) throws ResourceNotFoundException {
 		final Machine machine = machineRepository.findById(idMachine)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
@@ -246,7 +252,9 @@ public class MachineServiceImpl implements MachineService {
 		machine.setEtatMachine(etatMachineEnMarche);
 		etatMachineRepository.save(etatMachineEnMarche);
 		  machineRepository.save(machine);
-	}	@Override
+	}
+
+	@Override
 	public void setEtatEnMaintenance(final String idMachine) throws ResourceNotFoundException {
 		final Machine machine = machineRepository.findById(idMachine)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
@@ -258,7 +266,8 @@ public class MachineServiceImpl implements MachineService {
 		machine.setEtatMachine(etatMachineEnMarche);
 		etatMachineRepository.save(etatMachineEnMarche);
 		  machineRepository.save(machine);
-	}	@Override
+	}
+	@Override
 	public void setEtatEnPanne(final String idMachine) throws ResourceNotFoundException {
 		final Machine machine = machineRepository.findById(idMachine)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idMachine)));
