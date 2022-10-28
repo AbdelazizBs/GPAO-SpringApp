@@ -50,19 +50,6 @@ public class MachineController {
 			
 		}
 
-
-
-		/*
-		 * @GetMapping("/machine")
-		 * public ResponseEntity <List<MachineDto>> getAllMachine() {
-		 * 
-		 * List<MachineDto> result = machineService.findMachineActif();
-		 * 
-		 * return new ResponseEntity<List<MachineDto>>(result , HttpStatus.OK );
-		 * 
-		 * }
-		 */
-	 
 		 @GetMapping("/getMachineEnVeille")
 		 public ResponseEntity<Map<String, Object>> getMachineEnVeille(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 			 return machineService.getMachineEnVeille(page,size);
@@ -81,21 +68,7 @@ public class MachineController {
 				 throws ResourceNotFoundException {
 			 return machineService.getAllMachinesByEtapes(nomEtape);
 		 }
-	
-			/*
-			 * @GetMapping("/machine/{id}")
-			 * 
-			 * @ApiOperation(value = "service to get one Machine by Id.") public
-			 * ResponseEntity < MachineDto > getMachineById(@ApiParam(name = "id",
-			 * value="id of machine", required = true)
-			 * 
-			 * @PathVariable(value = "id", required = true) @NotEmpty(message =
-			 * "{http.error.0001}") String machineId) throws ResourceNotFoundException {
-			 * MachineDto machine = machineService.getMachineById(machineId); if (machine ==
-			 * null) { ResponseEntity.badRequest().body("not found"); } return
-			 * ResponseEntity.ok().body(machine); }
-			 */
-	
+
 		  @PutMapping("/addMachine")
 		  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) throws ResourceNotFoundException {
 			  machineService.createNewMachine(machineDto);

@@ -7,14 +7,18 @@ import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
 
 import com.housservice.housstock.model.dto.ClientDto;
+
+import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import org.springframework.http.ResponseEntity;
 
 public interface ClientService {
 
-	public List<Client> findClientActif();
-	public List<Client> findClientNonActive();
+	ResponseEntity<Map<String, Object>> findClientActif(int page , int size);
+	ResponseEntity<Map<String, Object>> findClientNonActive(int page , int size);
+
 	public String getIdClients(String raisonSociale) throws ResourceNotFoundException;
 
 	public List<String> getRaisonSociales();

@@ -53,9 +53,10 @@ public class PersonnelController {
 	  }
 
     @GetMapping("/getAllPersonnel")
-	 public List<PersonnelDto> getAllPersonnel() {
-		 		
-		 return personnelService.getAllPersonnel();
+
+	@ApiOperation(value = "service to get get All Personnel En Veille ")
+	public ResponseEntity<Map<String, Object>> getAllPersonnel(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size){
+		 return personnelService.getAllPersonnel(page,size);
 		 	 
 	 }
 
@@ -157,12 +158,13 @@ public class PersonnelController {
     	  personnelService.mettreEnVeille(idPersonnel);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
+
 	@GetMapping("/getAllPersonnelEnVeille")
 	@ApiOperation(value = "service to get get All Personnel En Veille ")
-	public List <PersonnelDto> getAllPersonnelEnVeille()throws ResourceNotFoundException {
-		return personnelService.getAllPersonnelEnVeille();
-	}
+	public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+		return personnelService.getAllPersonnelEnVeille(page,size);
 
+	}
     
 	  @DeleteMapping("/deletePersonnel/{id}")
 	  @ApiOperation(value = "service to delete one Utilisateur by Id.")

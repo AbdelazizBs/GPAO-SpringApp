@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface MachineService {
 
-	public ResponseEntity<Map<String, Object>> getAllMachine(int page , int size);
-	
-	public ResponseEntity<Map<String, Object>>getMachineEnVeille( int page,int size);
-	public String getIdMachine(String nomEtape) throws ResourceNotFoundException;
-	public List<Machine> getAllMachinesByEtapes(String nomEtape) throws ResourceNotFoundException;
+	 ResponseEntity<Map<String, Object>> getAllMachine(int page , int size);
 
-    public MachineDto getMachineById(String id);
-	
+	 ResponseEntity<Map<String, Object>>getMachineEnVeille( int page,int size);
+	 String getIdMachine(String nomEtape) throws ResourceNotFoundException;
+	 List<Machine> getAllMachinesByEtapes(String nomEtape) throws ResourceNotFoundException;
+
+     MachineDto getMachineById(String id);
+
     public MachineDto buildMachineDtoFromMachine(Machine machine);
 
     public void createNewMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException;
-	
-    public void updateMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException;
+
+     void updateMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException;
     public void setEtatEnmarche(String idMachine) throws ResourceNotFoundException;
     public void setMachineEnVeille(String idMachine) throws ResourceNotFoundException;
     public void setEtatEnPause(String idMachine) throws ResourceNotFoundException;

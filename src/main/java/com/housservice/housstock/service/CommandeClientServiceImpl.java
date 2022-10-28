@@ -2,19 +2,22 @@ package com.housservice.housstock.service;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import com.housservice.housstock.model.*;
+import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.repository.LigneCommandeClientRepository;
 import com.housservice.housstock.repository.PlanificationRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
@@ -101,23 +104,50 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 	}
 
 
-	@Override
-	public List<CommandeClientDto> getAllCommandeClientNonFermer() {
-		return commandeClientRepository.findAll().stream()
-			.filter(commandeClient -> commandeClient.getEtat().equals("Non Fermer"))
-				.map(commandeclient -> buildCommandeClientDtoFromCommandeClient(commandeclient))
-				.filter(commandeclient -> commandeclient != null)
-				.collect(Collectors.toList());
-	}
+
+
 
 	@Override
-	public List<CommandeClientDto> getAllCommandeClientFermer() {
-		return commandeClientRepository.findAll().stream()
-				.filter(commandeClient -> commandeClient.getEtat().equals("Fermer"))
-				.map(commandeclient -> buildCommandeClientDtoFromCommandeClient(commandeclient))
-				.filter(commandeclient -> commandeclient != null)
-				.collect(Collectors.toList());
+	public ResponseEntity<Map<String, Object>> getAllCommandeClientNonFermer(int page, int size) {
+		try {
+			List<CommandeClientDto> commands = new ArrayList<CommandeClientDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<CommandeClient> pageTuts;
+			pageTuts =  commandeClientRepository.findCommandeClientsByEtat("Non Fermer",paging);
+			commands = pageTuts.getContent().stream().map(c -> buildCommandeClientDtoFromCommandeClient(c)).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("commandes", commands);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
+	@Override
+	public ResponseEntity<Map<String, Object>> getAllCommandeClientFermer(int page, int size) {
+		try {
+			List<CommandeClientDto> commands = new ArrayList<CommandeClientDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<CommandeClient> pageTuts;
+			pageTuts =  commandeClientRepository.findCommandeClientsByEtat("Fermer",paging);
+			commands = pageTuts.getContent().stream().map(c -> buildCommandeClientDtoFromCommandeClient(c)).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("commandes", commands);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+
+
 
 	@Override
 	public CommandeClientDto getCommandeClientById(String id) {
