@@ -259,7 +259,7 @@ return  personnelRepository.findByNom(nom);
 				}
 			}).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
-			response.put("machines", personnels);
+			response.put("personnels", personnels);
 			response.put("currentPage", pageTuts.getNumber());
 			response.put("totalItems", pageTuts.getTotalElements());
 			response.put("totalPages", pageTuts.getTotalPages());

@@ -1,5 +1,8 @@
 package com.housservice.housstock;
 
+import com.github.javafaker.Faker;
+import com.housservice.housstock.model.Comptes;
+import com.housservice.housstock.model.Personnel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

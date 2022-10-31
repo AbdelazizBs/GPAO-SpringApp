@@ -133,7 +133,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void createNewClient(@Valid ClientDto clientDto) {
-clientDto.setDate( LocalDate.now());
+clientDto.setDate(new Date());
 clientDto.setMiseEnVeille(0);
 List<Contact> contacts = new ArrayList<>();
 if (clientDto.getContact()==null){

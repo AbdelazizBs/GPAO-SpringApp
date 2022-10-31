@@ -28,7 +28,7 @@ public class CommandeClientDto {
 
 	private Date dateCmd;
 	
-	private LocalDate dateCreationCmd;
+	private Date dateCreationCmd;
 	
 	private String idClient;
 

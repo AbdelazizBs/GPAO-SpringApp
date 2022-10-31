@@ -246,7 +246,6 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 	articleDto.setNumFicheTechnique(numFicheTechnique);
 	articleDto.setMiseEnVeille(0);
 		articleRepository.save(buildArticleFromArticleDto(articleDto));
-		
 	}
 
 	@Override

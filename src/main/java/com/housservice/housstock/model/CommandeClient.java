@@ -52,13 +52,29 @@ public class CommandeClient {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private LocalDate dateCreationCmd;
+	private Date dateCreationCmd;
 	
 	private Client client;
 
 	private Boolean haveLc;
 
 	private String etatProduction;
+
+	public CommandeClient(String typeCmd, String numCmd, String etat, Date dateCmd, Date dateCreationCmd, Boolean haveLc, String etatProduction,Client client) {
+		this.typeCmd=typeCmd;
+		this.numCmd=numCmd;
+		this.etat=etat;
+		this.dateCmd=dateCmd;
+		this.dateCreationCmd=dateCreationCmd;
+		this.haveLc=haveLc;
+		this.etatProduction=etatProduction;
+		this.client=client;
+
+	}
+
+	public CommandeClient() {
+
+	}
 
 
 	//private Set<String> listIdLigneCommandeClient = new HashSet<>();

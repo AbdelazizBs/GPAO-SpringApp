@@ -162,7 +162,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
 	@Override
 	public void createNewCommandeClient(@Valid CommandeClientDto commandeClientDto) {
-			commandeClientDto.setDateCreationCmd(LocalDate.now());
+			commandeClientDto.setDateCreationCmd(new Date());
 			commandeClientDto.setEtat("Non Fermer");
 			commandeClientDto.setHaveLc(false);
 		commandeClientRepository.save(buildCommandeClientFromCommandeClientDto(commandeClientDto));
