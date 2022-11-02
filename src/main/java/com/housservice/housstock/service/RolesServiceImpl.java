@@ -7,17 +7,15 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Roles;
-import com.housservice.housstock.model.Utilisateur;
 import com.housservice.housstock.model.dto.RolesDto;
 import com.housservice.housstock.repository.RolesRepository;
-import com.housservice.housstock.repository.UtilisateurRepository;
+import com.housservice.housstock.repository.PersonnelRepository;
 
 @Service
 public class RolesServiceImpl implements RolesService {
@@ -28,16 +26,16 @@ public class RolesServiceImpl implements RolesService {
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	
-	private UtilisateurRepository utilisateurRepository;
+	private PersonnelRepository personnelRepository;
 	
 	@Autowired
 	public RolesServiceImpl(RolesRepository rolesRepository, SequenceGeneratorService sequenceGeneratorService,
-			MessageHttpErrorProperties messageHttpErrorProperties, UtilisateurRepository utilisateurRepository)
+			MessageHttpErrorProperties messageHttpErrorProperties, PersonnelRepository personnelRepository)
 	{
 		this.rolesRepository = rolesRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
-		this.utilisateurRepository = utilisateurRepository;
+		this.personnelRepository = personnelRepository;
 	}
 
 	@Override

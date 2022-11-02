@@ -29,7 +29,7 @@ public class ClientDto {
 	private String id;
 
 	@JsonFormat(pattern="dd/MM/yyyy")	
-	private LocalDate date ;
+	private Date date ;
 	
 
 	@Size(max = 100)

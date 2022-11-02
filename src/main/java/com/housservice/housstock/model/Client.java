@@ -32,8 +32,8 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")	
-	private LocalDate date ;
+	@JsonFormat(pattern="yyyy/dd/MM")
+	private Date date ;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -127,5 +127,29 @@ public class Client {
 	private List <Contact> contact;
 
 	private List<CommandeClient> listCommandes = new ArrayList<>();
-	
+
+	public Client(Date date, String raisonSocial, String regime, String secteurActivite, String brancheActivite, String adresseFacturation, String adresseLivraison, String incoterm, String echeance, String modePaiement, String nomBanque, String adresseBanque, String rib, String swift, Date dateMiseEnVeille, int miseEnVeille, List<Contact> contact, List<CommandeClient> listCommandes) {
+		this.date = date;
+		this.raisonSocial = raisonSocial;
+		this.regime = regime;
+		this.secteurActivite = secteurActivite;
+		this.brancheActivite = brancheActivite;
+		this.adresseFacturation = adresseFacturation;
+		this.adresseLivraison = adresseLivraison;
+		this.incoterm = incoterm;
+		this.echeance = echeance;
+		this.modePaiement = modePaiement;
+		this.nomBanque = nomBanque;
+		this.adresseBanque = adresseBanque;
+		this.rib = rib;
+		this.swift = swift;
+		this.dateMiseEnVeille = dateMiseEnVeille;
+		this.miseEnVeille = miseEnVeille;
+		this.contact = contact;
+		this.listCommandes = listCommandes;
+	}
+
+	public Client() {
+
+	}
 }

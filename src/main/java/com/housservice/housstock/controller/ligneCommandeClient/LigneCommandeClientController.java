@@ -47,9 +47,7 @@ public class LigneCommandeClientController {
 
     @GetMapping("/getAllLigneCommandeClient")
 	 public List< LigneCommandeClientDto > getAllLigneCommandeClient() {
-		 		
 		 return ligneCommandeClientService.getAllLigneCommandeClient();
-		 	 
 	 }
 
     @GetMapping("/getAllLigneCommandeClientFermer")
