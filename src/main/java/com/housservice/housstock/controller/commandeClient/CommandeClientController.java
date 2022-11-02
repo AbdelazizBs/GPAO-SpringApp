@@ -10,14 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import com.housservice.housstock.model.PlanificationOf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
@@ -44,18 +37,24 @@ public class CommandeClientController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
     
-    @GetMapping("/getAllCommandeClientNonFermer")
-		 public List< CommandeClientDto > getAllCommandeClientNonFermer() {
-			 		
-			 return commandeClientService.getAllCommandeClientNonFermer();
-			 	 
-		 }
-		 @GetMapping("/getAllCommandeClientFermer")
-		 public List< CommandeClientDto > getAllCommandeClientFermer() {
 
-			 return commandeClientService.getAllCommandeClientFermer();
 
-		 }
+	@GetMapping("/getAllCommandeClientNonFermer")
+	public ResponseEntity<Map<String, Object>> getAllCommandeClientNonFermer(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+
+		return commandeClientService.getAllCommandeClientNonFermer(page,size);
+
+	}
+
+	@GetMapping("/getAllCommandeClientFermer")
+	public ResponseEntity<Map<String, Object>> getAllCommandeClientFermer(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+
+		return commandeClientService.getAllCommandeClientFermer(page,size);
+
+	}
+
+
+
 
 
     

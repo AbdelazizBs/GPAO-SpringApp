@@ -7,12 +7,19 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import com.housservice.housstock.mapper.CompteMapper;
+import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Roles;
 import com.housservice.housstock.model.dto.ComptesDto;
+import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.repository.RolesRepository;
 import javassist.NotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -150,20 +157,33 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 
 	@Override
-	public List<PersonnelDto> getAllPersonnel() {
-		
-	List<Personnel> listPersonnel = personnelRepository.findPersonnelByMiseEnVeille(false);
-		
-		return listPersonnel.stream()
-				.map(utilisateur -> {
-					try {
-						return buildPersonnelDtoFromPersonnel(utilisateur);
-					} catch (ResourceNotFoundException e) {
-						throw new RuntimeException(e);
-					}
-				})
-				.filter(utilisateur -> utilisateur != null)
-				.collect(Collectors.toList());
+	public ResponseEntity<Map<String, Object>>  getAllPersonnel(int page, int size) {
+
+
+		try {
+
+			List<PersonnelDto> personnels = new ArrayList<PersonnelDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<Personnel> pageTuts;
+			pageTuts = 	personnelRepository.findPersonnelByMiseEnVeille(false,paging);
+			personnels = pageTuts.getContent().stream().map(personnel -> {
+				try {
+					return buildPersonnelDtoFromPersonnel(personnel);
+				} catch (ResourceNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("personnels", personnels);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
 
 	@Override
@@ -222,17 +242,35 @@ return  personnelRepository.findByNom(nom);
 		personnel.setMiseEnVeille(true);
 		personnelRepository.save(personnel);
 	}
-
 	@Override
-	public List<PersonnelDto> getAllPersonnelEnVeille() {
-		return  personnelRepository.findPersonnelByMiseEnVeille(true).stream().map(personnel -> {
-			try {
-				return buildPersonnelDtoFromPersonnel(personnel);
-			} catch (ResourceNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-		}).collect(Collectors.toList());
+	public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size) {
+
+		try {
+
+			List<PersonnelDto> personnels;
+			Pageable paging = PageRequest.of(page, size);
+			Page<Personnel> pageTuts;
+			pageTuts = 	personnelRepository.findPersonnelByMiseEnVeille(true,paging);
+			personnels = pageTuts.getContent().stream().map(personnel -> {
+				try {
+					return buildPersonnelDtoFromPersonnel(personnel);
+				} catch (ResourceNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("personnels", personnels);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
+
 
 
 	@Override

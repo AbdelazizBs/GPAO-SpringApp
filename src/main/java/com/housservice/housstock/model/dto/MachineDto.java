@@ -41,8 +41,9 @@ public class MachineDto {
 	@JsonFormat(pattern="yyyy-MM-dd")	
 	private Date dateMaintenance;
 		
-	private EtatMachine etatMachine;
-private Boolean enVeille ;
+	private String idEtatMachine;
+	private String nomEtatMachine;
+	private Boolean enVeille ;
 	private String nomEtapeProduction;
 
     

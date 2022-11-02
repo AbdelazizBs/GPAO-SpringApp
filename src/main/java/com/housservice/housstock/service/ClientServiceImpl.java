@@ -4,10 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
@@ -17,10 +15,17 @@ import com.housservice.housstock.model.Article;
 
 import com.housservice.housstock.model.Contact;
 
+import com.housservice.housstock.model.Machine;
+import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.ContactRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
@@ -128,7 +133,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void createNewClient(@Valid ClientDto clientDto) {
-clientDto.setDate( LocalDate.now());
+clientDto.setDate(new Date());
 clientDto.setMiseEnVeille(0);
 List<Contact> contacts = new ArrayList<>();
 if (clientDto.getContact()==null){
@@ -244,15 +249,50 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 				.collect(Collectors.toList());
 	}
 
+
 	@Override
-	public List<Client> findClientActif() {
-		return clientRepository.findClientActif();
+	public ResponseEntity<Map<String, Object>> findClientActif(int page, int size) {
+		try {
+			List<ClientDto> clients = new ArrayList<ClientDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<Client> pageTuts;
+			pageTuts =  clientRepository.findClientActif(paging);
+			clients = pageTuts.getContent().stream().map(client -> buildClientDtoFromClient(client)).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("clients", clients);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@Override
-	public List<Client> findClientNonActive() {
-		return clientRepository.findClientNotActif();
+	public ResponseEntity<Map<String, Object>> findClientNonActive(int page, int size) {
+		try {
+			List<ClientDto> clients = new ArrayList<ClientDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<Client> pageTuts;
+			pageTuts =  clientRepository.findClientNotActif(paging);
+			clients = pageTuts.getContent().stream().map(client -> buildClientDtoFromClient(client)).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("clients", clients);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
+
+
+
+
 
 
 	@Override

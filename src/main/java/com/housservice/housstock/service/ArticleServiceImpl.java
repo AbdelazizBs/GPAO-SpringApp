@@ -3,14 +3,19 @@ package com.housservice.housstock.service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.housservice.housstock.model.*;
+import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.LigneCommandeClientRepository;
 import com.housservice.housstock.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
@@ -21,7 +26,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.DataFormatException;
@@ -102,15 +106,52 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 		
 	}
 	
-	
+
+
 	@Override
-	public List<ArticleDto> getAllArticle() {
-		List<Article> listArticle = articleRepository.findArticleByMiseEnVeille(0);
-		return listArticle.stream()
-				.map(article -> buildArticleDtoFromArticle(article))
-				.filter(article -> article != null)
-				.collect(Collectors.toList());
+	public ResponseEntity<Map<String, Object>> getAllArticle(int page, int size) {
+		try {
+			List<ArticleDto> articles = new ArrayList<ArticleDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<Article> pageTuts;
+			pageTuts = articleRepository.findArticleByMiseEnVeille(0,paging);
+			articles = pageTuts.getContent().stream().map(a -> buildArticleDtoFromArticle(a)).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("articles", articles);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
+
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getArticleEnveille(int page, int size) {
+		try {
+			List<ArticleDto> articles = new ArrayList<ArticleDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<Article> pageTuts;
+			pageTuts =articleRepository.findArticleByMiseEnVeille(1,paging);
+			articles = pageTuts.getContent().stream().map(a -> buildArticleDtoFromArticle(a)).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("articles", articles);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+
+
+
 
 	@Override
 	public void setArticleEnVeille(final String idArticle) throws ResourceNotFoundException {
@@ -157,10 +198,7 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 		}
 		return null;
 	}
-	@Override
-	public List<Article> getArticleEnveille() {
-		return articleRepository.findArticleByMiseEnVeille(1);
-	}
+
 	public static byte[] compressBytes(byte[] data) {
 		Deflater deflater = new Deflater();
 		deflater.setInput(data);
@@ -208,7 +246,6 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 	articleDto.setNumFicheTechnique(numFicheTechnique);
 	articleDto.setMiseEnVeille(0);
 		articleRepository.save(buildArticleFromArticleDto(articleDto));
-		
 	}
 
 	@Override
