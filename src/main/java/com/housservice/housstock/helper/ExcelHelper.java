@@ -71,12 +71,15 @@ public class ExcelHelper {
 
 	      List<Tutorial> tutorials = new ArrayList<Tutorial>();
 
+	      for (int i = 12; rows.hasNext(); i++) {
+			
+		}
 	      int rowNumber = 0;
 	      while (rows.hasNext()) {
 	        Row currentRow = rows.next();
 
 	        // skip header
-	        if (rowNumber == 0) {
+	        if (rowNumber == 13) {
 	          rowNumber++;
 	          continue;
 	        }
@@ -87,28 +90,29 @@ public class ExcelHelper {
 
 	        int cellIdx = 0;
 	        while (cellsInRow.hasNext()) {
-	          Cell currentCell = cellsInRow.next();
+	          Cell raisonSocialCell = currentRow.getCell(0);
+	          Cell telephoneCell = currentRow.getCell(1);
 
-	          switch (cellIdx) {
-	          case 0:
-	            tutorial.setId((long) currentCell.getNumericCellValue());
-	            break;
-
-	          case 1:
-	            tutorial.setTitle(currentCell.getStringCellValue());
-	            break;
-
-	          case 2:
-	            tutorial.setDescription(currentCell.getStringCellValue());
-	            break;
-
-	          case 3:
-	            tutorial.setPublished(currentCell.getBooleanCellValue());
-	            break;
-
-	          default:
-	            break;
-	          }
+//	          switch (cellIdx) {
+//	          case 0:
+//	            tutorial.setId((long) currentCell.getNumericCellValue());
+//	            break;
+//
+//	          case 1:
+//	            tutorial.setTitle(currentCell.getStringCellValue());
+//	            break;
+//
+//	          case 2:
+//	            tutorial.setDescription(currentCell.getStringCellValue());
+//	            break;
+//
+//	          case 3:
+//	            tutorial.setPublished(currentCell.getBooleanCellValue());
+//	            break;
+//
+//	          default:
+//	            break;
+//	          }
 
 	          cellIdx++;
 	        }
