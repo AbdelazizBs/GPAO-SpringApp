@@ -165,6 +165,15 @@ public class PersonnelController {
 		return personnelService.getAllPersonnelEnVeille(page,size);
 
 	}
+
+	@GetMapping("/search")
+	@ApiOperation(value = "service to filter personnel ")
+	public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
+													  @RequestParam(defaultValue = "0") int page,
+													  @RequestParam(defaultValue = "3") int size) {
+		return personnelService.find(textToFind, page,  size);
+
+	}
     
 	  @DeleteMapping("/deletePersonnel/{id}")
 	  @ApiOperation(value = "service to delete one Utilisateur by Id.")

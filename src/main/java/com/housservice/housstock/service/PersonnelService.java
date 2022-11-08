@@ -41,6 +41,7 @@ public interface PersonnelService {
     void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;
 
     public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size);
+    public ResponseEntity<Map<String, Object>> find(String textToFind,int page, int size);
 
     void deletePersonnel(String utilisateurId);
 
