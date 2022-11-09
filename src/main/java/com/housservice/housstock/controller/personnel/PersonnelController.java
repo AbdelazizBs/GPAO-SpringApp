@@ -39,7 +39,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/personnel")
-@Api(tags = {"Utilisateurs Management"})
+@Api(tags = {"personnels Management"})
 public class PersonnelController {
 	
 	private PersonnelService personnelService;
@@ -84,9 +84,10 @@ public class PersonnelController {
 													  final String sexe,
 													  final String rib,
 													  final String poste,
-													  final Date datedembauche,
+													  final Date dateDembauche,
 													  final int echelon,
 													  final int matricule,
+													  final long phone,
 													  final String categorie
 													  ) throws ResourceNotFoundException {
 		  
@@ -99,9 +100,10 @@ public class PersonnelController {
 				   sexe,
 				   rib,
 				   poste,
-				   datedembauche,
+				  dateDembauche,
 				   echelon,
 				  matricule,
+				  phone,
 				  categorie
 				  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
@@ -148,9 +150,39 @@ public class PersonnelController {
       @PutMapping("/updatePersonnel/{idPersonnel}")
 	  public ResponseEntity <String> updatePersonnel(
 			  @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
-			  @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}")  String idPersonnel,
-	          @Valid @RequestBody(required = true) PersonnelDto personnelDto) throws ResourceNotFoundException {
-    	  personnelService.updatePersonnel(personnelDto);
+			  @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}")
+			    String idPersonnel,
+			  final String nom ,
+			  final String prenom ,
+			  final Date dateDeNaissance ,
+			  final String adresse ,
+			  final String photo ,
+			  final String cin,
+			  final String sexe,
+			  final String rib,
+			  final String poste,
+			  final Date dateDembauche,
+			  final int echelon,
+			  final int matricule,
+			  final long phone,
+			  final String categorie) throws ResourceNotFoundException {
+			  personnelService.updatePersonnel(
+					  idPersonnel,
+					  nom,
+					  prenom,
+					  dateDeNaissance,
+					  adresse,
+					  photo,
+					  cin,
+					  sexe,
+					  rib,
+					  poste,
+					  dateDembauche,
+					  echelon,
+					  matricule,
+					  phone,
+					  categorie
+			  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 	  @PutMapping("/mettreEnVeille/{idPersonnel}")

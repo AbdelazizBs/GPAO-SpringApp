@@ -34,11 +34,7 @@ public class Personnel {
 	@Indexed(unique = true)
 	private String prenom;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date dateDeNaissance;
+
 
 	
 	@NotBlank
@@ -61,7 +57,9 @@ public class Personnel {
 	@Indexed(unique = true)
 	private String cin;
 
-
+	@NotBlank
+	@Indexed(unique = true)
+	private long phone;
 
 	@NotBlank
 	@Size(max = 100)
@@ -84,9 +82,15 @@ public class Personnel {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dateDeEmbauche;
 
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	@JsonFormat(pattern="dd/MM/yyyy")
+	private Date dateDeNaissance;
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -101,7 +105,7 @@ public class Personnel {
 	private boolean miseEnVeille ;
 
 
-	public Personnel(String nom, String prenom, Date dateDeNaissance, String adresse, String photo, String cin, String sexe, String rib, String poste, Date dateDeEmbauche, int echelon, String categorie, int i, Comptes compte, boolean miseEnVeille) {
+	public Personnel(String nom, String prenom, Date dateDeNaissance, String adresse, String photo, String cin, String sexe, String rib, String poste, Date dateDeEmbauche, int echelon, String categorie,int matricule, long phone,  Comptes compte, boolean miseEnVeille) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateDeNaissance = dateDeNaissance;
@@ -116,6 +120,8 @@ public class Personnel {
 		this.categorie = categorie;
 		this.compte = compte;
 		this.miseEnVeille = miseEnVeille;
+		this.matricule = matricule;
+		this.phone = phone;
 	}
 
 	public Personnel() {

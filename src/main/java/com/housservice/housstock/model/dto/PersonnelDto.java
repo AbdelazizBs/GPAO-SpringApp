@@ -27,11 +27,6 @@ public class PersonnelDto {
 	@Indexed(unique = true)
 	private String prenom;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private Date dateDeNaissance;
 
 
 	@NotBlank
@@ -80,6 +75,12 @@ public class PersonnelDto {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
+	@JsonFormat(pattern="dd/MM/yyyy")
+	private Date dateDeNaissance;
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
 	private int echelon;
 
 
@@ -87,6 +88,11 @@ public class PersonnelDto {
 	@Size(min = 1,max = 9999)
 	@Indexed(unique = true)
 	private int matricule;
+
+
+	@NotBlank
+	@Indexed(unique = true)
+	private long phone;
 
 	@NotBlank
 	@Size(max = 100)

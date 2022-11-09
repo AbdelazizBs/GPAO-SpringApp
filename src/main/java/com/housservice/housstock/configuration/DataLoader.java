@@ -35,7 +35,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
-    //condition to save data whith Faker  to dataBase for test when running application .
+    //condition to save data whith Faker  to test when  application .
     //MODEL : [CommandClient , Client ,Personnel]
     private void loadUserData() throws ResourceNotFoundException {
         int i =0 ;
@@ -91,6 +91,7 @@ public class DataLoader implements CommandLineRunner {
                     faker.number().numberBetween(1,9),
                     faker.name().title(),
                     faker.number().numberBetween(1,9999),
+                    faker.number().numberBetween(20000000,99999999),
                     new Comptes(),
                     false
             );

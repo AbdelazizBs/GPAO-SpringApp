@@ -34,10 +34,25 @@ public interface PersonnelService {
                                      Date datedembauche,
                                    int echelon,
                                    int matricule,
+                                   long phone,
                                      String categorie
                                      ) throws ResourceNotFoundException;
 	
-     void updatePersonnel(@Valid PersonnelDto personnelDto) throws ResourceNotFoundException;
+     void updatePersonnel(String idPersonnel,
+                            String nom,
+                          String prenom,
+                          Date dateDeNaissance,
+                          String adresse,
+                          String photo,
+                          String cin,
+                          String sexe,
+                          String rib,
+                          String poste,
+                          Date datedembauche,
+                          int echelon,
+                          int matricule,
+                          long phone,
+                          String categorie) throws ResourceNotFoundException;
 
     void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;
 
