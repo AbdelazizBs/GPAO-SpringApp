@@ -90,6 +90,7 @@ public class DataLoader implements CommandLineRunner {
                     faker.date().birthday(),
                     faker.number().numberBetween(1,9),
                     faker.name().title(),
+                    faker.number().numberBetween(1,9999),
                     new Comptes(),
                     false
             );

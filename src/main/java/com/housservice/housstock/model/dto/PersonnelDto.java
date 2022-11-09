@@ -82,6 +82,12 @@ public class PersonnelDto {
 	@Indexed(unique = true)
 	private int echelon;
 
+
+    @NotBlank
+	@Size(min = 1,max = 9999)
+	@Indexed(unique = true)
+	private int matricule;
+
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)

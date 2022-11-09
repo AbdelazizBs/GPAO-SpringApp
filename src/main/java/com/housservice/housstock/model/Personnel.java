@@ -4,10 +4,6 @@ import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.github.javafaker.Address;
-import com.github.javafaker.Bool;
-import com.github.javafaker.DateAndTime;
-import com.github.javafaker.Number;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -55,7 +51,10 @@ public class Personnel {
 	@Indexed(unique = true)
 	private String photo;
 
-
+	@NotBlank
+	@Size(min = 1,max = 9999)
+	@Indexed(unique = true)
+	private int matricule;
 
 	@NotBlank
 	@Size(max = 100)
@@ -102,7 +101,7 @@ public class Personnel {
 	private boolean miseEnVeille ;
 
 
-	public Personnel(String nom, String prenom, Date dateDeNaissance, String adresse, String photo, String cin, String sexe, String rib, String poste, Date dateDeEmbauche, int echelon, String categorie, Comptes compte, boolean miseEnVeille) {
+	public Personnel(String nom, String prenom, Date dateDeNaissance, String adresse, String photo, String cin, String sexe, String rib, String poste, Date dateDeEmbauche, int echelon, String categorie, int i, Comptes compte, boolean miseEnVeille) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateDeNaissance = dateDeNaissance;

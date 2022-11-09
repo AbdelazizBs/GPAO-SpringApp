@@ -33,6 +33,7 @@ public interface PersonnelService {
                                      String poste,
                                      Date datedembauche,
                                    int echelon,
+                                   int matricule,
                                      String categorie
                                      ) throws ResourceNotFoundException;
 	

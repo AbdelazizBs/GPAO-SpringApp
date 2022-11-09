@@ -81,6 +81,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setDateDeEmbauche(personnel.getDateDeEmbauche());
 		personnelDto.setEchelon(personnel.getEchelon());
 		personnelDto.setCategorie(personnel.getCategorie());
+		personnelDto.setMatricule(personnel.getMatricule());
 
 		//TODO Liste Roles
 		
@@ -100,6 +101,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 									 String poste,
 									 Date datedembauche,
 								   int echelon,
+								   int matricule,
 									 String categorie
 									 ) throws ResourceNotFoundException {
 
@@ -115,6 +117,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setDateDeEmbauche(datedembauche);
 		personnelDto.setEchelon(1);
 		personnelDto.setCategorie(categorie);
+		personnelDto.setMatricule(matricule);
 		personnelDto.setDateDeNaissance(dateDeNaissance);
 		personnelDto.setCompte(new Comptes());
 		personnelDto.setMiseEnVeille(false);
@@ -140,6 +143,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setDateDeEmbauche(personnelDto.getDateDeEmbauche());
 		personnel.setEchelon(personnelDto.getEchelon());
 		personnel.setCategorie(personnelDto.getCategorie());
+		personnel.setMatricule(personnelDto.getMatricule());
 		//TODO Liste Roles
 		
 		return personnel;
@@ -217,6 +221,7 @@ return  personnelRepository.findByNom(nom);
 		personnel.setEchelon(personnelDto.getEchelon());
 		personnel.setCategorie(personnelDto.getCategorie());
 		personnel.setCompte(personnelDto.getCompte());
+		personnel.setMatricule(personnelDto.getMatricule());
 		  if(personnel.getCompte() == null ||!StringUtils.equals(personnelDto.getCompte().getId(), personnel.getCompte().getId()))
 		  {
 		      personnel.setCompte(personnel.getCompte());

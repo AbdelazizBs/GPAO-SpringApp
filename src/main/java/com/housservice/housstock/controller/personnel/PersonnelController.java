@@ -86,6 +86,7 @@ public class PersonnelController {
 													  final String poste,
 													  final Date datedembauche,
 													  final int echelon,
+													  final int matricule,
 													  final String categorie
 													  ) throws ResourceNotFoundException {
 		  
@@ -100,6 +101,7 @@ public class PersonnelController {
 				   poste,
 				   datedembauche,
 				   echelon,
+				  matricule,
 				  categorie
 				  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
