@@ -1,7 +1,5 @@
 package com.housservice.housstock.model.dto;
 
-import java.util.List;
-
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
@@ -16,7 +14,7 @@ public class DocumentDto {
 	
 
 	@Size(max = 100)
-	private String categoroeDocument;
+	private String categorieDocument;
 	
 
 	@Size(max = 100)
@@ -59,18 +57,18 @@ public class DocumentDto {
 
 
 	/**
-	 * @return the categoroeDocument
+	 * @return the categorieDocument
 	 */
-	public String getCategoroeDocument() {
-		return categoroeDocument;
+	public String getCategorieDocument() {
+		return categorieDocument;
 	}
 
 
 	/**
-	 * @param categoroeDocument the categoroeDocument to set
+	 * @param categorieDocument the categorieDocument to set
 	 */
-	public void setCategoroeDocument(String categoroeDocument) {
-		this.categoroeDocument = categoroeDocument;
+	public void setCategorieDocument(String categorieDocument) {
+		this.categorieDocument = categorieDocument;
 	}
 
 

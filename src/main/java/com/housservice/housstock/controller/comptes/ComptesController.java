@@ -4,11 +4,11 @@ package com.housservice.housstock.controller.comptes;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.dto.ComptesDto;
-import com.housservice.housstock.model.dto.MachineDto;
+
 import com.housservice.housstock.service.ComptesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

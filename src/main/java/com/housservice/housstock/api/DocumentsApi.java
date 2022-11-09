@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.housservice.housstock.helper.ExcelHelper;
 import com.housservice.housstock.message.ResponseMessage;
 import com.housservice.housstock.model.dto.DocumentDto;
 import com.housservice.housstock.service.api.DocumentService;
@@ -30,12 +28,12 @@ public class DocumentsApi {
 	
 	
 	@PostMapping("/upload")
-	public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("documents") DocumentDto documentDto) {
+	public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("documents") DocumentDto documentDto) {			  
+
 		String message = "";
 		
 		if (documentDto != null) {
-		  try {
-			  
+		  try {			  
 			  documentService.upLoadFile(documentDto);
 		
 //		    message = "Uploaded the file successfully: " + file.getOriginalFilename();
@@ -49,6 +47,7 @@ public class DocumentsApi {
 		message = "Please upload an excel file!";
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
 	}
+	
 
 	 
 }
