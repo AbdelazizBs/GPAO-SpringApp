@@ -77,34 +77,36 @@ public class PersonnelController {
       @PutMapping("/createNewPersonnel")
 	  public ResponseEntity<String> createNewPersonnel(final String nom ,
 													  final String prenom ,
-													  final Date dateDeNaissance ,
+													  final Date dateNaissance ,
 													  final String adresse ,
-													  final String photo ,
+													   final String matricule,
+													   final String photo ,
 													  final String cin,
 													  final String sexe,
 													  final String rib,
 													  final String poste,
 													  final Date dateDembauche,
-													  final int echelon,
-													  final int matricule,
-													  final long phone,
-													  final String categorie
+													  final String phone,
+													  final String categorie,
+													  final String ville,
+													  final String codePostal
 													  ) throws ResourceNotFoundException {
 		  
     	  personnelService.createNewPersonnel(nom,
 				  prenom,
-				  dateDeNaissance,
+				  dateNaissance,
 				  adresse,
+				  matricule,
 				  photo,
 				   cin,
 				   sexe,
 				   rib,
 				   poste,
 				  dateDembauche,
-				   echelon,
-				  matricule,
 				  phone,
-				  categorie
+				  categorie,
+				  ville,
+				  codePostal
 				  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
@@ -154,7 +156,8 @@ public class PersonnelController {
 			    String idPersonnel,
 			  final String nom ,
 			  final String prenom ,
-			  final Date dateDeNaissance ,
+			  final Date dateNaissance ,
+			  final String matricule,
 			  final String adresse ,
 			  final String photo ,
 			  final String cin,
@@ -163,15 +166,17 @@ public class PersonnelController {
 			  final String poste,
 			  final Date dateDembauche,
 			  final int echelon,
-			  final int matricule,
-			  final long phone,
-			  final String categorie) throws ResourceNotFoundException {
+			  final String phone,
+			  final String categorie,
+			  final String ville,
+			  final  String  codePostal) throws ResourceNotFoundException {
 			  personnelService.updatePersonnel(
 					  idPersonnel,
 					  nom,
 					  prenom,
-					  dateDeNaissance,
+					  dateNaissance,
 					  adresse,
+					  matricule,
 					  photo,
 					  cin,
 					  sexe,
@@ -179,9 +184,10 @@ public class PersonnelController {
 					  poste,
 					  dateDembauche,
 					  echelon,
-					  matricule,
 					  phone,
-					  categorie
+					  categorie,
+					  ville,
+					  codePostal
 			  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }

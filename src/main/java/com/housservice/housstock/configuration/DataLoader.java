@@ -78,22 +78,25 @@ public class DataLoader implements CommandLineRunner {
                     new ArrayList<>()
                     );
             clientRepository.save(client);
-            Personnel personnel = new Personnel(faker.name().firstName(),
+            Personnel personnel = new Personnel(
+                    faker.name().firstName(),
                     faker.name().lastName(),
                     faker.date().birthday(),
                     faker.address().city(),
                     faker.file().fileName(),
-                    "084425423",
+                    "084425423"+ i,
                     sex,
                     "15514845454564412",
                     "personnel",
                     faker.date().birthday(),
                     faker.number().numberBetween(1,9),
                     faker.name().title(),
-                    faker.number().numberBetween(1,9999),
-                    faker.number().numberBetween(20000000,99999999),
+                    "1255"+ i,
+                    "+21629883494"+i,
                     new Comptes(),
-                    false
+                    false,
+                    faker.address().city(),
+                    "5025"+i
             );
             personnelRepository.save(personnel);
             CommandeClient commandeClient = new CommandeClient(

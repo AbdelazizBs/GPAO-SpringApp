@@ -38,8 +38,15 @@ public class PersonnelDto {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String photo;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String ville;
 
-
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String codePostal;
 
 	@NotBlank
 	@Size(max = 100)
@@ -76,7 +83,7 @@ public class PersonnelDto {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private Date dateDeNaissance;
+	private Date dateNaissance;
 
 	@NotBlank
 	@Size(max = 100)
@@ -87,12 +94,12 @@ public class PersonnelDto {
     @NotBlank
 	@Size(min = 1,max = 9999)
 	@Indexed(unique = true)
-	private int matricule;
+	private String matricule;
 
 
 	@NotBlank
 	@Indexed(unique = true)
-	private long phone;
+	private String phone;
 
 	@NotBlank
 	@Size(max = 100)

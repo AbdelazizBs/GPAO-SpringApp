@@ -10,11 +10,14 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface PersonnelRepository extends MongoRepository<Personnel, String>  {
-Personnel findByNom(String s);
-    Personnel findByCompte(Comptes comptes);
+    Optional<Personnel> findByNom(String s);
+    Optional<Personnel> findByCompte(Comptes comptes);
+    List<Personnel> findPersonnelByMatricule(String matricule);
+    List<Personnel> findPersonnelByCin(String cin);
     Page<Personnel> findPersonnelByMiseEnVeille(boolean b, Pageable pageable);
 
 
@@ -26,6 +29,8 @@ Personnel findByNom(String s);
 
     @Query( "{'nom': {$regex : ?0}}")
     Page<Personnel> findPersonnelByTextToFind(String textToFind, Pageable pageable);
+
+
 
 
 }

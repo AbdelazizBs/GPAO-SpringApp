@@ -68,7 +68,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setId(personnel.getId());
 		personnelDto.setNom(personnel.getNom());
 		personnelDto.setPrenom(personnel.getPrenom());
-		personnelDto.setDateDeNaissance(personnel.getDateDeNaissance());
+		personnelDto.setDateNaissance(personnel.getDateNaissance());
 		personnelDto.setAdresse(personnel.getAdresse());
 		personnelDto.setPhoto(personnel.getPhoto());
 		if (personnel.getCompte()!=null ){
@@ -83,6 +83,8 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setCategorie(personnel.getCategorie());
 		personnelDto.setMatricule(personnel.getMatricule());
 		personnelDto.setPhone(personnel.getPhone());
+		personnelDto.setVille(personnel.getVille());
+		personnelDto.setCodePostal(personnel.getCodePostal());
 
 		//TODO Liste Roles
 		
@@ -93,20 +95,25 @@ public class PersonnelServiceImpl implements PersonnelService {
 	@Override
 	public void createNewPersonnel(String nom,
 								   String prenom,
-								   Date dateDeNaissance,
+								   Date dateNaissance,
 								   String adresse,
+								   String matricule,
 								   String photo,
-									 String cin,
-									 String sexe,
-									 String rib,
-									 String poste,
-									 Date datedembauche,
-								   int echelon,
-								   int matricule,
-								   long phone,
-									 String categorie
-									 ) throws ResourceNotFoundException {
-
+								   String cin,
+								   String sexe,
+								   String rib,
+								   String poste,
+								   Date datedembauche,
+								   String phone,
+								   String categorie,
+								   String ville,
+								   String codePostal
+									 )   {
+		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
+		List<Personnel> personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin) ;
+		if (!personnelExisteWithCin.isEmpty() || !personnelExisteWithMatricule.isEmpty()){
+			throw new RuntimeException( "cin or matricule exist");
+		}
 		PersonnelDto personnelDto = new PersonnelDto();
 		personnelDto.setNom(nom);
 		personnelDto.setAdresse(adresse);
@@ -121,9 +128,11 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setCategorie(categorie);
 		personnelDto.setMatricule(matricule);
 		personnelDto.setPhone(phone);
-		personnelDto.setDateDeNaissance(dateDeNaissance);
+		personnelDto.setDateNaissance(dateNaissance);
 		personnelDto.setCompte(new Comptes());
 		personnelDto.setMiseEnVeille(false);
+		personnelDto.setVille(ville);
+		personnelDto.setCodePostal(codePostal);
 		personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
 	}
 
@@ -133,7 +142,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setId(personnelDto.getId());
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
-		personnel.setDateDeNaissance(personnelDto.getDateDeNaissance());
+		personnel.setDateNaissance(personnelDto.getDateNaissance());
 		personnel.setAdresse(personnelDto.getAdresse());
 		personnel.setPhoto(personnelDto.getPhoto());
 		if (personnelDto.getCompte()!=null ){
@@ -148,6 +157,8 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setCategorie(personnelDto.getCategorie());
 		personnel.setMatricule(personnelDto.getMatricule());
 		personnel.setPhone(personnelDto.getPhone());
+		personnel.setVille(personnelDto.getVille());
+		personnel.setCodePostal(personnelDto.getCodePostal());
 		//TODO Liste Roles
 		
 		return personnel;
@@ -193,13 +204,15 @@ public class PersonnelServiceImpl implements PersonnelService {
 			return null;
 	}
 	@Override
-	public Personnel getPersonnelByEmail(String email) {
+	public Personnel getPersonnelByEmail(String email) throws ResourceNotFoundException {
 		Comptes comptes = comptesRepository.findByEmail(email);
-return personnelRepository.findByCompte(comptes);
+return personnelRepository.findByCompte(comptes)
+		.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), comptes)));
 	}
 	@Override
-	public Personnel getPersonnelByNom(String nom) {
-return  personnelRepository.findByNom(nom);
+	public Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException {
+return  personnelRepository.findByNom(nom)
+		.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nom)));
 	}
 
 
@@ -211,8 +224,9 @@ return  personnelRepository.findByNom(nom);
 	public void updatePersonnel(String idPersonnel,
 								String nom,
 								String prenom,
-								Date dateDeNaissance,
+								Date dateNaissance,
 								String adresse,
+								String matricule,
 								String photo,
 								String cin,
 								String sexe,
@@ -220,15 +234,16 @@ return  personnelRepository.findByNom(nom);
 								String poste,
 								Date datedembauche,
 								int echelon,
-								int matricule,
-								long phone,
-								String categorie) throws ResourceNotFoundException {
+								String phone,
+								String categorie,
+								String ville,
+								String codePostal) throws ResourceNotFoundException {
 
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
 		personnel.setNom(nom);
 		personnel.setPrenom(prenom);
-		personnel.setDateDeNaissance(dateDeNaissance);
+		personnel.setDateNaissance(dateNaissance);
 		personnel.setAdresse(adresse);
 		personnel.setPhoto(photo);
 		personnel.setCin(cin);
@@ -240,6 +255,8 @@ return  personnelRepository.findByNom(nom);
 		personnel.setCategorie(categorie);
 		personnel.setMatricule(matricule);
 		personnel.setPhone(phone);
+		personnel.setVille(ville);
+		personnel.setCodePostal(codePostal);
 		personnelRepository.save(personnel);
 	}
 

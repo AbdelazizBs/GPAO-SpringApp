@@ -17,8 +17,8 @@ public interface PersonnelService {
 	public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size);
 	
     public PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException;
-    public Personnel getPersonnelByEmail(String email);
-    public Personnel getPersonnelByNom(String nom);
+    public Personnel getPersonnelByEmail(String email) throws ResourceNotFoundException;
+    public Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException;
 
     public PersonnelDto buildPersonnelDtoFromPersonnel(Personnel personnel) throws ResourceNotFoundException;
 
@@ -26,16 +26,17 @@ public interface PersonnelService {
                                      String prenom,
                                      Date dateDeNaissance,
                                      String adresse,
-                                     String photo,
+                                   String matricule,
+                                   String photo,
                                      String cin,
                                      String sexe,
                                      String rib,
                                      String poste,
                                      Date datedembauche,
-                                   int echelon,
-                                   int matricule,
-                                   long phone,
-                                     String categorie
+                                   String phone,
+                                     String categorie,
+                                   String ville,
+                                   String codePostal
                                      ) throws ResourceNotFoundException;
 	
      void updatePersonnel(String idPersonnel,
@@ -43,6 +44,7 @@ public interface PersonnelService {
                           String prenom,
                           Date dateDeNaissance,
                           String adresse,
+                          String matricule,
                           String photo,
                           String cin,
                           String sexe,
@@ -50,9 +52,10 @@ public interface PersonnelService {
                           String poste,
                           Date datedembauche,
                           int echelon,
-                          int matricule,
-                          long phone,
-                          String categorie) throws ResourceNotFoundException;
+                          String phone,
+                          String categorie,
+                          String ville,
+                          String codePostal) throws ResourceNotFoundException;
 
     void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;
 

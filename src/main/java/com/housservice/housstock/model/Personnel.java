@@ -33,6 +33,10 @@ public class Personnel {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String prenom;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String codePostal;
 
 
 
@@ -50,7 +54,7 @@ public class Personnel {
 	@NotBlank
 	@Size(min = 1,max = 9999)
 	@Indexed(unique = true)
-	private int matricule;
+	private String matricule;
 
 	@NotBlank
 	@Size(max = 100)
@@ -59,12 +63,16 @@ public class Personnel {
 
 	@NotBlank
 	@Indexed(unique = true)
-	private long phone;
+	private String phone;
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String sexe;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String ville;
 
 
 
@@ -90,7 +98,7 @@ public class Personnel {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private Date dateDeNaissance;
+	private Date dateNaissance;
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -105,10 +113,14 @@ public class Personnel {
 	private boolean miseEnVeille ;
 
 
-	public Personnel(String nom, String prenom, Date dateDeNaissance, String adresse, String photo, String cin, String sexe, String rib, String poste, Date dateDeEmbauche, int echelon, String categorie,int matricule, long phone,  Comptes compte, boolean miseEnVeille) {
+	public Personnel() {
+
+	}
+
+	public Personnel(String nom, String prenom, Date dateNaissance, String adresse, String photo, String cin, String sexe, String rib, String poste, Date dateDeEmbauche, int echelon, String categorie,String matricule, String phone,  Comptes compte, boolean miseEnVeille,String ville,String codePostal) {
 		this.nom = nom;
 		this.prenom = prenom;
-		this.dateDeNaissance = dateDeNaissance;
+		this.dateNaissance = dateNaissance;
 		this.adresse = adresse;
 		this.photo = photo;
 		this.cin = cin;
@@ -122,9 +134,7 @@ public class Personnel {
 		this.miseEnVeille = miseEnVeille;
 		this.matricule = matricule;
 		this.phone = phone;
-	}
-
-	public Personnel() {
-
+		this.ville = ville;
+		this.codePostal = codePostal;
 	}
 }
