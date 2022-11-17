@@ -85,11 +85,12 @@ public class PersonnelController {
 													  final String sexe,
 													  final String rib,
 													  final String poste,
-													  final Date dateDembauche,
+													  final Date dateEmbauche,
 													  final String phone,
 													  final String categorie,
 													  final String ville,
-													  final String codePostal
+													  final String codePostal,
+													  final String email
 													  ) throws ResourceNotFoundException {
 		  
     	  personnelService.createNewPersonnel(nom,
@@ -102,11 +103,12 @@ public class PersonnelController {
 				   sexe,
 				   rib,
 				   poste,
-				  dateDembauche,
+				  dateEmbauche,
 				  phone,
 				  categorie,
 				  ville,
-				  codePostal
+				  codePostal,
+				  email
 				  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
@@ -164,12 +166,14 @@ public class PersonnelController {
 			  final String sexe,
 			  final String rib,
 			  final String poste,
-			  final Date dateDembauche,
+			  final Date dateEmbauche,
 			  final int echelon,
 			  final String phone,
 			  final String categorie,
 			  final String ville,
-			  final  String  codePostal) throws ResourceNotFoundException {
+			  final  String  codePostal,
+			  final  String  email
+			  ) throws ResourceNotFoundException {
 			  personnelService.updatePersonnel(
 					  idPersonnel,
 					  nom,
@@ -182,12 +186,13 @@ public class PersonnelController {
 					  sexe,
 					  rib,
 					  poste,
-					  dateDembauche,
+					  dateEmbauche,
 					  echelon,
 					  phone,
 					  categorie,
 					  ville,
-					  codePostal
+					  codePostal,
+					  email
 			  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }

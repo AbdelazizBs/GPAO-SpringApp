@@ -78,13 +78,14 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setSexe(personnel.getSexe());
 		personnelDto.setRib(personnel.getRib());
 		personnelDto.setPoste(personnel.getPoste());
-		personnelDto.setDateDeEmbauche(personnel.getDateDeEmbauche());
+		personnelDto.setDateDeEmbauche(personnel.getDateEmbauche());
 		personnelDto.setEchelon(personnel.getEchelon());
 		personnelDto.setCategorie(personnel.getCategorie());
 		personnelDto.setMatricule(personnel.getMatricule());
 		personnelDto.setPhone(personnel.getPhone());
 		personnelDto.setVille(personnel.getVille());
 		personnelDto.setCodePostal(personnel.getCodePostal());
+		personnelDto.setEmail(personnel.getEmail());
 
 		//TODO Liste Roles
 		
@@ -103,11 +104,12 @@ public class PersonnelServiceImpl implements PersonnelService {
 								   String sexe,
 								   String rib,
 								   String poste,
-								   Date datedembauche,
+								   Date dateEmbauche,
 								   String phone,
 								   String categorie,
 								   String ville,
-								   String codePostal
+								   String codePostal,
+								   String email
 									 )   {
 		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
 		List<Personnel> personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin) ;
@@ -123,16 +125,17 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setSexe(sexe);
 		personnelDto.setRib(rib);
 		personnelDto.setPoste(poste);
-		personnelDto.setDateDeEmbauche(datedembauche);
 		personnelDto.setEchelon(1);
 		personnelDto.setCategorie(categorie);
 		personnelDto.setMatricule(matricule);
 		personnelDto.setPhone(phone);
 		personnelDto.setDateNaissance(dateNaissance);
 		personnelDto.setCompte(new Comptes());
+		personnelDto.setDateDeEmbauche(dateEmbauche);
 		personnelDto.setMiseEnVeille(false);
 		personnelDto.setVille(ville);
 		personnelDto.setCodePostal(codePostal);
+		personnelDto.setEmail(email);
 		personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
 	}
 
@@ -152,13 +155,14 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setSexe(personnelDto.getSexe());
 		personnel.setRib(personnelDto.getRib());
 		personnel.setPoste(personnelDto.getPoste());
-		personnel.setDateDeEmbauche(personnelDto.getDateDeEmbauche());
+		personnel.setDateEmbauche(personnelDto.getDateDeEmbauche());
 		personnel.setEchelon(personnelDto.getEchelon());
 		personnel.setCategorie(personnelDto.getCategorie());
 		personnel.setMatricule(personnelDto.getMatricule());
 		personnel.setPhone(personnelDto.getPhone());
 		personnel.setVille(personnelDto.getVille());
 		personnel.setCodePostal(personnelDto.getCodePostal());
+		personnel.setEmail(personnelDto.getEmail());
 		//TODO Liste Roles
 		
 		return personnel;
@@ -232,12 +236,14 @@ return  personnelRepository.findByNom(nom)
 								String sexe,
 								String rib,
 								String poste,
-								Date datedembauche,
+								Date dateEmbauche,
 								int echelon,
 								String phone,
 								String categorie,
 								String ville,
-								String codePostal) throws ResourceNotFoundException {
+								String codePostal,
+								String email
+								) throws ResourceNotFoundException {
 
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
@@ -250,13 +256,14 @@ return  personnelRepository.findByNom(nom)
 		personnel.setSexe(sexe);
 		personnel.setRib(rib);
 		personnel.setPoste(poste);
-		personnel.setDateDeEmbauche(datedembauche);
+		personnel.setDateEmbauche(dateEmbauche);
 		personnel.setEchelon(echelon);
 		personnel.setCategorie(categorie);
 		personnel.setMatricule(matricule);
 		personnel.setPhone(phone);
 		personnel.setVille(ville);
 		personnel.setCodePostal(codePostal);
+		personnel.setEmail(email);
 		personnelRepository.save(personnel);
 	}
 

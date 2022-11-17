@@ -1,6 +1,7 @@
 package com.housservice.housstock.model;
 
 import java.util.Date;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -91,7 +92,7 @@ public class Personnel {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
-	private Date dateDeEmbauche;
+	private Date dateEmbauche;
 
 
 	@NotBlank
@@ -99,6 +100,8 @@ public class Personnel {
 	@Indexed(unique = true)
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dateNaissance;
+
+
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -108,6 +111,12 @@ public class Personnel {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String categorie;
+
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String email;
 	
 	private Comptes compte;
 	private boolean miseEnVeille ;
@@ -117,7 +126,11 @@ public class Personnel {
 
 	}
 
-	public Personnel(String nom, String prenom, Date dateNaissance, String adresse, String photo, String cin, String sexe, String rib, String poste, Date dateDeEmbauche, int echelon, String categorie,String matricule, String phone,  Comptes compte, boolean miseEnVeille,String ville,String codePostal) {
+	public Personnel(String nom, String prenom, Date dateNaissance, String adresse, String photo,
+					 String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
+					 int echelon, String categorie,String matricule, String phone,
+					 Comptes compte, boolean miseEnVeille,String ville,String codePostal,
+					 String email) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaissance = dateNaissance;
@@ -127,7 +140,7 @@ public class Personnel {
 		this.sexe = sexe;
 		this.rib = rib;
 		this.poste = poste;
-		this.dateDeEmbauche = dateDeEmbauche;
+		this.dateEmbauche = dateDeEmbauche;
 		this.echelon = echelon;
 		this.categorie = categorie;
 		this.compte = compte;
@@ -136,5 +149,6 @@ public class Personnel {
 		this.phone = phone;
 		this.ville = ville;
 		this.codePostal = codePostal;
+		this.email = email;
 	}
 }

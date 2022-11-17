@@ -96,7 +96,8 @@ public class DataLoader implements CommandLineRunner {
                     new Comptes(),
                     false,
                     faker.address().city(),
-                    "5025"+i
+                    "5025"+i,
+                    "TestEmail@gmail.com"
             );
             personnelRepository.save(personnel);
             CommandeClient commandeClient = new CommandeClient(

@@ -14,96 +14,62 @@ import org.springframework.data.mongodb.core.index.Indexed;
 @Setter
 public class PersonnelDto {
 
-	@Id
 	private String id;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String nom;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String prenom;
 
 
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String adresse;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String photo;
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
 	private String ville;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String codePostal;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String cin;
 
 
+	private String email;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
+
 	private String sexe;
 
 
 
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String rib;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String poste;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
+
 	private Date dateDeEmbauche;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
+
 	private Date dateNaissance;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private int echelon;
 
 
-    @NotBlank
-	@Size(min = 1,max = 9999)
-	@Indexed(unique = true)
+
 	private String matricule;
 
 
-	@NotBlank
-	@Indexed(unique = true)
+
 	private String phone;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
 	private String categorie;
 
 	private Comptes compte;
