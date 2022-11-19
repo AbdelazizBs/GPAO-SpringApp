@@ -1,30 +1,26 @@
 package com.housservice.housstock.service;
 
-import java.text.MessageFormat;
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
+import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Comptes;
+import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.dto.PersonnelDto;
+import com.housservice.housstock.repository.ComptesRepository;
+import com.housservice.housstock.repository.EntrepriseRepository;
+import com.housservice.housstock.repository.PersonnelRepository;
 import com.housservice.housstock.repository.RolesRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Personnel;
-import com.housservice.housstock.model.Comptes;
-import com.housservice.housstock.model.dto.PersonnelDto;
-import com.housservice.housstock.repository.PersonnelRepository;
-import com.housservice.housstock.repository.ComptesRepository;
-import com.housservice.housstock.repository.EntrepriseRepository;
+
+import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonnelServiceImpl implements PersonnelService {
@@ -78,7 +74,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setSexe(personnel.getSexe());
 		personnelDto.setRib(personnel.getRib());
 		personnelDto.setPoste(personnel.getPoste());
-		personnelDto.setDateDeEmbauche(personnel.getDateEmbauche());
+		personnelDto.setDateEmbauche(personnel.getDateEmbauche());
 		personnelDto.setEchelon(personnel.getEchelon());
 		personnelDto.setCategorie(personnel.getCategorie());
 		personnelDto.setMatricule(personnel.getMatricule());
@@ -96,7 +92,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 	@Override
 	public void createNewPersonnel(String nom,
 								   String prenom,
-								   Date dateNaissance,
+								   LocalDate dateNaissance,
 								   String adresse,
 								   String matricule,
 								   String photo,
@@ -104,7 +100,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 								   String sexe,
 								   String rib,
 								   String poste,
-								   Date dateEmbauche,
+								   LocalDate dateEmbauche,
 								   String phone,
 								   String categorie,
 								   String ville,
@@ -129,9 +125,9 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setCategorie(categorie);
 		personnelDto.setMatricule(matricule);
 		personnelDto.setPhone(phone);
-		personnelDto.setDateNaissance(dateNaissance);
+		personnelDto.setDateNaissance(dateNaissance.plusDays(1));
 		personnelDto.setCompte(new Comptes());
-		personnelDto.setDateDeEmbauche(dateEmbauche);
+		personnelDto.setDateEmbauche(dateEmbauche.plusDays(1));
 		personnelDto.setMiseEnVeille(false);
 		personnelDto.setVille(ville);
 		personnelDto.setCodePostal(codePostal);
@@ -155,7 +151,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setSexe(personnelDto.getSexe());
 		personnel.setRib(personnelDto.getRib());
 		personnel.setPoste(personnelDto.getPoste());
-		personnel.setDateEmbauche(personnelDto.getDateDeEmbauche());
+		personnel.setDateEmbauche(personnelDto.getDateEmbauche());
 		personnel.setEchelon(personnelDto.getEchelon());
 		personnel.setCategorie(personnelDto.getCategorie());
 		personnel.setMatricule(personnelDto.getMatricule());
@@ -228,7 +224,7 @@ return  personnelRepository.findByNom(nom)
 	public void updatePersonnel(String idPersonnel,
 								String nom,
 								String prenom,
-								Date dateNaissance,
+								LocalDate dateNaissance,
 								String adresse,
 								String matricule,
 								String photo,
@@ -236,7 +232,7 @@ return  personnelRepository.findByNom(nom)
 								String sexe,
 								String rib,
 								String poste,
-								Date dateEmbauche,
+								LocalDate dateEmbauche,
 								int echelon,
 								String phone,
 								String categorie,
@@ -249,14 +245,14 @@ return  personnelRepository.findByNom(nom)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
 		personnel.setNom(nom);
 		personnel.setPrenom(prenom);
-		personnel.setDateNaissance(dateNaissance);
+		personnel.setDateNaissance(dateNaissance.plusDays(1));
 		personnel.setAdresse(adresse);
 		personnel.setPhoto(photo);
 		personnel.setCin(cin);
 		personnel.setSexe(sexe);
 		personnel.setRib(rib);
 		personnel.setPoste(poste);
-		personnel.setDateEmbauche(dateEmbauche);
+		personnel.setDateEmbauche(dateEmbauche.plusDays(1));
 		personnel.setEchelon(echelon);
 		personnel.setCategorie(categorie);
 		personnel.setMatricule(matricule);

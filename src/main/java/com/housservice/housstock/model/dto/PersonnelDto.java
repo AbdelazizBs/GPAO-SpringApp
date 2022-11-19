@@ -1,14 +1,10 @@
 package com.housservice.housstock.model.dto;
-import java.util.Date;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import com.housservice.housstock.model.Comptes;
-import org.springframework.data.annotation.Id;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.housservice.housstock.model.Comptes;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.mongodb.core.index.Indexed;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -54,10 +50,10 @@ public class PersonnelDto {
 	private String poste;
 
 
-	private Date dateDeEmbauche;
+	private LocalDate dateEmbauche;
 
 
-	private Date dateNaissance;
+	private LocalDate dateNaissance;
 
 
 	private int echelon;

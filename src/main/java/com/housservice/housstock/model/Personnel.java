@@ -1,17 +1,15 @@
 package com.housservice.housstock.model;
 
-import java.util.Date;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 
 @Getter
@@ -91,15 +89,15 @@ public class Personnel {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private Date dateEmbauche;
+//	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dateEmbauche;
 
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private Date dateNaissance;
+//	@JsonFormat( pattern = "yyyy-MM-dd")
+	private LocalDate dateNaissance;
 
 
 	@NotBlank
@@ -126,8 +124,8 @@ public class Personnel {
 
 	}
 
-	public Personnel(String nom, String prenom, Date dateNaissance, String adresse, String photo,
-					 String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
+	public Personnel(String nom, String prenom, LocalDate dateNaissance, String adresse, String photo,
+					 String cin, String sexe, String rib, String poste, LocalDate dateDeEmbauche,
 					 int echelon, String categorie,String matricule, String phone,
 					 Comptes compte, boolean miseEnVeille,String ville,String codePostal,
 					 String email) {

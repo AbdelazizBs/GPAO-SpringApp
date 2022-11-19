@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Component
@@ -81,14 +81,14 @@ public class DataLoader implements CommandLineRunner {
             Personnel personnel = new Personnel(
                     faker.name().firstName(),
                     faker.name().lastName(),
-                    faker.date().birthday(),
+                    LocalDate.now(),
                     faker.address().city(),
                     faker.file().fileName(),
                     "084425423"+ i,
                     sex,
                     "15514845454564412",
                     "personnel",
-                    faker.date().birthday(),
+                    LocalDate.now(),
                     faker.number().numberBetween(1,9),
                     faker.name().title(),
                     "1255"+ i,
