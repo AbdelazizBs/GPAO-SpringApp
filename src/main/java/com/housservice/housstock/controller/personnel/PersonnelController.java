@@ -1,37 +1,34 @@
 package com.housservice.housstock.controller.personnel;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.housservice.housstock.model.Comptes;
-import com.housservice.housstock.model.Roles;
-import com.housservice.housstock.model.Personnel;
-import com.housservice.housstock.model.dto.ComptesDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.Roles;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.service.PersonnelService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import static java.util.Arrays.stream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotEmpty;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -77,7 +74,7 @@ public class PersonnelController {
       @PutMapping("/createNewPersonnel")
 	  public ResponseEntity<String> createNewPersonnel(final String nom ,
 													  final String prenom ,
-													  final Date dateNaissance ,
+													  final LocalDate dateNaissance ,
 													  final String adresse ,
 													   final String matricule,
 													   final String photo ,
@@ -85,7 +82,7 @@ public class PersonnelController {
 													  final String sexe,
 													  final String rib,
 													  final String poste,
-													  final Date dateEmbauche,
+													  final LocalDate dateEmbauche,
 													  final String phone,
 													  final String categorie,
 													  final String ville,
@@ -112,7 +109,7 @@ public class PersonnelController {
 				  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
-//ijerifre
+
 	  @GetMapping("token/refreshToken")
 	  public void refreshToken(HttpServletRequest request , HttpServletResponse response) throws IOException {
 		String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -158,7 +155,7 @@ public class PersonnelController {
 			    String idPersonnel,
 			  final String nom ,
 			  final String prenom ,
-			  final Date dateNaissance ,
+			  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate dateNaissance ,
 			  final String matricule,
 			  final String adresse ,
 			  final String photo ,
@@ -166,7 +163,7 @@ public class PersonnelController {
 			  final String sexe,
 			  final String rib,
 			  final String poste,
-			  final Date dateEmbauche,
+			  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate dateEmbauche,
 			  final int echelon,
 			  final String phone,
 			  final String categorie,
@@ -211,11 +208,11 @@ public class PersonnelController {
 
 	}
 
-	@GetMapping("/search")
+	   @GetMapping("/search")
 	@ApiOperation(value = "service to filter personnel ")
 	public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
 													  @RequestParam(defaultValue = "0") int page,
-													  @RequestParam(defaultValue = "3") int size) {
+													       @RequestParam(defaultValue = "3") int size) {
 		return personnelService.find(textToFind, page,  size);
 
 	}
