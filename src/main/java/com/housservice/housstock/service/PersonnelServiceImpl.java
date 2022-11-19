@@ -24,42 +24,38 @@ import java.util.stream.Collectors;
 
 @Service
 public class PersonnelServiceImpl implements PersonnelService {
-	
+
 	private PersonnelRepository personnelRepository;
-	
+
 	private SequenceGeneratorService sequenceGeneratorService;
-	
+
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
-	
+
 	private EntrepriseRepository entrepriseRepository;
 //	private final EmailValidator emailValidator;
 
-
-
-	final
-	RolesRepository rolesRepository;
+	final RolesRepository rolesRepository;
 	private ComptesRepository comptesRepository;
-	
+
 	@Autowired
 	public PersonnelServiceImpl(PersonnelRepository personnelRepository,
-								SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
-								EntrepriseRepository entrepriseRepository,  ComptesRepository comptesRepository, RolesRepository rolesRepository)
-{
+			SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
+			EntrepriseRepository entrepriseRepository, ComptesRepository comptesRepository,
+			RolesRepository rolesRepository) {
 		this.personnelRepository = personnelRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.entrepriseRepository = entrepriseRepository;
 		this.comptesRepository = comptesRepository;
 		this.rolesRepository = rolesRepository;
-}
+	}
 
 	@Override
 	public PersonnelDto buildPersonnelDtoFromPersonnel(Personnel personnel) throws ResourceNotFoundException {
-		if (personnel == null)
-		{
+		if (personnel == null) {
 			return null;
 		}
-			
+
 		PersonnelDto personnelDto = new PersonnelDto();
 		personnelDto.setId(personnel.getId());
 		personnelDto.setNom(personnel.getNom());
@@ -67,7 +63,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setDateNaissance(personnel.getDateNaissance());
 		personnelDto.setAdresse(personnel.getAdresse());
 		personnelDto.setPhoto(personnel.getPhoto());
-		if (personnel.getCompte()!=null ){
+		if (personnel.getCompte() != null) {
 			personnelDto.setCompte(personnel.getCompte());
 		}
 		personnelDto.setCin(personnel.getCin());
@@ -83,34 +79,20 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setCodePostal(personnel.getCodePostal());
 		personnelDto.setEmail(personnel.getEmail());
 
-		//TODO Liste Roles
-		
+		// TODO Liste Roles
+
 		return personnelDto;
-		
+
 	}
 
 	@Override
-	public void createNewPersonnel(String nom,
-								   String prenom,
-								   LocalDate dateNaissance,
-								   String adresse,
-								   String matricule,
-								   String photo,
-								   String cin,
-								   String sexe,
-								   String rib,
-								   String poste,
-								   LocalDate dateEmbauche,
-								   String phone,
-								   String categorie,
-								   String ville,
-								   String codePostal,
-								   String email
-									 )   {
-		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
-		List<Personnel> personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin) ;
-		if (!personnelExisteWithCin.isEmpty() || !personnelExisteWithMatricule.isEmpty()){
-			throw new RuntimeException( "cin or matricule exist");
+	public void createNewPersonnel(String nom, String prenom, LocalDate dateNaissance, String adresse, String matricule,
+			String photo, String cin, String sexe, String rib, String poste, LocalDate dateEmbauche, String phone,
+			String categorie, String ville, String codePostal, String email) {
+		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule);
+		List<Personnel> personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin);
+		if (!personnelExisteWithCin.isEmpty() || !personnelExisteWithMatricule.isEmpty()) {
+			throw new RuntimeException("cin or matricule exist");
 		}
 		PersonnelDto personnelDto = new PersonnelDto();
 		personnelDto.setNom(nom);
@@ -135,16 +117,16 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
 	}
 
-	private Personnel buildUtilisateurFromUtilisateurDto(PersonnelDto personnelDto)   {
+	private Personnel buildUtilisateurFromUtilisateurDto(PersonnelDto personnelDto) {
 		Personnel personnel = new Personnel();
-		personnel.setId(""+sequenceGeneratorService.generateSequence(Personnel.SEQUENCE_NAME));
+		personnel.setId("" + sequenceGeneratorService.generateSequence(Personnel.SEQUENCE_NAME));
 		personnel.setId(personnelDto.getId());
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
 		personnel.setDateNaissance(personnelDto.getDateNaissance());
 		personnel.setAdresse(personnelDto.getAdresse());
 		personnel.setPhoto(personnelDto.getPhoto());
-		if (personnelDto.getCompte()!=null ){
+		if (personnelDto.getCompte() != null) {
 			personnel.setCompte(personnelDto.getCompte());
 		}
 		personnel.setCin(personnelDto.getCin());
@@ -159,22 +141,20 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setVille(personnelDto.getVille());
 		personnel.setCodePostal(personnelDto.getCodePostal());
 		personnel.setEmail(personnelDto.getEmail());
-		//TODO Liste Roles
-		
+		// TODO Liste Roles
+
 		return personnel;
 	}
 
-
 	@Override
-	public ResponseEntity<Map<String, Object>>  getAllPersonnel(int page, int size) {
-
+	public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size) {
 
 		try {
 
 			List<PersonnelDto> personnels = new ArrayList<PersonnelDto>();
 			Pageable paging = PageRequest.of(page, size);
 			Page<Personnel> pageTuts;
-			pageTuts = 	personnelRepository.findPersonnelByMiseEnVeille(false,paging);
+			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
 				try {
 					return buildPersonnelDtoFromPersonnel(personnel);
@@ -197,52 +177,34 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 	@Override
 	public PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException {
-		 Optional<Personnel> utilisateurOpt = personnelRepository.findById(id);
-			if(utilisateurOpt.isPresent()) {
-				return buildPersonnelDtoFromPersonnel(utilisateurOpt.get());
-			}
-			return null;
+		Optional<Personnel> utilisateurOpt = personnelRepository.findById(id);
+		if (utilisateurOpt.isPresent()) {
+			return buildPersonnelDtoFromPersonnel(utilisateurOpt.get());
+		}
+		return null;
 	}
+
 	@Override
 	public Personnel getPersonnelByEmail(String email) throws ResourceNotFoundException {
 		Comptes comptes = comptesRepository.findByEmail(email);
-return personnelRepository.findByCompte(comptes)
-		.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), comptes)));
+		return personnelRepository.findByCompte(comptes).orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), comptes)));
 	}
+
 	@Override
 	public Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException {
-return  personnelRepository.findByNom(nom)
-		.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nom)));
+		return personnelRepository.findByNom(nom).orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), nom)));
 	}
 
-
-
-
-
-
 	@Override
-	public void updatePersonnel(String idPersonnel,
-								String nom,
-								String prenom,
-								LocalDate dateNaissance,
-								String adresse,
-								String matricule,
-								String photo,
-								String cin,
-								String sexe,
-								String rib,
-								String poste,
-								LocalDate dateEmbauche,
-								int echelon,
-								String phone,
-								String categorie,
-								String ville,
-								String codePostal,
-								String email
-								) throws ResourceNotFoundException {
+	public void updatePersonnel(String idPersonnel, String nom, String prenom, LocalDate dateNaissance, String adresse,
+			String matricule, String photo, String cin, String sexe, String rib, String poste, LocalDate dateEmbauche,
+			int echelon, String phone, String categorie, String ville, String codePostal, String email)
+			throws ResourceNotFoundException {
 
-		Personnel personnel = personnelRepository.findById(idPersonnel)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
+		Personnel personnel = personnelRepository.findById(idPersonnel).orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
 		personnel.setNom(nom);
 		personnel.setPrenom(prenom);
 		personnel.setDateNaissance(dateNaissance.plusDays(1));
@@ -266,11 +228,12 @@ return  personnelRepository.findByNom(nom)
 	@Override
 	public void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException {
 
-		Personnel personnel = personnelRepository.findById(idPersonnel)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
+		Personnel personnel = personnelRepository.findById(idPersonnel).orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
 		personnel.setMiseEnVeille(true);
 		personnelRepository.save(personnel);
 	}
+
 	@Override
 	public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size) {
 
@@ -279,7 +242,7 @@ return  personnelRepository.findByNom(nom)
 			List<PersonnelDto> personnels;
 			Pageable paging = PageRequest.of(page, size);
 			Page<Personnel> pageTuts;
-			pageTuts = 	personnelRepository.findPersonnelByMiseEnVeille(true,paging);
+			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(true, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
 				try {
 					return buildPersonnelDtoFromPersonnel(personnel);
@@ -288,7 +251,6 @@ return  personnelRepository.findByNom(nom)
 				}
 			}).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
-
 
 			response.put("personnels", personnels);
 			response.put("currentPage", pageTuts.getNumber());
@@ -302,16 +264,15 @@ return  personnelRepository.findByNom(nom)
 
 	}
 
-
 	@Override
-	public ResponseEntity<Map<String, Object>> find(String textToFind,int page, int size) {
+	public ResponseEntity<Map<String, Object>> find(String textToFind, int page, int size) {
 
 		try {
 
 			List<PersonnelDto> personnels;
 			Pageable paging = PageRequest.of(page, size);
 			Page<Personnel> pageTuts;
-			pageTuts = personnelRepository.findPersonnelByTextToFind(textToFind,paging);
+			pageTuts = personnelRepository.findPersonnelByTextToFind(textToFind, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
 				try {
 					return buildPersonnelDtoFromPersonnel(personnel);
@@ -332,12 +293,9 @@ return  personnelRepository.findByNom(nom)
 
 	}
 
-
-
 	@Override
 	public void deletePersonnel(String utilisateurId) {
 		personnelRepository.deleteById(utilisateurId);
 	}
-
 
 }
