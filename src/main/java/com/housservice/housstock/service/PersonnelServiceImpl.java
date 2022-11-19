@@ -125,9 +125,9 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setCategorie(categorie);
 		personnelDto.setMatricule(matricule);
 		personnelDto.setPhone(phone);
-		personnelDto.setDateNaissance(dateNaissance);
+		personnelDto.setDateNaissance(dateNaissance.plusDays(1));
 		personnelDto.setCompte(new Comptes());
-		personnelDto.setDateEmbauche(dateEmbauche);
+		personnelDto.setDateEmbauche(dateEmbauche.plusDays(1));
 		personnelDto.setMiseEnVeille(false);
 		personnelDto.setVille(ville);
 		personnelDto.setCodePostal(codePostal);
@@ -245,14 +245,14 @@ return  personnelRepository.findByNom(nom)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
 		personnel.setNom(nom);
 		personnel.setPrenom(prenom);
-		personnel.setDateNaissance(dateNaissance);
+		personnel.setDateNaissance(dateNaissance.plusDays(1));
 		personnel.setAdresse(adresse);
 		personnel.setPhoto(photo);
 		personnel.setCin(cin);
 		personnel.setSexe(sexe);
 		personnel.setRib(rib);
 		personnel.setPoste(poste);
-		personnel.setDateEmbauche(dateEmbauche);
+		personnel.setDateEmbauche(dateEmbauche.plusDays(1));
 		personnel.setEchelon(echelon);
 		personnel.setCategorie(categorie);
 		personnel.setMatricule(matricule);

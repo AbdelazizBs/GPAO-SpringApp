@@ -74,7 +74,7 @@ public class PersonnelController {
       @PutMapping("/createNewPersonnel")
 	  public ResponseEntity<String> createNewPersonnel(final String nom ,
 													  final String prenom ,
-													  final LocalDate dateNaissance ,
+													   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate dateNaissance ,
 													  final String adresse ,
 													   final String matricule,
 													   final String photo ,
@@ -82,7 +82,7 @@ public class PersonnelController {
 													  final String sexe,
 													  final String rib,
 													  final String poste,
-													  final LocalDate dateEmbauche,
+													   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate dateEmbauche,
 													  final String phone,
 													  final String categorie,
 													  final String ville,
