@@ -1,9 +1,10 @@
 package com.housservice.housstock.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Lob;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,25 +13,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @Document(collection = "Picture")
 public class Picture {
+	
     @Id
     private String id;
 
-    @Column(name = "fileName")
     private String fileName;
 
+    @Size(max = 1000)
+    private byte[] bytes;
 
-   @Lob
-   @Column(name = "bytes", length = 1000)
-   private byte[] bytes;
-
-    @Column(name = "type")
     private String type;
-
 
     public Picture() {
 
     }
-
 
     public Picture(String originalFilename, byte[] bytes, String contentType) {
         this.fileName=originalFilename;
