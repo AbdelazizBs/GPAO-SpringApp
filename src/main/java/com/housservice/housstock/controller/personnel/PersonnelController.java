@@ -17,10 +17,12 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -71,8 +73,12 @@ public class PersonnelController {
 	      return ResponseEntity.ok().body(utilisateur);
 	  }
 
-      @PutMapping("/createNewPersonnel")
-	  public ResponseEntity<String> createNewPersonnel(final String nom ,
+
+
+
+	@PutMapping("/createNewPersonnel")
+	@Validated
+	  public ResponseEntity<String> createNewPersonnel(@Valid final String nom ,
 													  final String prenom ,
 													   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate dateNaissance ,
 													  final String adresse ,
@@ -87,9 +93,16 @@ public class PersonnelController {
 													  final String categorie,
 													  final String ville,
 													  final String codePostal,
-													  final String email
+													   final String email
 													  ) throws ResourceNotFoundException {
-		  
+
+		  if(nom.equals("undefined") || prenom.equals("undefined") || adresse.equals("undefined") || matricule.equals("undefined") || cin.equals("undefined") ||
+		  rib.equals("undefined") || poste.equals("undefined")|| phone.equals("undefined") || ville.equals("undefined") || categorie.equals("undefined") || email.equals("undefined")
+				  || codePostal.equals("undefined"))
+		  {
+			  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
+		  }
+
     	  personnelService.createNewPersonnel(nom,
 				  prenom,
 				  dateNaissance,
@@ -109,7 +122,6 @@ public class PersonnelController {
 				  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
-
 	  @GetMapping("token/refreshToken")
 	  public void refreshToken(HttpServletRequest request , HttpServletResponse response) throws IOException {
 		String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -169,7 +181,7 @@ public class PersonnelController {
 			  final String categorie,
 			  final String ville,
 			  final  String  codePostal,
-			  final  String  email
+			    final  String  email
 			  ) throws ResourceNotFoundException {
 			  personnelService.updatePersonnel(
 					  idPersonnel,

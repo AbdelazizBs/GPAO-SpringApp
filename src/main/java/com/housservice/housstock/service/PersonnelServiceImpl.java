@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -107,10 +109,18 @@ public class PersonnelServiceImpl implements PersonnelService {
 								   String codePostal,
 								   String email
 									 )   {
+		String regex = "^(.+)@(.+)$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(email);
 		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
 		List<Personnel> personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin) ;
-		if (!personnelExisteWithCin.isEmpty() || !personnelExisteWithMatricule.isEmpty()){
-			throw new RuntimeException( "cin or matricule exist");
+		if (!personnelExisteWithCin.isEmpty() ){
+			throw new RuntimeException( "cin existe !!");
+		}else if ( !personnelExisteWithMatricule.isEmpty()){
+			throw new RuntimeException( "matricule existe !!");
+
+		}else if(!matcher.matches()){
+			throw new RuntimeException( "Email invalide !!");
 		}
 		PersonnelDto personnelDto = new PersonnelDto();
 		personnelDto.setNom(nom);
@@ -177,6 +187,8 @@ public class PersonnelServiceImpl implements PersonnelService {
 			pageTuts = 	personnelRepository.findPersonnelByMiseEnVeille(false,paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
 				try {
+					personnel.setDateEmbauche(personnel.getDateEmbauche().minusDays(1));
+					personnel.setDateNaissance(personnel.getDateNaissance().minusDays(1));
 					return buildPersonnelDtoFromPersonnel(personnel);
 				} catch (ResourceNotFoundException e) {
 					throw new RuntimeException(e);
@@ -240,7 +252,12 @@ return  personnelRepository.findByNom(nom)
 								String codePostal,
 								String email
 								) throws ResourceNotFoundException {
-
+		String regex = "^(.+)@(.+)$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(email);
+		if(!matcher.matches()){
+			throw new RuntimeException( "Email invalide !!");
+		}
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
 		personnel.setNom(nom);

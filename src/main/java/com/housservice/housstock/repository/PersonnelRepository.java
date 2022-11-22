@@ -1,19 +1,16 @@
 package com.housservice.housstock.repository;
 
 import com.housservice.housstock.model.Comptes;
+import com.housservice.housstock.model.Personnel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import com.housservice.housstock.model.Personnel;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
-public interface PersonnelRepository extends MongoRepository<Personnel, String>  {
+public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     Optional<Personnel> findByNom(String s);
     Optional<Personnel> findByCompte(Comptes comptes);
     List<Personnel> findPersonnelByMatricule(String matricule);
@@ -21,14 +18,16 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String> 
     Page<Personnel> findPersonnelByMiseEnVeille(boolean b, Pageable pageable);
 
 
-//    @Query( "{'nom': {$regex : ?0}}"+
+//    @Query( "{'nom': {$regex : ?0}}"
 //            "{'prenom': {$regex : ?0}}"+
 //            "{'sexe': {$regex : ?0}}"+
 //            "{'poste': {$regex : ?0}}"+
 //            "{'adresse': {$regex : ?0}}")
 
-    @Query( "{'nom': {$regex : ?0}}")
+    @Query( "{$or:[{'nom': {$regex : ?0}} ,{'prenom': {$regex : ?0}} ,{'matricule': {$regex : ?0}},{'poste': {$regex : ?0}},{'phone': {$regex : ?0}}] }")
+//    @Query( fields = "{ 'nom' : 1, 'prenom' : 1, 'nom': { regex: 1 } }")
     Page<Personnel> findPersonnelByTextToFind(String textToFind, Pageable pageable);
+
 
 
 

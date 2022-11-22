@@ -45,9 +45,9 @@ public class DataLoader implements CommandLineRunner {
             int ramdomN = faker.number().numberBetween(0, 1);
             String sex;
             if (ramdomN == 0) {
-                sex = "homme";
+                sex = "Homme";
             } else {
-                sex = "femme";
+                sex = "Femme";
             }
             int ramdomMiseEnVeille = faker.number().numberBetween(0, 1);
             int ramdomRegime = faker.number().numberBetween(0, 1);
@@ -57,7 +57,7 @@ public class DataLoader implements CommandLineRunner {
             } else {
                 regim = "société étrangère";
             }
-            Client  client = new Client(
+            Client client = new Client(
                     faker.date().birthday(),
                     faker.name().title(),
                     regim,

@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -108,12 +109,13 @@ public class Personnel {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
+//	@Pattern(regexp = "^[ABC]$", message = "Must be either A, B or C")
+
 	private String categorie;
 
 
 	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+	@Email(message = "email is not valid")
 	private String email;
 	
 	private Comptes compte;
