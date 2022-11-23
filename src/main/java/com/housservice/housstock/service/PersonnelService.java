@@ -6,6 +6,7 @@ import com.housservice.housstock.model.dto.PersonnelDto;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 public interface PersonnelService {
@@ -59,8 +60,9 @@ public interface PersonnelService {
     void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;
 
     public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size);
-    public ResponseEntity<Map<String, Object>> find(String textToFind,int page, int size);
+    public ResponseEntity<Map<String, Object>> find(String textToFind,int page, int size,boolean enVeille);
 
-    void deletePersonnel(String utilisateurId);
+    void deletePersonnel(String personnelId);
+    void deletePersonnelSelected(List<String> idPersonnelsSelected);
 
 }

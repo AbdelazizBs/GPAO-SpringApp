@@ -116,7 +116,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 			throw new RuntimeException( "matricule existe !!");
 
 		}else if(!matcher.matches()){
-			throw new RuntimeException( "Email invalide !!");
+			throw new RuntimeException( "Email incorrecte !!");
 
 		}
 		PersonnelDto personnelDto = new PersonnelDto();
@@ -248,7 +248,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
 		if(!matcher.matches()){
-			throw new RuntimeException( "Email invalide !!");
+			throw new RuntimeException( "Email incorrecte !!");
 		}
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
@@ -313,14 +313,14 @@ public class PersonnelServiceImpl implements PersonnelService {
 	}
 
 	@Override
-	public ResponseEntity<Map<String, Object>> find(String textToFind, int page, int size) {
+	public ResponseEntity<Map<String, Object>> find(String textToFind, int page, int size,boolean enVeille) {
 
 		try {
 
 			List<PersonnelDto> personnels;
 			Pageable paging = PageRequest.of(page, size);
 			Page<Personnel> pageTuts;
-			pageTuts = personnelRepository.findPersonnelByTextToFind(textToFind, paging);
+			pageTuts = personnelRepository.findPersonnelByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
 				try {
 					return buildPersonnelDtoFromPersonnel(personnel);
@@ -342,8 +342,14 @@ public class PersonnelServiceImpl implements PersonnelService {
 	}
 
 	@Override
-	public void deletePersonnel(String utilisateurId) {
-		personnelRepository.deleteById(utilisateurId);
+	public void deletePersonnel(String idPersonnel) {
+		personnelRepository.deleteById(idPersonnel);
+	}
+	@Override
+	public void deletePersonnelSelected(List<String> idPersonnelsSelected){
+		for (String id : idPersonnelsSelected){
+			personnelRepository.deleteById(id);
+		}
 	}
 
 }

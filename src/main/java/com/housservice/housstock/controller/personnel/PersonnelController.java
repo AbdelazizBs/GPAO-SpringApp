@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -228,17 +229,29 @@ public class PersonnelController {
 	@GetMapping("/search")
 	@ApiOperation(value = "service to filter personnel ")
 	public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
-			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
-		return personnelService.find(textToFind, page, size);
+													  @RequestParam boolean enVeille,
+													  @RequestParam(defaultValue = "0") int page,
+													  @RequestParam(defaultValue = "3") int size) {
+		return personnelService.find(textToFind, page, size,enVeille);
 
 	}
 
 	@DeleteMapping("/deletePersonnel/{id}")
-	@ApiOperation(value = "service to delete one Utilisateur by Id.")
+	@ApiOperation(value = "service to delete one Personnel by Id.")
 	public Map<String, Boolean> deletePersonnel(
-			@ApiParam(name = "id", value = "id of utilisateur", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String utilisateurId) {
+			@ApiParam(name = "id", value = "id of personnel", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String utilisateurId) {
 
 		personnelService.deletePersonnel(utilisateurId);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
+
+	@DeleteMapping("/deleteSelectedPersonnel/{idPersonnelsSelected}")
+	@ApiOperation(value = "service to delete many Personnel by Id.")
+	public Map<String, Boolean> deletePersonnelSelected(
+			@ApiParam(name = "idPersonnelsSelected", value = "ids of personnel Selected", required = true) @PathVariable(value = "idPersonnelsSelected", required = true) @NotEmpty(message = "{http.error.0001}") List<String> idPersonnelsSelected) {
+		personnelService.deletePersonnelSelected(idPersonnelsSelected);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return response;
