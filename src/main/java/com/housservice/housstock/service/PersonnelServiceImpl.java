@@ -110,15 +110,18 @@ public class PersonnelServiceImpl implements PersonnelService {
 		Matcher matcher = pattern.matcher(email);
 		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
 		List<Personnel> personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin) ;
-		if (!personnelExisteWithCin.isEmpty() ){
-			throw new RuntimeException( "cin existe !!");
+			if (!personnelExisteWithCin.isEmpty() &&  !personnelExisteWithMatricule.isEmpty()){
+			throw new RuntimeException( "CIN et MATRICULE existe déjà !!");
+		}else if (!personnelExisteWithCin.isEmpty() ){
+			throw new RuntimeException( "CIN existe déjà !!");
 		}else if ( !personnelExisteWithMatricule.isEmpty()){
-			throw new RuntimeException( "matricule existe !!");
+			throw new RuntimeException( "MATRICULE existe déjà !!");
 
-		}else if(!matcher.matches()){
-			throw new RuntimeException( "Email incorrecte !!");
+		}else if(!email.equals("") && !matcher.matches()){
+			throw new RuntimeException("Email incorrecte !!");
 
 		}
+
 		PersonnelDto personnelDto = new PersonnelDto();
 		personnelDto.setNom(nom);
 		personnelDto.setAdresse(adresse);
