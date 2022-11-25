@@ -9,12 +9,16 @@ import com.housservice.housstock.repository.ComptesRepository;
 import com.housservice.housstock.repository.EntrepriseRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
 import com.housservice.housstock.repository.RolesRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -23,6 +27,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 
 @Service
 public class PersonnelServiceImpl implements PersonnelService {

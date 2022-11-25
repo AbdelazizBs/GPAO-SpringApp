@@ -4,10 +4,12 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
 
 public interface PersonnelService {
 	
