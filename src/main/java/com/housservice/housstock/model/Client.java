@@ -1,22 +1,18 @@
 package com.housservice.housstock.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.time.LocalDate;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -74,7 +70,22 @@ public class Client {
 	@Indexed(unique = true)
 	private String incoterm;
 
-    
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String telecopie;
+
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String refClientIris;
+
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String phone;
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -128,7 +139,14 @@ public class Client {
 
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 
-	public Client(Date date, String raisonSocial, String regime, String secteurActivite, String brancheActivite, String adresseFacturation, String adresseLivraison, String incoterm, String echeance, String modePaiement, String nomBanque, String adresseBanque, String rib, String swift, Date dateMiseEnVeille, int miseEnVeille, List<Contact> contact, List<CommandeClient> listCommandes) {
+	public Client(Date date, String raisonSocial, String regime,
+				  String secteurActivite, String brancheActivite,
+				  String adresseFacturation, String adresseLivraison,
+				  String incoterm, String echeance, String modePaiement,
+				  String phone, String telecopie, String refClientIris,
+				  String nomBanque, String adresseBanque, String rib,
+				  String swift, Date dateMiseEnVeille, int miseEnVeille,
+				  List<Contact> contact, List<CommandeClient> listCommandes) {
 		this.date = date;
 		this.raisonSocial = raisonSocial;
 		this.regime = regime;
@@ -147,6 +165,9 @@ public class Client {
 		this.miseEnVeille = miseEnVeille;
 		this.contact = contact;
 		this.listCommandes = listCommandes;
+		this.telecopie = telecopie;
+		this.phone = phone;
+		this.refClientIris = refClientIris;
 	}
 
 	public Client() {

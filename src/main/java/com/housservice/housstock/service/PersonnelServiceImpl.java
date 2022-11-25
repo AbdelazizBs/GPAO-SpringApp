@@ -81,6 +81,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setCodePostal(personnel.getCodePostal());
 		personnelDto.setEmail(personnel.getEmail());
 
+
 		// TODO Liste Roles
 
 		return personnelDto;
@@ -169,6 +170,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setVille(personnelDto.getVille());
 		personnel.setCodePostal(personnelDto.getCodePostal());
 		personnel.setEmail(personnelDto.getEmail());
+
 		// TODO Liste Roles
 
 		return personnel;

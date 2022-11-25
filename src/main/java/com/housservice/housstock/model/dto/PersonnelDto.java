@@ -63,7 +63,6 @@ public class PersonnelDto {
 	private String matricule;
 
 
-
 	private String phone;
 
 	private String categorie;

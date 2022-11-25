@@ -61,9 +61,6 @@ public class Personnel {
 	@Indexed(unique = true)
 	private String cin;
 
-	@NotBlank
-	@Indexed(unique = true)
-	private String phone;
 
 	@NotBlank
 	@Size(max = 100)
@@ -86,6 +83,13 @@ public class Personnel {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String poste;
+
+
+
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String phone;
 
 	@NotBlank
 	@Size(max = 100)

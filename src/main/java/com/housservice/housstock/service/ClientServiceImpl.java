@@ -1,25 +1,14 @@
 package com.housservice.housstock.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.util.*;
-
-import java.util.stream.Collectors;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
-import javax.validation.Valid;
-
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
+import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
-
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
-
-import com.housservice.housstock.model.Machine;
-import com.housservice.housstock.model.dto.MachineDto;
+import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.repository.ArticleRepository;
+import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.ContactRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,11 +17,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.dto.ClientDto;
-import com.housservice.housstock.repository.ClientRepository;
+import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -96,7 +88,10 @@ public class ClientServiceImpl implements ClientService {
 		  clientDto.setRib(client.getRib()); clientDto.setSwift(client.getSwift());
 		  clientDto.setBrancheActivite(client.getBrancheActivite());
 		  clientDto.setSecteurActivite(client.getSecteurActivite());
-		 
+		  clientDto.setTelecopie(client.getTelecopie());
+		  clientDto.setRefClientIris(client.getRefClientIris());
+		  clientDto.setPhone(client.getPhone());
+
 
 		return clientDto;
 	}
@@ -161,7 +156,10 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 		client.setSwift(clientDto.getSwift());
 		client.setBrancheActivite(clientDto.getBrancheActivite());
 		client.setSecteurActivite(clientDto.getSecteurActivite());
-		
+		client.setPhone(clientDto.getPhone());
+		client.setTelecopie(clientDto.getTelecopie());
+		client.setRefClientIris(clientDto.getRefClientIris());
+
 		return client;
 	
 		}
@@ -187,6 +185,9 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 		client.setSwift(clientDto.getSwift());
 		client.setBrancheActivite(clientDto.getBrancheActivite());
 		client.setSecteurActivite(clientDto.getSecteurActivite());
+		client.setRefClientIris(clientDto.getRefClientIris());
+		client.setTelecopie(clientDto.getTelecopie());
+		client.setPhone(clientDto.getPhone());
 		clientRepository.save(client);
 		
 	}
