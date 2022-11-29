@@ -19,6 +19,7 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 		Optional<Client> findClientByRaisonSocial(String raisonSociale) ;
 		Optional<Client> findClientByContactId(String idContact ) ;
 
-
+	@Query( "{$or:[{'raisonSocial': {$regex : ?0}} ,{'secteurActivite': {$regex : ?0}} ,{'brancheActivite': {$regex : ?0}},{'regime': {$regex : ?0}},{'adresseLivraison': {$regex : ?0}}] }")
+	Page<Client> findClientByTextToFindAndMiseEnVeille(String textToFind,boolean b ,  Pageable pageable);
 
 }

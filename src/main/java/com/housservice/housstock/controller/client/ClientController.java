@@ -69,6 +69,19 @@ public class ClientController {
 	}
 
 
+
+		@GetMapping("/search")
+		@ApiOperation(value = "service to filter clients ")
+		public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
+		@RequestParam boolean enVeille,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "3") int size) {
+			return clientService.find(textToFind, page, size,enVeille);
+
+		}
+
+
+
 	  @GetMapping("/client/{id}")
 	  @ApiOperation(value = "service to get one Client by Id.")
 	  public ResponseEntity < Client > getClientById(
@@ -126,10 +139,20 @@ public class ClientController {
 	  public ResponseEntity <String> updateClient(
 			  @ApiParam(name = "idClient", value="id of client", required = true)
 			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
-	      @Valid @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
+	       @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
 		  
-		  clientService.updateClient(clientDto);
+		  clientService.updateClient(idClient,clientDto);
 	      
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	  }
+	  @PutMapping("/miseEnVeille/{idClient}")
+	  public ResponseEntity <String> miseEnVeille(
+			  @ApiParam(name = "idClient", value="id of client", required = true)
+			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
+			  @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
+
+		  clientService.miseEnVeille(idClient);
+
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 

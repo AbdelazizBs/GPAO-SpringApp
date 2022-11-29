@@ -164,11 +164,33 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 	
 		}
 
-
 	@Override
-	public void updateClient(@Valid ClientDto clientDto ) throws ResourceNotFoundException {
-		Client client = getClientById(clientDto.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  clientDto.getId())));
+	public ResponseEntity<Map<String, Object>> find(String textToFind, int page, int size,boolean enVeille) {
+
+		try {
+
+			List<ClientDto> clients;
+			Pageable paging = PageRequest.of(page, size);
+			Page<Client> pageTuts;
+			pageTuts = clientRepository.findClientByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
+			clients = pageTuts.getContent().stream().map(client -> {
+				return buildClientDtoFromClient(client);
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("clients", clients);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		}
+	@Override
+	public void updateClient(String idClient ,ClientDto clientDto ) throws ResourceNotFoundException {
+		Client client = getClientById(idClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
 		client.setRaisonSocial(clientDto.getRaisonSocial());		
 		client.setRegime(clientDto.getRegime());
 		client.setMiseEnVeille(clientDto.getMiseEnVeille());
@@ -190,6 +212,15 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 		client.setPhone(clientDto.getPhone());
 		clientRepository.save(client);
 		
+	}
+
+	@Override
+	public void miseEnVeille(String idClient ) throws ResourceNotFoundException {
+		Client client = getClientById(idClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
+		client.setMiseEnVeille(1);
+		clientRepository.save(client);
+
 	}
 
 	@Override

@@ -28,8 +28,10 @@ public interface ClientService {
 	public ClientDto buildClientDtoFromClient(Client client);
 
 	public void createNewClient(@Valid ClientDto clientDto);
+	public ResponseEntity<Map<String, Object>> find(String textToFind,int page, int size,boolean enVeille);
 
-	public void updateClient(@Valid ClientDto clientDto) throws ResourceNotFoundException;
+	public void updateClient(String idClient ,@Valid ClientDto clientDto) throws ResourceNotFoundException;
+	public void miseEnVeille(String idClient ) throws ResourceNotFoundException;
 	public void addContactClient(@Valid Contact contact,String idClient ) throws ResourceNotFoundException;
 	public void updateContactClient(@Valid Contact contact, String idContact) throws ResourceNotFoundException;
 
