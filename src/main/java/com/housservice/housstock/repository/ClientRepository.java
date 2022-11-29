@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Personnel;
 
 public interface ClientRepository extends MongoRepository <Client, String> {
 
@@ -18,7 +19,12 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 	    @Query("{ 'MiseEnVeille' : 1}")
 	    Page<Client> findClientNotActif(Pageable pageable);
 
-		Optional<Client> findClientByRaisonSocial(String raisonSociale) ;
+		//Optional<Client> findClientByRaisonSocial(String raisonSociale) ;
 		Optional<Client> findClientByContactId(String idContact ) ;
+		
+	    List<Client> findClientByRefClientIris(String refClientIris);
+	    List<Client> findClientByRaisonSocial(String raisonSocial);
+	    
+
 
 }

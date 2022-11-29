@@ -57,6 +57,8 @@ public class PersonnelServiceImpl implements PersonnelService {
 		this.rolesRepository = rolesRepository;
 	}
 
+	
+	
 	@Override
 	public PersonnelDto buildPersonnelDtoFromPersonnel(Personnel personnel) throws ResourceNotFoundException {
 		if (personnel == null) {
@@ -116,6 +118,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		Matcher matcher = pattern.matcher(email);
 		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
 		List<Personnel> personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin) ;
+		
 			if (!personnelExisteWithCin.isEmpty() &&  !personnelExisteWithMatricule.isEmpty()){
 			throw new RuntimeException( "CIN et MATRICULE existe déjà !!");
 		}else if (!personnelExisteWithCin.isEmpty() ){

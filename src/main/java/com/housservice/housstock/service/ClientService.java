@@ -1,5 +1,6 @@
 package com.housservice.housstock.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.housservice.housstock.model.Article;
@@ -29,7 +30,27 @@ public interface ClientService {
 
 	public ClientDto buildClientDtoFromClient(Client client);
 
-	public void createNewClient(@Valid ClientDto clientDto);
+	//public void createNewClient(@Valid ClientDto clientDto);
+	
+	 public void createNewClient(String refClientIris,
+             String raisonSocial,
+             String telecopie,
+             String phone,
+             String regime,
+             String secteurActivite,
+             String brancheActivite,
+             String adresseFacturation,
+             String adresseLivraison,
+             String incoterm,
+             String echeance,
+             String modePaiement,
+             String nomBanque,
+             String adresseBanque,
+             String rib,
+             String swift,
+             String email
+      
+             ) throws ResourceNotFoundException;
 
 	public void updateClient(@Valid ClientDto clientDto) throws ResourceNotFoundException;
 	public void addContactClient(@Valid Contact contact,String idClient ) throws ResourceNotFoundException;

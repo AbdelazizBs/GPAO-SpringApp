@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,54 +22,49 @@ public class ClientDto {
 	@Id
 	private String id;
 
+	private String refClientIris;
+	
 	private Date date ;
 	
-
 	private String raisonSocial;
+	
 	private String telecopie;
-	private String refClientIris;
+	
 	private String phone;
+	
 	private String regime;
 	
-	@Size(max = 100)
 	private String secteurActivite;
 	
-	@Size(max = 100)
 	private String brancheActivite;
-	
 	
 	private String adresseFacturation;
 	
-    
 	private String adresseLivraison;
-	
-	
+		
 	private String incoterm;
-
-    
+ 
 	private String echeance;
-	
-	
+		
 	private String modePaiement;
-	
-    
+	  
 	private String nomBanque;
 	
 	private String adresseBanque;
-	
-    
+	   
 	private String rib;
-	
-	
+		
 	private String swift;
 	
-    
-	private int miseEnVeille;
-
-	
+	private String email;
+	  
+	private boolean miseEnVeille;
 
 	private Date dateMiseEnVeille;
 	
+	private boolean blocage;
+	
+	private Date dateBlocage;
 	
 	private List<CommandeClientDto> listCommandes = new ArrayList<>();
 

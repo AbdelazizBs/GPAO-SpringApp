@@ -4,8 +4,11 @@ import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.ClientDto;
+import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.ContactRepository;
@@ -21,7 +24,10 @@ import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
@@ -81,7 +87,7 @@ public class ClientServiceImpl implements ClientService {
 		  clientDto.setIncoterm(client.getIncoterm());
 		  clientDto.setContact(client.getContact());
 		  clientDto.setEcheance(client.getEcheance());
-		  clientDto.setMiseEnVeille(client.getMiseEnVeille());
+		//  clientDto.setMiseEnVeille(client.getMiseEnVeille());
 		  clientDto.setModePaiement(client.getModePaiement());
 		  clientDto.setNomBanque(client.getNomBanque());
 		  clientDto.setAdresseBanque(client.getAdresseBanque());
@@ -126,39 +132,106 @@ public class ClientServiceImpl implements ClientService {
 		
 	}
 
+	/*
+	 * @Override public void createNewClient(@Valid ClientDto clientDto) {
+	 * clientDto.setDate(new Date()); clientDto.setMiseEnVeille(0); List<Contact>
+	 * contacts = new ArrayList<>(); if (clientDto.getContact()==null){
+	 * clientDto.setContact(contacts); }
+	 * clientRepository.save(buildClientFromClientDto(clientDto)); }
+	 */
+		
 	@Override
-	public void createNewClient(@Valid ClientDto clientDto) {
-clientDto.setDate(new Date());
-clientDto.setMiseEnVeille(0);
-List<Contact> contacts = new ArrayList<>();
-if (clientDto.getContact()==null){
-	clientDto.setContact(contacts);
-}
-clientRepository.save(buildClientFromClientDto(clientDto));
+	public void createNewClient(String refClientIris,
+             String raisonSocial,
+             String telecopie,
+             String phone,
+             String regime,
+             String secteurActivite,
+             String brancheActivite,
+             String adresseFacturation,
+             String adresseLivraison,
+             String incoterm,
+             String echeance,
+             String modePaiement,
+             String nomBanque,
+             String adresseBanque,
+             String rib,
+             String swift,
+             String email		   
+			) {
+		String regex = "^(.+)@(.+)$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(email);
+		
+		List<Client> clientExisteWithRefClientIris = clientRepository.findClientByRefClientIris(refClientIris) ;
+		List<Client> clientExisteWithRaisonSocial = clientRepository.findClientByRaisonSocial(raisonSocial) ;
+		
+		if (!clientExisteWithRefClientIris.isEmpty() &&  !clientExisteWithRaisonSocial.isEmpty()){
+			throw new RuntimeException( "RefClientIris et raison social existe déjà !!");
+		}else if (!clientExisteWithRefClientIris.isEmpty() ){
+			throw new RuntimeException( "RefClientIris existe déjà !!");
+		}else if ( !clientExisteWithRaisonSocial.isEmpty()){
+			throw new RuntimeException( "Raison social existe déjà !!");
+
+		}else if(!email.equals("") && !matcher.matches()){
+			throw new RuntimeException("Email incorrecte !!");
+
+		}
+		
+		ClientDto clientDto = new ClientDto();
+		clientDto.setRefClientIris(refClientIris);
+		//clientDto.setDate(sys date); 
+		clientDto.setRaisonSocial(raisonSocial);
+		clientDto.setTelecopie(telecopie);
+		clientDto.setPhone(phone);
+		clientDto.setRegime(regime);
+		clientDto.setSecteurActivite(secteurActivite);
+		clientDto.setBrancheActivite(brancheActivite);
+		clientDto.setAdresseFacturation(adresseFacturation);
+		clientDto.setAdresseLivraison(adresseLivraison);
+		clientDto.setIncoterm(incoterm);
+		clientDto.setModePaiement(modePaiement);		
+		clientDto.setNomBanque(nomBanque);
+		clientDto.setRib(rib);
+		clientDto.setSwift(swift);
+		clientDto.setEmail(email);		
+		clientDto.setMiseEnVeille(false);
+	//	clientDto.setDateMiseEnVeille(vide);
+		clientDto.setBlocage(false);
+		//clientDto.setDateBlocage(vide);
+	
+		clientRepository.save(buildClientFromClientDto(clientDto));
+	
+
 	}
 	
 	
 	private Client buildClientFromClientDto(ClientDto clientDto) {
 		Client client = new Client();
 		client.setId(""+sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
+		client.setRefClientIris(clientDto.getRefClientIris());
+		client.setDate(clientDto.getDate());
 		client.setRaisonSocial(clientDto.getRaisonSocial());		
 		client.setRegime(clientDto.getRegime());
-		client.setContact(clientDto.getContact());
+		client.setSecteurActivite(clientDto.getSecteurActivite());
+		client.setBrancheActivite(clientDto.getBrancheActivite());
 		client.setAdresseFacturation(clientDto.getAdresseFacturation());
 		client.setAdresseLivraison(clientDto.getAdresseLivraison());
 		client.setIncoterm(clientDto.getIncoterm());
-		client.setMiseEnVeille(clientDto.getMiseEnVeille());
+		client.setTelecopie(clientDto.getTelecopie());
+		client.setPhone(clientDto.getPhone());
 		client.setEcheance(clientDto.getEcheance());
 		client.setModePaiement(clientDto.getModePaiement());
 		client.setNomBanque(clientDto.getNomBanque());
 		client.setAdresseBanque(clientDto.getAdresseBanque());
 		client.setRib(clientDto.getRib());
 		client.setSwift(clientDto.getSwift());
-		client.setBrancheActivite(clientDto.getBrancheActivite());
-		client.setSecteurActivite(clientDto.getSecteurActivite());
-		client.setPhone(clientDto.getPhone());
-		client.setTelecopie(clientDto.getTelecopie());
-		client.setRefClientIris(clientDto.getRefClientIris());
+		client.setEmail(clientDto.getEmail());
+
+	    //Mise en veille  et blocage
+		
+
+		//client.setContact(clientDto.getContact());
 
 		return client;
 	
@@ -171,7 +244,7 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  clientDto.getId())));
 		client.setRaisonSocial(clientDto.getRaisonSocial());		
 		client.setRegime(clientDto.getRegime());
-		client.setMiseEnVeille(clientDto.getMiseEnVeille());
+	//	client.setMiseEnVeille(clientDto.getMiseEnVeille());
 		client.setDate(client.getDate());
 		client.setDateMiseEnVeille(client.getDateMiseEnVeille());
 		client.setAdresseFacturation(clientDto.getAdresseFacturation());
@@ -236,6 +309,7 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 		clientRepository.save(client);
 
 	}
+	
 	@Override
 	public String getIdClients(String raisonSociale) throws ResourceNotFoundException {
 		Client client = clientRepository.findClientByRaisonSocial(raisonSociale).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSociale)));
@@ -290,10 +364,6 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-
-
-
 
 
 	@Override

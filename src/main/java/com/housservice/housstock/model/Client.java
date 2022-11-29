@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class Client {
 	
 	@Id
 	private String id;
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String refClientIris;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -79,12 +85,6 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String refClientIris;
-
-
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
 	private String phone;
 	@NotBlank
 	@Size(max = 100)
@@ -119,34 +119,48 @@ public class Client {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String swift;
+	
+	@NotBlank
+	@Email(message = "email is not valid")
+	private String email;
 
 
 
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private boolean miseEnVeille;
+	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private Date dateMiseEnVeille;
-
-
-
+	
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private int miseEnVeille;
+	private boolean blocage;
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private Date dateBlocage;
 
 
 	private List <Contact> contact;
 
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 
-	public Client(Date date, String raisonSocial, String regime,
+	public Client(Date date,String refClientIris, String raisonSocial, String regime,
 				  String secteurActivite, String brancheActivite,
 				  String adresseFacturation, String adresseLivraison,
 				  String incoterm, String echeance, String modePaiement,
-				  String phone, String telecopie, String refClientIris,
+				  String phone, String telecopie, 
 				  String nomBanque, String adresseBanque, String rib,
-				  String swift, Date dateMiseEnVeille, int miseEnVeille,
+				  String swift,String email, Date dateMiseEnVeille, boolean miseEnVeille,boolean blocage,Date dateBlocage,
 				  List<Contact> contact, List<CommandeClient> listCommandes) {
+		
+		this.refClientIris = refClientIris;
 		this.date = date;
 		this.raisonSocial = raisonSocial;
 		this.regime = regime;
@@ -154,6 +168,9 @@ public class Client {
 		this.brancheActivite = brancheActivite;
 		this.adresseFacturation = adresseFacturation;
 		this.adresseLivraison = adresseLivraison;
+		this.telecopie = telecopie;
+		this.phone = phone;
+		this.email = email;
 		this.incoterm = incoterm;
 		this.echeance = echeance;
 		this.modePaiement = modePaiement;
@@ -163,11 +180,11 @@ public class Client {
 		this.swift = swift;
 		this.dateMiseEnVeille = dateMiseEnVeille;
 		this.miseEnVeille = miseEnVeille;
+		this.blocage = blocage;
+		this.dateBlocage = dateBlocage;
 		this.contact = contact;
 		this.listCommandes = listCommandes;
-		this.telecopie = telecopie;
-		this.phone = phone;
-		this.refClientIris = refClientIris;
+		
 	}
 
 	public Client() {

@@ -38,8 +38,6 @@ public class Personnel {
 	@Indexed(unique = true)
 	private String codePostal;
 
-
-
 	
 	@NotBlank
 	@Size(max = 100)
@@ -70,8 +68,6 @@ public class Personnel {
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String ville;
-
-
 
 
 	@NotBlank
@@ -114,10 +110,10 @@ public class Personnel {
 	@Size(max = 100)
 	@Indexed(unique = true)
 //	@Pattern(regexp = "^[ABC]$", message = "Must be either A, B or C")
-
+	
 	private String categorie;
 
-
+	
 	@NotBlank
 	@Email(message = "email is not valid")
 	private String email;

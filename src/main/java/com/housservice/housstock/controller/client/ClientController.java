@@ -1,6 +1,7 @@
 package com.housservice.housstock.controller.client;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,9 @@ import javax.validation.constraints.NotEmpty;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
@@ -120,11 +123,63 @@ public class ClientController {
 		 */
 	  
 	  
-	  @PutMapping("/addClient")
-	  public ResponseEntity<String> createClient(@Valid @RequestBody ClientDto clientDto) {
-		  clientService.createNewClient(clientDto);
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
-	  }
+		/*
+		 * @PutMapping("/addClient") public ResponseEntity<String>
+		 * createClient(@Valid @RequestBody ClientDto clientDto) {
+		 * clientService.createNewClient(clientDto); return
+		 * ResponseEntity.ok().body(messageHttpErrorProperties.getError0003()); }
+		 */
+	  
+	  
+		@PutMapping("/createNewClient")
+		@Validated
+		  public ResponseEntity<String> createNewClient(@Valid final String refClientIris ,
+														  final String raisonSocial ,
+														  final String regime ,
+														   final String secteurActivite,
+														   final String brancheActivite ,
+														  final String adresseFacturation,
+														  final String adresseLivraison,
+														  final String incoterm,
+														  final String telecopie,
+														  final String phone,
+														  final String echeance,
+														  final String modePaiement,
+														  final String nomBanque,
+														  final String adresseBanque,
+														  final String rib,
+														  final String swift,
+														  final String email
+													
+														  ) throws ResourceNotFoundException {
+
+			  if(refClientIris.equals("undefined") || raisonSocial.equals("undefined") || regime.equals("undefined") || secteurActivite.equals("undefined") || brancheActivite.equals("undefined") ||
+					  adresseFacturation.equals("undefined") || adresseLivraison.equals("undefined")|| incoterm.equals("undefined") || telecopie.equals("undefined") || phone.equals("undefined") || echeance.equals("undefined")
+					  || modePaiement.equals("undefined")|| nomBanque.equals("undefined") || adresseBanque.equals("undefined") || rib.equals("undefined") || swift.equals("undefined")|| email.equals("undefined"))
+			  {
+				  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
+			  }
+
+	    	  clientService.createNewClient(refClientIris,
+	    			      raisonSocial,
+	    	              telecopie,
+	    	              phone,
+	    	              regime,
+	    	              secteurActivite,
+	    	              brancheActivite,
+	    	              adresseFacturation,
+	    	              adresseLivraison,
+	    	              incoterm,
+	    	              echeance,
+	    	              modePaiement,
+	    	              nomBanque,
+	    	              adresseBanque,
+	    	              rib,
+	    	              swift,
+	    	              email	
+					  );
+		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+		  }
 	  
 	   
 	  @PutMapping("/updateClient/{idClient}")

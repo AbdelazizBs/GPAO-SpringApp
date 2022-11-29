@@ -19,12 +19,11 @@ public class PersonnelDto {
 	private String prenom;
 
 
-
-
 	private String adresse;
 
 
 	private String photo;
+	
 	private String ville;
 
 
@@ -37,11 +36,7 @@ public class PersonnelDto {
 	private String email;
 
 
-
 	private String sexe;
-
-
-
 
 
 	private String rib;
@@ -57,7 +52,6 @@ public class PersonnelDto {
 
 
 	private int echelon;
-
 
 
 	private String matricule;

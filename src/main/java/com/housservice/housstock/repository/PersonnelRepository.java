@@ -17,9 +17,6 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     List<Personnel> findPersonnelByCin(String cin);
     Page<Personnel> findPersonnelByMiseEnVeille(boolean b, Pageable pageable);
 
-
-
-
     @Query( "{$or:[{'nom': {$regex : ?0}} ,{'prenom': {$regex : ?0}} ,{'matricule': {$regex : ?0}},{'poste': {$regex : ?0}},{'phone': {$regex : ?0}}] }")
     Page<Personnel> findPersonnelByTextToFindAndMiseEnVeille(String textToFind,boolean b, Pageable pageable);
 
