@@ -14,7 +14,7 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     Optional<Personnel> findByNom(String s);
     Optional<Personnel> findByCompte(Comptes comptes);
     List<Personnel> findPersonnelByMatricule(String matricule);
-    List<Personnel> findPersonnelByCin(String cin);
+    Optional<Personnel> findPersonnelByCin(String cin);
     Page<Personnel> findPersonnelByMiseEnVeille(boolean b, Pageable pageable);
 
 

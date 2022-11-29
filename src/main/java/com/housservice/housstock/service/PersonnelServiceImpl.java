@@ -9,16 +9,12 @@ import com.housservice.housstock.repository.ComptesRepository;
 import com.housservice.housstock.repository.EntrepriseRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
 import com.housservice.housstock.repository.RolesRepository;
-
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -110,15 +106,17 @@ public class PersonnelServiceImpl implements PersonnelService {
 								   String ville,
 								   String codePostal,
 								   String email
-									 )   {
+									 ) throws ResourceNotFoundException {
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
 		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
-		List<Personnel> personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin) ;
-			if (!personnelExisteWithCin.isEmpty() &&  !personnelExisteWithMatricule.isEmpty()){
+		Personnel personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						MessageFormat.format(messageHttpErrorProperties.getError0002(), cin)));
+			if (personnelExisteWithCin != null &&  !personnelExisteWithMatricule.isEmpty()){
 			throw new RuntimeException( "CIN et MATRICULE existe déjà !!");
-		}else if (!personnelExisteWithCin.isEmpty() ){
+		}else if (personnelExisteWithCin !=null ){
 			throw new RuntimeException( "CIN existe déjà !!");
 		}else if ( !personnelExisteWithMatricule.isEmpty()){
 			throw new RuntimeException( "MATRICULE existe déjà !!");
