@@ -74,8 +74,6 @@ public class PersonnelController {
 	  }
 
 
-
-
 	@PutMapping("/createNewPersonnel")
 	@Validated
 	  public ResponseEntity<String> createNewPersonnel(@Valid final String nom ,

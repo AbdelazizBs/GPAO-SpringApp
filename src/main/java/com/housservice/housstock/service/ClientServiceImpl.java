@@ -129,13 +129,6 @@ public class ClientServiceImpl implements ClientService {
 		
 	}
 
-	/*
-	 * @Override public void createNewClient(@Valid ClientDto clientDto) {
-	 * clientDto.setDate(new Date()); clientDto.setMiseEnVeille(0); List<Contact>
-	 * contacts = new ArrayList<>(); if (clientDto.getContact()==null){
-	 * clientDto.setContact(contacts); }
-	 * clientRepository.save(buildClientFromClientDto(clientDto)); }
-	 */
 		
 	@Override
 	public void createNewClient(String refClientIris,
@@ -156,6 +149,7 @@ public class ClientServiceImpl implements ClientService {
              String swift,
              String email		   
 			)throws ResourceNotFoundException {
+		
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
@@ -204,7 +198,6 @@ public class ClientServiceImpl implements ClientService {
 	
 		clientRepository.save(buildClientFromClientDto(clientDto));
 	
-
 	}
 	
 	

@@ -43,8 +43,28 @@ public class ClientController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
-	@GetMapping("/getIdClients/{raisonSociale}")
+		@GetMapping("/getAllClient")
+		@ApiOperation(value = "service to get tout les clients ")
+		public ResponseEntity<Map<String, Object>> getAllClient(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 
+			return clientService.findClientActif(page,size);
+
+		}
+		
+		
+		  @GetMapping("/client/{id}")
+		  @ApiOperation(value = "service to get one Client by Id.")
+		  public ResponseEntity < Client > getClientById(
+				  @ApiParam(name = "id", value="id of client", required = true)
+				  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String clientId)
+		  throws ResourceNotFoundException {
+			  Client client = clientService.getClientById(clientId)
+		    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
+		      return ResponseEntity.ok().body(client);
+		  }
+
+	  
+	@GetMapping("/getIdClients/{raisonSociale}")
 	@ApiOperation(value = "service to get Id Client by raisonSociale.")
 
 	public String getIdClients(  @ApiParam(name = "raisonSociale", value="raisonSociale of clients", required = true)
@@ -59,12 +79,6 @@ public class ClientController {
 	}
 	
 
-	@GetMapping("/getAllClient")
-	public ResponseEntity<Map<String, Object>> getAllClient(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
-
-		return clientService.findClientActif(page,size);
-
-	}
 
 	@GetMapping("/getAllClientNonActive")
 	public ResponseEntity<Map<String, Object>> getAllClientNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
@@ -72,7 +86,6 @@ public class ClientController {
 		return clientService.findClientNonActive(page,size);
 
 	}
-
 
 
 		@GetMapping("/search")
@@ -84,19 +97,6 @@ public class ClientController {
 			return clientService.find(textToFind, page, size,enVeille);
 
 		}
-
-
-
-	  @GetMapping("/client/{id}")
-	  @ApiOperation(value = "service to get one Client by Id.")
-	  public ResponseEntity < Client > getClientById(
-			  @ApiParam(name = "id", value="id of client", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String clientId)
-	  throws ResourceNotFoundException {
-		  Client client = clientService.getClientById(clientId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
-	      return ResponseEntity.ok().body(client);
-	  }
 
 
 	  @GetMapping("/getArticles/{idClient}")
@@ -118,36 +118,15 @@ public class ClientController {
 		  return  clientService.getArticlesByRaisons(raisonS) ;
 	  }
 
-	   
-		/*
-		 * @PutMapping("/client") public Client createClient(@Valid @RequestBody Client
-		 * client) { client.setId("" +
-		 * sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
-		 * 
-		 * if (client.getListCommandes() != null) { for (CommandeClient commandeClient :
-		 * client.getListCommandes()) { commandeClient.setId(client.getId() + "-" +
-		 * sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME)); } } return
-		 * clientService.createClient(client);
-		 * 
-		 * }
-		 */
-	  
-	  
-		/*
-		 * @PutMapping("/addClient") public ResponseEntity<String>
-		 * createClient(@Valid @RequestBody ClientDto clientDto) {
-		 * clientService.createNewClient(clientDto); return
-		 * ResponseEntity.ok().body(messageHttpErrorProperties.getError0003()); }
-		 */
-	  
+
 	  
 		@PutMapping("/createNewClient")
 		@Validated
 		  public ResponseEntity<String> createNewClient(@Valid final String refClientIris ,
 														  final String raisonSocial ,
 														  final String regime ,
-														   final String secteurActivite,
-														   final String brancheActivite ,
+														  final String secteurActivite,
+														  final String brancheActivite ,
 														  final String adresseFacturation,
 														  final String adresseLivraison,
 														  final String incoterm,
@@ -160,7 +139,6 @@ public class ClientController {
 														  final String rib,
 														  final String swift,
 														  final String email
-													
 														  ) throws ResourceNotFoundException {
 
 			  if(refClientIris.equals("undefined") || raisonSocial.equals("undefined") || regime.equals("undefined") || secteurActivite.equals("undefined") || brancheActivite.equals("undefined") ||

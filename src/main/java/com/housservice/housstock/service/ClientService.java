@@ -28,7 +28,6 @@ public interface ClientService {
 
 	public ClientDto buildClientDtoFromClient(Client client);
 
-	//public void createNewClient(@Valid ClientDto clientDto);
 	
 	 public void createNewClient(String refClientIris,
              String raisonSocial,
