@@ -118,7 +118,7 @@ public class Personnel {
 	@Email(message = "email is not valid")
 	private String email;
 	
-	private Comptes compte;
+	private Comptes compte = new Comptes();
 	private boolean miseEnVeille ;
 
 

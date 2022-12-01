@@ -1,19 +1,17 @@
 package com.housservice.housstock.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
+import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
-
 import com.housservice.housstock.model.dto.ClientDto;
+import org.springframework.http.ResponseEntity;
 
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.Optional;
-import javax.validation.Valid;
-import com.housservice.housstock.exception.ResourceNotFoundException;
-import org.springframework.http.ResponseEntity;
 
 public interface ClientService {
 
@@ -52,7 +50,10 @@ public interface ClientService {
       
              ) throws ResourceNotFoundException;
 
-	public void updateClient(@Valid ClientDto clientDto) throws ResourceNotFoundException;
+	public ResponseEntity<Map<String, Object>> find(String textToFind,int page, int size,boolean enVeille);
+
+	public void updateClient(String idClient ,@Valid ClientDto clientDto) throws ResourceNotFoundException;
+	public void miseEnVeille(String idClient ) throws ResourceNotFoundException;
 	public void addContactClient(@Valid Contact contact,String idClient ) throws ResourceNotFoundException;
 	public void updateContactClient(@Valid Contact contact, String idContact) throws ResourceNotFoundException;
 

@@ -14,10 +14,8 @@ import com.housservice.housstock.service.PersonnelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +46,6 @@ public class PersonnelController {
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 
-	@Autowired
 	public PersonnelController(PersonnelService personnelService,
 			MessageHttpErrorProperties messageHttpErrorProperties) {
 		this.personnelService = personnelService;

@@ -4,11 +4,8 @@ import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.Contact;
-import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.ClientDto;
-import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.ContactRepository;
@@ -24,7 +21,7 @@ import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.time.LocalDate;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -158,19 +155,24 @@ public class ClientServiceImpl implements ClientService {
              String rib,
              String swift,
              String email		   
-			) {
+			)throws ResourceNotFoundException {
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
+	
+		Client clientExisteWithRefClientIris = clientRepository.findClientByRefClientIris(refClientIris) 
+				.orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), refClientIris)));
 		
-		List<Client> clientExisteWithRefClientIris = clientRepository.findClientByRefClientIris(refClientIris) ;
-		List<Client> clientExisteWithRaisonSocial = clientRepository.findClientByRaisonSocial(raisonSocial) ;
+		Client clientExisteWithRaisonSocial = clientRepository.findClientByRaisonSocial(raisonSocial)
+				.orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), raisonSocial)));
 		
-		if (!clientExisteWithRefClientIris.isEmpty() &&  !clientExisteWithRaisonSocial.isEmpty()){
+		if (clientExisteWithRefClientIris != null &&  clientExisteWithRaisonSocial != null){
 			throw new RuntimeException( "RefClientIris et raison social existe déjà !!");
-		}else if (!clientExisteWithRefClientIris.isEmpty() ){
+		}else if (clientExisteWithRefClientIris!= null ){
 			throw new RuntimeException( "RefClientIris existe déjà !!");
-		}else if ( !clientExisteWithRaisonSocial.isEmpty()){
+		}else if ( clientExisteWithRaisonSocial!= null){
 			throw new RuntimeException( "Raison social existe déjà !!");
 
 		}else if(!email.equals("") && !matcher.matches()){
@@ -180,7 +182,7 @@ public class ClientServiceImpl implements ClientService {
 		
 		ClientDto clientDto = new ClientDto();
 		clientDto.setRefClientIris(refClientIris);
-		//clientDto.setDate(sys date); 
+		 
 		clientDto.setRaisonSocial(raisonSocial);
 		clientDto.setTelecopie(telecopie);
 		clientDto.setPhone(phone);
@@ -195,10 +197,10 @@ public class ClientServiceImpl implements ClientService {
 		clientDto.setRib(rib);
 		clientDto.setSwift(swift);
 		clientDto.setEmail(email);		
-		clientDto.setMiseEnVeille(false);
-	//	clientDto.setDateMiseEnVeille(vide);
-		clientDto.setBlocage(false);
-		//clientDto.setDateBlocage(vide);
+		clientDto.setMiseEnVeille(0);
+	
+		clientDto.setBlocage(0);
+		
 	
 		clientRepository.save(buildClientFromClientDto(clientDto));
 	
@@ -237,11 +239,33 @@ public class ClientServiceImpl implements ClientService {
 	
 		}
 
-
 	@Override
-	public void updateClient(@Valid ClientDto clientDto ) throws ResourceNotFoundException {
-		Client client = getClientById(clientDto.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  clientDto.getId())));
+	public ResponseEntity<Map<String, Object>> find(String textToFind, int page, int size,boolean enVeille) {
+
+		try {
+
+			List<ClientDto> clients;
+			Pageable paging = PageRequest.of(page, size);
+			Page<Client> pageTuts;
+			pageTuts = clientRepository.findClientByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
+			clients = pageTuts.getContent().stream().map(client -> {
+				return buildClientDtoFromClient(client);
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("clients", clients);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		}
+	@Override
+	public void updateClient(String idClient ,ClientDto clientDto ) throws ResourceNotFoundException {
+		Client client = getClientById(idClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
 		client.setRaisonSocial(clientDto.getRaisonSocial());		
 		client.setRegime(clientDto.getRegime());
 	//	client.setMiseEnVeille(clientDto.getMiseEnVeille());
@@ -263,6 +287,15 @@ public class ClientServiceImpl implements ClientService {
 		client.setPhone(clientDto.getPhone());
 		clientRepository.save(client);
 		
+	}
+
+	@Override
+	public void miseEnVeille(String idClient ) throws ResourceNotFoundException {
+		Client client = getClientById(idClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
+		client.setMiseEnVeille(1);
+		clientRepository.save(client);
+
 	}
 
 	@Override
@@ -313,7 +346,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public String getIdClients(String raisonSociale) throws ResourceNotFoundException {
 		Client client = clientRepository.findClientByRaisonSocial(raisonSociale).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSociale)));
-		return client.getId() ;
+		return client.getId();
 	}
 
 	@Override

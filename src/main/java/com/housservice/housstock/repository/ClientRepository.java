@@ -1,15 +1,14 @@
 package com.housservice.housstock.repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.housservice.housstock.model.Client;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Personnel;
+import java.util.List;
+import java.util.Optional;
+
 
 public interface ClientRepository extends MongoRepository <Client, String> {
 
@@ -22,9 +21,12 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 		//Optional<Client> findClientByRaisonSocial(String raisonSociale) ;
 		Optional<Client> findClientByContactId(String idContact ) ;
 		
-	    List<Client> findClientByRefClientIris(String refClientIris);
-	    List<Client> findClientByRaisonSocial(String raisonSocial);
+		Optional<Client> findClientByRefClientIris(String refClientIris);
+		Optional<Client> findClientByRaisonSocial(String raisonSocial);
 	    
 
+
+	@Query( "{$or:[{'raisonSocial': {$regex : ?0}} ,{'secteurActivite': {$regex : ?0}} ,{'brancheActivite': {$regex : ?0}},{'regime': {$regex : ?0}},{'adresseLivraison': {$regex : ?0}}] }")
+	Page<Client> findClientByTextToFindAndMiseEnVeille(String textToFind,boolean b ,  Pageable pageable);
 
 }

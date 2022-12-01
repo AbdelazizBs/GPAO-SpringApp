@@ -129,7 +129,7 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private boolean miseEnVeille;
+	private int miseEnVeille;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -139,7 +139,7 @@ public class Client {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private boolean blocage;
+	private int blocage;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -157,7 +157,7 @@ public class Client {
 				  String incoterm, String echeance, String modePaiement,
 				  String phone, String telecopie, 
 				  String nomBanque, String adresseBanque, String rib,
-				  String swift,String email, Date dateMiseEnVeille, boolean miseEnVeille,boolean blocage,Date dateBlocage,
+				  String swift,String email, Date dateMiseEnVeille, int miseEnVeille,int blocage,Date dateBlocage,
 				  List<Contact> contact, List<CommandeClient> listCommandes) {
 		
 		this.refClientIris = refClientIris;

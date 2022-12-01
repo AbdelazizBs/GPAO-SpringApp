@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ExcelHelper {
 
+
 	public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
 	public static boolean hasExcelFormat(MultipartFile file) {
@@ -51,7 +52,6 @@ public class ExcelHelper {
 
 			if (rowNumber == 0)
 			{
-
 				rowNumber++;
 				continue;
 			}
@@ -61,7 +61,7 @@ public class ExcelHelper {
 			Personnel personnel = new Personnel();
 
 			int cellIdx = 0;
-			;
+
 			while (cellsInRow.hasNext())
 			{
 				Cell currentCell =  cellsInRow.next();
@@ -70,7 +70,9 @@ public class ExcelHelper {
 				{
 
 					case 0:
+
 						personnel.setMatricule(new DataFormatter().formatCellValue(currentCell.getRow().getCell(0)));
+
 						break;
 
 					case 1:
@@ -253,7 +255,6 @@ public class ExcelHelper {
 			Row currentRow = sheet.getRow(i);
 
 
-
 			Iterator<Cell> cellsInRow = currentRow.iterator();
 
 			Client client = new Client();
@@ -262,6 +263,7 @@ public class ExcelHelper {
 
 			while (cellsInRow.hasNext())
 			{
+
 				Cell currentCell =  cellsInRow.next();
 
 				switch (cellIdx)

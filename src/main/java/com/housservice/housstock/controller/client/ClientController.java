@@ -1,7 +1,6 @@
 package com.housservice.housstock.controller.client;
 
 import java.text.MessageFormat;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,18 +11,17 @@ import javax.validation.constraints.NotEmpty;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.dto.ClientDto;
+
 import com.housservice.housstock.model.Client;
+
+import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.service.ClientService;
-
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -75,7 +73,19 @@ public class ClientController {
 
 	}
 
-	 
+
+
+		@GetMapping("/search")
+		@ApiOperation(value = "service to filter clients ")
+		public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
+		@RequestParam boolean enVeille,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "3") int size) {
+			return clientService.find(textToFind, page, size,enVeille);
+
+		}
+
+
 
 	  @GetMapping("/client/{id}")
 	  @ApiOperation(value = "service to get one Client by Id.")
@@ -186,10 +196,20 @@ public class ClientController {
 	  public ResponseEntity <String> updateClient(
 			  @ApiParam(name = "idClient", value="id of client", required = true)
 			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
-	      @Valid @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
+	       @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
 		  
-		  clientService.updateClient(clientDto);
+		  clientService.updateClient(idClient,clientDto);
 	      
+	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	  }
+	  @PutMapping("/miseEnVeille/{idClient}")
+	  public ResponseEntity <String> miseEnVeille(
+			  @ApiParam(name = "idClient", value="id of client", required = true)
+			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
+			  @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
+
+		  clientService.miseEnVeille(idClient);
+
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 

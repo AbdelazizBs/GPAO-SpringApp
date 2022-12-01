@@ -58,11 +58,11 @@ public class ClientDto {
 	
 	private String email;
 	  
-	private boolean miseEnVeille;
+	private int miseEnVeille;
 
 	private Date dateMiseEnVeille;
 	
-	private boolean blocage;
+	private int blocage;
 	
 	private Date dateBlocage;
 	
