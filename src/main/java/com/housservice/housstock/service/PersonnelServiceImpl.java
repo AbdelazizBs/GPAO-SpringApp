@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -104,26 +102,16 @@ public class PersonnelServiceImpl implements PersonnelService {
 								   String categorie,
 								   String ville,
 								   String codePostal,
-								   String email
-									 ) throws ResourceNotFoundException {
-//		String regex = "^(.+)@(.+)$";
-//		Pattern pattern = Pattern.compile(regex);
-//		Matcher matcher = pattern.matcher(email);
-//		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
-//		Personnel personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin)
-//				.orElseThrow(() -> new ResourceNotFoundException(
-//						MessageFormat.format(messageHttpErrorProperties.getError0002(), cin)));
-//			if (personnelExisteWithCin != null &&  personnelExisteWithMatricule!= null ){
-//			throw new RuntimeException( "CIN et MATRICULE existe déjà !!");
-//		}else if (personnelExisteWithCin !=null ){
-//			throw new RuntimeException( "CIN existe déjà !!");
-//		}else if ( !personnelExisteWithMatricule.isEmpty()){
-//			throw new RuntimeException( "MATRICULE existe déjà !!");
-//
-//		}else if(!email.equals("") && !matcher.matches()){
-//			throw new RuntimeException("Email incorrecte !!");
-//
-//		}
+								   String email) throws ResourceNotFoundException {
+		boolean personnelExisteWithMatricule = personnelRepository.existsPersonnelByMatricule(matricule);
+		boolean personnelExisteWithCin = personnelRepository.existsPersonnelByCin(cin);
+		if (personnelExisteWithCin  &&  personnelExisteWithMatricule){
+			throw new IllegalArgumentException("CIN et MATRICULE existe déjà !!");
+		}else if (personnelExisteWithCin){
+			throw new IllegalArgumentException( "CIN existe déjà !!");
+		}else if ( personnelExisteWithMatricule){
+			throw new IllegalArgumentException( "MATRICULE existe déjà !!");
+		}
 
 		PersonnelDto personnelDto = new PersonnelDto();
 		personnelDto.setNom(nom);
@@ -172,17 +160,12 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setVille(personnelDto.getVille());
 		personnel.setCodePostal(personnelDto.getCodePostal());
 		personnel.setEmail(personnelDto.getEmail());
-
-		// TODO Liste Roles
-
 		return personnel;
 	}
 
 	@Override
 	public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size) {
-
 		try {
-
 			List<PersonnelDto> personnels = new ArrayList<PersonnelDto>();
 			Pageable paging = PageRequest.of(page, size);
 			Page<Personnel> pageTuts;
@@ -201,7 +184,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 			response.put("currentPage", pageTuts.getNumber());
 			response.put("totalItems", pageTuts.getTotalElements());
 			response.put("totalPages", pageTuts.getTotalPages());
-
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -251,15 +233,8 @@ public class PersonnelServiceImpl implements PersonnelService {
 								String codePostal,
 								String email
 								) throws ResourceNotFoundException {
-		String regex = "^(.+)@(.+)$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(email);
-		if(!matcher.matches()){
-			throw new RuntimeException( "Email incorrecte !!");
-		}
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
-
 		personnel.setNom(nom);
 		personnel.setPrenom(prenom);
 		personnel.setDateNaissance(dateNaissance);

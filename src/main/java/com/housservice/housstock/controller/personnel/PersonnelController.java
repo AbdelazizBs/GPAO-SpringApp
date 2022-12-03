@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -93,13 +95,22 @@ public class PersonnelController {
 													   final String email
 													  ) throws ResourceNotFoundException {
 
+		String regex = "^(.+)@(.+)$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(email);
+
 		  if(nom.equals("undefined") || prenom.equals("undefined") || adresse.equals("undefined") || matricule.equals("undefined") || cin.equals("undefined") ||
-		  rib.equals("undefined") || poste.equals("undefined")|| phone.equals("undefined") || ville.equals("undefined") || categorie.equals("undefined") || email.equals("undefined")
+		  rib.equals("undefined") || poste.equals("undefined")|| phone.equals("undefined") || ville.equals("undefined") || categorie.equals("undefined")
+				  || email.equals("undefined")
 				  || codePostal.equals("undefined"))
 		  {
 			  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
 		  }
 
+		 if(!email.equals("") && !matcher.matches()){
+			throw new IllegalArgumentException("Email incorrecte !!");
+
+		}
     	  personnelService.createNewPersonnel(nom,
 				  prenom,
 				  dateNaissance,
@@ -180,6 +191,19 @@ public class PersonnelController {
 			  final  String  codePostal,
 			    final  String  email
 			  ) throws ResourceNotFoundException {
+		  String regex = "^(.+)@(.+)$";
+		  Pattern pattern = Pattern.compile(regex);
+		  Matcher matcher = pattern.matcher(email);
+		  if(nom.equals("") || prenom.equals("") || adresse.equals("") || matricule.equals("") || cin.equals("") ||
+				  rib.equals("") || poste.equals("")|| phone.equals("") || ville.equals("") || categorie.equals("")
+				  || email.equals("")
+				  || codePostal.equals(""))
+		  {
+			  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
+		  }
+		  if(!matcher.matches()){
+			  throw new IllegalArgumentException( "Email incorrecte !!");
+		  }
 			  personnelService.updatePersonnel(
 					  idPersonnel,
 					  nom,

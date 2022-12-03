@@ -7,14 +7,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     Optional<Personnel> findByNom(String s);
     Optional<Personnel> findByCompte(Comptes comptes);
-    List<Personnel> findPersonnelByMatricule(String matricule);
+    boolean existsPersonnelByMatricule(String matricule);
     Optional<Personnel> findPersonnelByCin(String cin);
+    Optional<Personnel> findPersonnelByMatricule(String matricule);
+    boolean existsPersonnelByCin(String cin);
+    int countByCin(String cin);
+    int countByMatricule(String matricule);
     Page<Personnel> findPersonnelByMiseEnVeille(boolean b, Pageable pageable);
 
 
