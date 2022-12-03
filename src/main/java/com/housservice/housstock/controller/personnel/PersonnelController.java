@@ -14,17 +14,14 @@ import com.housservice.housstock.service.PersonnelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -78,9 +75,9 @@ public class PersonnelController {
 
 	@PutMapping("/createNewPersonnel")
 	@Validated
-	  public ResponseEntity<String> createNewPersonnel(@Valid final String nom ,
+	  public ResponseEntity<String> createNewPersonnel( final String nom ,
 													  final String prenom ,
-													   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate dateNaissance ,
+													  final Date dateNaissance ,
 													  final String adresse ,
 													   final String matricule,
 													   final String photo ,
@@ -88,7 +85,7 @@ public class PersonnelController {
 													  final String sexe,
 													  final String rib,
 													  final String poste,
-													   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate dateEmbauche,
+													   final Date dateEmbauche,
 													  final String phone,
 													  final String categorie,
 													  final String ville,
@@ -160,9 +157,6 @@ public class PersonnelController {
 		}
 	}
 
-
-
-
       @PutMapping("/updatePersonnel/{idPersonnel}")
 	  public ResponseEntity <String> updatePersonnel(
 			  @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
@@ -170,7 +164,7 @@ public class PersonnelController {
 			    String idPersonnel,
 			  final String nom ,
 			  final String prenom ,
-			  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate dateNaissance ,
+			 Date dateNaissance ,
 			  final String matricule,
 			  final String adresse ,
 			  final String photo ,
@@ -178,7 +172,7 @@ public class PersonnelController {
 			  final String sexe,
 			  final String rib,
 			  final String poste,
-			  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)final LocalDate dateEmbauche,
+			 Date dateEmbauche,
 			  final int echelon,
 			  final String phone,
 			  final String categorie,

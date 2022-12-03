@@ -4,7 +4,7 @@ import com.housservice.housstock.model.Comptes;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -50,10 +50,10 @@ public class PersonnelDto {
 	private String poste;
 
 
-	private LocalDate dateEmbauche;
+	private Date dateEmbauche;
 
 
-	private LocalDate dateNaissance;
+	private Date dateNaissance;
 
 
 	private int echelon;

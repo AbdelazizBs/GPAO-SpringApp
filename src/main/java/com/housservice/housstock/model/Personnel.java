@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.util.Date;
 
 
 @Getter
@@ -95,14 +95,14 @@ public class Personnel {
 	@Size(max = 100)
 	@Indexed(unique = true)
 //	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dateEmbauche;
+	private Date dateEmbauche;
 
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 //	@JsonFormat( pattern = "yyyy-MM-dd")
-	private LocalDate dateNaissance;
+	private Date dateNaissance;
 
 
 	@NotBlank
@@ -130,10 +130,10 @@ public class Personnel {
 
 	}
 
-	public Personnel(String nom, String prenom, LocalDate dateNaissance, String adresse, String photo,
-					 String cin, String sexe, String rib, String poste, LocalDate dateDeEmbauche,
-					 int echelon, String categorie,String matricule, String phone,
-					 Comptes compte, boolean miseEnVeille,String ville,String codePostal,
+	public Personnel(String nom, String prenom, Date dateNaissance, String adresse, String photo,
+					 String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
+					 int echelon, String categorie, String matricule, String phone,
+					 Comptes compte, boolean miseEnVeille, String ville, String codePostal,
 					 String email) {
 		this.nom = nom;
 		this.prenom = prenom;

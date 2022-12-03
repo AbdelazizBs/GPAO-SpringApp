@@ -4,9 +4,8 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ public interface PersonnelService {
 
     public void createNewPersonnel(String nom,
                                      String prenom,
-                                   LocalDate dateDeNaissance,
+                                   Date dateDeNaissance,
                                      String adresse,
                                    String matricule,
                                    String photo,
@@ -31,7 +30,7 @@ public interface PersonnelService {
                                      String sexe,
                                      String rib,
                                      String poste,
-                                   LocalDate datedembauche,
+                                   Date datedembauche,
                                    String phone,
                                      String categorie,
                                    String ville,
@@ -42,7 +41,7 @@ public interface PersonnelService {
      void updatePersonnel(String idPersonnel,
                             String nom,
                           String prenom,
-                          LocalDate dateDeNaissance,
+                          Date dateDeNaissance,
                           String adresse,
                           String matricule,
                           String photo,
@@ -50,7 +49,7 @@ public interface PersonnelService {
                           String sexe,
                           String rib,
                           String poste,
-                          LocalDate datedembauche,
+                          Date datedembauche,
                           int echelon,
                           String phone,
                           String categorie,

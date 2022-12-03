@@ -3,22 +3,29 @@ package com.housservice.housstock.configuration;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.CommandeClientRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataLoader implements CommandLineRunner {
 
-    @Autowired
+    final
     PersonnelRepository personnelRepository ;
 
-    @Autowired MessageHttpErrorProperties messageHttpErrorProperties;
+    final MessageHttpErrorProperties messageHttpErrorProperties;
 
-    @Autowired
+    final
     CommandeClientRepository commandeClientRepository ;
-    @Autowired
+    final
     ClientRepository  clientRepository ;
+
+    public DataLoader(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties, CommandeClientRepository commandeClientRepository, ClientRepository clientRepository) {
+        this.personnelRepository = personnelRepository;
+        this.messageHttpErrorProperties = messageHttpErrorProperties;
+        this.commandeClientRepository = commandeClientRepository;
+        this.clientRepository = clientRepository;
+    }
+
     @Override
     public void run(String... args) throws Exception {
 //        loadUserData();

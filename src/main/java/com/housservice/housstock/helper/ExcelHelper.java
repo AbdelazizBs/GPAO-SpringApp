@@ -91,7 +91,7 @@ public class ExcelHelper {
 						break;
 
 					case 5:
-						personnel.setDateNaissance(currentCell.getLocalDateTimeCellValue().toLocalDate());
+						personnel.setDateNaissance(currentCell.getDateCellValue());
 						break;
 
 					case 6:
@@ -102,7 +102,7 @@ public class ExcelHelper {
 						personnel.setPhone(new DataFormatter().formatCellValue(currentCell.getRow().getCell(7)));
 						break;
 					case 8:
-						personnel.setDateEmbauche(currentCell.getLocalDateTimeCellValue().toLocalDate());
+						personnel.setDateEmbauche(currentCell.getDateCellValue());
 						break;
 					case 9:
 						personnel.setRib(new DataFormatter().formatCellValue(currentCell.getRow().getCell(9)));

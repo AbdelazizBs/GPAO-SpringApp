@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -92,7 +91,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 	@Override
 	public void createNewPersonnel(String nom,
 								   String prenom,
-								   LocalDate dateNaissance,
+								   Date dateNaissance,
 								   String adresse,
 								   String matricule,
 								   String photo,
@@ -100,31 +99,31 @@ public class PersonnelServiceImpl implements PersonnelService {
 								   String sexe,
 								   String rib,
 								   String poste,
-								   LocalDate dateEmbauche,
+								   Date dateEmbauche,
 								   String phone,
 								   String categorie,
 								   String ville,
 								   String codePostal,
 								   String email
 									 ) throws ResourceNotFoundException {
-		String regex = "^(.+)@(.+)$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(email);
-		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
-		Personnel personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin)
-				.orElseThrow(() -> new ResourceNotFoundException(
-						MessageFormat.format(messageHttpErrorProperties.getError0002(), cin)));
-			if (personnelExisteWithCin != null &&  !personnelExisteWithMatricule.isEmpty()){
-			throw new RuntimeException( "CIN et MATRICULE existe déjà !!");
-		}else if (personnelExisteWithCin !=null ){
-			throw new RuntimeException( "CIN existe déjà !!");
-		}else if ( !personnelExisteWithMatricule.isEmpty()){
-			throw new RuntimeException( "MATRICULE existe déjà !!");
-
-		}else if(!email.equals("") && !matcher.matches()){
-			throw new RuntimeException("Email incorrecte !!");
-
-		}
+//		String regex = "^(.+)@(.+)$";
+//		Pattern pattern = Pattern.compile(regex);
+//		Matcher matcher = pattern.matcher(email);
+//		List<Personnel> personnelExisteWithMatricule = personnelRepository.findPersonnelByMatricule(matricule) ;
+//		Personnel personnelExisteWithCin = personnelRepository.findPersonnelByCin(cin)
+//				.orElseThrow(() -> new ResourceNotFoundException(
+//						MessageFormat.format(messageHttpErrorProperties.getError0002(), cin)));
+//			if (personnelExisteWithCin != null &&  personnelExisteWithMatricule!= null ){
+//			throw new RuntimeException( "CIN et MATRICULE existe déjà !!");
+//		}else if (personnelExisteWithCin !=null ){
+//			throw new RuntimeException( "CIN existe déjà !!");
+//		}else if ( !personnelExisteWithMatricule.isEmpty()){
+//			throw new RuntimeException( "MATRICULE existe déjà !!");
+//
+//		}else if(!email.equals("") && !matcher.matches()){
+//			throw new RuntimeException("Email incorrecte !!");
+//
+//		}
 
 		PersonnelDto personnelDto = new PersonnelDto();
 		personnelDto.setNom(nom);
@@ -139,9 +138,9 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setCategorie(categorie);
 		personnelDto.setMatricule(matricule);
 		personnelDto.setPhone(phone);
-		personnelDto.setDateNaissance(dateNaissance.plusDays(1));
+		personnelDto.setDateNaissance(dateNaissance);
 		personnelDto.setCompte(new Comptes());
-		personnelDto.setDateEmbauche(dateEmbauche.plusDays(1));
+		personnelDto.setDateEmbauche(dateEmbauche);
 		personnelDto.setMiseEnVeille(false);
 		personnelDto.setVille(ville);
 		personnelDto.setCodePostal(codePostal);
@@ -190,8 +189,8 @@ public class PersonnelServiceImpl implements PersonnelService {
 			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
 				try {
-					personnel.setDateEmbauche(personnel.getDateEmbauche().minusDays(1));
-					personnel.setDateNaissance(personnel.getDateNaissance().minusDays(1));
+					personnel.setDateEmbauche(personnel.getDateEmbauche());
+					personnel.setDateNaissance(personnel.getDateNaissance());
 					return buildPersonnelDtoFromPersonnel(personnel);
 				} catch (ResourceNotFoundException e) {
 					throw new RuntimeException(e);
@@ -236,7 +235,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 	public void updatePersonnel(String idPersonnel,
 								String nom,
 								String prenom,
-								LocalDate dateNaissance,
+								Date dateNaissance,
 								String adresse,
 								String matricule,
 								String photo,
@@ -244,7 +243,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 								String sexe,
 								String rib,
 								String poste,
-								LocalDate dateEmbauche,
+								Date dateEmbauche,
 								int echelon,
 								String phone,
 								String categorie,
@@ -263,14 +262,14 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 		personnel.setNom(nom);
 		personnel.setPrenom(prenom);
-		personnel.setDateNaissance(dateNaissance.plusDays(1));
+		personnel.setDateNaissance(dateNaissance);
 		personnel.setAdresse(adresse);
 		personnel.setPhoto(photo);
 		personnel.setCin(cin);
 		personnel.setSexe(sexe);
 		personnel.setRib(rib);
 		personnel.setPoste(poste);
-		personnel.setDateEmbauche(dateEmbauche.plusDays(1));
+		personnel.setDateEmbauche(dateEmbauche);
 		personnel.setEchelon(echelon);
 		personnel.setCategorie(categorie);
 		personnel.setMatricule(matricule);
