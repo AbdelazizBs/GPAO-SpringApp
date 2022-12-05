@@ -133,6 +133,7 @@ public class ClientController {
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 
+
 	  @PutMapping("/addContactClient/{idClient}")
 	  public ResponseEntity <String> addContactClient(
 			  @ApiParam(name = "idClient", value="id of client", required = true)
