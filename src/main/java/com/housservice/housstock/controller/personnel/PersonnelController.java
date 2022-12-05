@@ -94,15 +94,13 @@ public class PersonnelController {
 													  final String codePostal,
 													   final String email
 													  ) throws ResourceNotFoundException {
-
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
 
-		  if(nom.equals("undefined") || prenom.equals("undefined") || adresse.equals("undefined") || matricule.equals("undefined") || cin.equals("undefined") ||
-		  rib.equals("undefined") || poste.equals("undefined")|| phone.equals("undefined") || ville.equals("undefined") || categorie.equals("undefined")
-				  || email.equals("undefined")
-				  || codePostal.equals("undefined"))
+		  if(nom.equals("") || prenom.equals("") || adresse.equals("") ||  cin.equals("")
+				  || dateEmbauche.equals("") || dateNaissance.equals(""))
+
 		  {
 			  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
 		  }
@@ -194,10 +192,8 @@ public class PersonnelController {
 		  String regex = "^(.+)@(.+)$";
 		  Pattern pattern = Pattern.compile(regex);
 		  Matcher matcher = pattern.matcher(email);
-		  if(nom.equals("") || prenom.equals("") || adresse.equals("") || matricule.equals("") || cin.equals("") ||
-				  rib.equals("") || poste.equals("")|| phone.equals("") || ville.equals("") || categorie.equals("")
-				  || email.equals("")
-				  || codePostal.equals(""))
+		  if(nom.equals("") || prenom.equals("") || adresse.equals("") ||  cin.equals("")
+				  || dateEmbauche.equals("") || dateNaissance.equals(""))
 		  {
 			  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
 		  }

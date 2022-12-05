@@ -31,29 +31,21 @@ public class ExcelService {
     }
 
 
-    public void savePersonnel(MultipartFile file) throws IOException
-    {
-
+    public void savePersonnel(MultipartFile file) throws IOException, ResourceNotFoundException {
         List<Personnel> personnels = ExcelHelper.excelToPersonnels(file.getInputStream());
-if (personnelRepository.count()>0){
-    personnels.stream().map(personnel -> {
-        try {
-            Personnel personnel1 = personnelRepository.findPersonnelByCin(personnel.getCin()).orElseThrow(() -> new ResourceNotFoundException(
-                    MessageFormat.format(messageHttpErrorProperties.getError0002(), personnel.getCin())));
-            if(personnel1!= null &&personnel1.equals(personnel)){
+        for (Personnel personnel : personnels) {
+            boolean exist = personnelRepository.existsPersonnelByCin(personnel.getCin());
+            if (exist) {
+                Personnel personnel1 = personnelRepository.findPersonnelByCin(personnel.getCin())
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                MessageFormat.format(messageHttpErrorProperties.getError0002(), personnel.getCin())));
                 personnelRepository.delete(personnel1);
+                personnelRepository.save(personnel);
             }
-
-        } catch (ResourceNotFoundException e) {
-            throw new RuntimeException(e);
+            personnelRepository.save(personnel);
         }
-        return personnelRepository.saveAll(personnels);
-
-    });
-}else
-    personnelRepository.saveAll(personnels);
-
     }
+
 
     public void saveClient(MultipartFile file) throws IOException
     {

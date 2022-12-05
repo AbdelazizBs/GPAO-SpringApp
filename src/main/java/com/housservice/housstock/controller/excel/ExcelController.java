@@ -1,5 +1,6 @@
 package com.housservice.housstock.controller.excel;
 
+import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.helper.ExcelHelper;
 import com.housservice.housstock.message.ResponseMessage;
 import com.housservice.housstock.service.ExcelService;
@@ -27,8 +28,7 @@ public class ExcelController {
 	}
 
 	@PostMapping("/uploadPersonnelFile")
-	public ResponseEntity<ResponseMessage> uploadPersonnelFile(@RequestParam("file") MultipartFile file) throws IOException
-	{
+	public ResponseEntity<ResponseMessage> uploadPersonnelFile(@RequestParam("file") MultipartFile file) throws IOException, ResourceNotFoundException {
 		String message = "";
 
 

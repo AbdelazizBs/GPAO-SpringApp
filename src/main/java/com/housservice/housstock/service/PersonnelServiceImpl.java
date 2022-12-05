@@ -32,7 +32,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 
 	private EntrepriseRepository entrepriseRepository;
-//	private final EmailValidator emailValidator;
 
 	final RolesRepository rolesRepository;
 	private ComptesRepository comptesRepository;
