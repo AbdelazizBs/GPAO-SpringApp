@@ -52,11 +52,13 @@ public class PersonnelDto {
 
 	private Date dateEmbauche;
 
-
 	private Date dateNaissance;
 
-
-	private int echelon;
+	private String echelon;
+	private String numCnss;
+	private String situationFamiliale;
+	private String nbrEnfant;
+	private String typeContrat;
 
 
 

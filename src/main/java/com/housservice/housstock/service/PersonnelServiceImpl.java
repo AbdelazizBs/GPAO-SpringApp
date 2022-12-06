@@ -77,9 +77,10 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setVille(personnel.getVille());
 		personnelDto.setCodePostal(personnel.getCodePostal());
 		personnelDto.setEmail(personnel.getEmail());
-
-
-		// TODO Liste Roles
+		personnelDto.setNumCnss(personnel.getNumCnss());
+		personnelDto.setSituationFamiliale(personnel.getSituationFamiliale());
+		personnelDto.setNbrEnfant(personnel.getNbrEnfant());
+		personnelDto.setTypeContrat(personnel.getTypeContrat());
 
 		return personnelDto;
 
@@ -101,7 +102,12 @@ public class PersonnelServiceImpl implements PersonnelService {
 								   String categorie,
 								   String ville,
 								   String codePostal,
-								   String email) throws ResourceNotFoundException {
+								   String email,
+								   String numCnss,
+								   String situationFamiliale,
+								   String nbrEnfant,
+								   String typeContrat
+								   ) throws ResourceNotFoundException {
 		boolean personnelExisteWithMatricule = personnelRepository.existsPersonnelByMatricule(matricule);
 		boolean personnelExisteWithCin = personnelRepository.existsPersonnelByCin(cin);
 		if (personnelExisteWithCin  &&  personnelExisteWithMatricule){
@@ -121,7 +127,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setSexe(sexe);
 		personnelDto.setRib(rib);
 		personnelDto.setPoste(poste);
-		personnelDto.setEchelon(1);
+		personnelDto.setEchelon("1");
 		personnelDto.setCategorie(categorie);
 		personnelDto.setMatricule(matricule);
 		personnelDto.setPhone(phone);
@@ -132,6 +138,11 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnelDto.setVille(ville);
 		personnelDto.setCodePostal(codePostal);
 		personnelDto.setEmail(email);
+		personnelDto.setNumCnss(numCnss);
+		personnelDto.setSituationFamiliale(situationFamiliale);
+		personnelDto.setNbrEnfant(nbrEnfant);
+		personnelDto.setTypeContrat(typeContrat);
+
 		personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
 	}
 
@@ -159,6 +170,11 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setVille(personnelDto.getVille());
 		personnel.setCodePostal(personnelDto.getCodePostal());
 		personnel.setEmail(personnelDto.getEmail());
+		personnel.setMiseEnVeille(personnelDto.isMiseEnVeille());
+		personnel.setNumCnss(personnelDto.getNumCnss());
+		personnel.setSituationFamiliale(personnelDto.getSituationFamiliale());
+		personnel.setNbrEnfant(personnelDto.getNbrEnfant());
+		personnel.setTypeContrat(personnelDto.getTypeContrat());
 		return personnel;
 	}
 
@@ -225,12 +241,16 @@ public class PersonnelServiceImpl implements PersonnelService {
 								String rib,
 								String poste,
 								Date dateEmbauche,
-								int echelon,
+								String echelon,
 								String phone,
 								String categorie,
 								String ville,
 								String codePostal,
-								String email
+								String email,
+								String numCnss,
+								String situationFamiliale,
+								String nbrEnfant,
+								String typeContrat
 								) throws ResourceNotFoundException {
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
@@ -251,6 +271,10 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setVille(ville);
 		personnel.setCodePostal(codePostal);
 		personnel.setEmail(email);
+		personnel.setNumCnss(numCnss);
+		personnel.setSituationFamiliale(situationFamiliale);
+		personnel.setNbrEnfant(nbrEnfant);
+		personnel.setTypeContrat(typeContrat);
 		personnelRepository.save(personnel);
 	}
 

@@ -35,7 +35,11 @@ public interface PersonnelService {
                                      String categorie,
                                    String ville,
                                    String codePostal,
-                                   String email
+                                   String email,
+                                      String numCnss,
+                                        String situationFamiliale,
+                                        String nbrEnfant,
+                                        String typeContrat
                                      ) throws ResourceNotFoundException;
 	
      void updatePersonnel(String idPersonnel,
@@ -50,12 +54,16 @@ public interface PersonnelService {
                           String rib,
                           String poste,
                           Date datedembauche,
-                          int echelon,
+                          String echelon,
                           String phone,
                           String categorie,
                           String ville,
                           String codePostal,
-                                        String email
+                          String email,
+                          String numCnss,
+                          String situationFamiliale,
+                          String nbrEnfant,
+                          String typeContrat
      ) throws ResourceNotFoundException;
 
     void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;

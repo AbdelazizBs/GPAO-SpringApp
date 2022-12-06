@@ -92,7 +92,11 @@ public class PersonnelController {
 													  final String categorie,
 													  final String ville,
 													  final String codePostal,
-													   final String email
+													   final String email,
+													   final String numCnss,
+													   final String typeContrat,
+													   final String situationFamiliale,
+													   final String nbrEnfant
 													  ) throws ResourceNotFoundException {
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
@@ -124,7 +128,11 @@ public class PersonnelController {
 				  categorie,
 				  ville,
 				  codePostal,
-				  email
+				  email,
+				  numCnss,
+				  typeContrat,
+				  situationFamiliale,
+				  nbrEnfant
 				  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
@@ -182,12 +190,16 @@ public class PersonnelController {
 			  final String rib,
 			  final String poste,
 			 Date dateEmbauche,
-			  final int echelon,
+			  final String echelon,
 			  final String phone,
 			  final String categorie,
 			  final String ville,
 			  final  String  codePostal,
-			    final  String  email
+			    final  String  email,
+			  final String numCnss,
+			  final String typeContrat,
+			  final String situationFamiliale,
+			  final String nbrEnfant
 			  ) throws ResourceNotFoundException {
 		  String regex = "^(.+)@(.+)$";
 		  Pattern pattern = Pattern.compile(regex);
@@ -218,7 +230,11 @@ public class PersonnelController {
 					  categorie,
 					  ville,
 					  codePostal,
-					  email
+					  email,
+					  numCnss,
+					  typeContrat,
+					  situationFamiliale,
+					  nbrEnfant
 			  );
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }

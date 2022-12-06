@@ -108,7 +108,23 @@ public class Personnel {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private int echelon;
+	private String echelon;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String numCnss;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String situationFamiliale;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String nbrEnfant;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String typeContrat;
 
 	@NotBlank
 	@Size(max = 100)
@@ -132,7 +148,7 @@ public class Personnel {
 
 	public Personnel(String nom, String prenom, Date dateNaissance, String adresse, String photo,
 					 String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
-					 int echelon, String categorie, String matricule, String phone,
+					 String echelon, String categorie, String matricule, String phone,
 					 Comptes compte, boolean miseEnVeille, String ville, String codePostal,
 					 String email) {
 		this.nom = nom;

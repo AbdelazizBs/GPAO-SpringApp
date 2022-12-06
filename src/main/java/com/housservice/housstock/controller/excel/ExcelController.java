@@ -86,7 +86,15 @@ public class ExcelController {
 
 	}
 
+	// get xlsx static file from resources folder
 
+	@GetMapping("/downloadPersonnelExpFile")
+	public ResponseEntity<byte[]> downloadPersonnelFile() throws IOException {
+		byte[] data = fileService.getPersonnelFileFromResourceAsStream();
+		return ResponseEntity.ok()
+				.header("Content-Disposition", "attachment; filename=PersonnelFormatStandardExp.xlsx")
+				.body(data);
+	}
 
 
 }

@@ -48,7 +48,7 @@ public class ExcelHelper {
 
 			Row currentRow = sheet.getRow(i);
 
-			// skip header
+
 
 			if (rowNumber == 0)
 			{
@@ -64,7 +64,14 @@ public class ExcelHelper {
 
 			while (cellsInRow.hasNext())
 			{
+
 				Cell currentCell =  cellsInRow.next();
+//				if (currentCell.getCellType() == CellType.BLANK)
+//				{
+//					// get this cell value and log it to console
+//					System.out.println(currentCell.getStringCellValue());
+//					continue;
+//				}
 
 				switch (cellIdx)
 				{
@@ -113,7 +120,7 @@ public class ExcelHelper {
 						break;
 
 					case 11:
-						personnel.setEchelon((int)currentCell.getNumericCellValue());
+						personnel.setEchelon(currentCell.getStringCellValue());
 						break;
 					case 12:
 						personnel.setCategorie(currentCell.getStringCellValue());
@@ -304,7 +311,6 @@ public class ExcelHelper {
 		return clients;
 
 	}
-
 
 }
 

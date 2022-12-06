@@ -10,7 +10,9 @@ import com.housservice.housstock.repository.PersonnelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -91,6 +93,12 @@ public class ExcelService {
         else
             clientRepository.saveAll(clients);
 
+    }
+
+    public byte[] getPersonnelFileFromResourceAsStream() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("PersonnelFormatStandardExp.xlsx").getFile());
+        return Files.readAllBytes(file.toPath());
     }
 
 
