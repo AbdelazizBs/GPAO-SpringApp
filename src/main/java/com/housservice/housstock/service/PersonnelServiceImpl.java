@@ -87,64 +87,80 @@ public class PersonnelServiceImpl implements PersonnelService {
 	}
 
 	@Override
-	public void createNewPersonnel(String nom,
-								   String prenom,
-								   Date dateNaissance,
-								   String adresse,
-								   String matricule,
-								   String photo,
-								   String cin,
-								   String sexe,
-								   String rib,
-								   String poste,
-								   Date dateEmbauche,
-								   String phone,
-								   String categorie,
-								   String ville,
-								   String codePostal,
-								   String email,
-								   String numCnss,
-								   String situationFamiliale,
-								   String nbrEnfant,
-								   String typeContrat
-								   ) throws ResourceNotFoundException {
-		boolean personnelExisteWithMatricule = personnelRepository.existsPersonnelByMatricule(matricule);
-		boolean personnelExisteWithCin = personnelRepository.existsPersonnelByCin(cin);
-		if (personnelExisteWithCin  &&  personnelExisteWithMatricule){
-			throw new IllegalArgumentException("CIN et MATRICULE existe déjà !!");
-		}else if (personnelExisteWithCin){
-			throw new IllegalArgumentException( "CIN existe déjà !!");
-		}else if ( personnelExisteWithMatricule){
-			throw new IllegalArgumentException( "MATRICULE existe déjà !!");
-		}
+	public ResponseEntity<PersonnelDto> addPersonnel(PersonnelDto personnelDto) {
+//			boolean personnelExisteWithMatricule = personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule());
+//			boolean personnelExisteWithCin = personnelRepository.existsPersonnelByCin(personnelDto.getCin());
+//			if (personnelExisteWithCin  &&  personnelExisteWithMatricule){
+//				throw new IllegalArgumentException("CIN et MATRICULE existe déjà !!");
+//			}else if (personnelExisteWithCin){
+//				throw new IllegalArgumentException( "CIN existe déjà !!");
+//			}else if ( personnelExisteWithMatricule){
+//				throw new IllegalArgumentException( "MATRICULE existe déjà !!");
+//			}
+			personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
+		return new ResponseEntity<PersonnelDto>(personnelDto, HttpStatus.CREATED);
 
-		PersonnelDto personnelDto = new PersonnelDto();
-		personnelDto.setNom(nom);
-		personnelDto.setAdresse(adresse);
-		personnelDto.setPrenom(prenom);
-		personnelDto.setPhoto(photo);
-		personnelDto.setCin(cin);
-		personnelDto.setSexe(sexe);
-		personnelDto.setRib(rib);
-		personnelDto.setPoste(poste);
-		personnelDto.setEchelon("1");
-		personnelDto.setCategorie(categorie);
-		personnelDto.setMatricule(matricule);
-		personnelDto.setPhone(phone);
-		personnelDto.setDateNaissance(dateNaissance);
-		personnelDto.setCompte(new Comptes());
-		personnelDto.setDateEmbauche(dateEmbauche);
-		personnelDto.setMiseEnVeille(false);
-		personnelDto.setVille(ville);
-		personnelDto.setCodePostal(codePostal);
-		personnelDto.setEmail(email);
-		personnelDto.setNumCnss(numCnss);
-		personnelDto.setSituationFamiliale(situationFamiliale);
-		personnelDto.setNbrEnfant(nbrEnfant);
-		personnelDto.setTypeContrat(typeContrat);
-
-		personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
 	}
+
+//	@Override
+//	public void createNewPersonnel(String nom,
+//								   String prenom,
+//								   Date dateNaissance,
+//								   String adresse,
+//								   String matricule,
+//								   String photo,
+//								   String cin,
+//								   String sexe,
+//								   String rib,
+//								   String poste,
+//								   Date dateEmbauche,
+//								   String phone,
+//								   String categorie,
+//								   String ville,
+//								   String codePostal,
+//								   String email,
+//								   String numCnss,
+//								   String situationFamiliale,
+//								   String nbrEnfant,
+//								   String typeContrat
+//								   ) throws ResourceNotFoundException {
+//		boolean personnelExisteWithMatricule = personnelRepository.existsPersonnelByMatricule(matricule);
+//		boolean personnelExisteWithCin = personnelRepository.existsPersonnelByCin(cin);
+//		if (personnelExisteWithCin  &&  personnelExisteWithMatricule){
+//			throw new IllegalArgumentException("CIN et MATRICULE existe déjà !!");
+//		}else if (personnelExisteWithCin){
+//			throw new IllegalArgumentException( "CIN existe déjà !!");
+//		}else if ( personnelExisteWithMatricule){
+//			throw new IllegalArgumentException( "MATRICULE existe déjà !!");
+//		}
+//
+//		PersonnelDto personnelDto = new PersonnelDto();
+//		personnelDto.setNom(nom);
+//		personnelDto.setAdresse(adresse);
+//		personnelDto.setPrenom(prenom);
+//		personnelDto.setPhoto(photo);
+//		personnelDto.setCin(cin);
+//		personnelDto.setSexe(sexe);
+//		personnelDto.setRib(rib);
+//		personnelDto.setPoste(poste);
+//		personnelDto.setEchelon("1");
+//		personnelDto.setCategorie(categorie);
+//		personnelDto.setMatricule(matricule);
+//		personnelDto.setPhone(phone);
+//		personnelDto.setDateNaissance(dateNaissance);
+//		personnelDto.setCompte(new Comptes());
+//		personnelDto.setDateEmbauche(dateEmbauche);
+//		personnelDto.setMiseEnVeille(false);
+//		personnelDto.setVille(ville);
+//		personnelDto.setCodePostal(codePostal);
+//		personnelDto.setEmail(email);
+//		personnelDto.setNumCnss(numCnss);
+//		personnelDto.setSituationFamiliale(situationFamiliale);
+//		personnelDto.setNbrEnfant(nbrEnfant);
+//		personnelDto.setTypeContrat(typeContrat);
+//
+//		personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
+//	}
 
 	private Personnel buildUtilisateurFromUtilisateurDto(PersonnelDto personnelDto) {
 		Personnel personnel = new Personnel();
@@ -178,33 +194,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 		return personnel;
 	}
 
-	@Override
-	public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size) {
-		try {
-			List<PersonnelDto> personnels = new ArrayList<PersonnelDto>();
-			Pageable paging = PageRequest.of(page, size);
-			Page<Personnel> pageTuts;
-			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
-			personnels = pageTuts.getContent().stream().map(personnel -> {
-				try {
-					personnel.setDateEmbauche(personnel.getDateEmbauche());
-					personnel.setDateNaissance(personnel.getDateNaissance());
-					return buildPersonnelDtoFromPersonnel(personnel);
-				} catch (ResourceNotFoundException e) {
-					throw new RuntimeException(e);
-				}
-			}).collect(Collectors.toList());
-			Map<String, Object> response = new HashMap<>();
-			response.put("personnels", personnels);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-	}
 
 	@Override
 	public PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException {
@@ -285,6 +274,33 @@ public class PersonnelServiceImpl implements PersonnelService {
 				MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
 		personnel.setMiseEnVeille(true);
 		personnelRepository.save(personnel);
+	}
+	@Override
+	public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size) {
+		try {
+			List<PersonnelDto> personnels = new ArrayList<PersonnelDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<Personnel> pageTuts;
+			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
+			personnels = pageTuts.getContent().stream().map(personnel -> {
+				try {
+					personnel.setDateEmbauche(personnel.getDateEmbauche());
+					personnel.setDateNaissance(personnel.getDateNaissance());
+					return buildPersonnelDtoFromPersonnel(personnel);
+				} catch (ResourceNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("personnels", personnels);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
 
 	@Override

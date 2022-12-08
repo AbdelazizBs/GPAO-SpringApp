@@ -1,18 +1,20 @@
 package com.housservice.housstock.model.dto;
 
 import com.housservice.housstock.model.Comptes;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 public class PersonnelDto {
 
 	private String id;
 
 
+	@NotEmpty
+	@Size(min = 2, message = "personnel name should have at least 2 characters")
 	private String nom;
 
 
