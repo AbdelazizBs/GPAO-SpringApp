@@ -9,11 +9,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import com.housservice.housstock.mapper.CompteMapper;
-import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.Roles;
-import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.repository.RolesRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

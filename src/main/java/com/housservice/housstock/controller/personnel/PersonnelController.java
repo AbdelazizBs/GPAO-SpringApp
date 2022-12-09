@@ -14,7 +14,9 @@ import com.housservice.housstock.service.PersonnelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,102 +53,37 @@ public class PersonnelController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	}
 
-
-
-      @GetMapping("/getPersonnelById/{id}")
-	  @ApiOperation(value = "service to get one Utilisateur by Id.")
-	  public ResponseEntity <PersonnelDto> getPersonnelById(
-			  @ApiParam(name = "id", value="id of utilisateur", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String utilisateurId)
-	  throws ResourceNotFoundException {
-    	PersonnelDto utilisateur = personnelService.getPersonnelById(utilisateurId);
-		  if (utilisateur == null) {
-			  ResponseEntity.badRequest();
-		  }
-
-	      return ResponseEntity.ok().body(utilisateur);
-	  }
-
-
-
 	@PutMapping("/addPersonnel")
 	@ApiOperation(value = "service to add new Personnel")
-	public ResponseEntity<PersonnelDto> addPersonnel(@Valid @RequestBody PersonnelDto personnelDto) throws ResourceNotFoundException {
-//		String regex = "^(.+)@(.+)$";
-//		Pattern pattern = Pattern.compile(regex);
-//		Matcher matcher = pattern.matcher(personnelDto.getEmail());
-//
-//		if(!personnelDto.getEmail().equals("") && !matcher.matches()){
-//			throw new IllegalArgumentException("Email incorrecte !!");
-//
-//		}
-		return personnelService.addPersonnel(personnelDto);
-//		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+	public ResponseEntity<String> addPersonnel(@Valid  @RequestBody PersonnelDto personnelDto)   {
+		  personnelService.addPersonnel(personnelDto);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+
+	}
+	@PutMapping("/updatePersonnel/{idPersonnel}")
+	@ApiOperation(value = "service to update  Personnel")
+	public ResponseEntity<String> updatePersonnel(@Valid  @RequestBody PersonnelDto personnelDto) throws ResourceNotFoundException {
+		  personnelService.updatePersonnel(personnelDto);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
 	}
 
-//	@PutMapping("/createNewPersonnel")
-//	@Validated
-//	  public ResponseEntity<String> createNewPersonnel( final String nom ,
-//													  final String prenom ,
-//													  final Date dateNaissance ,
-//													  final String adresse ,
-//													   final String matricule,
-//													   final String photo ,
-//													  final String cin,
-//													  final String sexe,
-//													  final String rib,
-//													  final String poste,
-//													   final Date dateEmbauche,
-//													  final String phone,
-//													  final String categorie,
-//													  final String ville,
-//													  final String codePostal,
-//													   final String email,
-//													   final String numCnss,
-//													   final String typeContrat,
-//													   final String situationFamiliale,
-//													   final String nbrEnfant
-//													  ) throws ResourceNotFoundException {
-//		String regex = "^(.+)@(.+)$";
-//		Pattern pattern = Pattern.compile(regex);
-//		Matcher matcher = pattern.matcher(email);
-//
-//		  if(nom.equals("") || prenom.equals("") || adresse.equals("") ||  cin.equals("")
-//				  || dateEmbauche.equals("") || dateNaissance.equals(""))
-//
-//		  {
-//			  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
-//		  }
-//
-//		 if(!email.equals("") && !matcher.matches()){
-//			throw new IllegalArgumentException("Email incorrecte !!");
-//
-//		}
-//    	  personnelService.createNewPersonnel(nom,
-//				  prenom,
-//				  dateNaissance,
-//				  adresse,
-//				  matricule,
-//				  photo,
-//				   cin,
-//				   sexe,
-//				   rib,
-//				   poste,
-//				  dateEmbauche,
-//				  phone,
-//				  categorie,
-//				  ville,
-//				  codePostal,
-//				  email,
-//				  numCnss,
-//				  typeContrat,
-//				  situationFamiliale,
-//				  nbrEnfant
-//				  );
-//	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
-//	  }
-	  @GetMapping("token/refreshToken")
+	@GetMapping("/getPersonnelById/{id}")
+	@ApiOperation(value = "service to get one Utilisateur by Id.")
+	public ResponseEntity <PersonnelDto> getPersonnelById(
+			@ApiParam(name = "id", value="id of utilisateur", required = true)
+			@PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String utilisateurId)
+			throws ResourceNotFoundException {
+		PersonnelDto utilisateur = personnelService.getPersonnelById(utilisateurId);
+		if (utilisateur == null) {
+			ResponseEntity.badRequest();
+		}
+
+		return ResponseEntity.ok().body(utilisateur);
+	}
+
+
+	@GetMapping("token/refreshToken")
 	  public void refreshToken(HttpServletRequest request , HttpServletResponse response) throws IOException {
 
 		String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -184,72 +121,7 @@ public class PersonnelController {
 		}
 	}
 
-      @PutMapping("/updatePersonnel/{idPersonnel}")
-	  public ResponseEntity <String> updatePersonnel(
-			  @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
-			  @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}")
-			    String idPersonnel,
-			  final String nom ,
-			  final String prenom ,
-			 Date dateNaissance ,
-			  final String matricule,
-			  final String adresse ,
-			  final String photo ,
-			  final String cin,
-			  final String sexe,
-			  final String rib,
-			  final String poste,
-			 Date dateEmbauche,
-			  final String echelon,
-			  final String phone,
-			  final String categorie,
-			  final String ville,
-			  final  String  codePostal,
-			    final  String  email,
-			  final String numCnss,
-			  final String typeContrat,
-			  final String situationFamiliale,
-			  final String nbrEnfant
-			  ) throws ResourceNotFoundException {
-		  String regex = "^(.+)@(.+)$";
-		  Pattern pattern = Pattern.compile(regex);
-		  Matcher matcher = pattern.matcher(email);
 
-		  if(nom.isEmpty() || prenom.isEmpty() || adresse.isEmpty() ||  cin.isEmpty()
-				  || dateEmbauche.toString().isEmpty() || dateNaissance.toString().isEmpty())
-		  {
-			  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
-		  }
-		  if(!matcher.matches()){
-			  throw new IllegalArgumentException( "Email incorrecte !!");
-		  }
-
-			  personnelService.updatePersonnel(
-					  idPersonnel,
-					  nom,
-					  prenom,
-					  dateNaissance,
-					  adresse,
-					  matricule,
-					  photo,
-					  cin,
-					  sexe,
-					  rib,
-					  poste,
-					  dateEmbauche,
-					  echelon,
-					  phone,
-					  categorie,
-					  ville,
-					  codePostal,
-					  email,
-					  numCnss,
-					  typeContrat,
-					  situationFamiliale,
-					  nbrEnfant
-			  );
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
-	  }
 
 	@PutMapping("/mettreEnVeille/{idPersonnel}")
 	public ResponseEntity<String> mettreEnVeille(

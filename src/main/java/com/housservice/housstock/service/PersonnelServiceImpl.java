@@ -2,6 +2,7 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.mapper.PersonnelMapper;
 import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -86,81 +89,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 	}
 
-	@Override
-	public ResponseEntity<PersonnelDto> addPersonnel(PersonnelDto personnelDto) {
-//			boolean personnelExisteWithMatricule = personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule());
-//			boolean personnelExisteWithCin = personnelRepository.existsPersonnelByCin(personnelDto.getCin());
-//			if (personnelExisteWithCin  &&  personnelExisteWithMatricule){
-//				throw new IllegalArgumentException("CIN et MATRICULE existe déjà !!");
-//			}else if (personnelExisteWithCin){
-//				throw new IllegalArgumentException( "CIN existe déjà !!");
-//			}else if ( personnelExisteWithMatricule){
-//				throw new IllegalArgumentException( "MATRICULE existe déjà !!");
-//			}
-			personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
-		return new ResponseEntity<PersonnelDto>(personnelDto, HttpStatus.CREATED);
-
-	}
-
-//	@Override
-//	public void createNewPersonnel(String nom,
-//								   String prenom,
-//								   Date dateNaissance,
-//								   String adresse,
-//								   String matricule,
-//								   String photo,
-//								   String cin,
-//								   String sexe,
-//								   String rib,
-//								   String poste,
-//								   Date dateEmbauche,
-//								   String phone,
-//								   String categorie,
-//								   String ville,
-//								   String codePostal,
-//								   String email,
-//								   String numCnss,
-//								   String situationFamiliale,
-//								   String nbrEnfant,
-//								   String typeContrat
-//								   ) throws ResourceNotFoundException {
-//		boolean personnelExisteWithMatricule = personnelRepository.existsPersonnelByMatricule(matricule);
-//		boolean personnelExisteWithCin = personnelRepository.existsPersonnelByCin(cin);
-//		if (personnelExisteWithCin  &&  personnelExisteWithMatricule){
-//			throw new IllegalArgumentException("CIN et MATRICULE existe déjà !!");
-//		}else if (personnelExisteWithCin){
-//			throw new IllegalArgumentException( "CIN existe déjà !!");
-//		}else if ( personnelExisteWithMatricule){
-//			throw new IllegalArgumentException( "MATRICULE existe déjà !!");
-//		}
-//
-//		PersonnelDto personnelDto = new PersonnelDto();
-//		personnelDto.setNom(nom);
-//		personnelDto.setAdresse(adresse);
-//		personnelDto.setPrenom(prenom);
-//		personnelDto.setPhoto(photo);
-//		personnelDto.setCin(cin);
-//		personnelDto.setSexe(sexe);
-//		personnelDto.setRib(rib);
-//		personnelDto.setPoste(poste);
-//		personnelDto.setEchelon("1");
-//		personnelDto.setCategorie(categorie);
-//		personnelDto.setMatricule(matricule);
-//		personnelDto.setPhone(phone);
-//		personnelDto.setDateNaissance(dateNaissance);
-//		personnelDto.setCompte(new Comptes());
-//		personnelDto.setDateEmbauche(dateEmbauche);
-//		personnelDto.setMiseEnVeille(false);
-//		personnelDto.setVille(ville);
-//		personnelDto.setCodePostal(codePostal);
-//		personnelDto.setEmail(email);
-//		personnelDto.setNumCnss(numCnss);
-//		personnelDto.setSituationFamiliale(situationFamiliale);
-//		personnelDto.setNbrEnfant(nbrEnfant);
-//		personnelDto.setTypeContrat(typeContrat);
-//
-//		personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
-//	}
 
 	private Personnel buildUtilisateurFromUtilisateurDto(PersonnelDto personnelDto) {
 		Personnel personnel = new Personnel();
@@ -194,6 +122,63 @@ public class PersonnelServiceImpl implements PersonnelService {
 		return personnel;
 	}
 
+	@Override
+	public void  addPersonnel(PersonnelDto personnelDto)   {
+		String regex = "^(.+)@(.+)$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(personnelDto.getEmail());
+		if(!personnelDto.getEmail().equals("") && !matcher.matches()){
+			throw new IllegalArgumentException("Email incorrecte !!");
+		}
+		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())|| personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())) {
+			throw new IllegalArgumentException(	"Personnel with cin " + personnelDto.getCin() + " or matricule " + personnelDto.getMatricule() + " already exists");
+		}
+		    personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
+//		final Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
+//		return PersonnelMapper.MAPPER.toPersonnelDto(personnelRepository.save(personnel));
+	}
+
+
+	@Override
+	public void  updatePersonnel(PersonnelDto personnelDto) throws ResourceNotFoundException {
+		String regex = "^(.+)@(.+)$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(personnelDto.getEmail());
+		if(personnelDto.getNom().isEmpty() || personnelDto.getPrenom().isEmpty() || personnelDto.getAdresse().isEmpty()
+				||  personnelDto.getCin().isEmpty()
+				|| personnelDto.getDateEmbauche().toString().isEmpty() || personnelDto.getDateNaissance().toString().isEmpty())
+		{
+			throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
+		}
+		if(!personnelDto.getEmail().equals("") && !matcher.matches()){
+			throw new IllegalArgumentException( "Email incorrecte !!");
+		}
+		Personnel personnel = personnelRepository.findById(personnelDto.getId())
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
+		personnel.setNom(personnelDto.getNom());
+		personnel.setPrenom(personnelDto.getPrenom());
+		personnel.setDateNaissance(personnelDto.getDateNaissance());
+		personnel.setAdresse(personnelDto.getAdresse());
+		personnel.setPhoto(personnelDto.getPhoto());
+		personnel.setCin(personnelDto.getCin());
+		personnel.setSexe(personnelDto.getSexe());
+		personnel.setRib(personnelDto.getRib());
+		personnel.setPoste(personnelDto.getPoste());
+		personnel.setDateEmbauche(personnelDto.getDateEmbauche());
+		personnel.setEchelon(personnelDto.getEchelon());
+		personnel.setCategorie(personnelDto.getCategorie());
+		personnel.setMatricule(personnelDto.getMatricule());
+		personnel.setPhone(personnelDto.getPhone());
+		personnel.setVille(personnelDto.getVille());
+		personnel.setCodePostal(personnelDto.getCodePostal());
+		personnel.setEmail(personnelDto.getEmail());
+		personnel.setNumCnss(personnelDto.getNumCnss());
+		personnel.setSituationFamiliale(personnelDto.getSituationFamiliale());
+		personnel.setNbrEnfant(personnelDto.getNbrEnfant());
+		personnel.setTypeContrat(personnelDto.getTypeContrat());
+		    personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
+
+	}
 
 	@Override
 	public PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException {
@@ -217,55 +202,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 				MessageFormat.format(messageHttpErrorProperties.getError0002(), nom)));
 	}
 
-	@Override
-	public void updatePersonnel(String idPersonnel,
-								String nom,
-								String prenom,
-								Date dateNaissance,
-								String adresse,
-								String matricule,
-								String photo,
-								String cin,
-								String sexe,
-								String rib,
-								String poste,
-								Date dateEmbauche,
-								String echelon,
-								String phone,
-								String categorie,
-								String ville,
-								String codePostal,
-								String email,
-								String numCnss,
-								String situationFamiliale,
-								String nbrEnfant,
-								String typeContrat
-								) throws ResourceNotFoundException {
-		Personnel personnel = personnelRepository.findById(idPersonnel)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
-		personnel.setNom(nom);
-		personnel.setPrenom(prenom);
-		personnel.setDateNaissance(dateNaissance);
-		personnel.setAdresse(adresse);
-		personnel.setPhoto(photo);
-		personnel.setCin(cin);
-		personnel.setSexe(sexe);
-		personnel.setRib(rib);
-		personnel.setPoste(poste);
-		personnel.setDateEmbauche(dateEmbauche);
-		personnel.setEchelon(echelon);
-		personnel.setCategorie(categorie);
-		personnel.setMatricule(matricule);
-		personnel.setPhone(phone);
-		personnel.setVille(ville);
-		personnel.setCodePostal(codePostal);
-		personnel.setEmail(email);
-		personnel.setNumCnss(numCnss);
-		personnel.setSituationFamiliale(situationFamiliale);
-		personnel.setNbrEnfant(nbrEnfant);
-		personnel.setTypeContrat(typeContrat);
-		personnelRepository.save(personnel);
-	}
+
 
 	@Override
 	public void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException {

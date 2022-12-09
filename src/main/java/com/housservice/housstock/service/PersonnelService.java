@@ -23,53 +23,9 @@ public interface PersonnelService {
     public PersonnelDto buildPersonnelDtoFromPersonnel(Personnel personnel) throws ResourceNotFoundException;
 
     // add new personnelDto
-     ResponseEntity<PersonnelDto> addPersonnel(PersonnelDto personnelDto) throws ResourceNotFoundException;
+    void addPersonnel(PersonnelDto personnelDto) ;
+    void updatePersonnel(PersonnelDto personnelDto) throws ResourceNotFoundException;
 
-//    public void createNewPersonnel(String nom,
-//                                     String prenom,
-//                                   Date dateDeNaissance,
-//                                     String adresse,
-//                                   String matricule,
-//                                   String photo,
-//                                     String cin,
-//                                     String sexe,
-//                                     String rib,
-//                                     String poste,
-//                                   Date datedembauche,
-//                                   String phone,
-//                                     String categorie,
-//                                   String ville,
-//                                   String codePostal,
-//                                   String email,
-//                                      String numCnss,
-//                                        String situationFamiliale,
-//                                        String nbrEnfant,
-//                                        String typeContrat
-//                                     ) throws ResourceNotFoundException;
-	
-     void updatePersonnel(String idPersonnel,
-                            String nom,
-                          String prenom,
-                          Date dateDeNaissance,
-                          String adresse,
-                          String matricule,
-                          String photo,
-                          String cin,
-                          String sexe,
-                          String rib,
-                          String poste,
-                          Date datedembauche,
-                          String echelon,
-                          String phone,
-                          String categorie,
-                          String ville,
-                          String codePostal,
-                          String email,
-                          String numCnss,
-                          String situationFamiliale,
-                          String nbrEnfant,
-                          String typeContrat
-     ) throws ResourceNotFoundException;
 
     void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;
 

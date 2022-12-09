@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -24,118 +25,73 @@ public class Personnel {
 	@Id
 	private String id;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String nom;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String prenom;
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String codePostal;
 
 
 
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String adresse;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String photo;
 
-	@NotBlank
-	@Size(min = 1,max = 9999)
-	@Indexed(unique = true)
+
 	private String matricule;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String cin;
 
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String sexe;
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String ville;
 
 
 
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String rib;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String poste;
 
 
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String phone;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-//	@JsonFormat(pattern = "yyyy-MM-dd")
+
 	private Date dateEmbauche;
 
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-//	@JsonFormat( pattern = "yyyy-MM-dd")
+
 	private Date dateNaissance;
 
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String echelon;
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String numCnss;
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String situationFamiliale;
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String nbrEnfant;
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String typeContrat;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-//	@Pattern(regexp = "^[ABC]$", message = "Must be either A, B or C")
 
 	private String categorie;
 
 
-	@NotBlank
-	@Email(message = "email is not valid")
+
 	private String email;
 	
 	private Comptes compte = new Comptes();
