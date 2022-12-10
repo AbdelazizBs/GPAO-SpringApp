@@ -5,7 +5,6 @@ import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,6 @@ public interface PersonnelService {
     public Personnel getPersonnelByEmail(String email) throws ResourceNotFoundException;
     public Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException;
 
-    public PersonnelDto buildPersonnelDtoFromPersonnel(Personnel personnel) throws ResourceNotFoundException;
 
     // add new personnelDto
     void addPersonnel(PersonnelDto personnelDto) ;

@@ -7,10 +7,8 @@ import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.repository.ComptesRepository;
-import com.housservice.housstock.repository.EntrepriseRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
 import com.housservice.housstock.repository.RolesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,97 +28,22 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 	private PersonnelRepository personnelRepository;
 
-	private SequenceGeneratorService sequenceGeneratorService;
+	final
+	ComptesRepository comptesRepository;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 
-	private EntrepriseRepository entrepriseRepository;
 
 	final RolesRepository rolesRepository;
-	private ComptesRepository comptesRepository;
 
-	@Autowired
-	public PersonnelServiceImpl(PersonnelRepository personnelRepository,
-			SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
-			EntrepriseRepository entrepriseRepository, ComptesRepository comptesRepository,
-			RolesRepository rolesRepository) {
+	public PersonnelServiceImpl(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties,
+								RolesRepository rolesRepository, ComptesRepository comptesRepository) {
 		this.personnelRepository = personnelRepository;
-		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
-		this.entrepriseRepository = entrepriseRepository;
-		this.comptesRepository = comptesRepository;
 		this.rolesRepository = rolesRepository;
+		this.comptesRepository = comptesRepository;
 	}
 
-	@Override
-	public PersonnelDto buildPersonnelDtoFromPersonnel(Personnel personnel) throws ResourceNotFoundException {
-		if (personnel == null) {
-			return null;
-		}
-
-		PersonnelDto personnelDto = new PersonnelDto();
-		personnelDto.setId(personnel.getId());
-		personnelDto.setNom(personnel.getNom());
-		personnelDto.setPrenom(personnel.getPrenom());
-		personnelDto.setDateNaissance(personnel.getDateNaissance());
-		personnelDto.setAdresse(personnel.getAdresse());
-		personnelDto.setPhoto(personnel.getPhoto());
-		if (personnel.getCompte() != null) {
-			personnelDto.setCompte(personnel.getCompte());
-		}
-		personnelDto.setCin(personnel.getCin());
-		personnelDto.setSexe(personnel.getSexe());
-		personnelDto.setRib(personnel.getRib());
-		personnelDto.setPoste(personnel.getPoste());
-		personnelDto.setDateEmbauche(personnel.getDateEmbauche());
-		personnelDto.setEchelon(personnel.getEchelon());
-		personnelDto.setCategorie(personnel.getCategorie());
-		personnelDto.setMatricule(personnel.getMatricule());
-		personnelDto.setPhone(personnel.getPhone());
-		personnelDto.setVille(personnel.getVille());
-		personnelDto.setCodePostal(personnel.getCodePostal());
-		personnelDto.setEmail(personnel.getEmail());
-		personnelDto.setNumCnss(personnel.getNumCnss());
-		personnelDto.setSituationFamiliale(personnel.getSituationFamiliale());
-		personnelDto.setNbrEnfant(personnel.getNbrEnfant());
-		personnelDto.setTypeContrat(personnel.getTypeContrat());
-
-		return personnelDto;
-
-	}
-
-
-	private Personnel buildUtilisateurFromUtilisateurDto(PersonnelDto personnelDto) {
-		Personnel personnel = new Personnel();
-		personnel.setId("" + sequenceGeneratorService.generateSequence(Personnel.SEQUENCE_NAME));
-		personnel.setId(personnelDto.getId());
-		personnel.setNom(personnelDto.getNom());
-		personnel.setPrenom(personnelDto.getPrenom());
-		personnel.setDateNaissance(personnelDto.getDateNaissance());
-		personnel.setAdresse(personnelDto.getAdresse());
-		personnel.setPhoto(personnelDto.getPhoto());
-		if (personnelDto.getCompte() != null) {
-			personnel.setCompte(personnelDto.getCompte());
-		}
-		personnel.setCin(personnelDto.getCin());
-		personnel.setSexe(personnelDto.getSexe());
-		personnel.setRib(personnelDto.getRib());
-		personnel.setPoste(personnelDto.getPoste());
-		personnel.setDateEmbauche(personnelDto.getDateEmbauche());
-		personnel.setEchelon(personnelDto.getEchelon());
-		personnel.setCategorie(personnelDto.getCategorie());
-		personnel.setMatricule(personnelDto.getMatricule());
-		personnel.setPhone(personnelDto.getPhone());
-		personnel.setVille(personnelDto.getVille());
-		personnel.setCodePostal(personnelDto.getCodePostal());
-		personnel.setEmail(personnelDto.getEmail());
-		personnel.setMiseEnVeille(personnelDto.isMiseEnVeille());
-		personnel.setNumCnss(personnelDto.getNumCnss());
-		personnel.setSituationFamiliale(personnelDto.getSituationFamiliale());
-		personnel.setNbrEnfant(personnelDto.getNbrEnfant());
-		personnel.setTypeContrat(personnelDto.getTypeContrat());
-		return personnel;
-	}
 
 	@Override
 	public void  addPersonnel(PersonnelDto personnelDto)   {
@@ -131,11 +54,10 @@ public class PersonnelServiceImpl implements PersonnelService {
 			throw new IllegalArgumentException("Email incorrecte !!");
 		}
 		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())|| personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())) {
-			throw new IllegalArgumentException(	"Personnel with cin " + personnelDto.getCin() + " or matricule " + personnelDto.getMatricule() + " already exists");
+			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() + " ou matricule " + personnelDto.getMatricule() + "  existe deja !!");
 		}
-		    personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
-//		final Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
-//		return PersonnelMapper.MAPPER.toPersonnelDto(personnelRepository.save(personnel));
+		final Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
+		 PersonnelMapper.MAPPER.toPersonnelDto(personnelRepository.save(personnel));
 	}
 
 
@@ -176,15 +98,14 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setSituationFamiliale(personnelDto.getSituationFamiliale());
 		personnel.setNbrEnfant(personnelDto.getNbrEnfant());
 		personnel.setTypeContrat(personnelDto.getTypeContrat());
-		    personnelRepository.save(buildUtilisateurFromUtilisateurDto(personnelDto));
-
+personnelRepository.save(PersonnelMapper.MAPPER.toPersonnel(personnelDto));
 	}
 
 	@Override
 	public PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException {
 		Optional<Personnel> utilisateurOpt = personnelRepository.findById(id);
 		if (utilisateurOpt.isPresent()) {
-			return buildPersonnelDtoFromPersonnel(utilisateurOpt.get());
+			return PersonnelMapper.MAPPER.toPersonnelDto(utilisateurOpt.get());
 		}
 		return null;
 	}
@@ -220,13 +141,9 @@ public class PersonnelServiceImpl implements PersonnelService {
 			Page<Personnel> pageTuts;
 			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
-				try {
-					personnel.setDateEmbauche(personnel.getDateEmbauche());
-					personnel.setDateNaissance(personnel.getDateNaissance());
-					return buildPersonnelDtoFromPersonnel(personnel);
-				} catch (ResourceNotFoundException e) {
-					throw new RuntimeException(e);
-				}
+				personnel.setDateEmbauche(personnel.getDateEmbauche());
+				personnel.setDateNaissance(personnel.getDateNaissance());
+				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
 			}).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("personnels", personnels);
@@ -250,11 +167,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 			Page<Personnel> pageTuts;
 			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(true, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
-				try {
-					return buildPersonnelDtoFromPersonnel(personnel);
-				} catch (ResourceNotFoundException e) {
-					throw new RuntimeException(e);
-				}
+				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
 			}).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 
@@ -280,11 +193,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 			Page<Personnel> pageTuts;
 			pageTuts = personnelRepository.findPersonnelByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
-				try {
-					return buildPersonnelDtoFromPersonnel(personnel);
-				} catch (ResourceNotFoundException e) {
-					throw new RuntimeException(e);
-				}
+				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
 			}).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("personnels", personnels);
