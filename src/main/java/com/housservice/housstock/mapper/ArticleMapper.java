@@ -14,7 +14,6 @@ public abstract class ArticleMapper {
     public static ArticleMapper  MAPPER = Mappers.getMapper(ArticleMapper.class);
 
 
-
     public abstract ArticleDto toArticleDto(Article article);
 
     public abstract Article toArticle(ArticleDto  articleDto);
