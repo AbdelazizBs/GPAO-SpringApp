@@ -1,7 +1,6 @@
 package com.housservice.housstock.mapper;
 
 
-import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import org.mapstruct.AfterMapping;
