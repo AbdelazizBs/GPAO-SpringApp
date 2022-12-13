@@ -78,12 +78,12 @@ public class ExcelHelper {
 
 					case 0:
 
-						personnel.setMatricule(new DataFormatter().formatCellValue(currentCell.getRow().getCell(0)));
+						personnel.setMatricule(currentCell.getStringCellValue());
 
 						break;
 
 					case 1:
-						personnel.setCin(new DataFormatter().formatCellValue(currentCell.getRow().getCell(1)));
+						personnel.setCin(currentCell.getStringCellValue());
 						break;
 
 					case 2:
@@ -106,13 +106,13 @@ public class ExcelHelper {
 						break;
 
 					case 7:
-						personnel.setPhone(new DataFormatter().formatCellValue(currentCell.getRow().getCell(7)));
+						personnel.setPhone(currentCell.getStringCellValue());
 						break;
 					case 8:
 						personnel.setDateEmbauche(currentCell.getDateCellValue());
 						break;
 					case 9:
-						personnel.setRib(new DataFormatter().formatCellValue(currentCell.getRow().getCell(9)));
+						personnel.setRib(currentCell.getStringCellValue());
 						break;
 
 					case 10:
