@@ -50,9 +50,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(personnelDto.getEmail());
-		if(!personnelDto.getEmail().equals("") && !matcher.matches()){
-			throw new IllegalArgumentException("Email incorrecte !!");
-		}
+		if (!personnelDto.getEmail().equals("") && !matcher.matches()) throw new IllegalArgumentException("Email incorrecte !!");
 		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())|| personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())) {
 			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() + " ou matricule " + personnelDto.getMatricule() + "  existe deja !!");
 		}
@@ -62,21 +60,13 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 
 	@Override
-	public void  updatePersonnel(PersonnelDto personnelDto) throws ResourceNotFoundException {
-		String regex = "^(.+)@(.+)$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(personnelDto.getEmail());
-		if(personnelDto.getNom().isEmpty() || personnelDto.getPrenom().isEmpty() || personnelDto.getAdresse().isEmpty()
-				||  personnelDto.getCin().isEmpty()
-				|| personnelDto.getDateEmbauche().toString().isEmpty() || personnelDto.getDateNaissance().toString().isEmpty())
-		{
-			throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
-		}
-		if(!personnelDto.getEmail().equals("") && !matcher.matches()){
-			throw new IllegalArgumentException( "Email incorrecte !!");
-		}
-		Personnel personnel = personnelRepository.findById(personnelDto.getId())
+	public void  updatePersonnel(PersonnelDto personnelDto,String idPersonnel) throws ResourceNotFoundException {
+		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
+//		if ( (personnel.getCin()!=personnelDto.getCin()&& personnelRepository.existsPersonnelByCin(personnelDto.getCin()))||
+//				(personnel.getMatricule()!=personnelDto.getMatricule() && personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule()))) {
+//			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() + " ou matricule " + personnelDto.getMatricule() + "  existe deja !!");
+//		}
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
 		personnel.setDateNaissance(personnelDto.getDateNaissance());
@@ -98,7 +88,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.setSituationFamiliale(personnelDto.getSituationFamiliale());
 		personnel.setNbrEnfant(personnelDto.getNbrEnfant());
 		personnel.setTypeContrat(personnelDto.getTypeContrat());
-personnelRepository.save(PersonnelMapper.MAPPER.toPersonnel(personnelDto));
+		personnelRepository.save(personnel);
 	}
 
 	@Override

@@ -22,7 +22,9 @@ public interface PersonnelService {
 
     // add new personnelDto
     void addPersonnel(PersonnelDto personnelDto) ;
-    void updatePersonnel(PersonnelDto personnelDto) throws ResourceNotFoundException;
+    // update personnelDto
+
+    void updatePersonnel(PersonnelDto personnelDto,String idPersonnel) throws ResourceNotFoundException;
 
 
     void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;

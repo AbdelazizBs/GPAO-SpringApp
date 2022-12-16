@@ -14,9 +14,7 @@ import com.housservice.housstock.service.PersonnelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +26,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -62,8 +58,9 @@ public class PersonnelController {
 	}
 	@PutMapping("/updatePersonnel/{idPersonnel}")
 	@ApiOperation(value = "service to update  Personnel")
-	public ResponseEntity<String> updatePersonnel(@Valid  @RequestBody PersonnelDto personnelDto) throws ResourceNotFoundException {
-		  personnelService.updatePersonnel(personnelDto);
+	public ResponseEntity<String> updatePersonnel(@Valid  @RequestBody PersonnelDto personnelDto,
+												  @PathVariable(value = "idPersonnel", required = true) String idPersonnel) throws ResourceNotFoundException {
+		  personnelService.updatePersonnel(personnelDto,idPersonnel);
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
 	}
