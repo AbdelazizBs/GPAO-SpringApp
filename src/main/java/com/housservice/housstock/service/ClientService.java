@@ -25,7 +25,6 @@ public interface ClientService {
     List<Article> getArticles(String id) throws ResourceNotFoundException;
     List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException;
 
-	public ClientDto buildClientDtoFromClient(Client client);
 
 	public void createNewClient(@Valid ClientDto clientDto);
 

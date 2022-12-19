@@ -203,11 +203,11 @@ public class ExcelHelper {
 						client.setBrancheActivite(currentCell.getStringCellValue());
 						break;
 					case 4:
-						client.setAdresseFacturation(currentCell.getStringCellValue());
+//						client.setAdresseFacturation(currentCell.getStringCellValue());
 						break;
 
 					case 5:
-						client.setAdresseLivraison(currentCell.getStringCellValue());
+//						client.setAdresseLivraison(currentCell.getStringCellValue());
 						break;
 
 					case 6:

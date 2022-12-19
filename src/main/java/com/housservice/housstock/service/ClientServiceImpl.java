@@ -2,6 +2,7 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.mapper.ClientMapper;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
@@ -66,35 +67,6 @@ public class ClientServiceImpl implements ClientService {
 		return outputStream.toByteArray();
 	}
 	
-	@Override
-	public ClientDto buildClientDtoFromClient(Client client) {
-		if (client == null) {
-			return null;
-		}
-		
-		  ClientDto clientDto = new ClientDto(); clientDto.setId(client.getId());
-		  
-		  clientDto.setRaisonSocial(client.getRaisonSocial());
-		  clientDto.setRegime(client.getRegime());
-		  clientDto.setAdresseFacturation(client.getAdresseFacturation());
-		  clientDto.setAdresseLivraison(client.getAdresseLivraison());
-		  clientDto.setIncoterm(client.getIncoterm());
-		  clientDto.setContact(client.getContact());
-		  clientDto.setEcheance(client.getEcheance());
-		  clientDto.setMiseEnVeille(client.getMiseEnVeille());
-		  clientDto.setModePaiement(client.getModePaiement());
-		  clientDto.setNomBanque(client.getNomBanque());
-		  clientDto.setAdresseBanque(client.getAdresseBanque());
-		  clientDto.setRib(client.getRib()); clientDto.setSwift(client.getSwift());
-		  clientDto.setBrancheActivite(client.getBrancheActivite());
-		  clientDto.setSecteurActivite(client.getSecteurActivite());
-		  clientDto.setTelecopie(client.getTelecopie());
-		  clientDto.setRefClientIris(client.getRefClientIris());
-		  clientDto.setPhone(client.getPhone());
-
-
-		return clientDto;
-	}
 
 	
 	@Override
@@ -134,35 +106,10 @@ List<Contact> contacts = new ArrayList<>();
 if (clientDto.getContact()==null){
 	clientDto.setContact(contacts);
 }
-clientRepository.save(buildClientFromClientDto(clientDto));
+clientRepository.save(ClientMapper.MAPPER.toClient(clientDto));
 	}
 	
 	
-	private Client buildClientFromClientDto(ClientDto clientDto) {
-		Client client = new Client();
-		client.setId(""+sequenceGeneratorService.generateSequence(Client.SEQUENCE_NAME));
-		client.setRaisonSocial(clientDto.getRaisonSocial());		
-		client.setRegime(clientDto.getRegime());
-		client.setContact(clientDto.getContact());
-		client.setAdresseFacturation(clientDto.getAdresseFacturation());
-		client.setAdresseLivraison(clientDto.getAdresseLivraison());
-		client.setIncoterm(clientDto.getIncoterm());
-		client.setMiseEnVeille(clientDto.getMiseEnVeille());
-		client.setEcheance(clientDto.getEcheance());
-		client.setModePaiement(clientDto.getModePaiement());
-		client.setNomBanque(clientDto.getNomBanque());
-		client.setAdresseBanque(clientDto.getAdresseBanque());
-		client.setRib(clientDto.getRib());
-		client.setSwift(clientDto.getSwift());
-		client.setBrancheActivite(clientDto.getBrancheActivite());
-		client.setSecteurActivite(clientDto.getSecteurActivite());
-		client.setPhone(clientDto.getPhone());
-		client.setTelecopie(clientDto.getTelecopie());
-		client.setRefClientIris(clientDto.getRefClientIris());
-
-		return client;
-	
-		}
 
 
 	@Override
@@ -174,8 +121,7 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 		client.setMiseEnVeille(clientDto.getMiseEnVeille());
 		client.setDate(client.getDate());
 		client.setDateMiseEnVeille(client.getDateMiseEnVeille());
-		client.setAdresseFacturation(clientDto.getAdresseFacturation());
-		client.setAdresseLivraison(clientDto.getAdresseLivraison());
+		client.setAdresse(clientDto.getAdresse());
 		client.setIncoterm(clientDto.getIncoterm());
 		client.setEcheance(clientDto.getEcheance());
 		client.setModePaiement(clientDto.getModePaiement());
@@ -258,7 +204,7 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 			Pageable paging = PageRequest.of(page, size);
 			Page<Client> pageTuts;
 			pageTuts =  clientRepository.findClientActif(paging);
-			clients = pageTuts.getContent().stream().map(client -> buildClientDtoFromClient(client)).collect(Collectors.toList());
+			clients = pageTuts.getContent().stream().map(client -> ClientMapper.MAPPER.toClientDto(client)).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("clients", clients);
 			response.put("currentPage", pageTuts.getNumber());
@@ -278,7 +224,7 @@ clientRepository.save(buildClientFromClientDto(clientDto));
 			Pageable paging = PageRequest.of(page, size);
 			Page<Client> pageTuts;
 			pageTuts =  clientRepository.findClientNotActif(paging);
-			clients = pageTuts.getContent().stream().map(client -> buildClientDtoFromClient(client)).collect(Collectors.toList());
+			clients = pageTuts.getContent().stream().map(client -> ClientMapper.MAPPER.toClientDto(client)).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("clients", clients);
 			response.put("currentPage", pageTuts.getNumber());
