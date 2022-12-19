@@ -51,7 +51,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(personnelDto.getEmail());
 		if (!personnelDto.getEmail().equals("") && !matcher.matches()) throw new IllegalArgumentException("Email incorrecte !!");
-		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())|| personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())) {
+		if (personnelRepository.existsPersonnelByCinAndMatricule(personnelDto.getCin(),personnelDto.getMatricule())|| personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())) {
 			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() + " ou matricule " + personnelDto.getMatricule() + "  existe deja !!");
 		}
 		final Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);

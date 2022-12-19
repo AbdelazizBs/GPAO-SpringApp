@@ -15,7 +15,7 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     boolean existsPersonnelByMatricule(String matricule);
     Optional<Personnel> findPersonnelByCin(String cin);
     Optional<Personnel> findPersonnelByMatricule(String matricule);
-    boolean existsPersonnelByCin(String cin);
+    boolean existsPersonnelByCinAndMatricule(String cin,String matricule);
     int countByCin(String cin);
     int countByMatricule(String matricule);
     Page<Personnel> findPersonnelByMiseEnVeille(boolean b, Pageable pageable);

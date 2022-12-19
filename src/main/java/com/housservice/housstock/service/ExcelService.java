@@ -36,12 +36,25 @@ public class ExcelService {
     public void savePersonnel(MultipartFile file) throws IOException, ResourceNotFoundException {
         List<Personnel> personnels = ExcelHelper.excelToPersonnels(file.getInputStream());
         for (Personnel personnel : personnels) {
-            boolean exist = personnelRepository.existsPersonnelByCin(personnel.getCin());
+            boolean exist = personnelRepository.existsPersonnelByCinAndMatricule(personnel.getCin(),personnel.getMatricule());
             if (exist) {
-                Personnel personnel1 = personnelRepository.findPersonnelByCin(personnel.getCin())
+                personnelRepository.delete(personnelRepository.findPersonnelByCin(personnel.getCin())
                         .orElseThrow(() -> new ResourceNotFoundException(
-                                MessageFormat.format(messageHttpErrorProperties.getError0002(), personnel.getCin())));
-                personnelRepository.delete(personnel1);
+                                MessageFormat.format(messageHttpErrorProperties.getError0002(), personnel.getCin()))));
+                personnelRepository.save(personnel);
+            }
+            personnelRepository.save(personnel);
+        }
+    }
+
+    public void savePersonnelFromSage(MultipartFile file) throws IOException, ResourceNotFoundException {
+        List<Personnel> personnels = ExcelHelper.excelFormatSageToPersonnel(file.getInputStream());
+        for (Personnel personnel : personnels) {
+            boolean exist = personnelRepository.existsPersonnelByCinAndMatricule(personnel.getCin(),personnel.getMatricule());
+            if (exist) {
+                personnelRepository.delete(personnelRepository.findPersonnelByCin(personnel.getCin())
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                MessageFormat.format(messageHttpErrorProperties.getError0002(), personnel.getCin()))));
                 personnelRepository.save(personnel);
             }
             personnelRepository.save(personnel);
@@ -100,6 +113,7 @@ public class ExcelService {
         File file = new File(classLoader.getResource("PersonnelFormatStandardExp.xlsx").getFile());
         return Files.readAllBytes(file.toPath());
     }
+
 
 
 }

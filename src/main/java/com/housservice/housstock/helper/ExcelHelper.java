@@ -31,6 +31,9 @@ public class ExcelHelper {
 
 
 
+	 // read excel file and return a list of personnel
+	// verify if the table is clean and the cells are string and the format date .
+
 
 	public static List<Personnel> excelToPersonnels(InputStream is) throws IOException
 	{
@@ -79,15 +82,16 @@ public class ExcelHelper {
 					case 0:
 
 						personnel.setMatricule(currentCell.getStringCellValue());
-
 						break;
 
 					case 1:
 						personnel.setCin(currentCell.getStringCellValue());
+
 						break;
 
 					case 2:
 						personnel.setNom(currentCell.getStringCellValue());
+
 						break;
 
 					case 3:
@@ -103,10 +107,12 @@ public class ExcelHelper {
 
 					case 6:
 						personnel.setSexe(currentCell.getStringCellValue());
+
 						break;
 
 					case 7:
 						personnel.setPhone(currentCell.getStringCellValue());
+
 						break;
 					case 8:
 						personnel.setDateEmbauche(currentCell.getDateCellValue());
@@ -309,6 +315,77 @@ public class ExcelHelper {
 
 		workbook.close();
 		return clients;
+
+	}
+
+	public static List<Personnel> excelFormatSageToPersonnel(InputStream is) throws IOException
+	{
+
+		Workbook workbook = new XSSFWorkbook(is);
+
+		Sheet sheet = workbook.getSheetAt(0);
+
+		List<Personnel> personnels = new ArrayList<>();
+
+//		int i = sheet.getFirstRowNum()
+
+		for ( int i = 12 ; i <= sheet.getLastRowNum(); i++)
+		{
+
+			Row currentRow = sheet.getRow(i);
+
+
+			Iterator<Cell> cellsInRow = currentRow.iterator();
+
+			Personnel personnel = new Personnel();
+
+			int cellIdx = 0;
+
+			while (cellsInRow.hasNext())
+			{
+
+				Cell currentCell =  cellsInRow.next();
+
+				switch (cellIdx)
+				{
+
+					case 0:
+						personnel.setMatricule(currentCell.getRow().getCell(0).getStringCellValue());
+						break;
+
+
+					case 1:
+						personnel.setNom(currentCell.getRow().getCell(3).getStringCellValue());
+						break;
+
+					case 2:
+						personnel.setPrenom(currentCell.getRow().getCell(7).getStringCellValue());
+						break;
+
+					case 3:
+						personnel.setPhone(currentCell.getRow().getCell(12).getStringCellValue());
+						break;
+
+					case 4:
+						personnel.setPoste(currentCell.getRow().getCell(15).getStringCellValue());
+						break;
+
+
+
+					default:
+						break;
+
+				}
+
+				cellIdx++;
+			}
+
+			personnels.add(personnel);
+
+		}
+
+		workbook.close();
+		return personnels;
 
 	}
 

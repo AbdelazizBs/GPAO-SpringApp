@@ -48,6 +48,27 @@ public class ExcelController {
 
 	}
 
+	@PostMapping("/uploadPersonnelFileSage")
+	public ResponseEntity<ResponseMessage> uploadPersonnelFileSage(@RequestParam("file") MultipartFile file) throws IOException, ResourceNotFoundException {
+		String message = "";
+
+
+		if (ExcelHelper.hasExcelFormat(file))
+		{
+
+			fileService.savePersonnelFromSage(file);
+			message = "Uploaded the file successfully: " + file.getOriginalFilename();
+
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+		}
+
+		message = "Please upload an excel file!";
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+
+	}
+
 	@PostMapping("/uploadClientFile")
 	public ResponseEntity<ResponseMessage> uploadClientFile(@RequestParam("file") MultipartFile file) throws IOException
 	{
@@ -95,6 +116,7 @@ public class ExcelController {
 				.header("Content-Disposition", "attachment; filename=PersonnelFormatStandardExp.xlsx")
 				.body(data);
 	}
+
 
 
 }
