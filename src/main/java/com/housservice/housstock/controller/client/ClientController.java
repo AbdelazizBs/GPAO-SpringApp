@@ -1,29 +1,25 @@
 package com.housservice.housstock.controller.client;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
+import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.dto.ClientDto;
+import com.housservice.housstock.service.ClientService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.dto.ClientDto;
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.service.ClientService;
-
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @CrossOrigin
@@ -72,7 +68,6 @@ public class ClientController {
 
 	}
 
-	 
 
 	  @GetMapping("/client/{id}")
 	  @ApiOperation(value = "service to get one Client by Id.")
@@ -137,6 +132,7 @@ public class ClientController {
 	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
+
 
 	  @PutMapping("/addContactClient/{idClient}")
 	  public ResponseEntity <String> addContactClient(

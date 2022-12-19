@@ -1,30 +1,24 @@
 package com.housservice.housstock.controller.article;
 
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
+import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.EtapeProduction;
+import com.housservice.housstock.model.dto.ArticleDto;
+import com.housservice.housstock.service.ArticleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-
-import com.housservice.housstock.model.Article;
-
-import com.housservice.housstock.model.EtapeProduction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.dto.ArticleDto;
-import com.housservice.housstock.service.ArticleService;
-
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController

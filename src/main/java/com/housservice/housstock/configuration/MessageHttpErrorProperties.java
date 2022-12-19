@@ -43,4 +43,9 @@ public class MessageHttpErrorProperties {
 	 * http.error.0006=la taille de mot de recherche doit etre supèrieur ou egale à 3.
 	 */
 	private String error0006;
+
+	/**
+	 * http.error.0006=Nomenclature avec l'cin ou l'matricule existe.
+	 */
+	private String error0007;
 }

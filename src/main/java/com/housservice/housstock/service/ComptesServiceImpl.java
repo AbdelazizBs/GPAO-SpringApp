@@ -9,11 +9,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import com.housservice.housstock.mapper.CompteMapper;
-import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.Roles;
-import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.repository.RolesRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,7 +166,14 @@ public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Comptes comptes = comptesRepository.findByEmail(email);
-		Personnel personnel = personnelRepository.findByCompte(comptes);
+		Personnel personnel = null;
+		try {
+			personnel = personnelRepository.findByCompte(comptes)
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),comptes)));
+		} catch (ResourceNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+
 		if (personnel == null){
 			throw new UsernameNotFoundException("User not found in database");
 		}else {

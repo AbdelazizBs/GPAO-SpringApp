@@ -1,93 +1,101 @@
 package com.housservice.housstock.model.dto;
-import java.util.Date;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import com.housservice.housstock.model.Comptes;
-import org.springframework.data.annotation.Id;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.housservice.housstock.model.Comptes;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
+
+import javax.validation.constraints.*;
+import java.util.Date;
 
 @Getter
 @Setter
 public class PersonnelDto {
 
-	@Id
 	private String id;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
+	@NotEmpty(message = "personnel name should not empty")
+	@Size(min = 2, message = "personnel name should have at least 2 characters")
 	private String nom;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+	@Size(min = 2, message = "personnel name should have at least 2 characters")
+	@NotEmpty(message = "personnel prenom should not empty")
 	private String prenom;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private Date dateDeNaissance;
 
-
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+	@Size(min = 2, message = "personnel adresse should have at least 2 characters")
+	@NotEmpty(message = "personnel adresse should not empty")
 	private String adresse;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String photo;
 
+	private String ville;
 
+
+	private String codePostal;
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private String cin;
 
+	@Email(message = "email is not valid")
+	private String email;
 
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String sexe;
 
 
 
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String rib;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String poste;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	private Date dateDeEmbauche;
+	@NotNull(message = "personnel date embauche should not empty")
+//	@JsonFormat(pattern="dd/MM/yyyy")
+	private Date dateEmbauche;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private int echelon;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+	@NotNull(message = "personnel date Naissance should not empty")
+//	@JsonFormat(pattern="dd/MM/yyyy")
+	private Date dateNaissance;
+
+
+
+	private String echelon;
+
+
+	private String numCnss;
+
+
+	private String situationFamiliale;
+
+
+	private String nbrEnfant;
+
+
+
+	private String typeContrat;
+
+
+
+
+	private String matricule;
+
+
+
+	private String phone;
+
 	private String categorie;
 
-	private Comptes compte;
+	private Comptes compte= new Comptes();
+
 
 	private boolean miseEnVeille ;
 

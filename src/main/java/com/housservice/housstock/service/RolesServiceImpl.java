@@ -1,21 +1,19 @@
 package com.housservice.housstock.service;
 
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Roles;
 import com.housservice.housstock.model.dto.RolesDto;
-import com.housservice.housstock.repository.RolesRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
+import com.housservice.housstock.repository.RolesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.validation.Valid;
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RolesServiceImpl implements RolesService {
@@ -63,9 +61,7 @@ public class RolesServiceImpl implements RolesService {
 		roles.setId(""+sequenceGeneratorService.generateSequence(Roles.SEQUENCE_NAME));	
 		roles.setId(rolesDto.getId());		
 		roles.setNom(rolesDto.getNom());
-//
-//		Utilisateur ut = utilisateurRepository.findById(rolesDto.getIdUtilisateur()).get();
-//		roles.setUtilisateur(ut);
+
 		
 		return roles;
 	}

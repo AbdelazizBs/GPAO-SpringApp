@@ -1,16 +1,11 @@
 package com.housservice.housstock.model;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 import lombok.AllArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
@@ -31,14 +26,9 @@ public class Comptes {
     @Id
     private String id;
 
-    @NotBlank
-    @Size(max = 100)
-    @Indexed(unique = true)
+
     private String email;
-    
-    @NotBlank
-    @Size(max = 100)
-    @Indexed(unique = true)
+
     private String password;
 
 
