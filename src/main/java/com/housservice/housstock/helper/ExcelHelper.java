@@ -18,7 +18,7 @@ public class ExcelHelper {
 
 	public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-	public static boolean hasExcelFormat(MultipartFile file) {
+	public static boolean 	hasExcelFormat(MultipartFile file) {
 
 		if (!TYPE.equals(file.getContentType())) {
 			return false;
@@ -188,51 +188,33 @@ public class ExcelHelper {
 				{
 
 					case 0:
-						client.setRaisonSocial(currentCell.getStringCellValue());
+						client.setRefClientIris(currentCell.getStringCellValue());
 						break;
 
 					case 1:
-						client.setRegime(currentCell.getStringCellValue());
+						client.setRaisonSocial(currentCell.getStringCellValue());
 						break;
 
 					case 2:
-						client.setSecteurActivite(currentCell.getStringCellValue());
+						client.setAdresse(currentCell.getStringCellValue());
 						break;
 
 					case 3:
-						client.setBrancheActivite(currentCell.getStringCellValue());
+						client.setCodePostal(currentCell.getStringCellValue());
 						break;
-					case 4:
-//						client.setAdresseFacturation(currentCell.getStringCellValue());
-						break;
-
 					case 5:
-//						client.setAdresseLivraison(currentCell.getStringCellValue());
-						break;
-
-					case 6:
-						client.setIncoterm(new DataFormatter().formatCellValue(currentCell.getRow().getCell(6)));
+						client.setVille(currentCell.getStringCellValue());
 						break;
 
 					case 7:
-						client.setEcheance(new DataFormatter().formatCellValue(currentCell.getRow().getCell(7)));
+//						client.setEcheance(new DataFormatter().formatCellValue(currentCell.getRow().getCell(7)));
+						client.setPays(currentCell.getStringCellValue());
 						break;
 					case 8:
-						client.setModePaiement(currentCell.getStringCellValue());
+						client.setPhone(currentCell.getStringCellValue());
 						break;
 					case 9:
-						client.setNomBanque(currentCell.getStringCellValue());
-						break;
-
-					case 10:
-						client.setAdresseBanque(currentCell.getStringCellValue());
-						break;
-
-					case 11:
-						client.setRib(new DataFormatter().formatCellValue(currentCell.getRow().getCell(11)));
-						break;
-					case 12:
-						client.setSwift(new DataFormatter().formatCellValue(currentCell.getRow().getCell(12)));
+						client.setEmail(currentCell.getStringCellValue());
 						break;
 
 					default:

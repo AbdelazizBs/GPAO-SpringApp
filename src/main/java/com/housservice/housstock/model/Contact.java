@@ -35,10 +35,6 @@ public class Contact {
     @Size(max = 100)
     private String fonction;
 
-    @NotBlank
-    @Indexed(unique = true)
-    @Size(max = 100)
-        private String address;
 
     @NotBlank
     @Indexed(unique = true)

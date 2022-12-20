@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class PersonnelServiceImpl implements PersonnelService {
 
-	private PersonnelRepository personnelRepository;
+	private final PersonnelRepository personnelRepository;
 
 	final
 	ComptesRepository comptesRepository;
@@ -63,10 +63,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 	public void  updatePersonnel(PersonnelDto personnelDto,String idPersonnel) throws ResourceNotFoundException {
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
-//		if ( (personnel.getCin()!=personnelDto.getCin()&& personnelRepository.existsPersonnelByCin(personnelDto.getCin()))||
-//				(personnel.getMatricule()!=personnelDto.getMatricule() && personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule()))) {
-//			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() + " ou matricule " + personnelDto.getMatricule() + "  existe deja !!");
-//		}
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
 		personnel.setDateNaissance(personnelDto.getDateNaissance());
@@ -174,7 +170,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 	}
 
 	@Override
-	public ResponseEntity<Map<String, Object>> find(String textToFind, int page, int size,boolean enVeille) {
+	public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size,boolean enVeille) {
 
 		try {
 

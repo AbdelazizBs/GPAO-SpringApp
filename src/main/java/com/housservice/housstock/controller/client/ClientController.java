@@ -1,30 +1,26 @@
 package com.housservice.housstock.controller.client;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
+import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
-import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.dto.ClientDto;
+import com.housservice.housstock.model.dto.ContactDto;
+import com.housservice.housstock.service.ClientService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-import com.housservice.housstock.exception.ResourceNotFoundException;
-
-import com.housservice.housstock.model.Client;
-
-import com.housservice.housstock.model.dto.ClientDto;
-import com.housservice.housstock.service.ClientService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @CrossOrigin
@@ -94,7 +90,7 @@ public class ClientController {
 		@RequestParam boolean enVeille,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "3") int size) {
-			return clientService.find(textToFind, page, size,enVeille);
+			return clientService.search(textToFind, page, size,enVeille);
 
 		}
 
@@ -120,52 +116,10 @@ public class ClientController {
 
 
 	  
-		@PutMapping("/createNewClient")
+		@PutMapping("/addClient")
 		@Validated
-		  public ResponseEntity<String> createNewClient(@Valid final String refClientIris ,
-														  final String raisonSocial ,
-														  final String regime ,
-														  final String secteurActivite,
-														  final String brancheActivite ,
-														  final String adresseFacturation,
-														  final String adresseLivraison,
-														  final String incoterm,
-														  final String telecopie,
-														  final String phone,
-														  final String echeance,
-														  final String modePaiement,
-														  final String nomBanque,
-														  final String adresseBanque,
-														  final String rib,
-														  final String swift,
-														  final String email
-														  ) throws ResourceNotFoundException {
-
-			  if(refClientIris.equals("undefined") || raisonSocial.equals("undefined") || regime.equals("undefined") || secteurActivite.equals("undefined") || brancheActivite.equals("undefined") ||
-					  adresseFacturation.equals("undefined") || adresseLivraison.equals("undefined")|| incoterm.equals("undefined") || telecopie.equals("undefined") || phone.equals("undefined") || echeance.equals("undefined")
-					  || modePaiement.equals("undefined")|| nomBanque.equals("undefined") || adresseBanque.equals("undefined") || rib.equals("undefined") || swift.equals("undefined")|| email.equals("undefined"))
-			  {
-				  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
-			  }
-
-	    	  clientService.createNewClient(refClientIris,
-	    			      raisonSocial,
-	    	              telecopie,
-	    	              phone,
-	    	              regime,
-	    	              secteurActivite,
-	    	              brancheActivite,
-	    	              adresseFacturation,
-	    	              adresseLivraison,
-	    	              incoterm,
-	    	              echeance,
-	    	              modePaiement,
-	    	              nomBanque,
-	    	              adresseBanque,
-	    	              rib,
-	    	              swift,
-	    	              email	
-					  );
+		  public ResponseEntity<String> createNewClient(@Valid @RequestBody ClientDto clientDto) throws ResourceNotFoundException {
+	    	  clientService.createNewClient(clientDto);
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }
 	  
@@ -174,8 +128,8 @@ public class ClientController {
 	  public ResponseEntity <String> updateClient(
 			  @ApiParam(name = "idClient", value="id of client", required = true)
 			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
-	       @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
-		  
+	      @Valid @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
+
 		  clientService.updateClient(idClient,clientDto);
 	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
@@ -196,10 +150,8 @@ public class ClientController {
 	  public ResponseEntity <String> addContactClient(
 			  @ApiParam(name = "idClient", value="id of client", required = true)
 			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
-	      @Valid @RequestBody(required = true) Contact contact) throws ResourceNotFoundException {
-
-		  clientService.addContactClient(contact,idClient);
-
+	      @Valid @RequestBody(required = true) ContactDto contactDto) throws ResourceNotFoundException {
+		  clientService.addContactClient(contactDto,idClient);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
 	  }
@@ -208,8 +160,8 @@ public class ClientController {
 	  public ResponseEntity <String> updateContactClient(
 			  @ApiParam(name = "idContact", value="id of contact", required = true)
 			  @PathVariable(value = "idContact", required = true) @NotEmpty(message = "{http.error.0001}")  String idContact,
-	      @Valid @RequestBody(required = true) Contact contact ) throws ResourceNotFoundException {
-		  clientService.updateContactClient(contact,idContact);
+	      @Valid @RequestBody(required = true) ContactDto ContactDto ) throws ResourceNotFoundException {
+		  clientService.updateContactClient(ContactDto,idContact);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 	 

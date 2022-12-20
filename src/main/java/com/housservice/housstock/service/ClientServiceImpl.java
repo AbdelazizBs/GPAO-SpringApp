@@ -3,10 +3,12 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.ClientMapper;
+import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.dto.ClientDto;
+import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.ContactRepository;
@@ -30,11 +32,11 @@ import java.util.zip.Inflater;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-	private ClientRepository clientRepository;
+	private final ClientRepository clientRepository;
 	
 	private final ArticleRepository articleRepository ;
 
-	private SequenceGeneratorService sequenceGeneratorService;
+	private final SequenceGeneratorService sequenceGeneratorService;
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	final  ContactRepository contactRepository ;
@@ -100,23 +102,57 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void createNewClient(@Valid ClientDto clientDto) {
-clientDto.setDate(new Date());
-clientDto.setMiseEnVeille(0);
-List<Contact> contacts = new ArrayList<>();
-if (clientDto.getContact()==null){
+		if (clientRepository.existsClientByRefClientIris(clientDto.getRefClientIris())) {
+			throw new IllegalArgumentException(	" Matricule " + clientDto.getRefClientIris() + "  existe deja !!");
+		}
+	clientDto.setDate(new Date());
+	clientDto.setMiseEnVeille(0);
+	List<Contact> contacts = new ArrayList<>();
+		if (clientDto.getContact()==null){
 	clientDto.setContact(contacts);
 }
 clientRepository.save(ClientMapper.MAPPER.toClient(clientDto));
 	}
-	
-	
-
 
 	@Override
-	public void updateClient(@Valid ClientDto clientDto ) throws ResourceNotFoundException {
-		Client client = getClientById(clientDto.getId())
+	public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
+
+		try {
+
+			List<ClientDto> clients;
+			Pageable paging = PageRequest.of(page, size);
+			Page<Client> pageTuts;
+			pageTuts = clientRepository.findClientByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
+			clients = pageTuts.getContent().stream().map(client -> {
+				return ClientMapper.MAPPER.toClientDto(client);
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("clients", clients);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	@Override
+	public void miseEnVeille(String idClient) throws ResourceNotFoundException {
+		Client client = clientRepository.findById(idClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
+		client.setMiseEnVeille(1);
+		clientRepository.save(client);
+	}
+
+	@Override
+	public void updateClient(String idClient , ClientDto clientDto ) throws ResourceNotFoundException {
+		if (clientRepository.existsClientByRefClientIris(clientDto.getRefClientIris())) {
+			throw new IllegalArgumentException(	" Matricule " + clientDto.getRefClientIris() + "  existe deja !!");
+		}
+		Client client = getClientById(idClient)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  clientDto.getId())));
-		client.setRaisonSocial(clientDto.getRaisonSocial());		
+		client.setRaisonSocial(clientDto.getRaisonSocial());
 		client.setRegime(clientDto.getRegime());
 		client.setMiseEnVeille(clientDto.getMiseEnVeille());
 		client.setDate(client.getDate());
@@ -134,30 +170,33 @@ clientRepository.save(ClientMapper.MAPPER.toClient(clientDto));
 		client.setRefClientIris(clientDto.getRefClientIris());
 		client.setTelecopie(clientDto.getTelecopie());
 		client.setPhone(clientDto.getPhone());
+		client.setStatut(clientDto.getStatut());
+		client.setCif(clientDto.getCif());
+		client.setCodePostal(clientDto.getCodePostal());
+		client.setVille(clientDto.getVille());
+		client.setPays(clientDto.getPays());
+		client.setRne(clientDto.getRne());
+		client.setCodeDouane(clientDto.getCodeDouane());
+		client.setRegion(clientDto.getRegion());
 		clientRepository.save(client);
 		
 	}
 
+
 	@Override
-	public void addContactClient(@Valid Contact contact ,String idClient ) throws ResourceNotFoundException {
+	public void addContactClient(@Valid ContactDto contactDto , String idClient ) throws ResourceNotFoundException {
 		Client client = getClientById(idClient)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idClient)));
-		Contact contact1 = new Contact();
 		List<Contact> contacts = new ArrayList<>();
+		Contact contact1 = ContactMapper.MAPPER.toContact(contactDto);
 		if(client.getContact()==null){
-			contact1.setNom(contact.getNom());
-			contact1.setEmail(contact.getEmail());
-			contact1.setMobile(contact.getMobile());
-			contact1.setAddress(contact.getAddress());
-			contact1.setFonction(contact.getFonction());
-			contact1.setPhone(contact.getPhone());
 			contacts.add(contact1);
-			contactRepository.save(contact);
+			contactRepository.save(contact1);
 			client.setContact(contacts);
 			clientRepository.save(client);
 		}
-		contactRepository.save(contact);
-		contacts.add(contact);
+		contactRepository.save(contact1);
+		contacts.add(contact1);
 		contacts.addAll(client.getContact());
 		client.setContact(contacts);
 		clientRepository.save(client);
@@ -165,18 +204,27 @@ clientRepository.save(ClientMapper.MAPPER.toClient(clientDto));
 	}
 
 	@Override
-	public void updateContactClient(@Valid Contact contact,String idContact) throws ResourceNotFoundException {
+	public void updateContactClient(ContactDto contactDto,String idContact) throws ResourceNotFoundException {
+		// update contact by id contact and update it in client contact list
+//		Contact contact = contactRepository.findById(idContact)
+//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idContact)));
+//		contact.setNom(contactDto.getNom());
+//		contact.setEmail(contactDto.getEmail());
+//		contact.setMobile(contactDto.getMobile());
+//		contact.setFonction(contactDto.getFonction());
+//		contact.setPhone(contactDto.getPhone());
+//		contactRepository.save(contact);
+
 		Client client =clientRepository.findClientByContactId(idContact)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  contact)));
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  contactDto)));
 		Contact contactToUpdate = contactRepository.findById(idContact)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  contact.getId())));
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  contactDto.getId())));
 		client.getContact().removeIf(contact1 -> contact1.equals(contactToUpdate));
-		contactToUpdate.setNom(contact.getNom());
-		contactToUpdate.setEmail(contact.getEmail());
-		contactToUpdate.setMobile(contact.getMobile());
-		contactToUpdate.setAddress(contact.getAddress());
-		contactToUpdate.setFonction(contact.getFonction());
-		contactToUpdate.setPhone(contact.getPhone());
+		contactToUpdate.setNom(contactDto.getNom());
+		contactToUpdate.setEmail(contactDto.getEmail());
+		contactToUpdate.setMobile(contactDto.getMobile());
+		contactToUpdate.setFonction(contactDto.getFonction());
+		contactToUpdate.setPhone(contactDto.getPhone());
 		contactRepository.save(contactToUpdate);
 		client.getContact().add(contactToUpdate);
 		clientRepository.save(client);
@@ -217,6 +265,9 @@ clientRepository.save(ClientMapper.MAPPER.toClient(clientDto));
 		}
 	}
 
+
+
+
 	@Override
 	public ResponseEntity<Map<String, Object>> findClientNonActive(int page, int size) {
 		try {
@@ -236,8 +287,6 @@ clientRepository.save(ClientMapper.MAPPER.toClient(clientDto));
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-
 
 
 

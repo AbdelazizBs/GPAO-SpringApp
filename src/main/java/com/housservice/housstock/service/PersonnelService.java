@@ -29,7 +29,7 @@ public interface PersonnelService {
 
     void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;
 
-    public ResponseEntity<Map<String, Object>> find(String textToFind,int page, int size,boolean enVeille);
+    public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
     void deletePersonnel(String personnelId);
     void deletePersonnelSelected(List<String> idPersonnelsSelected);

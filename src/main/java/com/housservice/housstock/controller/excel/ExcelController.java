@@ -70,8 +70,7 @@ public class ExcelController {
 	}
 
 	@PostMapping("/uploadClientFile")
-	public ResponseEntity<ResponseMessage> uploadClientFile(@RequestParam("file") MultipartFile file) throws IOException
-	{
+	public ResponseEntity<ResponseMessage> uploadClientFile(@RequestParam("file") MultipartFile file) throws IOException, ResourceNotFoundException {
 		String message = "";
 
 		if (ExcelHelper.hasExcelFormat(file))
@@ -109,11 +108,18 @@ public class ExcelController {
 
 	// get xlsx static file from resources folder
 
-	@GetMapping("/downloadPersonnelExpFile")
-	public ResponseEntity<byte[]> downloadPersonnelFile() throws IOException {
+	@GetMapping("/downloadPersonnelStandardFile")
+	public ResponseEntity<byte[]> downloadPersonnelStandardFile() throws IOException {
 		byte[] data = fileService.getPersonnelFileFromResourceAsStream();
 		return ResponseEntity.ok()
 				.header("Content-Disposition", "attachment; filename=PersonnelFormatStandardExp.xlsx")
+				.body(data);
+	}
+	@GetMapping("/downloadClientStandardFile")
+	public ResponseEntity<byte[]> downloadClientStandardFile() throws IOException {
+		byte[] data = fileService.getClientFileFromResourceAsStream();
+		return ResponseEntity.ok()
+				.header("Content-Disposition", "attachment; filename=ClientFormatStandardExp.xlsx")
 				.body(data);
 	}
 

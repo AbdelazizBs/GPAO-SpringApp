@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 /**
@@ -18,27 +20,30 @@ public class ContactDto {
 
     @Id
     private String id;
-    @Size(max = 100)
+    @Size(min = 2, message = "client raisonSocial(intitule) should have at least 2 characters")
+    @NotEmpty(message = "client raisonSocial(intitule)  should not empty")
     private String nom;
 
 
-    @Size(max = 100)
+    @Size(min = 2, message = "client raisonSocial(intitule) should have at least 2 characters")
+    @NotEmpty(message = "client raisonSocial(intitule)  should not empty")
     private String fonction;
 
 
-    @Size(max = 100)
-    private String address;
 
 
-    @Size(max = 100)
+    @Size(min = 2, message = "client raisonSocial(intitule) should have at least 2 characters")
+    @NotEmpty(message = "client raisonSocial(intitule)  should not empty")
     private String phone;
 
 
-    @Size(max = 100)
+    @Email(message = "email is not valid")
+    @NotEmpty
     private String email;
 
 
-    @Size(max = 100)
+    @Size(min = 2, message = "client raisonSocial(intitule) should have at least 2 characters")
+    @NotEmpty(message = "client raisonSocial(intitule)  should not empty")
     private String mobile;
 
 

@@ -62,26 +62,18 @@ public class ExcelService {
     }
 
 
-    public void saveClient(MultipartFile file) throws IOException
-    {
-
+    public void saveClient(MultipartFile file) throws IOException, ResourceNotFoundException {
         List<Client> clients = ExcelHelper.excelToClients(file.getInputStream());
-        if (clientRepository.count()>0){
-        clients.stream().map(client -> {
-            try {
-                Client client1 = clientRepository.findClientByRaisonSocial(client.getRaisonSocial()).orElseThrow(() -> new ResourceNotFoundException(
-                        MessageFormat.format(messageHttpErrorProperties.getError0002(), client.getRaisonSocial())));
-                if(client1.equals(client)){
-                    clientRepository.delete(client1);
-                }
-            } catch (ResourceNotFoundException e) {
-                throw new RuntimeException(e);
+        for (Client client : clients) {
+            boolean exist = clientRepository.existsClientByRefClientIris(client.getRefClientIris());
+            if (exist) {
+                clientRepository.delete(clientRepository.findClientByRefClientIris(client.getRefClientIris())
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                MessageFormat.format(messageHttpErrorProperties.getError0002(),client.getRefClientIris()))));
+                clientRepository.save(client);
             }
-            return clientRepository.saveAll(clients);
-        });
+            clientRepository.save(client);
         }
-        else
-            clientRepository.saveAll(clients);
 
 
     }
@@ -112,6 +104,11 @@ public class ExcelService {
     public byte[] getPersonnelFileFromResourceAsStream() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("PersonnelFormatStandardExp.xlsx").getFile());
+        return Files.readAllBytes(file.toPath());
+    }
+    public byte[] getClientFileFromResourceAsStream() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("ClientFormatStandardExp.xlsx").getFile());
         return Files.readAllBytes(file.toPath());
     }
 

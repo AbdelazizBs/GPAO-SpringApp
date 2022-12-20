@@ -1,15 +1,14 @@
 package com.housservice.housstock.service;
 
-import java.util.List;
-
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.dto.ClientDto;
+import com.housservice.housstock.model.dto.ContactDto;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,32 +27,14 @@ public interface ClientService {
 
 
 	
-	 public void createNewClient(String refClientIris,
-             String raisonSocial,
-             String telecopie,
-             String phone,
-             String regime,
-             String secteurActivite,
-             String brancheActivite,
-             String adresseFacturation,
-             String adresseLivraison,
-             String incoterm,
-             String echeance,
-             String modePaiement,
-             String nomBanque,
-             String adresseBanque,
-             String rib,
-             String swift,
-             String email
-      
-             ) throws ResourceNotFoundException;
+	  void createNewClient(ClientDto clientDto) throws ResourceNotFoundException;
 
-	public ResponseEntity<Map<String, Object>> find(String textToFind,int page, int size,boolean enVeille);
+	public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
 	public void updateClient(String idClient ,@Valid ClientDto clientDto) throws ResourceNotFoundException;
 	public void miseEnVeille(String idClient ) throws ResourceNotFoundException;
-	public void addContactClient(@Valid Contact contact,String idClient ) throws ResourceNotFoundException;
-	public void updateContactClient(@Valid Contact contact, String idContact) throws ResourceNotFoundException;
+	public void addContactClient( ContactDto contactDto, String idClient ) throws ResourceNotFoundException;
+	public void updateContactClient( ContactDto contact, String idContact) throws ResourceNotFoundException;
 
 	public void deleteClient(Client client);
 	public void deleteContactClient(String idContact) throws ResourceNotFoundException;

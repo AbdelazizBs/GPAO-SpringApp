@@ -39,7 +39,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Api(tags = { "personnels Management" })
 public class PersonnelController {
 
-	private PersonnelService personnelService;
+	private final PersonnelService personnelService;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 
@@ -150,7 +150,7 @@ public class PersonnelController {
 													  @RequestParam boolean enVeille,
 													  @RequestParam(defaultValue = "0") int page,
 													  @RequestParam(defaultValue = "3") int size) {
-		return personnelService.find(textToFind, page, size,enVeille);
+		return personnelService.search(textToFind, page, size,enVeille);
 
 	}
 
