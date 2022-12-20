@@ -14,5 +14,5 @@ public abstract class FournisseurMapper {
 	  public abstract FournisseurDto toFournisseurDto(Fournisseur fournisseur);
 
 	  public abstract Fournisseur toFournisseur(FournisseurDto  fournisseurDto);
-
+	  	    
 }

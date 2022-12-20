@@ -50,6 +50,11 @@ public class Fournisseur {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
+	private String statut;
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
 	private String interlocuteur;
 	
 	
@@ -103,7 +108,38 @@ public class Fournisseur {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String siteInternet;
+	private String siteWeb;
+	
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String nomBanque;
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String adresseBanque;
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String rib;
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String swift;
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String codeDouane;
+	
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String rne;
 	
 
 	@NotBlank
@@ -131,12 +167,13 @@ public class Fournisseur {
 
 	}
 	
-	public Fournisseur(String refFrsIris, String intitule, String abrege, String interlocuteur, String adresse, String codePostal, String ville, String region,String pays,
-			 String telephone, String telecopie, String linkedin, String email, String siteInternet,String identifiantTva,LocalDate dateAjout, boolean miseEnVeille, Date dateMiseEnVeille) {
+	public Fournisseur(String refFrsIris, String intitule, String abrege, String statut, String interlocuteur, String adresse, String codePostal, String ville, String region,String pays,
+			 String telephone, String telecopie, String linkedin, String email, String siteWeb,String nomBanque,String adresseBanque,String rib,String swift,String codeDouane,String rne,String identifiantTva,LocalDate dateAjout, boolean miseEnVeille, Date dateMiseEnVeille) {
 
 		this.refFrsIris = refFrsIris;
 		this.intitule = intitule;
 		this.abrege = abrege;
+		this.statut = statut;
 		this.interlocuteur = interlocuteur;
 		this.adresse = adresse;
 		this.codePostal = codePostal;
@@ -147,10 +184,18 @@ public class Fournisseur {
 		this.telecopie = telecopie;
 		this.linkedin = linkedin;
 		this.email = email;
-		this.siteInternet = siteInternet;
+		this.siteWeb = siteWeb;	
+		this.nomBanque = nomBanque;
+		this.adresseBanque = adresseBanque;
+		this.rib = rib;
+		this.swift = swift;
+		this.codeDouane = codeDouane;
+		this.rne = rne;		
 		this.identifiantTva = identifiantTva;
 		this.dateAjout = dateAjout;
 		this.miseEnVeille = miseEnVeille;
 		this.dateMiseEnVeille = dateMiseEnVeille;
 	}
+	
+	
 }

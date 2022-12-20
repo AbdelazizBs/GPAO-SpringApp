@@ -16,6 +16,8 @@ public class FournisseurDto {
 	private String intitule;
 
 	private String abrege;
+	
+	private String statut;
 
 	private String interlocuteur;
 	
@@ -37,8 +39,20 @@ public class FournisseurDto {
 	
 	private String email;
 	
-	private String siteInternet;
+	private String siteWeb;
 	
+	private String nomBanque;
+	
+	private String adresseBanque;
+	
+	private String rib;
+	
+	private String swift;
+	
+	private String codeDouane;
+	
+	private String rne;
+
 	private String identifiantTva;
 
 	private boolean miseEnVeille;

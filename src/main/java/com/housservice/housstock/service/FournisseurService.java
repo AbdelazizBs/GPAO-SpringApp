@@ -24,6 +24,8 @@ public interface FournisseurService {
 				 String intitule,
 
 				 String abrege,
+				 
+				 String statut,
 
 				 String interlocuteur,
 				
@@ -46,6 +48,20 @@ public interface FournisseurService {
 				 String email,
 				
 				 String siteInternet,
+				 
+				/*
+				 * String nomBanque,
+				 * 
+				 * String adresseBanque,
+				 * 
+				 * String rib,
+				 * 
+				 * String swift,
+				 * 
+				 * String codeDouane,
+				 * 
+				 * String rne,
+				 */
 				
 				 String identifiantTva
 
@@ -59,6 +75,8 @@ public interface FournisseurService {
 			 String intitule,
 
 			 String abrege,
+			 
+			 String statut,
 
 			 String interlocuteur,
 			
@@ -81,6 +99,19 @@ public interface FournisseurService {
 			 String email,
 			
 			 String siteInternet,
+				/*
+				 * String nomBanque,
+				 * 
+				 * String adresseBanque,
+				 * 
+				 * String rib,
+				 * 
+				 * String swift,
+				 * 
+				 * String codeDouane,
+				 * 
+				 * String rne,
+				 */
 			
 			 String identifiantTva
 

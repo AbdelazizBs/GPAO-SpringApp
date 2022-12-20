@@ -14,9 +14,7 @@ import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.repository.FournisseurRepository;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-import com.housservice.housstock.exception.ResourceNotFoundException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -59,6 +57,7 @@ public class FournisseurServiceImpl implements FournisseurService{
 		fournisseurDto.setRefFrsIris(fournisseur.getRefFrsIris());
 		fournisseurDto.setIntitule(fournisseur.getIntitule());
 		fournisseurDto.setAbrege(fournisseur.getAbrege());
+		fournisseurDto.setStatut(fournisseur.getStatut());
 		fournisseurDto.setInterlocuteur(fournisseur.getInterlocuteur());
 		fournisseurDto.setAdresse(fournisseur.getAdresse());
 		fournisseurDto.setCodePostal(fournisseur.getCodePostal());
@@ -69,7 +68,8 @@ public class FournisseurServiceImpl implements FournisseurService{
 		fournisseurDto.setTelecopie(fournisseur.getTelecopie());
 		fournisseurDto.setLinkedin(fournisseur.getLinkedin());
 		fournisseurDto.setEmail(fournisseur.getEmail());
-		fournisseurDto.setSiteInternet(fournisseur.getSiteInternet());
+		fournisseurDto.setSiteWeb(fournisseur.getSiteWeb());
+		
 		fournisseurDto.setIdentifiantTva(fournisseur.getIdentifiantTva());
 
 		
@@ -87,6 +87,7 @@ public class FournisseurServiceImpl implements FournisseurService{
 		fournisseur.setRefFrsIris(fournisseurDto.getRefFrsIris());
 		fournisseur.setIntitule(fournisseurDto.getIntitule());
 		fournisseur.setAbrege(fournisseurDto.getAbrege());
+		fournisseur.setStatut(fournisseurDto.getStatut());
 		fournisseur.setInterlocuteur(fournisseurDto.getInterlocuteur());
 		fournisseur.setAdresse(fournisseurDto.getAdresse());
 		fournisseur.setCodePostal(fournisseurDto.getCodePostal());
@@ -97,16 +98,16 @@ public class FournisseurServiceImpl implements FournisseurService{
 		fournisseur.setTelecopie(fournisseurDto.getTelecopie());
 		fournisseur.setLinkedin(fournisseurDto.getLinkedin());
 		fournisseur.setEmail(fournisseurDto.getEmail());
-		fournisseur.setSiteInternet(fournisseurDto.getSiteInternet());
+		fournisseur.setSiteWeb(fournisseurDto.getSiteWeb());
 		fournisseur.setIdentifiantTva(fournisseurDto.getIdentifiantTva());
 		
 		return fournisseur;
 	}
 
 	@Override
-	public void createNewFournisseur(String refFrsIris, String intitule, String abrege, String interlocuteur,
+	public void createNewFournisseur(String refFrsIris, String intitule, String abrege ,  String statut, String interlocuteur,
 			String adresse, String codePostal, String ville, String region, String pays, String telephone,
-			String telecopie, String linkedin, String email, String siteInternet, String identifiantTva)
+			String telecopie, String linkedin, String email, String siteWeb, String identifiantTva)
 			throws ResourceNotFoundException {
 		
 		boolean fournisseurExisteWithreference = fournisseurRepository.existsFournisseurByRefFrsIris(refFrsIris);
@@ -119,6 +120,7 @@ public class FournisseurServiceImpl implements FournisseurService{
 		fournisseurDto.setRefFrsIris(refFrsIris);
 		fournisseurDto.setIntitule(intitule);
 		fournisseurDto.setAbrege(abrege);
+		fournisseurDto.setStatut(statut);
 		fournisseurDto.setInterlocuteur(interlocuteur);
 		fournisseurDto.setAdresse(adresse);
 		fournisseurDto.setCodePostal(codePostal);
@@ -129,7 +131,7 @@ public class FournisseurServiceImpl implements FournisseurService{
 		fournisseurDto.setTelecopie(telecopie);
 		fournisseurDto.setLinkedin(linkedin);
 		fournisseurDto.setEmail(email);
-		fournisseurDto.setSiteInternet(siteInternet);
+		fournisseurDto.setSiteWeb(siteWeb);
 		fournisseurDto.setIdentifiantTva(identifiantTva);
 		fournisseurDto.setMiseEnVeille(false);
 
@@ -185,9 +187,9 @@ public class FournisseurServiceImpl implements FournisseurService{
 	}
 
 	@Override
-	public void updateNewFournisseur(String idFournisseur, String refFrsIris, String intitule, String abrege,
+	public void updateNewFournisseur(String idFournisseur, String refFrsIris, String intitule, String abrege,String statut,
 			String interlocuteur, String adresse, String codePostal, String ville, String region, String pays,
-			String telephone, String telecopie, String linkedin, String email, String siteInternet,
+			String telephone, String telecopie, String linkedin, String email, String siteWeb,
 			String identifiantTva) throws ResourceNotFoundException {
 		// TODO Auto-generated method stub
 		
