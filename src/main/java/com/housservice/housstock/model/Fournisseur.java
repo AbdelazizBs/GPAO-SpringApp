@@ -1,8 +1,5 @@
 package com.housservice.housstock.model;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -11,8 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -52,9 +47,7 @@ public class Fournisseur {
 	@Indexed(unique = true)
 	private String statut;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+
 	private String interlocuteur;
 	
 	
@@ -147,20 +140,11 @@ public class Fournisseur {
 	@Indexed(unique = true)
 	private String identifiantTva;
 		
-	
-	@JsonFormat(pattern="dd/MM/yyyy")	
-	private LocalDate dateAjout = LocalDate.now();
-	
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
 	private boolean miseEnVeille;
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private Date dateMiseEnVeille;
 	
 
 	public Fournisseur() {
@@ -168,7 +152,7 @@ public class Fournisseur {
 	}
 	
 	public Fournisseur(String refFrsIris, String intitule, String abrege, String statut, String interlocuteur, String adresse, String codePostal, String ville, String region,String pays,
-			 String telephone, String telecopie, String linkedin, String email, String siteWeb,String nomBanque,String adresseBanque,String rib,String swift,String codeDouane,String rne,String identifiantTva,LocalDate dateAjout, boolean miseEnVeille, Date dateMiseEnVeille) {
+			 String telephone, String telecopie, String linkedin, String email, String siteWeb,String nomBanque,String adresseBanque,String rib,String swift,String codeDouane,String rne,String identifiantTva, boolean miseEnVeille) {
 
 		this.refFrsIris = refFrsIris;
 		this.intitule = intitule;
@@ -192,9 +176,7 @@ public class Fournisseur {
 		this.codeDouane = codeDouane;
 		this.rne = rne;		
 		this.identifiantTva = identifiantTva;
-		this.dateAjout = dateAjout;
 		this.miseEnVeille = miseEnVeille;
-		this.dateMiseEnVeille = dateMiseEnVeille;
 	}
 	
 	

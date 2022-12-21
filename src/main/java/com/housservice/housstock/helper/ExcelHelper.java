@@ -1,6 +1,7 @@
 package com.housservice.housstock.helper;
 
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Personnel;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -27,8 +28,6 @@ public class ExcelHelper {
 		return true;
 
 	}
-
-
 
 
 	 // read excel file and return a list of personnel
@@ -388,6 +387,174 @@ public class ExcelHelper {
 		return personnels;
 
 	}
+	
+	
+	
+	// Gestion fichier excel pour fournisseur
+	
+	public static List<Fournisseur> excelToFournisseurs(InputStream is) throws IOException
+	{
+
+		Workbook workbook = new XSSFWorkbook(is);
+
+		Sheet sheet = workbook.getSheetAt(0);
+
+		List<Fournisseur> fournisseurs = new ArrayList<>();
+
+		int rowNumber = 0;
+
+		for (int i = 0 ; i <= sheet.getLastRowNum(); i++)
+		{
+
+			Row currentRow = sheet.getRow(i);
+
+
+			if (rowNumber == 0)
+			{
+				rowNumber++;
+				continue;
+			}
+
+			Iterator<Cell> cellsInRow = currentRow.iterator();
+
+			Fournisseur fournisseur = new Fournisseur();
+
+			int cellIdx = 0;
+
+			while (cellsInRow.hasNext())
+			{
+
+				Cell currentCell =  cellsInRow.next();
+
+				switch (cellIdx)
+				{
+
+					case 0:
+
+						fournisseur.setRefFrsIris(currentCell.getStringCellValue());
+						break;
+
+					case 1:
+						fournisseur.setIntitule(currentCell.getStringCellValue());
+
+						break;
+
+					case 2:
+						fournisseur.setAbrege(currentCell.getStringCellValue());
+
+						break;
+
+					case 3:
+						fournisseur.setInterlocuteur(currentCell.getStringCellValue());
+						break;
+					case 4:
+						fournisseur.setAdresse(currentCell.getStringCellValue());
+						break;
+
+					case 5:
+						fournisseur.setVille(currentCell.getStringCellValue());
+						break;
+
+					case 6:
+						fournisseur.setPays(currentCell.getStringCellValue());
+
+						break;
+
+					case 7:
+						fournisseur.setTelephone(currentCell.getStringCellValue());
+
+						break;				
+
+					default:
+						break;
+
+				}
+
+				cellIdx++;
+			}
+
+			fournisseurs.add(fournisseur);
+
+		}
+
+		workbook.close();
+		return fournisseurs;
+
+	}
+	
+	
+	public static List<Fournisseur> excelFormatSageToFournisseur(InputStream is) throws IOException
+	{
+
+		Workbook workbook = new XSSFWorkbook(is);
+
+		Sheet sheet = workbook.getSheetAt(0);
+
+		List<Fournisseur> fournisseurs = new ArrayList<>();
+
+//		int i = sheet.getFirstRowNum()
+
+		for ( int i = 12 ; i <= sheet.getLastRowNum(); i++)
+		{
+
+			Row currentRow = sheet.getRow(i);
+
+
+			Iterator<Cell> cellsInRow = currentRow.iterator();
+
+			Fournisseur fournisseur = new Fournisseur();
+
+			int cellIdx = 0;
+
+			while (cellsInRow.hasNext())
+			{
+
+				Cell currentCell =  cellsInRow.next();
+
+				switch (cellIdx)
+				{
+
+					case 0:
+						fournisseur.setRefFrsIris(currentCell.getRow().getCell(0).getStringCellValue());
+						break;
+
+
+					case 1:
+						fournisseur.setIntitule(currentCell.getRow().getCell(3).getStringCellValue());
+						break;
+
+					case 2:
+						fournisseur.setInterlocuteur(currentCell.getRow().getCell(7).getStringCellValue());
+						break;
+
+					case 3:
+						fournisseur.setTelephone(currentCell.getRow().getCell(12).getStringCellValue());
+						break;
+
+					case 4:
+						fournisseur.setTelecopie(currentCell.getRow().getCell(15).getStringCellValue());
+						break;
+
+
+
+					default:
+						break;
+
+				}
+
+				cellIdx++;
+			}
+
+			fournisseurs.add(fournisseur);
+
+		}
+
+		workbook.close();
+		return fournisseurs;
+
+	}
+	
+	
 
 }
 

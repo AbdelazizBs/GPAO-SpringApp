@@ -1,6 +1,6 @@
 package com.housservice.housstock.model.dto;
 
-import java.sql.Date;
+import javax.validation.constraints.Email;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +37,7 @@ public class FournisseurDto {
 	
 	private String linkedin;
 	
+	@Email(message = "email is not valid")
 	private String email;
 	
 	private String siteWeb;
@@ -56,8 +57,6 @@ public class FournisseurDto {
 	private String identifiantTva;
 
 	private boolean miseEnVeille;
-
-	private Date dateMiseEnVeille;
 		
 	
 }

@@ -1,23 +1,25 @@
 package com.housservice.housstock.controller.fournisseur;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 
+import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.service.FournisseurService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 
 @CrossOrigin
@@ -30,84 +32,96 @@ public class FournisseurController {
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 
-	
-	@Autowired
 	public FournisseurController(FournisseurService fournisseurService,
-			MessageHttpErrorProperties messageHttpErrorProperties)
-	{
+			MessageHttpErrorProperties messageHttpErrorProperties) {
 		this.fournisseurService = fournisseurService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	}
 
-	
-	
-	@PutMapping("/createNewFournisseur")
-	@Validated
-	  public ResponseEntity<String> createNewPersonnel(  final String refFrsIris,
+	@PutMapping("/addFournisseur")
+	@ApiOperation(value = "service to add new Fournisseur")
+	public ResponseEntity<String> addFournisseur(@Valid  @RequestBody FournisseurDto fournisseurDto)   {
+		  fournisseurService.addFournisseur(fournisseurDto);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
-													   final String intitule,
+	}
+	@PutMapping("/updateFournisseur/{idFournisseur}")
+	@ApiOperation(value = "service to update  Fournisseur")
+	public ResponseEntity<String> updateFournisseur(@Valid  @RequestBody FournisseurDto fournisseurDto,
+												  @PathVariable(value = "idFournisseur", required = true) String idFournisseur) throws ResourceNotFoundException {
+		  fournisseurService.updateFournisseur(fournisseurDto,idFournisseur);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
-													   final String abrege,
+	}
 
-													   final String interlocuteur,
-														
-													   final String adresse,
-
-													   final String codePostal,
-
-													   final String ville,
-
-													   final String region,
-														
-													   final String pays,
-														
-													   final String telephone,
-														
-													   final String telecopie,
-														
-													   final String linkedin,
-														
-													   final String email,
-														
-													   final String siteInternet,
-														
-													   final String identifiantTva
-													   													   
-													  ) throws ResourceNotFoundException {
-		
-		String regex = "^(.+)@(.+)$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(email);
-
-		  if(refFrsIris.equals("") || intitule.equals("") || telephone.equals("") ||  email.equals(""))
-
-		  {
-			  throw new IllegalArgumentException("Voulez vous remplir le formulaire !");
-		  }
-
-		 if(!email.equals("") && !matcher.matches()){
-			throw new IllegalArgumentException("Email incorrecte !!");
-
+	@GetMapping("/getFournisseurById/{id}")
+	@ApiOperation(value = "service to get one fournisseur by Id.")
+	public ResponseEntity <FournisseurDto> getFournisseurById(
+			@ApiParam(name = "id", value="id of fournisseur", required = true)
+			@PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String fournisseurId)
+			throws ResourceNotFoundException {
+		FournisseurDto fournisseur = fournisseurService.getFournisseurById(fournisseurId);
+		if (fournisseur == null) {
+			ResponseEntity.badRequest();
 		}
-    	  fournisseurService.createNewFournisseur(refFrsIris,
-    			  intitule,
-    			  abrege,
-    			  interlocuteur,
-    			  adresse,
-    			  codePostal,
-    			  ville,
-    			  region,
-    			  pays,
-    			  telephone,
-    			  telecopie,
-    			  linkedin,
-    			  email,
-    			  siteInternet,
-    			  identifiantTva
-				  );
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
-	  }
 
-	
+		return ResponseEntity.ok().body(fournisseur);
+	}
+
+
+	@PutMapping("/mettreEnVeille/{idFournisseur}")
+	public ResponseEntity<String> mettreEnVeille(
+			@ApiParam(name = "idFournisseur", value = "id of fournisseur", required = true) @PathVariable(value = "idfournisseur", required = true) @NotEmpty(message = "{http.error.0001}") String idFournisseur)
+			throws ResourceNotFoundException {
+		fournisseurService.mettreEnVeille(idFournisseur);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
+
+
+
+	@GetMapping("/getAllFournisseur")
+	@ApiOperation(value = "service to get get All Fournisseur")
+	public ResponseEntity<Map<String, Object>> getAllFournisseur(@RequestParam(defaultValue = "0") int page,
+															   @RequestParam(defaultValue = "3") int size){
+		return fournisseurService.getAllFournisseur(page,size);
+
+	}
+	@GetMapping("/getAllFournisseurEnVeille")
+	@ApiOperation(value = "service to get get All Fournisseur En Veille ")
+	public ResponseEntity<Map<String, Object>> getAllFournisseurEnVeille(@RequestParam(defaultValue = "0") int page,
+																	   @RequestParam(defaultValue = "3") int size) {
+		return fournisseurService.getAllFournisseurEnVeille(page, size);
+
+	}
+	@GetMapping("/search")
+	@ApiOperation(value = "service to filter fournisseur ")
+	public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
+													  @RequestParam boolean enVeille,
+													  @RequestParam(defaultValue = "0") int page,
+													  @RequestParam(defaultValue = "3") int size) {
+		return fournisseurService.find(textToFind, page, size,enVeille);
+
+	}
+
+	@DeleteMapping("/deleteFournisseur/{id}")
+	@ApiOperation(value = "service to delete one Fournisseur by Id.")
+	public Map<String, Boolean> deleteFournisseur(
+			@ApiParam(name = "id", value = "id of fournisseur", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String fournisseurId) {
+
+		fournisseurService.deleteFournisseur(fournisseurId);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
+
+	@DeleteMapping("/deleteSelectedFournisseur/{idFournisseursSelected}")
+	@ApiOperation(value = "service to delete many Fournisseur by Id.")
+	public Map<String, Boolean> deleteFournisseurSelected(
+			@ApiParam(name = "idFournisseursSelected", value = "ids of fournisseur Selected", required = true) @PathVariable(value = "idFournisseursSelected", required = true) @NotEmpty(message = "{http.error.0001}") List<String> idFournisseursSelected) {
+		fournisseurService.deleteFournisseurSelected(idFournisseursSelected);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
 
 }
