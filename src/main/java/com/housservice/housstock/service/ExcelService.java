@@ -4,6 +4,7 @@ import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.helper.ExcelHelper;
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,6 +38,12 @@ public class ExcelService {
 
     public void savePersonnel(MultipartFile file) throws IOException, ResourceNotFoundException {
         List<Personnel> personnels = ExcelHelper.excelToPersonnels(file.getInputStream());
+        List<Personnel> personnels1 = new ArrayList<>();
+        for (Personnel personnel : personnels) {
+            if (personnel.getMatricule() != null && personnel.getMatricule().length() > 0) {
+                personnels1.add(personnel);
+            }
+        }
         for (Personnel personnel : personnels) {
             boolean exist = personnelRepository.existsPersonnelByCinAndMatricule(personnel.getCin(),personnel.getMatricule());
             if (exist) {
@@ -49,7 +58,13 @@ public class ExcelService {
 
     public void savePersonnelFromSage(MultipartFile file) throws IOException, ResourceNotFoundException {
         List<Personnel> personnels = ExcelHelper.excelFormatSageToPersonnel(file.getInputStream());
+        List<Personnel> personnels1 = new ArrayList<>();
         for (Personnel personnel : personnels) {
+            if (personnel.getMatricule() != null && personnel.getMatricule().length() > 0) {
+                personnels1.add(personnel);
+            }
+        }
+        for (Personnel personnel : personnels1) {
             boolean exist = personnelRepository.existsPersonnelByCinAndMatricule(personnel.getCin(),personnel.getMatricule());
             if (exist) {
                 personnelRepository.delete(personnelRepository.findPersonnelByCin(personnel.getCin())
@@ -64,7 +79,17 @@ public class ExcelService {
 
     public void saveClient(MultipartFile file) throws IOException, ResourceNotFoundException {
         List<Client> clients = ExcelHelper.excelToClients(file.getInputStream());
+        List<Client> clients1 = new ArrayList<>();
         for (Client client : clients) {
+            if (client.getRefClientIris() != null && client.getRefClientIris().length() > 0) {
+                clients1.add(client);
+            }
+        }
+        for (Client client : clients1) {
+            client.setDate(new Date());
+            client.setMiseEnVeille(0);
+            List<Contact> contacts = new ArrayList<>();
+                client.setContact(contacts);
             boolean exist = clientRepository.existsClientByRefClientIris(client.getRefClientIris());
             if (exist) {
                 clientRepository.delete(clientRepository.findClientByRefClientIris(client.getRefClientIris())
@@ -78,26 +103,28 @@ public class ExcelService {
 
     }
 
-    public void excelFormatSageToClient(MultipartFile file) throws IOException
-    {
-
+    public void excelFormatSageToClient(MultipartFile file) throws IOException, ResourceNotFoundException {
         List<Client> clients = ExcelHelper.excelFormatSageToClient(file.getInputStream());
-        if (clientRepository.count()>0){
-            clients.stream().map(client -> {
-                try {
-                    Client client1 = clientRepository.findClientByRaisonSocial(client.getRaisonSocial()).orElseThrow(() -> new ResourceNotFoundException(
-                            MessageFormat.format(messageHttpErrorProperties.getError0002(), client.getRaisonSocial())));
-                    if(client1.equals(client)){
-                        clientRepository.delete(client1);
-                    }
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                return clientRepository.saveAll(clients);
-            });
+        List<Client> clients1 = new ArrayList<>();
+        for (Client client : clients) {
+            if (client.getRefClientIris() != null && client.getRefClientIris().length() > 0) {
+                clients1.add(client);
+            }
         }
-        else
-            clientRepository.saveAll(clients);
+        for (Client client : clients1) {
+            client.setDate(new Date());
+            client.setMiseEnVeille(0);
+            List<Contact> contacts = new ArrayList<>();
+            client.setContact(contacts);
+            boolean exist = clientRepository.existsClientByRefClientIris(client.getRefClientIris());
+            if (exist) {
+                clientRepository.delete(clientRepository.findClientByRefClientIris(client.getRefClientIris())
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                MessageFormat.format(messageHttpErrorProperties.getError0002(),client.getRefClientIris()))));
+                clientRepository.save(client);
+            }
+            clientRepository.save(client);
+        }
 
     }
 

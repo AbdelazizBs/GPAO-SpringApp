@@ -7,7 +7,6 @@ import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import org.springframework.http.ResponseEntity;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,12 +30,14 @@ public interface ClientService {
 
 	public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
-	public void updateClient(String idClient ,@Valid ClientDto clientDto) throws ResourceNotFoundException;
+	public void updateClient(String idClient ,ClientDto clientDto) throws ResourceNotFoundException;
 	public void miseEnVeille(String idClient ) throws ResourceNotFoundException;
 	public void addContactClient( ContactDto contactDto, String idClient ) throws ResourceNotFoundException;
 	public void updateContactClient( ContactDto contact, String idContact) throws ResourceNotFoundException;
 
 	public void deleteClient(Client client);
+	void deleteClientSelected(List<String> idClientsSelected);
+
 	public void deleteContactClient(String idContact) throws ResourceNotFoundException;
 
 }

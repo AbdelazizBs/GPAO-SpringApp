@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -114,11 +113,18 @@ public class ClientController {
 		  return  clientService.getArticlesByRaisons(raisonS) ;
 	  }
 
-
+	@DeleteMapping("/deleteSelectedClient/{idClientsSelected}")
+	@ApiOperation(value = "service to delete many Personnel by Id.")
+	public Map<String, Boolean> deleteClientSelected(
+			@ApiParam(name = "idClientsSelected", value = "ids of client Selected", required = true) @PathVariable(value = "idClientsSelected", required = true) @NotEmpty(message = "{http.error.0001}") List<String> idClientsSelected) {
+		clientService.deleteClientSelected(idClientsSelected);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
 	  
-		@PutMapping("/addClient")
-		@Validated
-		  public ResponseEntity<String> createNewClient(@Valid @RequestBody ClientDto clientDto) throws ResourceNotFoundException {
+		@PutMapping(value = "/addClient")
+		  public ResponseEntity<String> createNewClient(@RequestBody ClientDto clientDto) throws ResourceNotFoundException {
 	    	  clientService.createNewClient(clientDto);
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }

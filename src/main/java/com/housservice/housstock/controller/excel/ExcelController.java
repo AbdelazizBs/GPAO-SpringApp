@@ -86,8 +86,7 @@ public class ExcelController {
 
 	}
 	@PostMapping("/uploadClientFromSageFile")
-	public ResponseEntity<ResponseMessage> excelFormatSageToClient(@RequestParam("file") MultipartFile file) throws IOException
-	{
+	public ResponseEntity<ResponseMessage> excelFormatSageToClient(@RequestParam("file") MultipartFile file) throws IOException, ResourceNotFoundException {
 		String message = "";
 
 		if (ExcelHelper.hasExcelFormat(file))

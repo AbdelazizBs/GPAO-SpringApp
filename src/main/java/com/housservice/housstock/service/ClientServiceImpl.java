@@ -12,6 +12,7 @@ import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.ContactRepository;
+import com.housservice.housstock.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +36,8 @@ public class ClientServiceImpl implements ClientService {
 	private final ClientRepository clientRepository;
 	
 	private final ArticleRepository articleRepository ;
+	final
+	PictureRepository pictureRepository;
 
 	private final SequenceGeneratorService sequenceGeneratorService;
 	
@@ -45,12 +48,13 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	public ClientServiceImpl(ClientRepository clientRepository, SequenceGeneratorService sequenceGeneratorService,
-					MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository) {
+							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository, PictureRepository pictureRepository) {
 		this.clientRepository = clientRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
 		this.articleRepository = articleRepository;
+		this.pictureRepository = pictureRepository;
 	}
 	public static byte[] decompressBytes(byte[] data) {
 		Inflater inflater = new Inflater();
@@ -101,17 +105,38 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void createNewClient(@Valid ClientDto clientDto) {
+	public void deleteClientSelected(List<String> idClientsSelected){
+		for (String id : idClientsSelected){
+			clientRepository.deleteById(id);
+		}
+	}
+
+	@Override
+	public void createNewClient( ClientDto clientDto) {
 		if (clientRepository.existsClientByRefClientIris(clientDto.getRefClientIris())) {
 			throw new IllegalArgumentException(	" Matricule " + clientDto.getRefClientIris() + "  existe deja !!");
 		}
+//		List<Picture> pictures = new ArrayList<>();
+//		for (MultipartFile file : clientDto.getPictures()) {
+//			Picture picture = new Picture();
+//			picture.setFileName(file.getOriginalFilename());
+//			picture.setType(file.getContentType());
+//			try {
+//				picture.setBytes(file.getBytes());
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			pictures.add(picture);
+//		}
+//		clientDto.setPictures(pictures);
 	clientDto.setDate(new Date());
 	clientDto.setMiseEnVeille(0);
 	List<Contact> contacts = new ArrayList<>();
 		if (clientDto.getContact()==null){
 	clientDto.setContact(contacts);
 }
-clientRepository.save(ClientMapper.MAPPER.toClient(clientDto));
+		Client client = ClientMapper.MAPPER.toClient(clientDto);
+clientRepository.save(client);
 	}
 
 	@Override
@@ -146,12 +171,22 @@ clientRepository.save(ClientMapper.MAPPER.toClient(clientDto));
 	}
 
 	@Override
-	public void updateClient(String idClient , ClientDto clientDto ) throws ResourceNotFoundException {
-		if (clientRepository.existsClientByRefClientIris(clientDto.getRefClientIris())) {
-			throw new IllegalArgumentException(	" Matricule " + clientDto.getRefClientIris() + "  existe deja !!");
-		}
+	public void updateClient(String idClient , ClientDto clientDto) throws ResourceNotFoundException {
 		Client client = getClientById(idClient)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  clientDto.getId())));
+//		List<Picture> pictures = new ArrayList<>();
+//		for (MultipartFile multipartFile : files) {
+//			Picture picture = new Picture();
+//			picture.setFileName(multipartFile.getOriginalFilename());
+//			picture.setType(multipartFile.getContentType());
+//			try {
+//				picture.setBytes(multipartFile.getBytes());
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			pictureRepository.save(picture);
+//			pictures.add(picture);
+//		}
 		client.setRaisonSocial(clientDto.getRaisonSocial());
 		client.setRegime(clientDto.getRegime());
 		client.setMiseEnVeille(clientDto.getMiseEnVeille());

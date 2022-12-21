@@ -2,7 +2,10 @@ package com.housservice.housstock.helper;
 
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Personnel;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -161,10 +164,8 @@ public class ExcelHelper {
 
 		int rowNumber = 0;
 
-		for (int i = 0 ; i <= sheet.getLastRowNum(); i++)
-		{
-
-			Row currentRow = sheet.getRow(i);
+		for (int i = 0; i <= sheet.getLastRowNum(); i++)
+		{Row currentRow = sheet.getRow(i);
 
 			// skip header
 
@@ -265,7 +266,7 @@ public class ExcelHelper {
 				{
 
 					case 0:
-						client.setRefClientIris(new DataFormatter().formatCellValue(currentCell.getRow().getCell(0)));
+						client.setRefClientIris(currentCell.getRow().getCell(0).getStringCellValue());
 						break;
 
 
@@ -274,11 +275,11 @@ public class ExcelHelper {
 						break;
 
 					case 2:
-						client.setPhone(new DataFormatter().formatCellValue(currentCell.getRow().getCell(12)));
+						client.setPhone(currentCell.getRow().getCell(12).getStringCellValue());
 						break;
 
 					case 3:
-						client.setTelecopie(new DataFormatter().formatCellValue(currentCell.getRow().getCell(15)));
+						client.setTelecopie(currentCell.getRow().getCell(15).getStringCellValue());
 						break;
 
 

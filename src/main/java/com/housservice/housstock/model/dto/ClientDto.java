@@ -2,6 +2,7 @@ package com.housservice.housstock.model.dto;
 
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.Picture;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -136,6 +137,7 @@ public class ClientDto {
 
 
 	private List <Contact> contact;
+	private List <Picture> pictures;
 
 	private List<CommandeClient> listCommandes = new ArrayList<>();
     

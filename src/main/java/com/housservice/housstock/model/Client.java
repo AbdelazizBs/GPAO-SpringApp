@@ -100,6 +100,7 @@ public class Client {
 
 
 	private List <Contact> contact;
+	private List <Picture> pictures;
 
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 

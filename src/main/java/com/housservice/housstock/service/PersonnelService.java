@@ -32,6 +32,7 @@ public interface PersonnelService {
     public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
     void deletePersonnel(String personnelId);
+
     void deletePersonnelSelected(List<String> idPersonnelsSelected);
 
 }

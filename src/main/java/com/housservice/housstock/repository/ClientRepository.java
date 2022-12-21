@@ -25,7 +25,7 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 		Optional<Client> findClientByRefClientIris(String raisonSocial);
 
 
-	@Query( "{$or:[{'raisonSocial': {$regex : ?0}} ,{'secteurActivite': {$regex : ?0}} ,{'brancheActivite': {$regex : ?0}},{'adresse': {$regex : ?0}}] }")
+	@Query( "{$or:[{'refClientIris': {$regex : ?0}},{'raisonSocial': {$regex : ?0}} ,{'secteurActivite': {$regex : ?0}} ,{'brancheActivite': {$regex : ?0}},{'adresse': {$regex : ?0}}] }")
 	Page<Client> findClientByTextToFindAndMiseEnVeille(String textToFind,boolean b ,  Pageable pageable);
 
 }
