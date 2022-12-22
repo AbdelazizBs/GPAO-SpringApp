@@ -7,6 +7,7 @@ import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.repository.ArticleRepository;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
@@ -112,31 +114,83 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void createNewClient( ClientDto clientDto) {
-		if (clientRepository.existsClientByRefClientIris(clientDto.getRefClientIris())) {
-			throw new IllegalArgumentException(	" Matricule " + clientDto.getRefClientIris() + "  existe deja !!");
+	public void createNewClient( String refClientIris,
+								 String raisonSociale,
+								 String adresse,
+								 String codePostal,
+								 String ville,
+								 String pays,
+								 String region,
+								 String phone,
+								 String email,
+								 String statut,
+								 String brancheActivite,
+								 String secteurActivite,
+								 String incoterm,
+								 String echeance,
+								 String modePaiement,
+								 String nomBanque,
+								 String adresseBanque,
+								 String codeDouane,
+								 String rne,
+								 String cif,
+								 String telecopie,
+								 String rib,
+								 String swift,
+								 MultipartFile cdImage,
+								 MultipartFile rnImage,
+								 MultipartFile ciImage) {
+		if (clientRepository.existsClientByRefClientIris(refClientIris)) {
+			throw new IllegalArgumentException(	" Matricule " + refClientIris + "  existe deja !!");
 		}
-//		List<Picture> pictures = new ArrayList<>();
-//		for (MultipartFile file : clientDto.getPictures()) {
-//			Picture picture = new Picture();
-//			picture.setFileName(file.getOriginalFilename());
-//			picture.setType(file.getContentType());
-//			try {
-//				picture.setBytes(file.getBytes());
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			pictures.add(picture);
-//		}
-//		clientDto.setPictures(pictures);
+			ClientDto clientDto = new ClientDto();
+			List<Picture> pictures = new ArrayList<>();
+		for (MultipartFile file : Arrays.asList(cdImage, rnImage, ciImage)) {
+			if(!Objects.equals(file.getOriginalFilename(), "fileNotSelected")){
+			Picture picture = new Picture();
+			picture.setFileName(file.getOriginalFilename());
+			picture.setType(file.getContentType());
+			try {
+				picture.setBytes(file.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			pictureRepository.save(picture);
+			pictures.add(picture);
+		}
+			}
+	clientDto.setPictures(pictures);
 	clientDto.setDate(new Date());
 	clientDto.setMiseEnVeille(0);
+	clientDto.setRefClientIris(refClientIris);
+	clientDto.setRaisonSocial(raisonSociale);
+	clientDto.setAdresse(adresse);
+	clientDto.setCodePostal(codePostal);
+	clientDto.setVille(ville);
+	clientDto.setPays(pays);
+	clientDto.setRegion(region);
+	clientDto.setPhone(phone);
+	clientDto.setEmail(email);
+	clientDto.setStatut(statut);
+	clientDto.setBrancheActivite(brancheActivite);
+	clientDto.setSecteurActivite(secteurActivite);
+	clientDto.setIncoterm(incoterm);
+	clientDto.setEcheance(echeance);
+	clientDto.setModePaiement(modePaiement);
+	clientDto.setNomBanque(nomBanque);
+	clientDto.setAdresseBanque(adresseBanque);
+	clientDto.setCodeDouane(codeDouane);
+	clientDto.setRne(rne);
+	clientDto.setCif(cif);
+	clientDto.setTelecopie(telecopie);
+	clientDto.setRib(rib);
+	clientDto.setSwift(swift);
 	List<Contact> contacts = new ArrayList<>();
 		if (clientDto.getContact()==null){
 	clientDto.setContact(contacts);
 }
 		Client client = ClientMapper.MAPPER.toClient(clientDto);
-clientRepository.save(client);
+		clientRepository.save(client);
 	}
 
 	@Override

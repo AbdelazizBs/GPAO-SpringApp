@@ -6,6 +6,7 @@ import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,32 @@ public interface ClientService {
 
 
 	
-	  void createNewClient(ClientDto clientDto) throws ResourceNotFoundException;
+	  void createNewClient(  String refClientIris,
+							 String raisonSociale,
+							 String adresse,
+							 String codePostal,
+							 String ville,
+							 String pays,
+							 String region,
+							  String phone,
+							 String email,
+							 String statut,
+							 String brancheActivite,
+							 String secteurActivite,
+							 String incoterm,
+							 String echeance,
+							 String modePaiement,
+							 String nomBanque,
+							 String adresseBanque,
+							 String codeDouane,
+							 String rne,
+							 String cif,
+							 String telecopie,
+							 String rib,
+							 String swift,
+							  MultipartFile cdImage,
+							  MultipartFile rnImage,
+							  MultipartFile ciImage) throws ResourceNotFoundException;
 
 	public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 

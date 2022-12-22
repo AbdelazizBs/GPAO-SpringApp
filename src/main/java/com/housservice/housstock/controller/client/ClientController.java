@@ -7,12 +7,14 @@ import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.service.ClientService;
+import com.housservice.housstock.service.PictureService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -31,12 +33,15 @@ public class ClientController {
 	  private final ClientService clientService;
 	
 	  private final MessageHttpErrorProperties messageHttpErrorProperties;
-		
-	  @Autowired
-	  public ClientController(ClientService clientService, MessageHttpErrorProperties messageHttpErrorProperties) {
+	private final PictureService  pictureService;
+
+	@Autowired
+	  public ClientController(ClientService clientService, MessageHttpErrorProperties messageHttpErrorProperties,
+							  PictureService pictureService) {
 		this.clientService = clientService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
-	  }
+		this.pictureService = pictureService;
+	}
 
 		@GetMapping("/getAllClient")
 		@ApiOperation(value = "service to get tout les clients ")
@@ -124,8 +129,35 @@ public class ClientController {
 	}
 	  
 		@PutMapping(value = "/addClient")
-		  public ResponseEntity<String> createNewClient(@RequestBody ClientDto clientDto) throws ResourceNotFoundException {
-	    	  clientService.createNewClient(clientDto);
+		  public ResponseEntity<String> createNewClient(				  @NotEmpty @RequestParam("refClientIris") String refClientIris,
+																		  @NotEmpty @RequestParam("raisonSociale") String raisonSociale,
+																		  @NotEmpty  @RequestParam("adresse") String adresse,
+																		  @RequestParam("codePostal") String codePostal,
+																		  @RequestParam("ville") String ville,
+																		   @RequestParam("pays") String pays,
+																		  @RequestParam("region") String region,
+																		  @RequestParam("phone") String phone,
+																		@RequestParam("email") String email,
+																		  @RequestParam("statut") String statut,
+																		  @RequestParam("brancheActivite") String brancheActivite,
+																		  @RequestParam("secteurActivite") String secteurActivite,
+																		  @RequestParam("incoterm") String incoterm,
+																		  @RequestParam("echeance") String echeance,
+																		  @RequestParam("modePaiement") String modePaiement,
+																		  @RequestParam("nomBanque") String nomBanque,
+																		  @RequestParam("adresseBanque") String adresseBanque,
+																		  @RequestParam("codeDouane") String codeDouane,
+																		  @RequestParam("rne") String rne,
+																		  @RequestParam("cif") String cif,
+																		  @RequestParam("telecopie") String telecopie,
+																		  @RequestParam("rib") String rib,
+																		  @RequestParam("swift") String swift,
+																		  @RequestParam("cdImage") MultipartFile cdImage,
+																		  @RequestParam("rnImage") MultipartFile rnImage,
+																		  @RequestParam("ciImage") MultipartFile ciImage
+
+														) throws ResourceNotFoundException {
+	    	  clientService.createNewClient(refClientIris,raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,cdImage,rnImage,ciImage);
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }
 	  
@@ -185,6 +217,7 @@ public class ClientController {
 	      response.put("deleted", Boolean.TRUE);
 	      return response;
 	  }
+
 
 
 	@DeleteMapping("/deleteContactClient/{idContact}")
