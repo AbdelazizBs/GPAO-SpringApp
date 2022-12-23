@@ -63,7 +63,6 @@ public class MatiereServiceImpl implements MatiereService {
 		matiere.setDesignation(matiereDto.getDesignation());
 		matiere.setFamille(matiereDto.getFamille());
 		matiere.setUniteAchat(matiereDto.getUniteAchat());
-		matiere.setPrixUnitaire(matiereDto.getPrixUnitaire());
 		
 		matiereRepository.save(matiere);
 	}

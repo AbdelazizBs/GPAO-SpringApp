@@ -1,6 +1,5 @@
 package com.housservice.housstock.model.dto;
 
-import java.math.BigDecimal;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +17,6 @@ public class MatiereDto {
 	private String famille;
 
 	private String uniteAchat;
-
-	private BigDecimal prixUnitaire;
 	
 	private boolean miseEnVeille ;
 	
