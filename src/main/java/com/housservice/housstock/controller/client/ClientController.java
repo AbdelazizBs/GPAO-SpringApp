@@ -129,15 +129,18 @@ public class ClientController {
 	}
 	  
 		@PutMapping(value = "/addClient")
-		  public ResponseEntity<String> createNewClient(				  @NotEmpty @RequestParam("refClientIris") String refClientIris,
-																		  @NotEmpty @RequestParam("raisonSociale") String raisonSociale,
-																		  @NotEmpty  @RequestParam("adresse") String adresse,
+		  public ResponseEntity<String> createNewClient(
+//				  @NotEmpty(message = "Veuillez remplir tous les champs obligatoires !!")
+																				  @RequestParam("refClientIris") String refClientIris,
+																		  @RequestParam("raisonSociale") String raisonSociale,
+																		   @RequestParam("adresse") String adresse,
 																		  @RequestParam("codePostal") String codePostal,
 																		  @RequestParam("ville") String ville,
 																		   @RequestParam("pays") String pays,
 																		  @RequestParam("region") String region,
 																		  @RequestParam("phone") String phone,
-																		@RequestParam("email") String email,
+//																			@Email(message="Email invalide !!", regexp="^[A-Za-z0-9+_.-]+@(.+)$")
+																		    @RequestParam("email") String email,
 																		  @RequestParam("statut") String statut,
 																		  @RequestParam("brancheActivite") String brancheActivite,
 																		  @RequestParam("secteurActivite") String secteurActivite,
@@ -152,12 +155,12 @@ public class ClientController {
 																		  @RequestParam("telecopie") String telecopie,
 																		  @RequestParam("rib") String rib,
 																		  @RequestParam("swift") String swift,
-																		  @RequestParam("cdImage") MultipartFile cdImage,
-																		  @RequestParam("rnImage") MultipartFile rnImage,
-																		  @RequestParam("ciImage") MultipartFile ciImage
+																		  @RequestParam("images") MultipartFile[] cdImage
 
 														) throws ResourceNotFoundException {
-	    	  clientService.createNewClient(refClientIris,raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,cdImage,rnImage,ciImage);
+	    	  clientService.createNewClient(refClientIris,raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm
+					  ,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,cdImage);
+
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }
 	  
@@ -166,9 +169,35 @@ public class ClientController {
 	  public ResponseEntity <String> updateClient(
 			  @ApiParam(name = "idClient", value="id of client", required = true)
 			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
-	      @Valid @RequestBody(required = true) ClientDto clientDto) throws ResourceNotFoundException {
+			  @RequestParam("refClientIris") String refClientIris,
+			  @RequestParam("raisonSociale") String raisonSociale,
+			  @RequestParam("adresse") String adresse,
+			  @RequestParam("codePostal") String codePostal,
+			  @RequestParam("ville") String ville,
+			  @RequestParam("pays") String pays,
+			  @RequestParam("region") String region,
+			  @RequestParam("phone") String phone,
+			  @RequestParam("email") String email,
+			  @RequestParam("statut") String statut,
+			  @RequestParam("brancheActivite") String brancheActivite,
+			  @RequestParam("secteurActivite") String secteurActivite,
+			  @RequestParam("incoterm") String incoterm,
+			  @RequestParam("echeance") String echeance,
+			  @RequestParam("modePaiement") String modePaiement,
+			  @RequestParam("nomBanque") String nomBanque,
+			  @RequestParam("adresseBanque") String adresseBanque,
+			  @RequestParam("codeDouane") String codeDouane,
+			  @RequestParam("rne") String rne,
+			  @RequestParam("cif") String cif,
+			  @RequestParam("telecopie") String telecopie,
+			  @RequestParam("rib") String rib,
+			  @RequestParam("swift") String swift,
+			  @RequestParam("cdImage") MultipartFile cdImage,
+			  @RequestParam("rnImage") MultipartFile rnImage,
+			  @RequestParam("ciImage") MultipartFile ciImage) throws ResourceNotFoundException {
 
-		  clientService.updateClient(idClient,clientDto);
+		  clientService.updateClient(idClient,refClientIris,raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm
+				  ,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,cdImage,rnImage,ciImage);
 	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
@@ -227,6 +256,18 @@ public class ClientController {
 			@PathVariable(value = "idContact", required = true) @NotEmpty(message = "{http.error.0001}") String idContact)
 			throws ResourceNotFoundException {
 		clientService.deleteContactClient(idContact);
+		Map < String, Boolean > response = new HashMap< >();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
+
+	@DeleteMapping("/removePicture/{idPicture}")
+	@ApiOperation(value = "service to delete one Picture by Id.")
+	public Map< String, Boolean > removePicture(
+			@ApiParam(name = "idPicture", value="id of picture", required = true)
+			@PathVariable(value = "idPicture", required = true) @NotEmpty(message = "{http.error.0001}") String idPicture)
+			throws ResourceNotFoundException {
+		clientService.removePicture(idPicture);
 		Map < String, Boolean > response = new HashMap< >();
 		response.put("deleted", Boolean.TRUE);
 		return response;

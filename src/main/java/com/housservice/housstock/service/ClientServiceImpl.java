@@ -137,16 +137,19 @@ public class ClientServiceImpl implements ClientService {
 								 String telecopie,
 								 String rib,
 								 String swift,
-								 MultipartFile cdImage,
-								 MultipartFile rnImage,
-								 MultipartFile ciImage) {
+								 MultipartFile[] cdImage) {
 		if (clientRepository.existsClientByRefClientIris(refClientIris)) {
 			throw new IllegalArgumentException(	" Matricule " + refClientIris + "  existe deja !!");
 		}
+		if (!Objects.equals(email, "") && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$" )) {
+			throw new IllegalArgumentException("Email invalide !!");
+		}
+		if (refClientIris.isEmpty() || raisonSociale.isEmpty() || adresse.isEmpty() || codePostal.isEmpty() || ville.isEmpty() || pays.isEmpty() || region.isEmpty()) {
+			throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
+		}
 			ClientDto clientDto = new ClientDto();
 			List<Picture> pictures = new ArrayList<>();
-		for (MultipartFile file : Arrays.asList(cdImage, rnImage, ciImage)) {
-			if(!Objects.equals(file.getOriginalFilename(), "fileNotSelected")){
+		for (MultipartFile file : cdImage) {
 			Picture picture = new Picture();
 			picture.setFileName(file.getOriginalFilename());
 			picture.setType(file.getContentType());
@@ -158,7 +161,7 @@ public class ClientServiceImpl implements ClientService {
 			pictureRepository.save(picture);
 			pictures.add(picture);
 		}
-			}
+
 	clientDto.setPictures(pictures);
 	clientDto.setDate(new Date());
 	clientDto.setMiseEnVeille(0);
@@ -225,48 +228,81 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void updateClient(String idClient , ClientDto clientDto) throws ResourceNotFoundException {
+	public void updateClient(String idClient ,String refClientIris,
+							 String raisonSociale,
+							 String adresse,
+							 String codePostal,
+							 String ville,
+							 String pays,
+							 String region,
+							 String phone,
+							 String email,
+							 String statut,
+							 String brancheActivite,
+							 String secteurActivite,
+							 String incoterm,
+							 String echeance,
+							 String modePaiement,
+							 String nomBanque,
+							 String adresseBanque,
+							 String codeDouane,
+							 String rne,
+							 String cif,
+							 String telecopie,
+							 String rib,
+							 String swift,
+							 MultipartFile cdImage,
+							 MultipartFile rnImage,
+							 MultipartFile ciImage) throws ResourceNotFoundException {
+		if (!Objects.equals(email, "") && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+			throw new IllegalArgumentException("Email invalide !!");
+		}
+		if (refClientIris.isEmpty() || raisonSociale.isEmpty() || adresse.isEmpty() || codePostal.isEmpty() || ville.isEmpty() || pays.isEmpty() || region.isEmpty()) {
+			throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
+		}
 		Client client = getClientById(idClient)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  clientDto.getId())));
-//		List<Picture> pictures = new ArrayList<>();
-//		for (MultipartFile multipartFile : files) {
-//			Picture picture = new Picture();
-//			picture.setFileName(multipartFile.getOriginalFilename());
-//			picture.setType(multipartFile.getContentType());
-//			try {
-//				picture.setBytes(multipartFile.getBytes());
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			pictureRepository.save(picture);
-//			pictures.add(picture);
-//		}
-		client.setRaisonSocial(clientDto.getRaisonSocial());
-		client.setRegime(clientDto.getRegime());
-		client.setMiseEnVeille(clientDto.getMiseEnVeille());
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idClient)));
+		List<Picture> pictures = new ArrayList<>();
+		for (MultipartFile file : Arrays.asList(cdImage, rnImage, ciImage)) {
+				Picture picture = new Picture();
+			picture.setFileName(file.getOriginalFilename());
+			picture.setType(file.getContentType());
+			try {
+				picture.setBytes(file.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			pictureRepository.save(picture);
+			pictures.add(picture);
+
+		}
+		client.setPictures(pictures);
+		client.setRaisonSocial(raisonSociale);
+		client.setStatut(statut);
 		client.setDate(client.getDate());
+		client.setMiseEnVeille(client.getMiseEnVeille());
 		client.setDateMiseEnVeille(client.getDateMiseEnVeille());
-		client.setAdresse(clientDto.getAdresse());
-		client.setIncoterm(clientDto.getIncoterm());
-		client.setEcheance(clientDto.getEcheance());
-		client.setModePaiement(clientDto.getModePaiement());
-		client.setNomBanque(clientDto.getNomBanque());
-		client.setAdresseBanque(clientDto.getAdresseBanque());
-		client.setRib(clientDto.getRib());
-		client.setSwift(clientDto.getSwift());
-		client.setBrancheActivite(clientDto.getBrancheActivite());
-		client.setSecteurActivite(clientDto.getSecteurActivite());
-		client.setRefClientIris(clientDto.getRefClientIris());
-		client.setTelecopie(clientDto.getTelecopie());
-		client.setPhone(clientDto.getPhone());
-		client.setStatut(clientDto.getStatut());
-		client.setCif(clientDto.getCif());
-		client.setCodePostal(clientDto.getCodePostal());
-		client.setVille(clientDto.getVille());
-		client.setPays(clientDto.getPays());
-		client.setRne(clientDto.getRne());
-		client.setCodeDouane(clientDto.getCodeDouane());
-		client.setRegion(clientDto.getRegion());
+		client.setAdresse(adresse);
+		client.setIncoterm(incoterm);
+		client.setEcheance(echeance);
+		client.setModePaiement(modePaiement);
+		client.setNomBanque(nomBanque);
+		client.setAdresseBanque(adresseBanque);
+		client.setRib(rib);
+		client.setSwift(swift);
+		client.setBrancheActivite(brancheActivite);
+		client.setSecteurActivite(secteurActivite);
+		client.setRefClientIris(refClientIris);
+		client.setTelecopie(telecopie);
+		client.setPhone(phone);
+		client.setStatut(statut);
+		client.setCif(cif);
+		client.setCodePostal(codePostal);
+		client.setVille(ville);
+		client.setPays(pays);
+		client.setRne(rne);
+		client.setCodeDouane(codeDouane);
+		client.setRegion(region);
 		clientRepository.save(client);
 		
 	}
@@ -391,5 +427,18 @@ public class ClientServiceImpl implements ClientService {
 		client.setContact(contactList);
 		clientRepository.save(client);
 		contactRepository.deleteById(idContact);
+	}
+
+	@Override
+	public void removePicture(String idPicture) throws ResourceNotFoundException {
+		Picture picture = pictureRepository.findById(idPicture)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPicture)));
+		Client client = clientRepository.findClientByPictures(picture)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), picture)));
+		List<Picture> pictureList = client.getPictures();
+		pictureList.removeIf(c -> c.equals(picture));
+		client.setPictures(pictureList);
+		clientRepository.save(client);
+		pictureRepository.deleteById(idPicture);
 	}
 }

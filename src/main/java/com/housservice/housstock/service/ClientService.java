@@ -3,7 +3,6 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,13 +49,36 @@ public interface ClientService {
 							 String telecopie,
 							 String rib,
 							 String swift,
-							  MultipartFile cdImage,
-							  MultipartFile rnImage,
-							  MultipartFile ciImage) throws ResourceNotFoundException;
+							  MultipartFile[] cdImage) throws ResourceNotFoundException;
 
 	public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
-	public void updateClient(String idClient ,ClientDto clientDto) throws ResourceNotFoundException;
+	public void updateClient(String idClient ,String refClientIris,
+							 String raisonSociale,
+							 String adresse,
+							 String codePostal,
+							 String ville,
+							 String pays,
+							 String region,
+							 String phone,
+							 String email,
+							 String statut,
+							 String brancheActivite,
+							 String secteurActivite,
+							 String incoterm,
+							 String echeance,
+							 String modePaiement,
+							 String nomBanque,
+							 String adresseBanque,
+							 String codeDouane,
+							 String rne,
+							 String cif,
+							 String telecopie,
+							 String rib,
+							 String swift,
+							 MultipartFile cdImage,
+							 MultipartFile rnImage,
+							 MultipartFile ciImage) throws ResourceNotFoundException;
 	public void miseEnVeille(String idClient ) throws ResourceNotFoundException;
 	public void addContactClient( ContactDto contactDto, String idClient ) throws ResourceNotFoundException;
 	public void updateContactClient( ContactDto contact, String idContact) throws ResourceNotFoundException;
@@ -65,5 +87,6 @@ public interface ClientService {
 	void deleteClientSelected(List<String> idClientsSelected);
 
 	public void deleteContactClient(String idContact) throws ResourceNotFoundException;
+	public void removePicture(String idContact) throws ResourceNotFoundException;
 
 }

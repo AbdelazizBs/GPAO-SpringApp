@@ -1,6 +1,7 @@
 package com.housservice.housstock.repository;
 
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Picture;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -19,7 +20,8 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 
 		//Optional<Client> findClientByRaisonSocial(String raisonSociale) ;
 		Optional<Client> findClientByContactId(String idContact ) ;
-		
+		Optional<Client> findClientByPictures(Picture picture) ;
+
 		boolean existsClientByRefClientIris(String matricule);
 		Optional<Client> findClientByRaisonSocial(String raisonSocial);
 		Optional<Client> findClientByRefClientIris(String raisonSocial);

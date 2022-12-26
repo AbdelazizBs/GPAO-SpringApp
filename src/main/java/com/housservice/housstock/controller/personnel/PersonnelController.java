@@ -11,6 +11,7 @@ import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.Roles;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.service.PersonnelService;
+import com.housservice.housstock.service.PictureService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -42,11 +43,14 @@ public class PersonnelController {
 	private final PersonnelService personnelService;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
+	final
+	PictureService pictureService;
 
 	public PersonnelController(PersonnelService personnelService,
-			MessageHttpErrorProperties messageHttpErrorProperties) {
+							   MessageHttpErrorProperties messageHttpErrorProperties, PictureService pictureService) {
 		this.personnelService = personnelService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
+		this.pictureService = pictureService;
 	}
 
 	@PutMapping("/addPersonnel")
@@ -170,6 +174,17 @@ public class PersonnelController {
 	public Map<String, Boolean> deletePersonnelSelected(
 			@ApiParam(name = "idPersonnelsSelected", value = "ids of personnel Selected", required = true) @PathVariable(value = "idPersonnelsSelected", required = true) @NotEmpty(message = "{http.error.0001}") List<String> idPersonnelsSelected) {
 		personnelService.deletePersonnelSelected(idPersonnelsSelected);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
+
+
+	@DeleteMapping("/removePic/{idPicture}")
+	@ApiOperation(value = "service to delete one Picture by Id.")
+	public Map<String, Boolean> deletePicture(
+			@ApiParam(name = "id", value = "id of picture", required = true) @PathVariable(value = "idPicture", required = true) @NotEmpty(message = "{http.error.0001}") String idPicture) {
+		pictureService.deleteImg(idPicture);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return response;
