@@ -137,19 +137,13 @@ public class ClientServiceImpl implements ClientService {
 								 String telecopie,
 								 String rib,
 								 String swift,
-								 MultipartFile[] cdImage) {
-		if (clientRepository.existsClientByRefClientIris(refClientIris)) {
-			throw new IllegalArgumentException(	" Matricule " + refClientIris + "  existe deja !!");
-		}
-		if (!Objects.equals(email, "") && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$" )) {
-			throw new IllegalArgumentException("Email invalide !!");
-		}
-		if (refClientIris.isEmpty() || raisonSociale.isEmpty() || adresse.isEmpty() || codePostal.isEmpty() || ville.isEmpty() || pays.isEmpty() || region.isEmpty()) {
-			throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
+								 MultipartFile[] images) {
+		if (clientRepository.existsClientByRefClientIris(refClientIris) || clientRepository.existsClientByRaisonSocial(raisonSociale)) {
+			throw new IllegalArgumentException(	"Matricule ou Raison sociale existe deja !!");
 		}
 			ClientDto clientDto = new ClientDto();
 			List<Picture> pictures = new ArrayList<>();
-		for (MultipartFile file : cdImage) {
+		for (MultipartFile file : images) {
 			Picture picture = new Picture();
 			picture.setFileName(file.getOriginalFilename());
 			picture.setType(file.getContentType());
@@ -251,9 +245,7 @@ public class ClientServiceImpl implements ClientService {
 							 String telecopie,
 							 String rib,
 							 String swift,
-							 MultipartFile cdImage,
-							 MultipartFile rnImage,
-							 MultipartFile ciImage) throws ResourceNotFoundException {
+							 MultipartFile[] images) throws ResourceNotFoundException {
 		if (!Objects.equals(email, "") && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			throw new IllegalArgumentException("Email invalide !!");
 		}
@@ -263,19 +255,21 @@ public class ClientServiceImpl implements ClientService {
 		Client client = getClientById(idClient)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idClient)));
 		List<Picture> pictures = new ArrayList<>();
-		for (MultipartFile file : Arrays.asList(cdImage, rnImage, ciImage)) {
+		if (images != null) {
+			for (MultipartFile file : images) {
 				Picture picture = new Picture();
-			picture.setFileName(file.getOriginalFilename());
-			picture.setType(file.getContentType());
-			try {
-				picture.setBytes(file.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
+				picture.setFileName(file.getOriginalFilename());
+				picture.setType(file.getContentType());
+				try {
+					picture.setBytes(file.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				pictures.add(picture);
+				pictureRepository.save(picture);
 			}
-			pictureRepository.save(picture);
-			pictures.add(picture);
-
 		}
+		pictures.addAll(client.getPictures());
 		client.setPictures(pictures);
 		client.setRaisonSocial(raisonSociale);
 		client.setStatut(statut);
@@ -356,9 +350,12 @@ public class ClientServiceImpl implements ClientService {
 
 	}
 	@Override
-	public String getIdClients(String raisonSociale) throws ResourceNotFoundException {
+	public ResponseEntity<Map<String, Object>>  getIdClients(String raisonSociale) throws ResourceNotFoundException {
 		Client client = clientRepository.findClientByRaisonSocial(raisonSociale).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSociale)));
-		return client.getId() ;
+		Map<String, Object> response = new HashMap<>();
+		response.put("idClient", client.getId());
+		response.put("refClient", client.getRefClientIris());
+		return ResponseEntity.ok(response);
 	}
 
 	@Override
@@ -430,15 +427,23 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void removePicture(String idPicture) throws ResourceNotFoundException {
-		Picture picture = pictureRepository.findById(idPicture)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPicture)));
+	public void removePictures(String idClient) throws ResourceNotFoundException {
+		Client client = clientRepository.findById(idClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
+		for (String id : client.getPictures().stream().map(Picture::getId).collect(Collectors.toList())) {
+			pictureRepository.deleteById(id);
+		}
+		client.getPictures().removeAll(client.getPictures());
+		clientRepository.save(client);
+	}
+	@Override
+	public void removePicture(String idPic) throws ResourceNotFoundException {
+		Picture picture = pictureRepository.findById(idPic)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPic)));
 		Client client = clientRepository.findClientByPictures(picture)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), picture)));
-		List<Picture> pictureList = client.getPictures();
-		pictureList.removeIf(c -> c.equals(picture));
-		client.setPictures(pictureList);
+		pictureRepository.deleteById(idPic);
+		client.getPictures().removeIf(picture1 -> picture1.equals(picture));
 		clientRepository.save(client);
-		pictureRepository.deleteById(idPicture);
 	}
 }

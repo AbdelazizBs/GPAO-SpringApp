@@ -13,10 +13,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/client")
 @Api(tags = {"Clients Management"})
+@Validated
 public class ClientController {
 		
 	  private final ClientService clientService;
@@ -67,7 +70,7 @@ public class ClientController {
 	@GetMapping("/getIdClients/{raisonSociale}")
 	@ApiOperation(value = "service to get Id Client by raisonSociale.")
 
-	public String getIdClients(  @ApiParam(name = "raisonSociale", value="raisonSociale of clients", required = true)
+	public ResponseEntity<Map<String, Object>>  getIdClients(  @ApiParam(name = "raisonSociale", value="raisonSociale of clients", required = true)
 								 @PathVariable(value = "raisonSociale", required = true) @NotEmpty(message = "{http.error.0001}") String raisonSociale) throws ResourceNotFoundException {
 		return clientService.getIdClients(raisonSociale);
 	}
@@ -130,17 +133,32 @@ public class ClientController {
 	  
 		@PutMapping(value = "/addClient")
 		  public ResponseEntity<String> createNewClient(
-//				  @NotEmpty(message = "Veuillez remplir tous les champs obligatoires !!")
-																				  @RequestParam("refClientIris") String refClientIris,
-																		  @RequestParam("raisonSociale") String raisonSociale,
-																		   @RequestParam("adresse") String adresse,
-																		  @RequestParam("codePostal") String codePostal,
-																		  @RequestParam("ville") String ville,
-																		   @RequestParam("pays") String pays,
-																		  @RequestParam("region") String region,
+																	  @RequestParam("refClientIris")
+															 			@NotEmpty
+																				  String refClientIris,
+																		  @RequestParam("raisonSociale")
+																		  @NotEmpty
+																		  String raisonSociale,
+																		   @RequestParam("adresse")
+																	  @NotEmpty
+																	  String adresse,
+																		  @RequestParam("codePostal")
+																	  @NotEmpty
+																	  String codePostal,
+																		  @RequestParam("ville")
+																	  @NotEmpty
+																	  String ville,
+																		   @RequestParam("pays")
+																	  @NotEmpty
+																	  String pays,
+																		  @RequestParam("region")
+																	  @NotEmpty
+																	  String region,
 																		  @RequestParam("phone") String phone,
-//																			@Email(message="Email invalide !!", regexp="^[A-Za-z0-9+_.-]+@(.+)$")
-																		    @RequestParam("email") String email,
+																		    @RequestParam("email")
+																	  @NotEmpty
+																	  @Email(message="Email invalide !!", regexp="^[A-Za-z0-9+_.-]+@(.+)$")
+																	  		String email,
 																		  @RequestParam("statut") String statut,
 																		  @RequestParam("brancheActivite") String brancheActivite,
 																		  @RequestParam("secteurActivite") String secteurActivite,
@@ -155,11 +173,11 @@ public class ClientController {
 																		  @RequestParam("telecopie") String telecopie,
 																		  @RequestParam("rib") String rib,
 																		  @RequestParam("swift") String swift,
-																		  @RequestParam("images") MultipartFile[] cdImage
+																		  @RequestParam("images") MultipartFile[] images
 
 														) throws ResourceNotFoundException {
 	    	  clientService.createNewClient(refClientIris,raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm
-					  ,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,cdImage);
+					  ,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,images);
 
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }
@@ -192,12 +210,10 @@ public class ClientController {
 			  @RequestParam("telecopie") String telecopie,
 			  @RequestParam("rib") String rib,
 			  @RequestParam("swift") String swift,
-			  @RequestParam("cdImage") MultipartFile cdImage,
-			  @RequestParam("rnImage") MultipartFile rnImage,
-			  @RequestParam("ciImage") MultipartFile ciImage) throws ResourceNotFoundException {
+			  @RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
 
 		  clientService.updateClient(idClient,refClientIris,raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm
-				  ,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,cdImage,rnImage,ciImage);
+				  ,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,images);
 	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
@@ -256,6 +272,18 @@ public class ClientController {
 			@PathVariable(value = "idContact", required = true) @NotEmpty(message = "{http.error.0001}") String idContact)
 			throws ResourceNotFoundException {
 		clientService.deleteContactClient(idContact);
+		Map < String, Boolean > response = new HashMap< >();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
+
+	@DeleteMapping("/removePictures/{idClient}")
+	@ApiOperation(value = "service to delete all  Picture by idClient and idPicture.")
+	public Map< String, Boolean > removePictures(
+			@ApiParam(name = "idClient", value="id of client", required = true)
+			@PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
+			throws ResourceNotFoundException {
+		clientService.removePictures(idClient);
 		Map < String, Boolean > response = new HashMap< >();
 		response.put("deleted", Boolean.TRUE);
 		return response;

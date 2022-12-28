@@ -1,12 +1,13 @@
 package com.housservice.housstock.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.*;
-
-import com.housservice.housstock.model.*;
-import com.housservice.housstock.model.dto.ClientDto;
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
+import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.EtapeProduction;
+import com.housservice.housstock.model.Picture;
+import com.housservice.housstock.model.dto.ArticleDto;
+import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.LigneCommandeClientRepository;
 import com.housservice.housstock.repository.PictureRepository;
@@ -17,27 +18,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.dto.ArticleDto;
-import com.housservice.housstock.repository.ArticleRepository;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.text.MessageFormat;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
-import java.util.zip.Inflater;
 
 @Service
 public class ArticleServiceImpl implements ArticleService{
 	
-	private ArticleRepository articleRepository;
+	private final ArticleRepository articleRepository;
 	
-	private SequenceGeneratorService sequenceGeneratorService;
+	private final SequenceGeneratorService sequenceGeneratorService;
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 
@@ -154,8 +151,8 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 
 
 	@Override
-	public void setArticleEnVeille(final String idArticle) throws ResourceNotFoundException {
-		final Article article = articleRepository.findById(idArticle)
+	public void setArticleEnVeille(String idArticle) throws ResourceNotFoundException {
+		Article article = articleRepository.findById(idArticle)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idArticle)));
 		article.setMiseEnVeille(1);
 		articleRepository.save(article);
@@ -227,25 +224,40 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 								 String idClient,
 								 String refClient,
 								 String raisonSocial,
-								 Double prix,
-								 MultipartFile file) throws ResourceNotFoundException, IOException {
+								 MultipartFile[] file) throws ResourceNotFoundException, IOException {
+		Picture picture = new Picture();
 		ArticleDto articleDto = new ArticleDto();
-		final Picture fileDBB = new Picture(file.getOriginalFilename(), file.getBytes(),file.getContentType());
-		pictureRepository.save(fileDBB);
-		articleDto.setPicture(fileDBB);
+		if (file.length == 0) {
+			ClassLoader classLoader = getClass().getClassLoader();
+			File emptyImg = new File(classLoader.getResource("article-vide.jpg").getFile());
+			picture.setBytes( Files.readAllBytes(emptyImg.toPath()));
+			picture.setFileName("article-vide.jpg");
+			picture.setType("image/*");
+			pictureRepository.save(picture);
+			articleDto.setPicture(picture);
+
+		}
+		for (MultipartFile file1 : file) {
+			picture.setFileName(file1.getOriginalFilename());
+			picture.setType(file1.getContentType());
+			try {
+				picture.setBytes(file1.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			pictureRepository.save(picture);
+		articleDto.setPicture(picture);
+		}
 		articleDto.setDesignation(designation);
-	articleDto.setPrix(prix);
 	articleDto.setIdClient(idClient);
-	articleDto.setMiseEnVeille(0);
 	articleDto.setRefClient(refClient);
 	articleDto.setReferenceIris(referenceIris);
 	articleDto.setTypeProduit(typeProduit);
 	articleDto.setRaisonSocial(raisonSocial);
-	List<EtapeProduction> productions = new ArrayList<>();
-	articleDto.setEtapeProductions(productions);
 	articleDto.setNumFicheTechnique(numFicheTechnique);
 	articleDto.setMiseEnVeille(0);
-		articleRepository.save(buildArticleFromArticleDto(articleDto));
+	articleRepository.save(buildArticleFromArticleDto(articleDto));
+
 	}
 
 	@Override
@@ -253,49 +265,47 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 							  String numFicheTechnique,
 							  String designation,
 							  String typeProduit,
-							  String idClient,
 							  String refClient,
 							  String raisonSocial,
-							  Double prix,
 							  String id,
-							  MultipartFile file) throws ResourceNotFoundException, IOException {
+							  MultipartFile[] file) throws ResourceNotFoundException, IOException {
 		Article article = articleRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
-		Picture picture = pictureRepository.findPictureByBytes(compressBytes(file.getBytes()));
-		if (picture!=null){
-			picture.setBytes(compressBytes(file.getBytes()));
-			picture.setFileName(file.getOriginalFilename());
-			pictureRepository.save(picture);
+		if (file != null) {
+			for (MultipartFile file1 : file) {
+				Picture picture = new Picture();
+				picture.setFileName(file1.getOriginalFilename());
+				picture.setType(file1.getContentType());
+				try {
+					picture.setBytes(file1.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				pictureRepository.save(picture);
 			article.setPicture(picture);
-		}else {
-			final Picture fileDBB = new Picture(file.getOriginalFilename(), compressBytes(file.getBytes()),file.getContentType());
-			pictureRepository.save(fileDBB);
-			article.setPicture(fileDBB);
 		}
-		Client client = clientRepository.findById(idClient)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
+			}
+		Client client = clientRepository.findClientByRaisonSocial(raisonSocial)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), refClient)));
 		article.setReferenceIris(referenceIris);
 		article.setNumFicheTechnique(numFicheTechnique);
 		article.setDesignation(designation);
-		article.setPrix(prix);
-		article.setMiseEnVeille(1);
 		article.setClient(client);
 		article.setRefClient(refClient);
 		article.setTypeProduit(typeProduit);
-	
 		articleRepository.save(article);
 	}
 
 
 	@Override
-	public void addEtapeToArticle(@Valid List<EtapeProduction> etapeProductions , String idArticle ) throws ResourceNotFoundException {
+	public void addEtapeToArticle(List<EtapeProduction> etapeProductions , String idArticle ) throws ResourceNotFoundException {
 		Article article = articleRepository.findById(idArticle)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idArticle)));
 		article.setEtapeProductions(etapeProductions);
-		LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findLigneCommandeClientByArticleId(idArticle)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idArticle)));
-		ligneCommandeClient.setArticle(article);
-		ligneCommandeClientRepository.save(ligneCommandeClient);
+//		LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findLigneCommandeClientByArticleId(idArticle)
+//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idArticle)));
+//		ligneCommandeClient.setArticle(article);
+//		ligneCommandeClientRepository.save(ligneCommandeClient);
 		articleRepository.save(article);
 	}
 
@@ -324,6 +334,31 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 	public void deleteArticle(String articleId) {
 		
 		articleRepository.deleteById(articleId);
+
+	}
+
+	@Override
+	public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size,int enVeille) {
+
+		try {
+
+			List<ArticleDto> articles;
+			Pageable paging = PageRequest.of(page, size);
+			Page<Article> pageTuts;
+			pageTuts = articleRepository.findArticleByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
+			articles = pageTuts.getContent().stream().map(article -> {
+				return buildArticleDtoFromArticle(article);
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("articles", articles);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 	}
 

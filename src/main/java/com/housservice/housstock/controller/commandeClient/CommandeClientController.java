@@ -22,7 +22,7 @@ import java.util.Map;
 @Api(tags = {"Commandes Clients Management"})
 public class CommandeClientController {
 
-	private CommandeClientService commandeClientService;
+	private final CommandeClientService commandeClientService;
 	  
     private final MessageHttpErrorProperties messageHttpErrorProperties;
 		
@@ -67,7 +67,7 @@ public class CommandeClientController {
 	  }
     
     @PutMapping("/addCmdClient")
-	  public ResponseEntity<String> createCommandeClient(@Valid @RequestBody CommandeClientDto commandeClientDto) {
+	  public ResponseEntity<String> createCommandeClient(@RequestBody CommandeClientDto commandeClientDto) {
 		  
   	  commandeClientService.createNewCommandeClient(commandeClientDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());

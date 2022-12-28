@@ -16,7 +16,7 @@ public interface ClientService {
 	ResponseEntity<Map<String, Object>> findClientActif(int page , int size);
 	ResponseEntity<Map<String, Object>> findClientNonActive(int page , int size);
 
-	public String getIdClients(String raisonSociale) throws ResourceNotFoundException;
+	public ResponseEntity<Map<String, Object>>  getIdClients(String raisonSociale) throws ResourceNotFoundException;
 
 	public List<String> getRaisonSociales();
 
@@ -49,7 +49,7 @@ public interface ClientService {
 							 String telecopie,
 							 String rib,
 							 String swift,
-							  MultipartFile[] cdImage) throws ResourceNotFoundException;
+							  MultipartFile[] images) throws ResourceNotFoundException;
 
 	public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
@@ -76,17 +76,16 @@ public interface ClientService {
 							 String telecopie,
 							 String rib,
 							 String swift,
-							 MultipartFile cdImage,
-							 MultipartFile rnImage,
-							 MultipartFile ciImage) throws ResourceNotFoundException;
-	public void miseEnVeille(String idClient ) throws ResourceNotFoundException;
-	public void addContactClient( ContactDto contactDto, String idClient ) throws ResourceNotFoundException;
-	public void updateContactClient( ContactDto contact, String idContact) throws ResourceNotFoundException;
+							 MultipartFile[] images) throws ResourceNotFoundException;
+	 void miseEnVeille(String idClient ) throws ResourceNotFoundException;
+	 void addContactClient( ContactDto contactDto, String idClient ) throws ResourceNotFoundException;
+	 void updateContactClient( ContactDto contact, String idContact) throws ResourceNotFoundException;
 
-	public void deleteClient(Client client);
+	 void deleteClient(Client client);
 	void deleteClientSelected(List<String> idClientsSelected);
 
-	public void deleteContactClient(String idContact) throws ResourceNotFoundException;
-	public void removePicture(String idContact) throws ResourceNotFoundException;
+	 void deleteContactClient(String idContact) throws ResourceNotFoundException;
+	 void removePictures(String idClient) throws ResourceNotFoundException;
 
+	void removePicture(String idPicture) throws ResourceNotFoundException;
 }
