@@ -133,9 +133,16 @@ public class ExcelService {
         File file = new File(classLoader.getResource("PersonnelFormatStandardExp.xlsx").getFile());
         return Files.readAllBytes(file.toPath());
     }
+    
     public byte[] getClientFileFromResourceAsStream() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("ClientFormatStandardExp.xlsx").getFile());
+        return Files.readAllBytes(file.toPath());
+    }
+    
+    public byte[] getFournisseurFileFromResourceAsStream() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("FournisseurFormatStandardExp.xlsx").getFile());
         return Files.readAllBytes(file.toPath());
     }
 

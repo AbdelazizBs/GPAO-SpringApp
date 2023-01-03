@@ -92,8 +92,7 @@ public class MatiereController {
 		return matiereService.getAllMatiereEnVeille(page, size);
 
 	}
-	
-	
+		
 	
 	@GetMapping("/search")
 	@ApiOperation(value = "service to filter matiere ")
@@ -104,8 +103,7 @@ public class MatiereController {
 		return matiereService.find(textToFind, page, size,enVeille);
 
 	}
-	
-	
+		
 
 	@DeleteMapping("/deleteMatiere/{id}")
 	@ApiOperation(value = "service to delete one Matiere by Id.")

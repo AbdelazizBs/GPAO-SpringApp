@@ -114,9 +114,18 @@ public class ExcelController {
 				.header("Content-Disposition", "attachment; filename=PersonnelFormatStandardExp.xlsx")
 				.body(data);
 	}
+	
 	@GetMapping("/downloadClientStandardFile")
 	public ResponseEntity<byte[]> downloadClientStandardFile() throws IOException {
 		byte[] data = fileService.getClientFileFromResourceAsStream();
+		return ResponseEntity.ok()
+				.header("Content-Disposition", "attachment; filename=ClientFormatStandardExp.xlsx")
+				.body(data);
+	}
+	
+	@GetMapping("/downloadFournisseurStandardFile")
+	public ResponseEntity<byte[]> downloadFournisseurStandardFile() throws IOException {
+		byte[] data = fileService.getFournisseurFileFromResourceAsStream();
 		return ResponseEntity.ok()
 				.header("Content-Disposition", "attachment; filename=ClientFormatStandardExp.xlsx")
 				.body(data);
