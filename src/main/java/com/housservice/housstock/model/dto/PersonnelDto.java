@@ -3,11 +3,9 @@ package com.housservice.housstock.model.dto;
 import com.housservice.housstock.model.Comptes;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.index.Indexed;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Getter
@@ -38,13 +36,10 @@ public class PersonnelDto {
 
 	private String codePostal;
 
-
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
 	private String cin;
-
-
-
-
-
 
 	@Email(message = "email is not valid")
 	private String email;
