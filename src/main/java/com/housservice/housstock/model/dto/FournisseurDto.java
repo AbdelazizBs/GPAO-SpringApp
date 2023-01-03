@@ -1,16 +1,6 @@
 package com.housservice.housstock.model.dto;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import javax.validation.constraints.Email;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,87 +8,55 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FournisseurDto {
-
-	@Id
+	
 	private String id;
-	
-	@JsonFormat(pattern="dd/MM/yyyy")	
-	private LocalDate date = LocalDate.now();
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String reference;
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String type;
 
-	@Size(max = 100)
-	private String raisonSocial;
+	private String refFrsIris;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+	private String intitule;
+
+	private String abrege;
+	
+	private String statut;
+
+	private String interlocuteur;
+	
 	private String adresse;
+
+	private String codePostal;
+
+	private String ville;
+
+	private String region;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String numTel;
-		
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
+	private String pays;
+	
+	private String telephone;
+	
+	private String telecopie;
+	
+	private String linkedin;
+	
+	@Email(message = "email is not valid")
 	private String email;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String banque;
+	private String siteWeb;
 	
+	private String nomBanque;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
 	private String adresseBanque;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
 	private String rib;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
 	private String swift;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String echeance;
+	private String codeDouane;
+	
+	private String rne;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String modePaiement;
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String codeTva;
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String exonerationRs;
+	private String identifiantTva;
+
+	private boolean miseEnVeille;
 		
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String certification;
-
-	private List<CommandeFournisseurDto> listCommandes = new ArrayList<>();
 	
 }

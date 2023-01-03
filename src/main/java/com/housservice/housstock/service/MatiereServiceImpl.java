@@ -1,128 +1,197 @@
 package com.housservice.housstock.service;
+import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.mapper.MatiereMapper;
+
 import com.housservice.housstock.model.Matiere;
 import com.housservice.housstock.model.dto.MatiereDto;
 import com.housservice.housstock.repository.MatiereRepository;
 
+
 @Service
 public class MatiereServiceImpl implements MatiereService {
+	
+	private MatiereRepository matiereRepository;
 
-	private MatiereRepository MatiereRepository;
-	
-	private SequenceGeneratorService sequenceGeneratorService;
-	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
-	
-	
-	@Autowired
-	public MatiereServiceImpl (MatiereRepository MatiereRepository,SequenceGeneratorService sequenceGeneratorService,
-			MessageHttpErrorProperties messageHttpErrorProperties)
-	{
-		this.MatiereRepository = MatiereRepository;
-		this.sequenceGeneratorService = sequenceGeneratorService;
+
+	public MatiereServiceImpl(MatiereRepository matiereRepository, MessageHttpErrorProperties messageHttpErrorProperties) {
+		
+		this.matiereRepository = matiereRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 
 	}
-	
-	
+
+
 	@Override
-	public MatiereDto buildMatiereDtoFromMatiere(Matiere Matiere) {
-		if (Matiere == null)
-		{
-			return null;
+	public void  addMatiere(MatiereDto matiereDto)   {
+	
+		if (matiereRepository.existsMatiereByRefMatiereIrisAndDesignation(matiereDto.getRefMatiereIris(),matiereDto.getDesignation())|| matiereRepository.existsMatiereByRefMatiereIris(matiereDto.getRefMatiereIris())) {
+			throw new IllegalArgumentException(	" reference matiere iris " + matiereDto.getRefMatiereIris() + " ou designation " + matiereDto.getDesignation() + "  existe deja !!");
 		}
 			
-		MatiereDto MatiereDto = new MatiereDto();
-		MatiereDto.setId(Matiere.getId());
-		MatiereDto.setCodeMatiere(Matiere.getCodeMatiere());
-		MatiereDto.setDesignation(Matiere.getDesignation());
-		MatiereDto.setPrixUnitaireHt(Matiere.getPrixUnitaireHt());
-		MatiereDto.setTauxTva(Matiere.getTauxTva());
-		MatiereDto.setPrixUnitaireTtc(Matiere.getPrixUnitaireTtc());
-		
-		return MatiereDto;
-		
+		final Matiere matiere = MatiereMapper.MAPPER.toMatiere(matiereDto);
+		 MatiereMapper.MAPPER.toMatiereDto(matiereRepository.save(matiere));
 	}
 
-	
-	private Matiere buildMatiereFromMatiereDto(MatiereDto MatiereDto) {
-		
-		Matiere Matiere = new Matiere();
-		Matiere.setId(""+sequenceGeneratorService.generateSequence(Matiere.SEQUENCE_NAME));	
-		Matiere.setCodeMatiere(MatiereDto.getCodeMatiere());
-		Matiere.setDesignation(MatiereDto.getDesignation());
-		Matiere.setPrixUnitaireHt(MatiereDto.getPrixUnitaireHt());
-		Matiere.setTauxTva(MatiereDto.getTauxTva());
-		Matiere.setPrixUnitaireTtc(MatiereDto.getPrixUnitaireTtc());
-		
-		return Matiere;
-		
-	}
-	
-	
+
 	@Override
-	public List<MatiereDto> getAllMatiere() {
+	public void  updateMatiere(MatiereDto matiereDto,String idMatiere) throws ResourceNotFoundException {
 		
-		List<Matiere> listMatiere = MatiereRepository.findAll();
+		Matiere matiere = matiereRepository.findById(idMatiere)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), matiereDto.getId())));
 		
-		return listMatiere.stream()
-				.map(Matiere -> buildMatiereDtoFromMatiere(Matiere))
-				.filter(Matiere -> Matiere != null)
-				.collect(Collectors.toList());
+		matiere.setRefMatiereIris(matiereDto.getRefMatiereIris());
+		matiere.setDesignation(matiereDto.getDesignation());
+		matiere.setFamille(matiereDto.getFamille());
+		matiere.setUniteAchat(matiereDto.getUniteAchat());
+		
+		matiereRepository.save(matiere);
 	}
 
 	@Override
-	public MatiereDto getMatiereById(String id) {
-		
-	    Optional<Matiere> MatiereOpt = MatiereRepository.findById(id);
-		if(MatiereOpt.isPresent()) {
-			return buildMatiereDtoFromMatiere(MatiereOpt.get());
+	public MatiereDto getMatiereById(String id) throws ResourceNotFoundException {
+		Optional<Matiere> utilisateurOpt = matiereRepository.findById(id);
+		if (utilisateurOpt.isPresent()) {
+			return MatiereMapper.MAPPER.toMatiereDto(utilisateurOpt.get());
 		}
 		return null;
 	}
 
 	
+
+
 	@Override
-	public void createNewMatiere(@Valid MatiereDto MatiereDto) {
+	public Matiere getMatiereByRefMatiereIris(String refMatiereIris) throws ResourceNotFoundException {
+		return matiereRepository.findByRefMatiereIris(refMatiereIris).orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), refMatiereIris)));
+	}
+
 	
-		MatiereRepository.save(buildMatiereFromMatiereDto(MatiereDto));
-		
+	@Override
+	public Matiere getMatiereByDesignation(String designation) throws ResourceNotFoundException {
+		return matiereRepository.findByDesignation(designation).orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), designation)));
 	}
 
+	
 	@Override
-	public void updateMatiere(@Valid MatiereDto MatiereDto) throws ResourceNotFoundException {
+	public ResponseEntity<Map<String, Object>> getAllMatiere(int page, int size) {
+		try {
+			List<MatiereDto> matieres = new ArrayList<MatiereDto>();
+			Pageable paging = PageRequest.of(page, size);
+			Page<Matiere> pageTuts;
+			pageTuts = matiereRepository.findMatiereByMiseEnVeille(false, paging);
+			matieres = pageTuts.getContent().stream().map(matiere -> {
 		
-		Matiere Matiere = MatiereRepository.findById(MatiereDto.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), MatiereDto.getId())));
-		
-		Matiere.setCodeMatiere(MatiereDto.getCodeMatiere());
-		Matiere.setDesignation(MatiereDto.getDesignation());
-		Matiere.setPrixUnitaireHt(MatiereDto.getPrixUnitaireHt());
-		Matiere.setTauxTva(MatiereDto.getTauxTva());
-		Matiere.setPrixUnitaireTtc(MatiereDto.getPrixUnitaireTtc());
+				return MatiereMapper.MAPPER.toMatiereDto(matiere);
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("matieres", matieres);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
-		
-		MatiereRepository.save(Matiere);
 	}
 
-	@Override
-	public void deleteMatiere(String MatiereId) {
-		
-		MatiereRepository.deleteById(MatiereId);
 
-		
+
+	@Override
+	public ResponseEntity<Map<String, Object>> find(String textToFind, int page, int size,boolean enVeille) {
+
+		try {
+
+			List<MatiereDto> matieres;
+			Pageable paging = PageRequest.of(page, size);
+			Page<Matiere> pageTuts;
+			pageTuts = matiereRepository.findMatiereByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
+			matieres = pageTuts.getContent().stream().map(matiere -> {
+				return MatiereMapper.MAPPER.toMatiereDto(matiere);
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("matieres", matieres);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
+	
+	@Override
+	public void deleteMatiere(String idMatiere) {
+		matiereRepository.deleteById(idMatiere);
 	}
 	
+	@Override
+	public void deleteMatiereSelected(List<String> idMatieresSelected){
+		for (String id : idMatieresSelected){
+			matiereRepository.deleteById(id);
+		}
+	}
+
+
+	@Override
+	public void mettreEnVeille(String idMatiere) throws ResourceNotFoundException {
+		Matiere matiere = matiereRepository.findById(idMatiere).orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), idMatiere)));
+		matiere.setMiseEnVeille(true);
+		matiereRepository.save(matiere);
+		
+	}
+
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getAllMatiereEnVeille(int page, int size) {
+		try {
+
+			List<MatiereDto> matieres;
+			Pageable paging = PageRequest.of(page, size);
+			Page<Matiere> pageTuts;
+			pageTuts = matiereRepository.findMatiereByMiseEnVeille(true, paging);
+			matieres = pageTuts.getContent().stream().map(matiere -> {
+				return MatiereMapper.MAPPER.toMatiereDto(matiere);
+			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+
+			response.put("matieres", matieres);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+
+
+
 }
