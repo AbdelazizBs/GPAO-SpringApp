@@ -27,5 +27,6 @@ public abstract class FournisseurMapper {
 	    void updateFournisseur(final FournisseurDto  FournisseurDto, @MappingTarget final Fournisseur Fournisseur) {
 
 	    }
-	  	    
+
+
 }
