@@ -38,15 +38,13 @@ public class FournisseurController {
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 
-
-
 	@Autowired
-	public FournisseurController(FournisseurService fournisseurService, MessageHttpErrorProperties messageHttpErrorProperties
-			) {
+	public FournisseurController(FournisseurService fournisseurService, MessageHttpErrorProperties messageHttpErrorProperties)
+	{
 
 		this.fournisseurService = fournisseurService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
-
+		
 	}
 
 	@GetMapping("/getAllFournisseur")
@@ -73,7 +71,6 @@ public class FournisseurController {
 
 	@GetMapping("/getIdFournisseurs/{intitule}")
 	@ApiOperation(value = "service to get Id Fournisseur by intitule.")
-
 	public ResponseEntity<Map<String, Object>>  getIdFournisseurs(  @ApiParam(name = "intitule", value="intitule of fournisseurs", required = true)
 	@PathVariable(value = "intitule", required = true) @NotEmpty(message = "{http.error.0001}") String intitule) throws ResourceNotFoundException {
 		return fournisseurService.getIdFournisseurs(intitule);
@@ -150,48 +147,94 @@ public class FournisseurController {
 			@RequestParam("refFrsIris")
 			@NotEmpty
 			String refFrsIris,
+			
 			@RequestParam("intitule")
 			@NotEmpty
 			String intitule,
+			
+			@RequestParam("abrege")
+			@NotEmpty
+			String abrege,
+			
+			@RequestParam("statut")
+			@NotEmpty
+			String statut,
+			
 			@RequestParam("adresse")
 			@NotEmpty
 			String adresse,
+			
 			@RequestParam("codePostal")
 			@NotEmpty
 			String codePostal,
+			
 			@RequestParam("ville")
 			@NotEmpty
 			String ville,
-			@RequestParam("pays")
-			@NotEmpty
-			String pays,
+			
 			@RequestParam("region")
 			@NotEmpty
 			String region,
-			@RequestParam("phone") String phone,
+			
+			@RequestParam("pays")
+			@NotEmpty
+			String pays,
+			
+			@RequestParam("telephone")
+			@NotEmpty
+			String telephone,
+			
+			@RequestParam("telecopie")
+			@NotEmpty
+			String telecopie,
+			
+			@RequestParam("linkedin")
+			@NotEmpty
+			String linkedin,
+			
 			@RequestParam("email")
 			@NotEmpty
 			@Email(message="Email invalide !!", regexp="^[A-Za-z0-9+_.-]+@(.+)$")
 			String email,
-			@RequestParam("statut") String statut,
-			@RequestParam("brancheActivite") String brancheActivite,
-			@RequestParam("secteurActivite") String secteurActivite,
-			@RequestParam("incoterm") String incoterm,
-			@RequestParam("echeance") String echeance,
-			@RequestParam("modePaiement") String modePaiement,
-			@RequestParam("nomBanque") String nomBanque,
-			@RequestParam("adresseBanque") String adresseBanque,
-			@RequestParam("codeDouane") String codeDouane,
-			@RequestParam("rne") String rne,
-			@RequestParam("cif") String cif,
-			@RequestParam("telecopie") String telecopie,
-			@RequestParam("rib") String rib,
-			@RequestParam("swift") String swift,
+			
+			@RequestParam("siteWeb")
+			@NotEmpty
+			String siteWeb,
+			
+			@RequestParam("nomBanque")
+			@NotEmpty
+			String nomBanque,
+			
+			@RequestParam("adresseBanque")
+			@NotEmpty
+			String adresseBanque,
+			
+			@RequestParam("rib")
+			@NotEmpty
+			String rib,
+			
+			@RequestParam("swift")
+			@NotEmpty
+			String swift,
+			
+			@RequestParam("codeDouane")
+			@NotEmpty
+			String codeDouane,
+			
+			@RequestParam("rne")
+			@NotEmpty
+			String rne,
+			
+			@RequestParam("identifiantTva")
+			@NotEmpty
+			String identifiantTva,
+			
+			
 			@RequestParam("images") MultipartFile[] images
 
 			) throws ResourceNotFoundException {
 
-		fournisseurService.createNewFournisseur(refFrsIris, intitule, echeance, statut, adresse, codePostal, ville, region, pays, phone, telecopie, modePaiement, email, telecopie, nomBanque, adresseBanque, rib, swift, codeDouane, rne, cif, images);
+		fournisseurService.createNewFournisseur(refFrsIris, intitule, abrege, statut,adresse, codePostal, ville, region, pays, telephone, telecopie, linkedin, email, siteWeb, nomBanque, adresseBanque, rib, swift, codeDouane, rne, identifiantTva, images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}
@@ -203,42 +246,42 @@ public class FournisseurController {
 			@PathVariable(value = "idFournisseur", required = true) @NotEmpty(message = "{http.error.0001}")  String idFournisseur,
 			@RequestParam("refFrsIris") String refFrsIris,
 			@RequestParam("intitule") String intitule,
+			@RequestParam("abrege") String abrege,
+			@RequestParam("statut") String statut,	
 			@RequestParam("adresse") String adresse,
 			@RequestParam("codePostal") String codePostal,
 			@RequestParam("ville") String ville,
-			@RequestParam("pays") String pays,
 			@RequestParam("region") String region,
-			@RequestParam("phone") String phone,
+			@RequestParam("pays") String pays,	
+			@RequestParam("telephone") String telephone,
+			@RequestParam("telecopie") String telecopie,
+			@RequestParam("linkedin") String linkedin,
 			@RequestParam("email") String email,
-			@RequestParam("statut") String statut,
-			@RequestParam("brancheActivite") String brancheActivite,
-			@RequestParam("secteurActivite") String secteurActivite,
-			@RequestParam("incoterm") String incoterm,
-			@RequestParam("echeance") String echeance,
-			@RequestParam("modePaiement") String modePaiement,
+			@RequestParam("siteWeb") String siteWeb,
 			@RequestParam("nomBanque") String nomBanque,
 			@RequestParam("adresseBanque") String adresseBanque,
-			@RequestParam("codeDouane") String codeDouane,
-			@RequestParam("rne") String rne,
-			@RequestParam("cif") String cif,
-			@RequestParam("telecopie") String telecopie,
 			@RequestParam("rib") String rib,
 			@RequestParam("swift") String swift,
+			@RequestParam("codeDouane") String codeDouane,
+			@RequestParam("rne") String rne,
+			@RequestParam("identifiantTva") String identifiantTva,
+
 			@RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
 
-		fournisseurService.updateFournisseur(idFournisseur, refFrsIris, intitule, echeance, statut, adresse, codePostal, ville, region, pays, phone, telecopie, modePaiement, email, telecopie, nomBanque, adresseBanque, rib, swift, codeDouane, rne, cif, images);
+		fournisseurService.updateFournisseur(idFournisseur, refFrsIris, intitule, abrege, statut,adresse, codePostal, ville, region, pays, telephone, telecopie, linkedin, email, siteWeb, nomBanque, adresseBanque, rib, swift, codeDouane, rne, identifiantTva, images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
+	
 	@PutMapping("/miseEnVeille/{idFournisseur}")
 	public ResponseEntity <String> miseEnVeille(
 			@ApiParam(name = "idFournisseur", value="id of fournisseur", required = true)
 			@PathVariable(value = "idFournisseur", required = true) @NotEmpty(message = "{http.error.0001}")  String idFournisseur,
 			@RequestBody(required = true) FournisseurDto fournisseurDto) throws ResourceNotFoundException {
 
-		fournisseurService.miseEnVeille(idFournisseur);
+		    fournisseurService.miseEnVeille(idFournisseur);
 
-		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+		    return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
 
 
@@ -312,8 +355,6 @@ public class FournisseurController {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
-
-
 
 
 }
