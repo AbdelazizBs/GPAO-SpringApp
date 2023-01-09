@@ -1,7 +1,7 @@
 package com.housservice.housstock.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -11,16 +11,10 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
 
-/**
- * 
- * @author houssem.khadraoui@gmail.com
- *
- */
 @Getter
 @Setter
 @Document(collection = "Nomenclature")
@@ -29,41 +23,69 @@ public class Nomenclature {
 	@Transient
     public static final String SEQUENCE_NAME = "nomenclature_sequence";
 	
-	/**
-	 * TYPE NOMENCLATURE : F
-	 */
-	@Transient
-	public static final String TYPE_FAMILLE = "F";
-	/**
-	 * TYPE NOMENCLATURE : A
-	 */
-	@Transient
-	public static final String TYPE_ARTICLE = "A";
-	/**
-	 * TYPE NOMENCLATURE : E
-	 */
-	@Transient
-	public static final String TYPE_ELEMENT = "E";
+	@Id
+	private String id;
 	
-    @Id
-    private String id;
+	// Référence IRIS
+	
+	// idParent
 
-    @NotBlank
-    private String idCompte;
+	@NotBlank
+	@Size(max = 100)
+	@Indexed(unique = true)
+	private String nomNomenclature;
+	
+	@NotBlank
+	@Size(max = 100)
+	private String description;
+	
+	
+	// type : Famille, Article,Element
+	@NotBlank
+	@Size(max = 100)
+	private String type;
+	
+	
+	// Simple, Composant
+	@NotBlank
+	@Size(max = 100)
+	private String nature;
+	
+	@NotBlank
+	@Size(max = 100)
+	private String categorie;
+	
+	
+	private List <Picture> pictures;
+	
+	private Date date ;
+	
+	private int miseEnVeille;
+	
+	private Date dateMiseEnVeille;
 
-    @NotBlank
-    @Size(max = 100)
-    @Indexed(unique = true)
-    private String nom;
-    
+	public Nomenclature() {
+	
+	}
 
-    private String description;
-    
-    @NotBlank
-    private String type;
-    
-    private String idParent;
-    
-    private Set<String> listIdChildren = new HashSet<>();
+	public Nomenclature(String id, @NotBlank @Size(max = 100) String nomNomenclature,
+			@NotBlank @Size(max = 100) String description, @NotBlank @Size(max = 100) String type,
+			@NotBlank @Size(max = 100) String nature, @NotBlank @Size(max = 100) String categorie,
+			Date date, int miseEnVeille, Date dateMiseEnVeille) {
+		super();
+		this.id = id;
+		this.nomNomenclature = nomNomenclature;
+		this.description = description;
+		this.type = type;
+		this.nature = nature;
+		this.categorie = categorie;
+		this.date = date;
+		this.miseEnVeille = miseEnVeille;
+		this.dateMiseEnVeille = dateMiseEnVeille;
+	}
+	
+	
+	
+	
     
 }

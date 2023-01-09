@@ -1,6 +1,7 @@
 package com.housservice.housstock.helper;
 
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Personnel;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -30,8 +31,6 @@ public class ExcelHelper {
 		return true;
 
 	}
-
-
 
 
 	 // read excel file and return a list of personnel
@@ -152,6 +151,80 @@ public class ExcelHelper {
 
 	}
 
+	
+	
+	public static List<Personnel> excelFormatSageToPersonnel(InputStream is) throws IOException
+	{
+
+		Workbook workbook = new XSSFWorkbook(is);
+
+		Sheet sheet = workbook.getSheetAt(0);
+
+		List<Personnel> personnels = new ArrayList<>();
+
+//		int i = sheet.getFirstRowNum()
+
+		for ( int i = 12 ; i <= sheet.getLastRowNum(); i++)
+		{
+
+			Row currentRow = sheet.getRow(i);
+
+
+			Iterator<Cell> cellsInRow = currentRow.iterator();
+
+			Personnel personnel = new Personnel();
+
+			int cellIdx = 0;
+
+			while (cellsInRow.hasNext())
+			{
+
+				Cell currentCell =  cellsInRow.next();
+
+				switch (cellIdx)
+				{
+
+					case 0:
+						personnel.setMatricule(currentCell.getRow().getCell(0).getStringCellValue());
+						break;
+
+
+					case 1:
+						personnel.setNom(currentCell.getRow().getCell(3).getStringCellValue());
+						break;
+
+					case 2:
+						personnel.setPrenom(currentCell.getRow().getCell(7).getStringCellValue());
+						break;
+
+					case 3:
+						personnel.setPhone(currentCell.getRow().getCell(12).getStringCellValue());
+						break;
+
+					case 4:
+						personnel.setPoste(currentCell.getRow().getCell(15).getStringCellValue());
+						break;
+
+
+
+					default:
+						break;
+
+				}
+
+				cellIdx++;
+			}
+
+			personnels.add(personnel);
+
+		}
+
+		workbook.close();
+		return personnels;
+
+	}
+
+
 
 	public static List<Client> excelToClients(InputStream is) throws IOException
 	{
@@ -234,6 +307,8 @@ public class ExcelHelper {
 		return clients;
 
 	}
+	
+	
 	public static List<Client> excelFormatSageToClient(InputStream is) throws IOException
 	{
 
@@ -301,26 +376,111 @@ public class ExcelHelper {
 
 	}
 
-	public static List<Personnel> excelFormatSageToPersonnel(InputStream is) throws IOException
+	
+	
+	public static List<Fournisseur> excelToFournisseurs(InputStream is) throws IOException
 	{
 
 		Workbook workbook = new XSSFWorkbook(is);
 
 		Sheet sheet = workbook.getSheetAt(0);
 
-		List<Personnel> personnels = new ArrayList<>();
+		List<Fournisseur> fournisseurs = new ArrayList<>();
 
-//		int i = sheet.getFirstRowNum()
+		int rowNumber = 0;
+
+		for (int i = 0; i <= sheet.getLastRowNum(); i++)
+			
+		{
+			Row currentRow = sheet.getRow(i);
+
+			// skip header
+
+			if (rowNumber == 0)
+			{
+				rowNumber++;
+				continue;
+			}
+
+			Iterator<Cell> cellsInRow = currentRow.iterator();
+
+			Fournisseur fournisseur = new Fournisseur();
+
+			int cellIdx = 0;
+
+			while (cellsInRow.hasNext())
+			{
+				Cell currentCell =  cellsInRow.next();
+
+				switch (cellIdx)
+				{
+
+					case 0:
+						fournisseur.setRefFrsIris(currentCell.getStringCellValue());
+						break;
+
+					case 1:
+						fournisseur.setIntitule(currentCell.getStringCellValue());
+						break;
+
+					case 2:
+						fournisseur.setAdresse(currentCell.getStringCellValue());
+						break;
+
+					case 3:
+						fournisseur.setCodePostal(currentCell.getStringCellValue());
+						break;
+					case 5:
+						fournisseur.setVille(currentCell.getStringCellValue());
+						break;
+
+					case 7:
+						fournisseur.setPays(currentCell.getStringCellValue());
+						break;
+					case 8:
+						fournisseur.setTelephone(currentCell.getStringCellValue());
+						break;
+					case 9:
+						fournisseur.setEmail(currentCell.getStringCellValue());
+						break;
+
+					default:
+						break;
+
+				}
+
+				cellIdx++;
+			}
+
+			fournisseurs.add(fournisseur);
+
+		}
+
+		workbook.close();
+		return fournisseurs;
+
+	}
+	
+	
+	public static List<Fournisseur> excelFormatSageToFournisseur(InputStream is) throws IOException
+	{
+
+		Workbook workbook = new XSSFWorkbook(is);
+
+		Sheet sheet = workbook.getSheetAt(0);
+
+		List<Fournisseur> fournisseurs = new ArrayList<>();
+
+
 
 		for ( int i = 12 ; i <= sheet.getLastRowNum(); i++)
 		{
 
 			Row currentRow = sheet.getRow(i);
 
-
 			Iterator<Cell> cellsInRow = currentRow.iterator();
 
-			Personnel personnel = new Personnel();
+			Fournisseur fournisseur = new Fournisseur();
 
 			int cellIdx = 0;
 
@@ -333,26 +493,21 @@ public class ExcelHelper {
 				{
 
 					case 0:
-						personnel.setMatricule(currentCell.getRow().getCell(0).getStringCellValue());
+						fournisseur.setRefFrsIris(currentCell.getRow().getCell(0).getStringCellValue());
 						break;
 
 
 					case 1:
-						personnel.setNom(currentCell.getRow().getCell(3).getStringCellValue());
+						fournisseur.setIntitule(currentCell.getRow().getCell(3).getStringCellValue());
 						break;
 
 					case 2:
-						personnel.setPrenom(currentCell.getRow().getCell(7).getStringCellValue());
+						fournisseur.setTelephone(currentCell.getRow().getCell(12).getStringCellValue());
 						break;
 
 					case 3:
-						personnel.setPhone(currentCell.getRow().getCell(12).getStringCellValue());
+						fournisseur.setTelecopie(currentCell.getRow().getCell(15).getStringCellValue());
 						break;
-
-					case 4:
-						personnel.setPoste(currentCell.getRow().getCell(15).getStringCellValue());
-						break;
-
 
 
 					default:
@@ -363,14 +518,15 @@ public class ExcelHelper {
 				cellIdx++;
 			}
 
-			personnels.add(personnel);
+			fournisseurs.add(fournisseur);
 
 		}
 
 		workbook.close();
-		return personnels;
+		return fournisseurs;
 
 	}
+
 
 }
 

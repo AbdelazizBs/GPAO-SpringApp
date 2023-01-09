@@ -41,67 +41,7 @@ public class NomenclatureController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 	  
-	  @GetMapping("/nomenclature/Familles/{idCompte}")
-	  @ResponseBody
-	  @ApiOperation(value = "service to get All Nomenclatures for an account with Family type.")
-	  public ResponseEntity<List < NomenclatureDto >> getAllNomenclatureFamillesRacine(
-			  @ApiParam(name = "idCompte", value="id of account", required = true)
-			  @PathVariable(value = "idCompte", required = true) @NotEmpty(message = "{http.error.0001}") String idCompte) {
-		  List<NomenclatureDto> listNomenclatureDto = nomenclatureService.getAllFamily(idCompte, Nomenclature.TYPE_FAMILLE, "");
-	      return ResponseEntity.ok().body(listNomenclatureDto);
-	  }
-	
 	  
-	  @GetMapping("/famille-search/{recherche}")
-	  @ApiOperation(value = "service to search Nomenclatures by name or description .")
-	  public ResponseEntity<List <NomenclatureDto>> getFamilleSearch(
-			  @ApiParam(name = "recherche", value="word used to search a Nomenclature", required = true)
-			  @PathVariable(value = "recherche") @Size(min = 3, message = "{http.error.0006}") String recherche) {
-	      return ResponseEntity.ok().body(nomenclatureService.findFamilyNomenclature(recherche));
-//		  return nomenclatureRepository.findByNomLikeOrDescriptionLikeAndTypeAllIgnoreCase(recherche, recherche, Nomenclature.TYPE_FAMILLE);
-	  }	  
+	
 
-	  @GetMapping("/nomenclature/{id}")
-	  @ApiOperation(value = "service to get one Nomenclature by Id.")
-	  public ResponseEntity < Nomenclature > getNomenclatureById(
-			  @ApiParam(name = "id", value="id of nomenclature", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String nomenclatureId)
-	  throws ResourceNotFoundException {
-	      Nomenclature nomenclature = nomenclatureService.getNomenclatureById(nomenclatureId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomenclatureId)));
-	      return ResponseEntity.ok().body(nomenclature);
-	  }
-
-	  @PutMapping("/nomenclature")
-	  public ResponseEntity<String> createNomenclature(@Valid @RequestBody NomenclatureDto nomenclatureDto) {
-		  
-		  nomenclatureService.createNewNomenclature(nomenclatureDto);
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
-	  }
-	  	 
-	  @PutMapping("/nomenclature/{id}")
-	  public ResponseEntity <String> updateNomenclature(
-			  @ApiParam(name = "id", value="id of nomenclature", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String nomenclatureId,
-	      @Valid @RequestBody(required = true) NomenclatureDto nomenclatureDto) throws ResourceNotFoundException {
-		  
-		  nomenclatureService.updateNomenclature(nomenclatureDto);
-	      
-	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
-	  }
-
-	  @DeleteMapping("/nomenclature/{id}")
-	  @ApiOperation(value = "service to delete one Nomenclature by Id.")
-	  public Map < String, Boolean > deleteNomenclature(
-			  @ApiParam(name = "id", value="id of nomenclature", required = true)
-			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String nomenclatureId)
-	  throws ResourceNotFoundException {
-	      Nomenclature nomenclature = nomenclatureService.getNomenclatureById(nomenclatureId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomenclatureId)));
-
-	      nomenclatureService.deleteNomenclature(nomenclature);
-	      Map < String, Boolean > response = new HashMap < > ();
-	      response.put("deleted", Boolean.TRUE);
-	      return response;
-	  }
 }

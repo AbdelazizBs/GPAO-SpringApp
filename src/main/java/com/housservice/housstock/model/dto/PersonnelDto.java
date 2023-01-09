@@ -1,9 +1,11 @@
 package com.housservice.housstock.model.dto;
 
-import com.housservice.housstock.model.Comptes;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
+
+import com.housservice.housstock.model.Comptes;
 
 import javax.validation.constraints.*;
 import java.util.Date;
