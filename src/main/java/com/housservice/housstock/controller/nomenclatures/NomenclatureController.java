@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/nomenclature")
 @Api(tags = {"Nomenclatures Management"})
 @Validated
 public class NomenclatureController {
