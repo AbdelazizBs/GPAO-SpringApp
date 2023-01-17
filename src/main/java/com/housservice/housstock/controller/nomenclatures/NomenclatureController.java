@@ -8,19 +8,17 @@ import com.housservice.housstock.service.NomenclatureService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.constraints.NotEmpty;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotEmpty;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -132,13 +130,13 @@ public class NomenclatureController {
 			@RequestParam("categorie")
 			@NotEmpty
 			String categorie,
-			
-			
+			@RequestParam("nomFamille")
+			List<String> nomFamille,
 			@RequestParam("images") MultipartFile[] images
 
 			) throws ResourceNotFoundException {
 
-		nomenclatureService.createNewNomenclature(nomNomenclature, description, type, nature, categorie, images);
+		nomenclatureService.createNewNomenclature(nomNomenclature,nomFamille, description, type, nature, categorie, images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}
@@ -153,11 +151,12 @@ public class NomenclatureController {
 			@RequestParam("type") String type,
 			@RequestParam("nature") String nature,	
 			@RequestParam("categorie") String categorie,
-	
+			@RequestParam("nomFamille")List<String> nomFamille,
+
 
 			@RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
 
-		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie, images);
+		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,nomFamille, images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
@@ -215,5 +214,11 @@ public class NomenclatureController {
 		return response;
 	}
 
+
+	@GetMapping("/getFamilleNomEnClatures")
+	@ApiOperation(value = "service to get list name of nomEnClature")
+	public List<String> getFamilleNomEnClatures() {
+		return nomenclatureService.getFamilleNomEnClatures();
+	}
 
 }

@@ -225,6 +225,9 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 								 String refClient,
 								 String raisonSocial,
 								 MultipartFile[] file) throws ResourceNotFoundException, IOException {
+//		if (articleRepository.findArticleByClientId(refClientIris) || clientRepository.existsClientByRaisonSocial(raisonSociale)) {
+//			throw new IllegalArgumentException(	"Matricule ou Raison sociale existe deja !!");
+//		}
 		Picture picture = new Picture();
 		ArticleDto articleDto = new ArticleDto();
 		if (file.length == 0) {

@@ -1,36 +1,31 @@
 package com.housservice.housstock.service;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.mapper.FournisseurMapper;
-
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.repository.ArticleRepository;
-
 import com.housservice.housstock.repository.ContactRepository;
 import com.housservice.housstock.repository.FournisseurRepository;
 import com.housservice.housstock.repository.PictureRepository;
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
-
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
@@ -151,7 +146,8 @@ public class FournisseurServiceImpl implements FournisseurService{
 						throw new IllegalArgumentException(	"Reference fournisseur iris ou Intitule existe deja !!");
 					}
 						FournisseurDto fournisseurDto = new FournisseurDto();
-						List<Picture> pictures = new ArrayList<>();
+				 List<Contact> contacts = new ArrayList<>();
+				 List<Picture> pictures = new ArrayList<>();
 					for (MultipartFile file : images) {
 						Picture picture = new Picture();
 						picture.setFileName(file.getOriginalFilename());
@@ -191,11 +187,7 @@ public class FournisseurServiceImpl implements FournisseurService{
 				fournisseurDto.setCodeDouane(codeDouane);
 				fournisseurDto.setRne(rne);
 				fournisseurDto.setIdentifiantTva(identifiantTva);
-					
-				List<Contact> contacts = new ArrayList<>();
-					if (fournisseurDto.getContact()==null){
 				fournisseurDto.setContact(contacts);
-			}
 					Fournisseur fournisseur = FournisseurMapper.MAPPER.toFournisseur(fournisseurDto);
 					fournisseurRepository.save(fournisseur);
 				}

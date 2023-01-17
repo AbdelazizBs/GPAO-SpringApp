@@ -1,15 +1,13 @@
 package com.housservice.housstock.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Nomenclature;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.housservice.housstock.exception.ResourceNotFoundException;
-
-import com.housservice.housstock.model.Nomenclature;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 public interface NomenclatureService {
@@ -23,7 +21,11 @@ public interface NomenclatureService {
 
     Optional<Nomenclature> getNomenclatureById(String id);
 
-    void createNewNomenclature(  String nomNomenclature,
+	public List<String> getFamilleNomEnClatures();
+
+
+	void createNewNomenclature(  String nomNomenclature,
+								 List<String> nomFamille,
 			  
 			 String description,
 			 
@@ -50,6 +52,7 @@ public interface NomenclatureService {
 			 String nature,
 					
 			 String categorie,
+			 List<String> nomFamille,
 
 			 MultipartFile[] images) throws ResourceNotFoundException;
 

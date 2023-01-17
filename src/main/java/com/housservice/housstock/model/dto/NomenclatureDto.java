@@ -1,14 +1,13 @@
 package com.housservice.housstock.model.dto;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.data.annotation.Id;
-
 import com.housservice.housstock.model.Picture;
-
+import com.housservice.housstock.model.enums.TypeNomEnClature;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,10 +20,11 @@ public class NomenclatureDto {
 	private String nomNomenclature;
 
 	private String description;
-	
-	private String type;
+
+	private TypeNomEnClature type;
 	
 	private String nature;
+	private List<String> nomNomEnclatureFamille;
 
 	private String categorie;
 	

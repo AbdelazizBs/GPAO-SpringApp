@@ -217,6 +217,10 @@ public class ClientController {
 	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
+
+
+
+
 	  @PutMapping("/miseEnVeille/{idClient}")
 	  public ResponseEntity <String> miseEnVeille(
 			  @ApiParam(name = "idClient", value="id of client", required = true)
