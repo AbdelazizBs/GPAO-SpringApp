@@ -53,7 +53,9 @@ public class Nomenclature {
 	@Size(max = 100)
 	private String categorie;
 
-	private List<Nomenclature> nomenclatures;
+	private List<Nomenclature> childrens;
+	private List<String> parentsName;
+
 
 	private List <Picture> pictures ;
 	
@@ -82,9 +84,19 @@ public class Nomenclature {
 		this.miseEnVeille = miseEnVeille;
 		this.dateMiseEnVeille = dateMiseEnVeille;
 	}
-	
-	
-	
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Nomenclature nomenclature = (Nomenclature) o;
+		return id.equals(nomenclature.id);
+	}
 	
     
 }

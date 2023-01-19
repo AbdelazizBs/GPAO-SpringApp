@@ -1,5 +1,6 @@
 package com.housservice.housstock.model.dto;
 
+import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.enums.TypeNomEnClature;
 import lombok.Getter;
@@ -24,7 +25,8 @@ public class NomenclatureDto {
 	private TypeNomEnClature type;
 	
 	private String nature;
-	private List<String> nomNomEnclatureFamille;
+	private List<Nomenclature> childrens;
+	private List<String> parentsName;
 
 	private String categorie;
 	

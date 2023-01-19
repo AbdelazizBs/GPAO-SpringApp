@@ -130,13 +130,13 @@ public class NomenclatureController {
 			@RequestParam("categorie")
 			@NotEmpty
 			String categorie,
-			@RequestParam("nomFamille")
-			List<String> nomFamille,
+			@RequestParam("parentsName")
+			List<String> parentsName,
 			@RequestParam("images") MultipartFile[] images
 
 			) throws ResourceNotFoundException {
 
-		nomenclatureService.createNewNomenclature(nomNomenclature,nomFamille, description, type, nature, categorie, images);
+		nomenclatureService.createNewNomenclature(nomNomenclature,parentsName, description, type, nature, categorie, images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}
@@ -151,12 +151,12 @@ public class NomenclatureController {
 			@RequestParam("type") String type,
 			@RequestParam("nature") String nature,	
 			@RequestParam("categorie") String categorie,
-			@RequestParam("nomFamille")List<String> nomFamille,
+			@RequestParam("parentsName")List<String> parentsName,
 
 
 			@RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
 
-		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,nomFamille, images);
+		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,parentsName, images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
@@ -215,10 +215,14 @@ public class NomenclatureController {
 	}
 
 
-	@GetMapping("/getFamilleNomEnClatures")
+	@GetMapping("/getFamilleParentArticle")
 	@ApiOperation(value = "service to get list name of nomEnClature")
-	public List<String> getFamilleNomEnClatures() {
-		return nomenclatureService.getFamilleNomEnClatures();
+	public List<String> getFamilleParentArticle() {
+		return nomenclatureService.getFamilleParentArticle();
+	}	@GetMapping("/getArticleParentElement")
+	@ApiOperation(value = "service to get list name of nomEnClature")
+	public List<String> getArticleParentElement() {
+		return nomenclatureService.getArticleParentElement();
 	}
 
 }

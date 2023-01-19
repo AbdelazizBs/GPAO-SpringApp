@@ -21,11 +21,12 @@ public interface NomenclatureService {
 
     Optional<Nomenclature> getNomenclatureById(String id);
 
-	public List<String> getFamilleNomEnClatures();
+	 List<String> getFamilleParentArticle();
+	 List<String> getArticleParentElement();
 
 
 	void createNewNomenclature(  String nomNomenclature,
-								 List<String> nomFamille,
+								 List<String> parentsName,
 			  
 			 String description,
 			 
@@ -52,7 +53,7 @@ public interface NomenclatureService {
 			 String nature,
 					
 			 String categorie,
-			 List<String> nomFamille,
+			 List<String> parentsName,
 
 			 MultipartFile[] images) throws ResourceNotFoundException;
 

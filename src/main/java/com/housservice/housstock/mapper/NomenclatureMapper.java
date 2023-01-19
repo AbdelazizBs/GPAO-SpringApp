@@ -6,39 +6,34 @@ import com.housservice.housstock.model.dto.NomenclatureDto;
 import com.housservice.housstock.repository.NomenclatureRepository;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Mapper(componentModel = "spring")
 public abstract class NomenclatureMapper {
 	@Autowired
 	NomenclatureRepository nomenclatureRepository;
 	@Autowired
-	private  MessageHttpErrorProperties messageHttpErrorProperties;
+	private MessageHttpErrorProperties messageHttpErrorProperties;
 	  public static NomenclatureMapper  MAPPER = Mappers.getMapper(NomenclatureMapper.class);
 
 
 
-	@Mapping(target = "nomNomEnclatureFamille", ignore = true)
+//	@Mapping(target = "parents", ignore = true)
 	public abstract NomenclatureDto toNomenclatureDto(Nomenclature nomenclature);
 
 
-	@Mapping(target = "nomenclatures", ignore = true)
+//	@Mapping(target = "parents", ignore = true)
 	  public abstract Nomenclature toNomenclature(NomenclatureDto  nomenclatureDto);
 
 
 	    @AfterMapping
 	    void updateNomenclatureDto(Nomenclature nomenclature, @MappingTarget NomenclatureDto nomenclatureDto)   {
-			if (nomenclature.getNomenclatures() != null) {
-			List<String> list = nomenclature.getNomenclatures().stream().map(Nomenclature::getNomNomenclature).collect(toList());
-			nomenclatureDto.setNomNomEnclatureFamille(list);
-			}
+//			if (nomenclature.getParents() != null) {
+//			List<String> list = nomenclature.getParents().stream().map(Nomenclature::getNomNomenclature).collect(toList());
+//			nomenclatureDto.setParentsName(list);
+//			}
 		}
 
 

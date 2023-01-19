@@ -24,6 +24,7 @@ public interface NomenclatureRepository extends MongoRepository<Nomenclature, St
 	
 	Optional<Nomenclature> findNomenclatureByNomNomenclature(String nomNomenclature);
 	List<Nomenclature> findNomenclatureByTypeAndMiseEnVeille(String type, int miseEnVeille);
+	List<Nomenclature> findNomenclatureByMiseEnVeille( int miseEnVeille);
 
 
 @Query( "{$or:[{'nomNomenclature': {$regex : ?0}},{'type': {$regex : ?0}} ,{'nature': {$regex : ?0}} ,{'categorie': {$regex : ?0}}] }")
