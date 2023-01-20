@@ -141,8 +141,14 @@ public class NomenclatureController {
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}
 
+	@GetMapping("/getLigneSousFamilleByIdFamille/{idNomEnClature}")
+	public List<Nomenclature> getLigneSousFamilleByIdFamille(
+			@PathVariable(value = "idNomEnClature") String idNomEnClature) throws ResourceNotFoundException {
+		return nomenclatureService.getLigneSousFamilleByIdFamille(idNomEnClature);
+}
 
-	@PutMapping("/updateNomenclature/{idNomenclature}")
+
+		@PutMapping("/updateNomenclature/{idNomenclature}")
 	public ResponseEntity <String> updateNomenclature(
 			@ApiParam(name = "idNomenclature", value="id of Nomenclature", required = true)
 			@PathVariable(value = "idNomenclature", required = true) @NotEmpty(message = "{http.error.0001}")  String idNomenclature,
@@ -215,14 +221,11 @@ public class NomenclatureController {
 	}
 
 
-	@GetMapping("/getFamilleParentArticle")
-	@ApiOperation(value = "service to get list name of nomEnClature")
-	public List<String> getFamilleParentArticle() {
-		return nomenclatureService.getFamilleParentArticle();
-	}	@GetMapping("/getArticleParentElement")
-	@ApiOperation(value = "service to get list name of nomEnClature")
-	public List<String> getArticleParentElement() {
-		return nomenclatureService.getArticleParentElement();
+	@GetMapping("/getParent")
+	@ApiOperation(value = "service to get parents name of nomEnClature")
+	public List<String> getParent() {
+		return nomenclatureService.getParent();
 	}
+
 
 }

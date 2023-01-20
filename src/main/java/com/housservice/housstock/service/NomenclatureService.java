@@ -21,16 +21,15 @@ public interface NomenclatureService {
 
     Optional<Nomenclature> getNomenclatureById(String id);
 
-	 List<String> getFamilleParentArticle();
-	 List<String> getArticleParentElement();
+	 List<String> getParent();
 
 
 	void createNewNomenclature(  String nomNomenclature,
 								 List<String> parentsName,
 			  
 			 String description,
-			 
-			 String type,
+
+								 String type,
 				
 			 String nature,
 					
@@ -67,6 +66,7 @@ public interface NomenclatureService {
     void removePictures(String idNomenclature) throws ResourceNotFoundException;
 
     void removePicture(String idPic) throws ResourceNotFoundException;
-       
-	
+
+	public List<Nomenclature> getLigneSousFamilleByIdFamille(String idNomEnClature) throws ResourceNotFoundException;
+
 }

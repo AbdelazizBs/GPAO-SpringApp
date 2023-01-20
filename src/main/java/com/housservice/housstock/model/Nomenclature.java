@@ -37,14 +37,9 @@ public class Nomenclature {
 	@NotBlank
 	@Size(max = 100)
 	private String description;
-	
-	
-	// type : Famille, Article,Element
 
 	private TypeNomEnClature type;
-	
-	
-	// Simple, Composant
+
 	@NotBlank
 	@Size(max = 100)
 	private String nature;
@@ -53,7 +48,7 @@ public class Nomenclature {
 	@Size(max = 100)
 	private String categorie;
 
-	private List<Nomenclature> childrens;
+	private List<String> childrensId;
 	private List<String> parentsName;
 
 
