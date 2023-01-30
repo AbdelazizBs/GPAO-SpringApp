@@ -55,8 +55,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 				outputStream.write(buffer, 0, count);
 			}
 			outputStream.close();
-		} catch (IOException ioe) {
-		} catch (DataFormatException e) {
+		} catch (IOException | DataFormatException ignored) {
 		}
 		return outputStream.toByteArray();
 	}
@@ -69,12 +68,21 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 			List<NomenclatureDto> nomenclatures;
 			Pageable paging = PageRequest.of(page, size);
 			Page<Nomenclature> pageTuts;
+			List<Nomenclature> childerns = new ArrayList<>();
 			pageTuts =  nomenclatureRepository.findNomenclatureActif(paging);
+			Map<String, Object> response = new HashMap<>();
 			nomenclatures = pageTuts.getContent().stream().map(nomenclature ->
-					NomenclatureMapper.MAPPER.toNomenclatureDto(nomenclature)).collect(Collectors.toList());
+				{
+					for (int i = 0; i < nomenclature.getChildrensId().size(); i++) {
+						Nomenclature nomenclature1 = nomenclatureRepository.findById(nomenclature.getChildrensId().get(i)).get();
+						childerns.add(nomenclature1);
+					}
+					NomenclatureDto nomenclatureDto = NomenclatureMapper.MAPPER.toNomenclatureDto(nomenclature, childerns);
+					return nomenclatureDto;
+				}
+			).collect(Collectors.toList());
 			nomenclatures = nomenclatures.stream().filter(nomenclature -> nomenclature.getParentsName().isEmpty())
 					.collect(Collectors.toList());
-			Map<String, Object> response = new HashMap<>();
 			response.put("nomenclatures", nomenclatures);
 			response.put("currentPage", pageTuts.getNumber());
 			response.put("totalItems", pageTuts.getTotalElements());
@@ -84,29 +92,27 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+
 	}
-
-
-
 	@Override
 	public ResponseEntity<Map<String, Object>> findNomenclatureNonActive(int page, int size) {
-		try {
-			List<NomenclatureDto> nomenclatures;
-			Pageable paging = PageRequest.of(page, size);
-			Page<Nomenclature> pageTuts;
-			pageTuts =  nomenclatureRepository.findNomenclatureNotActif(paging);
-			nomenclatures = pageTuts.getContent().stream().map(nomenclature ->
-					NomenclatureMapper.MAPPER.toNomenclatureDto(nomenclature)).collect(Collectors.toList());
-			Map<String, Object> response = new HashMap<>();
-			response.put("nomenclatures", nomenclatures);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
-
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
+//		try {
+//			List<NomenclatureDto> nomenclatures;
+//			Pageable paging = PageRequest.of(page, size);
+//			Page<Nomenclature> pageTuts;
+//			pageTuts =  nomenclatureRepository.findNomenclatureNotActif(paging);
+//			nomenclatures = pageTuts.getContent().stream().map(nomenclature ->
+//					NomenclatureMapper.MAPPER.toNomenclatureDto(nomenclature)).collect(Collectors.toList());
+//			Map<String, Object> response = new HashMap<>();
+//			response.put("nomenclatures", nomenclatures);
+//			response.put("currentPage", pageTuts.getNumber());
+//			response.put("totalItems", pageTuts.getTotalElements());
+//			response.put("totalPages", pageTuts.getTotalPages());
+//
+//			return new ResponseEntity<>(response, HttpStatus.OK);
+//		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+//		}
 	}
 
 
@@ -261,27 +267,27 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	@Override
 	public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
 
-		try {
-
-			List<NomenclatureDto> nomenclatures;
-			Pageable paging = PageRequest.of(page, size);
-			Page<Nomenclature> pageTuts;
-			pageTuts = nomenclatureRepository.findNomenclatureByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
-			nomenclatures = pageTuts.getContent().stream().map(
-					nomenclature -> {
-						return NomenclatureMapper.MAPPER.toNomenclatureDto(nomenclature);
-
-					}).collect(Collectors.toList());
-			Map<String, Object> response = new HashMap<>();
-			response.put("nomenclatures", nomenclatures);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
-
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
+//		try {
+//
+//			List<NomenclatureDto> nomenclatures;
+//			Pageable paging = PageRequest.of(page, size);
+//			Page<Nomenclature> pageTuts;
+//			pageTuts = nomenclatureRepository.findNomenclatureByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
+//			nomenclatures = pageTuts.getContent().stream().map(
+//					nomenclature -> {
+//						return NomenclatureMapper.MAPPER.toNomenclatureDto(nomenclature);
+//
+//					}).collect(Collectors.toList());
+//			Map<String, Object> response = new HashMap<>();
+//			response.put("nomenclatures", nomenclatures);
+//			response.put("currentPage", pageTuts.getNumber());
+//			response.put("totalItems", pageTuts.getTotalElements());
+//			response.put("totalPages", pageTuts.getTotalPages());
+//
+//			return new ResponseEntity<>(response, HttpStatus.OK);
+//		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+//		}
 	}
 	@Override
 	public void miseEnVeille(String idNomenclature) throws ResourceNotFoundException {

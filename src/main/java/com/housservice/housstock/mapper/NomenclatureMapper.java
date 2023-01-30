@@ -11,6 +11,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public abstract class NomenclatureMapper {
 	@Autowired
@@ -22,7 +24,7 @@ public abstract class NomenclatureMapper {
 
 
 	@Mapping(target = "childrens", ignore = true)
-	public abstract NomenclatureDto toNomenclatureDto(Nomenclature nomenclature)  ;
+	public abstract NomenclatureDto toNomenclatureDto(Nomenclature nomenclature, List<Nomenclature> childrens);
 
 
 	@Mapping(target = "childrensId", ignore = true)
@@ -30,13 +32,10 @@ public abstract class NomenclatureMapper {
 
 
 		@AfterMapping
-	    void updateNomenclatureDto(Nomenclature nomenclature, @MappingTarget NomenclatureDto nomenclatureDto)  {
-//			if (nomenclature.getChildrensId() != null && !nomenclature.getChildrensId().isEmpty()) {
-//				List<Nomenclature> nomenclatureList = new ArrayList<>();
-//				Nomenclature nomenclature1 =	nomenclatureRepository.findNomenclatureById(nomenclature.getId());
-//					nomenclatureList.add(nomenclature1);
-//					nomenclatureDto.setChildrens(nomenclatureList);
-//			}
+	    void updateNomenclatureDto(Nomenclature nomenclature, @MappingTarget NomenclatureDto nomenclatureDto, List<Nomenclature> childrens)  {
+			if (childrens != null && !childrens.isEmpty()) {
+				nomenclatureDto.setChildrens(childrens);
+			}
 	    }
 
 
