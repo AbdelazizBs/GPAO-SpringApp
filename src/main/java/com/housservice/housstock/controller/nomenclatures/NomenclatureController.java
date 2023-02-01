@@ -49,6 +49,12 @@ public class NomenclatureController {
 		return nomenclatureService.findNomenclatureActif(page,size);
 
 	}
+	@GetMapping("/getRow")
+	@ApiOperation(value = "service to get tout les nomenclatures ")
+	public ResponseEntity<Map<String, Object>> getRow(@RequestParam List<String> childrenIds) {
+		return nomenclatureService.getRow(childrenIds);
+
+	}
 
 
 	@GetMapping("/nomenclature/{id}")

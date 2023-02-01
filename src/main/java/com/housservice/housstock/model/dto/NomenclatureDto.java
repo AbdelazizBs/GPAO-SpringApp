@@ -25,8 +25,11 @@ public class NomenclatureDto {
 	private TypeNomEnClature type;
 	
 	private String nature;
+	private List<String> childrensId;
 	private List<Nomenclature> childrens;
-	private List<String> parentsName;
+
+
+	private List<String> parentsId;
 
 	private String categorie;
 	

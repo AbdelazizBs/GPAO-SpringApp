@@ -15,27 +15,25 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public abstract class NomenclatureMapper {
-	@Autowired
-	NomenclatureRepository nomenclatureRepository;
-	@Autowired
-	private MessageHttpErrorProperties messageHttpErrorProperties;
+
+
 	  public static NomenclatureMapper  MAPPER = Mappers.getMapper(NomenclatureMapper.class);
 
 
 
-	@Mapping(target = "childrens", ignore = true)
-	public abstract NomenclatureDto toNomenclatureDto(Nomenclature nomenclature, List<Nomenclature> childrens);
+//	@Mapping(target = "childrens", ignore = true)
+	public abstract NomenclatureDto toNomenclatureDto(Nomenclature nomenclature);
 
 
-	@Mapping(target = "childrensId", ignore = true)
+//	@Mapping(target = "childrensId", ignore = true)
 	  public abstract Nomenclature toNomenclature(NomenclatureDto  nomenclatureDto);
 
 
 		@AfterMapping
-	    void updateNomenclatureDto(Nomenclature nomenclature, @MappingTarget NomenclatureDto nomenclatureDto, List<Nomenclature> childrens)  {
-			if (childrens != null && !childrens.isEmpty()) {
-				nomenclatureDto.setChildrens(childrens);
-			}
+	    void updateNomenclatureDto(Nomenclature nomenclature)  {
+//			if (childrens != null && !childrens.isEmpty()) {
+//				nomenclatureDto.setChildrens(childrens);
+//			}
 	    }
 
 

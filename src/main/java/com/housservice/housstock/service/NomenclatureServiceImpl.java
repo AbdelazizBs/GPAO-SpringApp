@@ -34,8 +34,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	final PictureRepository pictureRepository;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
-	
-	
+
+
 	@Autowired
 	public NomenclatureServiceImpl(NomenclatureRepository nomenclatureRepository, SequenceGeneratorService sequenceGeneratorService,
 							 MessageHttpErrorProperties messageHttpErrorProperties, PictureRepository pictureRepository) {
@@ -65,24 +65,66 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	public ResponseEntity<Map<String, Object>> findNomenclatureActif(int page, int size) {
 
 		try {
-			List<NomenclatureDto> nomenclatures;
+			List<Nomenclature> nomenclatures;
+			List<NomenclatureDto> nomenclaturesSDto;
 			Pageable paging = PageRequest.of(page, size);
 			Page<Nomenclature> pageTuts;
-			List<Nomenclature> childerns = new ArrayList<>();
 			pageTuts =  nomenclatureRepository.findNomenclatureActif(paging);
 			Map<String, Object> response = new HashMap<>();
-			nomenclatures = pageTuts.getContent().stream().map(nomenclature ->
-				{
-					for (int i = 0; i < nomenclature.getChildrensId().size(); i++) {
-						Nomenclature nomenclature1 = nomenclatureRepository.findById(nomenclature.getChildrensId().get(i)).get();
-						childerns.add(nomenclature1);
-					}
-					NomenclatureDto nomenclatureDto = NomenclatureMapper.MAPPER.toNomenclatureDto(nomenclature, childerns);
-					return nomenclatureDto;
-				}
-			).collect(Collectors.toList());
-			nomenclatures = nomenclatures.stream().filter(nomenclature -> nomenclature.getParentsName().isEmpty())
+			nomenclatures = pageTuts.getContent().stream().filter(nomenclature -> nomenclature.getParentsId() .isEmpty())
 					.collect(Collectors.toList());
+			nomenclatures = nomenclatures.stream().map(nomenclature -> {
+			nomenclature.getChildrensId().stream().map( childrenId -> {
+				Optional<Nomenclature> nomenclatureOptional = nomenclatureRepository.findById(childrenId);
+				if (nomenclatureOptional.isPresent())
+					nomenclature.getChildrens().add(nomenclatureOptional.get());
+				return nomenclature;
+			}).collect(Collectors.toList());
+				return nomenclature;
+			}).collect(Collectors.toList());
+			response.put("nomenclatures", nomenclatures);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getRow(List<String> childrenIds) {
+
+		try {
+			List<Nomenclature> nomenclatures;
+			List<NomenclatureDto> nomenclaturesSDto;
+			Page<Nomenclature> pageTuts = null;
+			Map<String, Object> response = new HashMap<>();
+			nomenclatures = pageTuts.getContent().stream().filter(nomenclature -> nomenclature.getParentsId() .isEmpty())
+					.collect(Collectors.toList());
+			nomenclatures = nomenclatures.stream().map(nomenclature -> {
+			nomenclature.getChildrensId().stream().map( childrenId -> {
+				Optional<Nomenclature> nomenclatureOptional = nomenclatureRepository.findById(childrenId);
+				if (nomenclatureOptional.isPresent())
+					nomenclature.getChildrens().add(nomenclatureOptional.get());
+				return nomenclature;
+			}).collect(Collectors.toList());
+				return nomenclature;
+			}).collect(Collectors.toList());
+			nomenclatures.stream().map(nomenclature -> {
+				nomenclature.getChildrens().stream().map(children -> {
+					children.getChildrensId().stream().map(childrenId -> {
+						Optional<Nomenclature> nomenclatureOptional = nomenclatureRepository.findById(childrenId);
+						if (nomenclatureOptional.isPresent())
+							children.getChildrens().add(nomenclatureOptional.get());
+						return children;
+					}).collect(Collectors.toList());
+					return children;
+				}).collect(Collectors.toList());
+				return nomenclature;
+			}).collect(Collectors.toList());
 			response.put("nomenclatures", nomenclatures);
 			response.put("currentPage", pageTuts.getNumber());
 			response.put("totalItems", pageTuts.getTotalElements());
@@ -147,8 +189,10 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	@Override
 	public void createNewNomenclature(String nomNomenclature,
 									  List<String> parentsName,
-									  String description, String type, String nature,
-			String categorie, MultipartFile[] images) throws ResourceNotFoundException {
+									  String description,
+									  String type,
+									  String nature,
+									  String categorie, MultipartFile[] images) throws ResourceNotFoundException {
 		if (nomenclatureRepository.existsNomenclatureByNomNomenclature(nomNomenclature)) {
 			throw new IllegalArgumentException(	"Nom nomenclature existe déja !!");
 		}
@@ -174,24 +218,30 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		nomenclatureDto.setDescription(description);
 		nomenclatureDto.setNature(nature);
 		nomenclatureDto.setCategorie(categorie);
-		nomenclatureDto.setParentsName(parentsName);
+		nomenclatureDto.setParentsId(new ArrayList<>());
+		nomenclatureDto.setChildrensId(new ArrayList<>());
+		nomenclatureDto.setChildrens(new ArrayList<>());
 		Nomenclature nomenclature = NomenclatureMapper.MAPPER.toNomenclature(nomenclatureDto);
-		nomenclature.setChildrensId(new ArrayList<>());
 		nomenclatureRepository.save(nomenclature);
-		if (nomenclatureDto.getParentsName() != null) {
+		if (parentsName != null) {
 			List<String> childrens = new ArrayList<>();
-			for (String parentName : nomenclatureDto.getParentsName() ) {
+			List<String> parents = new ArrayList<>();
+			for (String parentName : parentsName ) {
 				try {
-					Nomenclature realChild = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
+					Nomenclature parent = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
 							new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),parentName)));
 					childrens.add(nomenclature.getId());
-					childrens.addAll(realChild.getChildrensId());
-					realChild.setChildrensId(childrens);
-					nomenclatureRepository.save(realChild);
+					childrens.addAll(parent.getChildrensId());
+					parent.setChildrensId(childrens);
+					parents.add(parent.getId());
+				nomenclatureRepository.save(parent);
 				} catch (ResourceNotFoundException e) {
 					throw new RuntimeException(e);
 				}
 			}
+			nomenclature.setParentsId(parents);
+			nomenclatureRepository.save(nomenclature);
+
 		}
 	}
 
@@ -230,36 +280,21 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		nomenclature.setCategorie(categorie);
 		nomenclature.setNomNomenclature(nomNomenclature);
 		if (parentsName.isEmpty()){
-			for (String parentName : nomenclature.getParentsName() ) {
+			List<String> childrens = new ArrayList<>();
+			for (String parentName :parentsName ) {
 				try {
 					Nomenclature parentNo = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
 							new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),parentName)));
-					parentNo.getChildrensId().removeIf(id -> !nomenclature.getId().contains(id));
-					nomenclatureRepository.save(parentNo);
+					childrens.add(parentNo.getId());
+//					childrens.addAll(nomenclature.getParentsId());
 				} catch (ResourceNotFoundException e) {
 					throw new RuntimeException(e);
 				}
 			}
+			nomenclatureRepository.save(nomenclature);
 		}
-		if (!parentsName.isEmpty()) {
-			List<String> childrens = new ArrayList<>();
-			for (String parentName : parentsName ) {
-				try {
-					Nomenclature realChild = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
-							new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),parentName)));
-					realChild.getChildrensId().removeIf(id -> !nomenclature.getId().contains(id));
-					childrens.add(nomenclature.getId());
-					childrens.addAll(realChild.getChildrensId());
-					realChild.setChildrensId(childrens);
-					nomenclatureRepository.save(realChild);
-				} catch (ResourceNotFoundException e) {
-					throw new RuntimeException(e);
-				}
 			}
-		}
-		nomenclature.setParentsName(parentsName);
-		nomenclatureRepository.save(nomenclature);
-	}
+
 
 
 
@@ -358,17 +393,17 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	List<Nomenclature> nomenclatures = new ArrayList<>();
 		Nomenclature nomenclature = nomenclatureRepository.findById
 				(idNomEnClature).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomEnClature)));
-		nomenclature.getChildrensId().stream().map(
-				id -> {
-					try {
-						return nomenclatures.add(nomenclatureRepository.findById(id).orElseThrow(() ->
-								new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id))));
-
-					} catch (ResourceNotFoundException e) {
-						throw new RuntimeException(e);
-					}
-				}
-		).collect(Collectors.toList());
+//		nomenclature.getChildrensId().stream().map(
+//				id -> {
+//					try {
+//						return nomenclatures.add(nomenclatureRepository.findById(id).orElseThrow(() ->
+//								new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id))));
+//
+//					} catch (ResourceNotFoundException e) {
+//						throw new RuntimeException(e);
+//					}
+//				}
+//		).collect(Collectors.toList());
 		return nomenclatures;
 	}
 

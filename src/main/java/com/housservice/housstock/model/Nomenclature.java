@@ -49,7 +49,9 @@ public class Nomenclature {
 	private String categorie;
 
 	private List<String> childrensId;
-	private List<String> parentsName;
+	private List<String> parentsId;
+
+	private List<Nomenclature> childrens;
 
 
 	private List <Picture> pictures ;

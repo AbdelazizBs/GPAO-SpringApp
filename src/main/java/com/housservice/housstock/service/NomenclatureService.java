@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface NomenclatureService {
 
 	ResponseEntity<Map<String, Object>> findNomenclatureActif(int page , int size);
+	ResponseEntity<Map<String, Object>> getRow(List<String> childrenIds);
 	ResponseEntity<Map<String, Object>> findNomenclatureNonActive(int page , int size);
 
 	public ResponseEntity<Map<String, Object>>  getIdNomenclatures(String nomNomenclature) throws ResourceNotFoundException;
