@@ -8,19 +8,17 @@ import com.housservice.housstock.service.NomenclatureService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.constraints.NotEmpty;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotEmpty;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -49,6 +47,12 @@ public class NomenclatureController {
 	public ResponseEntity<Map<String, Object>> getAllNomenclature(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 
 		return nomenclatureService.findNomenclatureActif(page,size);
+
+	}
+	@GetMapping("/getRow")
+	@ApiOperation(value = "service to get tout les nomenclatures ")
+	public ResponseEntity<Map<String, Object>> getRow(@RequestParam List<String> childrenIds) {
+		return nomenclatureService.getRow(childrenIds);
 
 	}
 
@@ -132,19 +136,25 @@ public class NomenclatureController {
 			@RequestParam("categorie")
 			@NotEmpty
 			String categorie,
-			
-			
+			@RequestParam("parentsName")
+			List<String> parentsName,
 			@RequestParam("images") MultipartFile[] images
 
 			) throws ResourceNotFoundException {
 
-		nomenclatureService.createNewNomenclature(nomNomenclature, description, type, nature, categorie, images);
+		nomenclatureService.createNewNomenclature(nomNomenclature,parentsName, description, type, nature, categorie, images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}
 
+	@GetMapping("/getLigneSousFamilleByIdFamille/{idNomEnClature}")
+	public List<Nomenclature> getLigneSousFamilleByIdFamille(
+			@PathVariable(value = "idNomEnClature") String idNomEnClature) throws ResourceNotFoundException {
+		return nomenclatureService.getLigneSousFamilleByIdFamille(idNomEnClature);
+}
 
-	@PutMapping("/updateNomenclature/{idNomenclature}")
+
+		@PutMapping("/updateNomenclature/{idNomenclature}")
 	public ResponseEntity <String> updateNomenclature(
 			@ApiParam(name = "idNomenclature", value="id of Nomenclature", required = true)
 			@PathVariable(value = "idNomenclature", required = true) @NotEmpty(message = "{http.error.0001}")  String idNomenclature,
@@ -153,11 +163,12 @@ public class NomenclatureController {
 			@RequestParam("type") String type,
 			@RequestParam("nature") String nature,	
 			@RequestParam("categorie") String categorie,
-	
+			@RequestParam("parentsName")List<String> parentsName,
+
 
 			@RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
 
-		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie, images);
+		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,parentsName, images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
@@ -213,6 +224,13 @@ public class NomenclatureController {
 		Map < String, Boolean > response = new HashMap< >();
 		response.put("deleted", Boolean.TRUE);
 		return response;
+	}
+
+
+	@GetMapping("/getParent")
+	@ApiOperation(value = "service to get parents name of nomEnClature")
+	public List<String> getParent() {
+		return nomenclatureService.getParent();
 	}
 
 

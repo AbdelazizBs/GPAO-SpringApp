@@ -50,11 +50,13 @@ public class PersonnelServiceImpl implements PersonnelService {
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(personnelDto.getEmail());
-		if (!personnelDto.getEmail().equals("") && !matcher.matches()) throw new IllegalArgumentException("Email incorrecte !!");
+		if (!personnelDto.getEmail().equals("") && !matcher.matches()) {
+			throw new IllegalArgumentException("Email incorrecte !!");
+		}
 		if (personnelRepository.existsPersonnelByCinAndMatricule(personnelDto.getCin(),personnelDto.getMatricule())|| personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())) {
 			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() + " ou matricule " + personnelDto.getMatricule() + "  existe deja !!");
 		}
-		final Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
+		Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
 		 PersonnelMapper.MAPPER.toPersonnelDto(personnelRepository.save(personnel));
 	}
 
@@ -142,6 +144,9 @@ public class PersonnelServiceImpl implements PersonnelService {
 		}
 
 	}
+
+
+
 
 	@Override
 	public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size) {

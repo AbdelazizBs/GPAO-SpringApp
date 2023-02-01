@@ -1,18 +1,17 @@
 package com.housservice.housstock.model;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
+import com.housservice.housstock.model.enums.TypeNomEnClature;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -38,15 +37,9 @@ public class Nomenclature {
 	@NotBlank
 	@Size(max = 100)
 	private String description;
-	
-	
-	// type : Famille, Article,Element
-	@NotBlank
-	@Size(max = 100)
-	private String type;
-	
-	
-	// Simple, Composant
+
+	private TypeNomEnClature type;
+
 	@NotBlank
 	@Size(max = 100)
 	private String nature;
@@ -54,9 +47,14 @@ public class Nomenclature {
 	@NotBlank
 	@Size(max = 100)
 	private String categorie;
-	
-	
-	private List <Picture> pictures;
+
+	private List<String> childrensId;
+	private List<String> parentsId;
+
+	private List<Nomenclature> childrens;
+
+
+	private List <Picture> pictures ;
 	
 	private Date date ;
 	
@@ -69,7 +67,7 @@ public class Nomenclature {
 	}
 
 	public Nomenclature(String id, @NotBlank @Size(max = 100) String nomNomenclature,
-			@NotBlank @Size(max = 100) String description, @NotBlank @Size(max = 100) String type,
+			@NotBlank @Size(max = 100) String description, TypeNomEnClature type,
 			@NotBlank @Size(max = 100) String nature, @NotBlank @Size(max = 100) String categorie,
 			Date date, int miseEnVeille, Date dateMiseEnVeille) {
 		super();
@@ -83,9 +81,19 @@ public class Nomenclature {
 		this.miseEnVeille = miseEnVeille;
 		this.dateMiseEnVeille = dateMiseEnVeille;
 	}
-	
-	
-	
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Nomenclature nomenclature = (Nomenclature) o;
+		return id.equals(nomenclature.id);
+	}
 	
     
 }

@@ -1,20 +1,19 @@
 package com.housservice.housstock.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Nomenclature;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.housservice.housstock.exception.ResourceNotFoundException;
-
-import com.housservice.housstock.model.Nomenclature;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 public interface NomenclatureService {
 
 	ResponseEntity<Map<String, Object>> findNomenclatureActif(int page , int size);
+	ResponseEntity<Map<String, Object>> getRow(List<String> childrenIds);
 	ResponseEntity<Map<String, Object>> findNomenclatureNonActive(int page , int size);
 
 	public ResponseEntity<Map<String, Object>>  getIdNomenclatures(String nomNomenclature) throws ResourceNotFoundException;
@@ -23,11 +22,15 @@ public interface NomenclatureService {
 
     Optional<Nomenclature> getNomenclatureById(String id);
 
-    void createNewNomenclature(  String nomNomenclature,
+	 List<String> getParent();
+
+
+	void createNewNomenclature(  String nomNomenclature,
+								 List<String> parentsName,
 			  
 			 String description,
-			 
-			 String type,
+
+								 String type,
 				
 			 String nature,
 					
@@ -50,6 +53,7 @@ public interface NomenclatureService {
 			 String nature,
 					
 			 String categorie,
+			 List<String> parentsName,
 
 			 MultipartFile[] images) throws ResourceNotFoundException;
 
@@ -63,6 +67,7 @@ public interface NomenclatureService {
     void removePictures(String idNomenclature) throws ResourceNotFoundException;
 
     void removePicture(String idPic) throws ResourceNotFoundException;
-       
-	
+
+	public List<Nomenclature> getLigneSousFamilleByIdFamille(String idNomEnClature) throws ResourceNotFoundException;
+
 }
