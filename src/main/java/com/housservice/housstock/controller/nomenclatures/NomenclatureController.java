@@ -161,6 +161,7 @@ public class NomenclatureController {
 
 		@PutMapping("/updateNomenclature/{idNomenclature}")
 	public ResponseEntity <String> updateNomenclature(
+
 			@ApiParam(name = "idNomenclature", value="id of Nomenclature", required = true)
 			@PathVariable(value = "idNomenclature", required = true) @NotEmpty(message = "{http.error.0001}")  String idNomenclature,
 			@RequestParam("nomNomenclature") String nomNomenclature,
