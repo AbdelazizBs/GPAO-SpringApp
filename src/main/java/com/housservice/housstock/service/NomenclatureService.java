@@ -12,7 +12,8 @@ import java.util.Optional;
 
 public interface NomenclatureService {
 
-	ResponseEntity<Map<String, Object>> findNomenclatureActif(int page , int size);
+	ResponseEntity<Map<String, Object>> getFamilleNomenclature(int page , int size);
+	ResponseEntity<Map<String, Object>> getAllNomenClatures(int page , int size);
 	ResponseEntity<Map<String, Object>> getRow(List<String> childrenIds);
 	ResponseEntity<Map<String, Object>> findNomenclatureNonActive(int page , int size);
 
@@ -54,6 +55,8 @@ public interface NomenclatureService {
 					
 			 String categorie,
 			 List<String> parentsName,
+								   List<String> childrensId,
+								   List<String> parentsId,
 
 			 MultipartFile[] images) throws ResourceNotFoundException;
 

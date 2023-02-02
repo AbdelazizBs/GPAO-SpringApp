@@ -124,7 +124,8 @@ public class ClientController {
 	@DeleteMapping("/deleteSelectedClient/{idClientsSelected}")
 	@ApiOperation(value = "service to delete many Personnel by Id.")
 	public Map<String, Boolean> deleteClientSelected(
-			@ApiParam(name = "idClientsSelected", value = "ids of client Selected", required = true) @PathVariable(value = "idClientsSelected", required = true) @NotEmpty(message = "{http.error.0001}") List<String> idClientsSelected) {
+			@ApiParam(name = "idClientsSelected", value = "ids of client Selected", required = true)
+			@PathVariable(value = "idClientsSelected", required = true) @NotEmpty(message = "{http.error.0001}") List<String> idClientsSelected) {
 		clientService.deleteClientSelected(idClientsSelected);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);

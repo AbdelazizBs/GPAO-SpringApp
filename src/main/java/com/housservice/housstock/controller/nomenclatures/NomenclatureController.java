@@ -42,18 +42,23 @@ public class NomenclatureController {
 		
 	}
 
-	@GetMapping("/getAllNomenclature")
-	@ApiOperation(value = "service to get tout les nomenclatures ")
+	@GetMapping("/getFamilleNomenclature")
+	@ApiOperation(value = "service to get famille les nomenclatures ")
 	public ResponseEntity<Map<String, Object>> getAllNomenclature(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+		return nomenclatureService.getFamilleNomenclature(page,size);
 
-		return nomenclatureService.findNomenclatureActif(page,size);
+	}
+	@GetMapping("/getAllNomenClatures")
+	@ApiOperation(value = "service to get tout les nomenclatures ")
+	public ResponseEntity<Map<String, Object>> getAllNomenClatures(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+
+		return nomenclatureService.getAllNomenClatures(page,size);
 
 	}
 	@GetMapping("/getRow")
-	@ApiOperation(value = "service to get tout les nomenclatures ")
-	public ResponseEntity<Map<String, Object>> getRow(@RequestParam List<String> childrenIds) {
+	@ApiOperation(value = "service to get childrens of nomenclature")
+	public ResponseEntity<Map<String, Object>> getRow(@RequestParam(value = "childrensId") List<String> childrenIds ) {
 		return nomenclatureService.getRow(childrenIds);
-
 	}
 
 
@@ -164,11 +169,13 @@ public class NomenclatureController {
 			@RequestParam("nature") String nature,	
 			@RequestParam("categorie") String categorie,
 			@RequestParam("parentsName")List<String> parentsName,
+			@RequestParam("childrensId") List<String> childrensId,
+			@RequestParam("parentsId")List<String> parentsId,
 
 
 			@RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
 
-		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,parentsName, images);
+		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,parentsName, childrensId,parentsId,images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
