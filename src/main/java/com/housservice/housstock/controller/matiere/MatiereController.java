@@ -2,7 +2,6 @@ package com.housservice.housstock.controller.matiere;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-
 import com.housservice.housstock.model.dto.MatiereDto;
 import com.housservice.housstock.service.MatiereService;
 
