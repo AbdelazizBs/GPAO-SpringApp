@@ -169,14 +169,8 @@ public class NomenclatureController {
 			@RequestParam("nature") String nature,	
 			@RequestParam("categorie") String categorie,
 			@RequestParam("parentsName")List<String> parentsName,
-			@RequestParam("childrensId") List<String> childrensId,
-			@RequestParam("parentsId")List<String> parentsId,
-
-
 			@RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
-
-		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,parentsName, childrensId,parentsId,images);
-
+		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,parentsName,images);
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
 	
@@ -238,6 +232,12 @@ public class NomenclatureController {
 	@ApiOperation(value = "service to get parents name of nomEnClature")
 	public List<String> getParent() {
 		return nomenclatureService.getParent();
+	}
+	@GetMapping("/getParentsNameFiltered/{idNomenclature}")
+	@ApiOperation(value = "service to get parents name filtered")
+	public List<String> getParentsNameFiltered(@ApiParam(name = "idNomenclature", value="id of nomenclature", required = true)
+												   @PathVariable(value = "idNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String idNomenclature) throws ResourceNotFoundException {
+		return nomenclatureService.getParentsNameFiltered(idNomenclature);
 	}
 
 

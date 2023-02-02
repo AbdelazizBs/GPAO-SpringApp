@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class Nomenclature {
 	private String categorie;
 
 	private List<String> childrensId;
+	private List<String> parentsName = new ArrayList<>();
+
 	private List<String> parentsId;
 
 	private List<Nomenclature> childrens;

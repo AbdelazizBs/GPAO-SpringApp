@@ -26,6 +26,7 @@ public class NomenclatureDto {
 	
 	private String nature;
 	private List<String> childrensId;
+	private List<String> parentsName;
 	private List<Nomenclature> childrens;
 
 

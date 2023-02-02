@@ -24,6 +24,7 @@ public interface NomenclatureService {
     Optional<Nomenclature> getNomenclatureById(String id);
 
 	 List<String> getParent();
+	 List<String> getParentsNameFiltered(String idNomenclature) throws ResourceNotFoundException;
 
 
 	void createNewNomenclature(  String nomNomenclature,
@@ -55,8 +56,6 @@ public interface NomenclatureService {
 					
 			 String categorie,
 			 List<String> parentsName,
-								   List<String> childrensId,
-								   List<String> parentsId,
 
 			 MultipartFile[] images) throws ResourceNotFoundException;
 
