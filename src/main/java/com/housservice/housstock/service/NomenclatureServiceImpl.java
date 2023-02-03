@@ -93,6 +93,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 									nomenclatureOptional3 = nomenclatureRepository.findById(childrenId3)
 											.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), childrenId3)));
 									nomenclatureOptional2.getChildrens().add(nomenclatureOptional3);
+
 								} catch (ResourceNotFoundException e) {
 									throw new RuntimeException(e);
 								}
@@ -486,6 +487,14 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 //				}
 //		).collect(Collectors.toList());
 		return nomenclatures;
+	}
+
+
+	@Override
+	public void deleteNomenclatureEnVeilleSelected(List<String> idNomenClatureSelected){
+		for (String id : idNomenClatureSelected){
+			nomenclatureRepository.deleteById(id);
+		}
 	}
 
 

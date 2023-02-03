@@ -123,23 +123,21 @@ public class NomenclatureController {
 	public ResponseEntity<String> createNewNomenclature(
 					
 			@RequestParam("nomNomenclature")
-			@NotEmpty
+			@NotEmpty(message = "champ Nom nomenclature obligatoire")
 			String nomNomenclature,
 			
 			@RequestParam("description")
-			@NotEmpty
 			String description,
 			
 			@RequestParam("type")
-			@NotEmpty
+			@NotEmpty(message = "champ type obligatoire")
 			String type,
 			
 			@RequestParam("nature")
-			@NotEmpty
 			String nature,
 			
 			@RequestParam("categorie")
-			@NotEmpty
+			@NotEmpty(message = "champ categorie obligatoire")
 			String categorie,
 			@RequestParam("parentsName")
 			List<String> parentsName,
@@ -157,6 +155,17 @@ public class NomenclatureController {
 			@PathVariable(value = "idNomEnClature") String idNomEnClature) throws ResourceNotFoundException {
 		return nomenclatureService.getLigneSousFamilleByIdFamille(idNomEnClature);
 }
+
+	@DeleteMapping("/deleteNomenclatureEnVeilleSelected/{idNomenClatureSelected}")
+	@ApiOperation(value = "service to delete many Personnel by Id.")
+	public Map<String, Boolean> deleteNomenclatureEnVeilleSelected(
+			@ApiParam(name = "idNomenClatureSelected", value = "ids of nomenclatures Selected", required = true) @PathVariable(value = "idNomenClatureSelected", required = true) @NotEmpty(message = "{http.error.0001}") List<String> idNomenClatureSelected) {
+		nomenclatureService.deleteNomenclatureEnVeilleSelected(idNomenClatureSelected);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
+
 
 
 		@PutMapping("/updateNomenclature/{idNomenclature}")

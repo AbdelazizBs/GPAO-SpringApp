@@ -69,6 +69,8 @@ public interface NomenclatureService {
     void removePictures(String idNomenclature) throws ResourceNotFoundException;
 
     void removePicture(String idPic) throws ResourceNotFoundException;
+	void deleteNomenclatureEnVeilleSelected(List<String> idNomenClatureSelected);
+
 
 	public List<Nomenclature> getLigneSousFamilleByIdFamille(String idNomEnClature) throws ResourceNotFoundException;
 
