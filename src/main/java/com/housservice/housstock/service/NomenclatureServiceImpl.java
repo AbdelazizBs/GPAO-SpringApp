@@ -73,11 +73,41 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 			Map<String, Object> response = new HashMap<>();
 			nomenclatures = pageTuts.getContent().stream().filter(nomenclature -> nomenclature.getParentsId() .isEmpty())
 					.collect(Collectors.toList());
+
 			nomenclatures = nomenclatures.stream().map(nomenclature -> {
-			nomenclature.getChildrensId().stream().map( childrenId -> {
-				Optional<Nomenclature> nomenclatureOptional = nomenclatureRepository.findById(childrenId);
-				if (nomenclatureOptional.isPresent())
-					nomenclature.getChildrens().add(nomenclatureOptional.get());
+				nomenclature.getChildrensId().stream().map( childrenId -> {
+				Nomenclature nomenclatureOptional ;
+				try {
+					nomenclatureOptional = nomenclatureRepository.findById(childrenId)
+							.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), childrenId)));
+					nomenclature.getChildrens().add(nomenclatureOptional);
+					nomenclatureOptional.getChildrensId().stream().map( childrenId2 -> {
+						Nomenclature nomenclatureOptional2 ;
+						try {
+							nomenclatureOptional2 = nomenclatureRepository.findById(childrenId2)
+									.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), childrenId2)));
+							nomenclatureOptional.getChildrens().add(nomenclatureOptional2);
+							nomenclatureOptional2.getChildrensId().stream().map( childrenId3 -> {
+								Nomenclature nomenclatureOptional3 ;
+								try {
+									nomenclatureOptional3 = nomenclatureRepository.findById(childrenId3)
+											.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), childrenId3)));
+									nomenclatureOptional2.getChildrens().add(nomenclatureOptional3);
+								} catch (ResourceNotFoundException e) {
+									throw new RuntimeException(e);
+								}
+								return nomenclatureOptional3;
+							}).collect(Collectors.toList());
+
+						} catch (ResourceNotFoundException e) {
+							throw new RuntimeException(e);
+						}
+						return nomenclatureOptional2;
+					}).collect(Collectors.toList());
+				} catch (ResourceNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+
 				return nomenclature;
 			}).collect(Collectors.toList());
 				return nomenclature;
