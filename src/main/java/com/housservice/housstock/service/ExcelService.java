@@ -48,7 +48,7 @@ public class ExcelService {
             }
         }
         for (Personnel personnel : personnels) {
-            boolean exist = personnelRepository.existsPersonnelByCinAndMatricule(personnel.getCin(),personnel.getMatricule());
+            boolean exist = personnelRepository.existsPersonnelByMatricule(personnel.getMatricule());
             if (exist) {
                 personnelRepository.delete(personnelRepository.findPersonnelByCin(personnel.getCin())
                         .orElseThrow(() -> new ResourceNotFoundException(
@@ -68,7 +68,7 @@ public class ExcelService {
             }
         }
         for (Personnel personnel : personnels1) {
-            boolean exist = personnelRepository.existsPersonnelByCinAndMatricule(personnel.getCin(),personnel.getMatricule());
+            boolean exist = personnelRepository.existsPersonnelByMatricule(personnel.getMatricule());
             if (exist) {
                 personnelRepository.delete(personnelRepository.findPersonnelByCin(personnel.getCin())
                         .orElseThrow(() -> new ResourceNotFoundException(
@@ -90,7 +90,7 @@ public class ExcelService {
         }
         for (Client client : clients1) {
             client.setDate(new Date());
-            client.setMiseEnVeille(0);
+            client.setMiseEnVeille(false);
             List<Contact> contacts = new ArrayList<>();
                 client.setContact(contacts);
             boolean exist = clientRepository.existsClientByRefClientIris(client.getRefClientIris());
@@ -116,7 +116,7 @@ public class ExcelService {
         }
         for (Client client : clients1) {
             client.setDate(new Date());
-            client.setMiseEnVeille(0);
+            client.setMiseEnVeille(false);
             List<Contact> contacts = new ArrayList<>();
             client.setContact(contacts);
             boolean exist = clientRepository.existsClientByRefClientIris(client.getRefClientIris());

@@ -146,10 +146,6 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 		}
 	}
 
-
-
-
-
 	@Override
 	public void setArticleEnVeille(String idArticle) throws ResourceNotFoundException {
 		Article article = articleRepository.findById(idArticle)

@@ -138,8 +138,11 @@ public class ClientServiceImpl implements ClientService {
 								 String rib,
 								 String swift,
 								 MultipartFile[] images) {
-		if (clientRepository.existsClientByRefClientIris(refClientIris) || clientRepository.existsClientByRaisonSocial(raisonSociale)) {
-			throw new IllegalArgumentException(	"Matricule ou Raison sociale existe deja !!");
+		if (clientRepository.existsClientByRefClientIris(refClientIris)) {
+			throw new IllegalArgumentException(	"Matricule existe deja !!");
+		}
+		if (clientRepository.existsClientByRaisonSocial(raisonSociale)) {
+			throw new IllegalArgumentException(	"Raison sociale existe deja !!");
 		}
 			ClientDto clientDto = new ClientDto();
 			List<Picture> pictures = new ArrayList<>();
@@ -158,7 +161,7 @@ public class ClientServiceImpl implements ClientService {
 
 	clientDto.setPictures(pictures);
 	clientDto.setDate(new Date());
-	clientDto.setMiseEnVeille(0);
+	clientDto.setMiseEnVeille(false);
 	clientDto.setRefClientIris(refClientIris);
 	clientDto.setRaisonSocial(raisonSociale);
 	clientDto.setAdresse(adresse);
@@ -198,10 +201,11 @@ public class ClientServiceImpl implements ClientService {
 			List<ClientDto> clients;
 			Pageable paging = PageRequest.of(page, size);
 			Page<Client> pageTuts;
-			pageTuts = clientRepository.findClientByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
+			pageTuts = clientRepository.findClientByTextToFind(textToFind, paging);
 			clients = pageTuts.getContent().stream().map(client -> {
 				return ClientMapper.MAPPER.toClientDto(client);
 			}).collect(Collectors.toList());
+			clients= clients.stream().filter(client -> client.isMiseEnVeille()==enVeille).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("clients", clients);
 			response.put("currentPage", pageTuts.getNumber());
@@ -217,7 +221,7 @@ public class ClientServiceImpl implements ClientService {
 	public void miseEnVeille(String idClient) throws ResourceNotFoundException {
 		Client client = clientRepository.findById(idClient)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
-		client.setMiseEnVeille(1);
+		client.setMiseEnVeille(true);
 		clientRepository.save(client);
 	}
 
@@ -274,7 +278,6 @@ public class ClientServiceImpl implements ClientService {
 		client.setRaisonSocial(raisonSociale);
 		client.setStatut(statut);
 		client.setDate(client.getDate());
-		client.setMiseEnVeille(client.getMiseEnVeille());
 		client.setDateMiseEnVeille(client.getDateMiseEnVeille());
 		client.setAdresse(adresse);
 		client.setIncoterm(incoterm);
@@ -368,12 +371,12 @@ public class ClientServiceImpl implements ClientService {
 
 
 	@Override
-	public ResponseEntity<Map<String, Object>> findClientActif(int page, int size) {
+	public ResponseEntity<Map<String, Object>> getActiveClient(int page, int size) {
 		try {
 			List<ClientDto> clients = new ArrayList<ClientDto>();
 			Pageable paging = PageRequest.of(page, size);
 			Page<Client> pageTuts;
-			pageTuts =  clientRepository.findClientActif(paging);
+			pageTuts =  clientRepository.findClientByMiseEnVeille(paging, false);
 			clients = pageTuts.getContent().stream().map(client -> ClientMapper.MAPPER.toClientDto(client)).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("clients", clients);
@@ -391,12 +394,12 @@ public class ClientServiceImpl implements ClientService {
 
 
 	@Override
-	public ResponseEntity<Map<String, Object>> findClientNonActive(int page, int size) {
+	public ResponseEntity<Map<String, Object>> getClientNotActive(int page, int size) {
 		try {
 			List<ClientDto> clients = new ArrayList<ClientDto>();
 			Pageable paging = PageRequest.of(page, size);
 			Page<Client> pageTuts;
-			pageTuts =  clientRepository.findClientNotActif(paging);
+			pageTuts =  clientRepository.findClientByMiseEnVeille(paging, true);
 			clients = pageTuts.getContent().stream().map(client -> ClientMapper.MAPPER.toClientDto(client)).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("clients", clients);

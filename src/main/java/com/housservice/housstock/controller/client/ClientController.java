@@ -48,9 +48,9 @@ public class ClientController {
 
 		@GetMapping("/getAllClient")
 		@ApiOperation(value = "service to get tout les clients ")
-		public ResponseEntity<Map<String, Object>> getAllClient(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+		public ResponseEntity<Map<String, Object>> getActiveClient(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 
-			return clientService.findClientActif(page,size);
+			return clientService.getActiveClient(page,size);
 
 		}
 		
@@ -86,7 +86,7 @@ public class ClientController {
 	@GetMapping("/getAllClientNonActive")
 	public ResponseEntity<Map<String, Object>> getAllClientNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 
-		return clientService.findClientNonActive(page,size);
+		return clientService.getClientNotActive(page,size);
 
 	}
 

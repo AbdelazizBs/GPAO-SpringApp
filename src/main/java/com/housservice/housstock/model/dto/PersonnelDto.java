@@ -1,11 +1,10 @@
 package com.housservice.housstock.model.dto;
 
 
+import com.housservice.housstock.model.Comptes;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
-
-import com.housservice.housstock.model.Comptes;
 
 import javax.validation.constraints.*;
 import java.util.Date;
@@ -60,12 +59,10 @@ public class PersonnelDto {
 	private String poste;
 
 	@NotNull(message = "personnel date embauche should not empty")
-//	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dateEmbauche;
 
 
 	@NotNull(message = "personnel date Naissance should not empty")
-//	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dateNaissance;
 
 

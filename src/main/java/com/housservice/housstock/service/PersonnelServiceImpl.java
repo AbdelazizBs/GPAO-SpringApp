@@ -53,18 +53,34 @@ public class PersonnelServiceImpl implements PersonnelService {
 		if (!personnelDto.getEmail().equals("") && !matcher.matches()) {
 			throw new IllegalArgumentException("Email incorrecte !!");
 		}
-		if (personnelRepository.existsPersonnelByCinAndMatricule(personnelDto.getCin(),personnelDto.getMatricule())|| personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())) {
-			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() + " ou matricule " + personnelDto.getMatricule() + "  existe deja !!");
+		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
+			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
+		}
+		if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
+			throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
 		}
 		Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
+		personnel.setMiseEnVeille(false);
 		 PersonnelMapper.MAPPER.toPersonnelDto(personnelRepository.save(personnel));
 	}
 
 
 	@Override
 	public void  updatePersonnel(PersonnelDto personnelDto,String idPersonnel) throws ResourceNotFoundException {
+		String regex = "^(.+)@(.+)$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(personnelDto.getEmail());
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
+		if (!personnelDto.getEmail().equals("") && !matcher.matches()) {
+			throw new IllegalArgumentException("Email incorrecte !!");
+		}
+//		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
+//			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
+//		}
+//		if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
+//			throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
+//		}
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
 		personnel.setDateNaissance(personnelDto.getDateNaissance());
@@ -129,8 +145,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 			Page<Personnel> pageTuts;
 			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
-				personnel.setDateEmbauche(personnel.getDateEmbauche());
-				personnel.setDateNaissance(personnel.getDateNaissance());
 				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
 			}).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
@@ -182,10 +196,11 @@ public class PersonnelServiceImpl implements PersonnelService {
 			List<PersonnelDto> personnels;
 			Pageable paging = PageRequest.of(page, size);
 			Page<Personnel> pageTuts;
-			pageTuts = personnelRepository.findPersonnelByTextToFindAndMiseEnVeille(textToFind,enVeille, paging);
+			pageTuts = personnelRepository.findPersonnelByTextToFind(textToFind, paging);
 			personnels = pageTuts.getContent().stream().map(personnel -> {
 				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
 			}).collect(Collectors.toList());
+			personnels = personnels.stream().filter(personnel -> personnel.isMiseEnVeille() == enVeille).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("personnels", personnels);
 			response.put("currentPage", pageTuts.getNumber());

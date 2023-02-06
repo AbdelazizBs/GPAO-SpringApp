@@ -12,11 +12,8 @@ import java.util.Optional;
 
 public interface ClientRepository extends MongoRepository <Client, String> {
 
-	    @Query("{ 'MiseEnVeille' : { $ne: 1}}")
-		Page<Client> findClientActif(Pageable pageable);
-	
-	    @Query("{ 'MiseEnVeille' : 1}")
-	    Page<Client> findClientNotActif(Pageable pageable);
+		Page<Client> findClientByMiseEnVeille(Pageable pageable, boolean b);
+
 
 		//Optional<Client> findClientByRaisonSocial(String raisonSociale) ;
 		Optional<Client> findClientByContactId(String idContact ) ;
@@ -29,6 +26,6 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 
 
 	@Query( "{$or:[{'refClientIris': {$regex : ?0}},{'raisonSocial': {$regex : ?0}} ,{'secteurActivite': {$regex : ?0}} ,{'brancheActivite': {$regex : ?0}},{'adresse': {$regex : ?0}}] }")
-	Page<Client> findClientByTextToFindAndMiseEnVeille(String textToFind,boolean b ,  Pageable pageable);
+	Page<Client> findClientByTextToFind(String textToFind,  Pageable pageable);
 
 }

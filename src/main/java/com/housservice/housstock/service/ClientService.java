@@ -13,8 +13,8 @@ import java.util.Optional;
 
 public interface ClientService {
 
-	ResponseEntity<Map<String, Object>> findClientActif(int page , int size);
-	ResponseEntity<Map<String, Object>> findClientNonActive(int page , int size);
+	ResponseEntity<Map<String, Object>> getActiveClient(int page , int size);
+	ResponseEntity<Map<String, Object>> getClientNotActive(int page , int size);
 
 	public ResponseEntity<Map<String, Object>>  getIdClients(String raisonSociale) throws ResourceNotFoundException;
 

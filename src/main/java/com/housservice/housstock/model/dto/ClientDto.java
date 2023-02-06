@@ -124,7 +124,7 @@ public class ClientDto {
 
 
 
-	private int miseEnVeille;
+	private boolean miseEnVeille;
 
 
 	private Date dateMiseEnVeille;
