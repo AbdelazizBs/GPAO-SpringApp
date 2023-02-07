@@ -84,7 +84,7 @@ public class PersonnelDto {
 
 
 
-
+	@NotEmpty(message = "personnel matricule should not empty")
 	private String matricule;
 
 

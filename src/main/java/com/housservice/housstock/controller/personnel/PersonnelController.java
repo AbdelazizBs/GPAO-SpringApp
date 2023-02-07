@@ -56,9 +56,8 @@ public class PersonnelController {
 	@PutMapping("/addPersonnel")
 	@ApiOperation(value = "service to add new Personnel")
 	public ResponseEntity<String> addPersonnel(@Valid  @RequestBody PersonnelDto personnelDto)   {
-		  personnelService.addPersonnel(personnelDto);
-		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
-
+			personnelService.addPersonnel(personnelDto);
+			return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}
 	@PutMapping("/updatePersonnel/{idPersonnel}")
 	@ApiOperation(value = "service to update  Personnel")
@@ -134,6 +133,15 @@ public class PersonnelController {
 
 
 
+	@GetMapping("/onSort")
+	@ApiOperation(value = "service to get get All Personnel")
+	public ResponseEntity<Map<String, Object>> onSort(@RequestParam(defaultValue = "0") int page,
+															   @RequestParam(defaultValue = "3") int size,
+													  	 @RequestParam(defaultValue = "field") String field,
+													  @RequestParam(defaultValue = "order") String order){
+		return personnelService.onSort(page,size,field,order);
+
+	}
 	@GetMapping("/getAllPersonnel")
 	@ApiOperation(value = "service to get get All Personnel")
 	public ResponseEntity<Map<String, Object>> getAllPersonnel(@RequestParam(defaultValue = "0") int page,

@@ -121,6 +121,9 @@ public class ClientController {
 		  return  clientService.getArticlesByRaisons(raisonS) ;
 	  }
 
+
+
+
 	@DeleteMapping("/deleteSelectedClient/{idClientsSelected}")
 	@ApiOperation(value = "service to delete many Personnel by Id.")
 	public Map<String, Boolean> deleteClientSelected(

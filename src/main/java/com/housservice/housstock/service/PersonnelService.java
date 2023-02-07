@@ -13,6 +13,7 @@ import java.util.Map;
 public interface PersonnelService {
 	
 	public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size);
+	public ResponseEntity<Map<String, Object>> onSort(int page, int size, String field, String orer);
     public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size);
 
 

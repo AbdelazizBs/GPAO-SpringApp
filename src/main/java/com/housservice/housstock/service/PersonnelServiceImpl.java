@@ -47,21 +47,30 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 	@Override
 	public void  addPersonnel(PersonnelDto personnelDto)   {
-		String regex = "^(.+)@(.+)$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(personnelDto.getEmail());
-		if (!personnelDto.getEmail().equals("") && !matcher.matches()) {
-			throw new IllegalArgumentException("Email incorrecte !!");
+
+		try
+		{
+			Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+			Matcher matcher = pattern.matcher(personnelDto.getEmail());
+			if (!matcher.matches()) {
+				throw new IllegalArgumentException(	" email " + personnelDto.getEmail() +  "  n'est pas valide !!");
+			}
+
+			if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
+				throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
+			}
+			if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
+				throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
+			}
+			Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
+			personnel.setMiseEnVeille(false);
+			personnelRepository.save(personnel);
 		}
-		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
-			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
+		catch (Exception e)
+		{
+			throw new IllegalArgumentException(e.getMessage());
 		}
-		if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
-			throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
-		}
-		Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
-		personnel.setMiseEnVeille(false);
-		 PersonnelMapper.MAPPER.toPersonnelDto(personnelRepository.save(personnel));
+
 	}
 
 
@@ -73,7 +82,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
 		if (!personnelDto.getEmail().equals("") && !matcher.matches()) {
-			throw new IllegalArgumentException("Email incorrecte !!");
+			throw new IllegalArgumentException(" email " + personnelDto.getEmail() +  "  n'est pas valide !!");
 		}
 //		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
 //			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
@@ -147,6 +156,34 @@ public class PersonnelServiceImpl implements PersonnelService {
 			personnels = pageTuts.getContent().stream().map(personnel -> {
 				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
 			}).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("personnels", personnels);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+	@Override
+	public ResponseEntity<Map<String, Object>> onSort(int page, int size, String field, String order) {
+		try {
+			List<PersonnelDto> personnels ;
+			Pageable paging = PageRequest.of(page, size);
+			Page<Personnel> pageTuts;
+			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
+			personnels = pageTuts.getContent().stream().map(personnel -> {
+				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
+			}).collect(Collectors.toList());
+			personnels.sort((p1, p2) -> {
+				if (order.equals("1")) {
+					return p1.getNom().compareTo(p2.getNom());
+				} else {
+					return p2.getNom().compareTo(p1.getNom());
+				}
+			});
 			Map<String, Object> response = new HashMap<>();
 			response.put("personnels", personnels);
 			response.put("currentPage", pageTuts.getNumber());
