@@ -3,10 +3,12 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.NomenclatureMapper;
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.NomenclatureDto;
 import com.housservice.housstock.model.enums.TypeNomEnClature;
+import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.NomenclatureRepository;
 import com.housservice.housstock.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +36,17 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	final PictureRepository pictureRepository;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
+	private final ClientRepository clientRepository;
 
 
 	@Autowired
 	public NomenclatureServiceImpl(NomenclatureRepository nomenclatureRepository, SequenceGeneratorService sequenceGeneratorService,
-							 MessageHttpErrorProperties messageHttpErrorProperties, PictureRepository pictureRepository) {
+							 MessageHttpErrorProperties messageHttpErrorProperties, PictureRepository pictureRepository,
+								   ClientRepository clientRepository) {
 		this.nomenclatureRepository = nomenclatureRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.pictureRepository = pictureRepository;
+		this.clientRepository = clientRepository;
 	}
 	
 	public static byte[] decompressBytes(byte[] data) {
@@ -258,6 +263,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 			pictureRepository.save(picture);
 			pictures.add(picture);
 		}
+		nomenclatureDto.setClientId("");
+		nomenclatureDto.setFournisseurId("");
 		nomenclatureDto.setType(TypeNomEnClature.valueOf(type));
 		nomenclatureDto.setPictures(pictures);
 		nomenclatureDto.setDate(new Date());
@@ -299,7 +306,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	public void updateNomenclature(String idNomenclature, String nomNomenclature, String description, String type,
 			String nature, String categorie,List<String> parentsName ,MultipartFile[] images) throws ResourceNotFoundException {
 		
-		if (nomNomenclature.isEmpty() || description.isEmpty() || type.isEmpty() || nature.isEmpty() || categorie.isEmpty()) {
+		if (nomNomenclature.isEmpty() || description.isEmpty() || type.isEmpty() || categorie.isEmpty()) {
 			throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
 		}
 		Nomenclature nomenclature = getNomenclatureById(idNomenclature)
@@ -411,6 +418,29 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		nomenclatureRepository.delete(nomenclature);
 		
 	}
+
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getNomenClaturesByRaisonsClient(String raison) throws ResourceNotFoundException {
+		try {
+			Client client = clientRepository.findClientByRaisonSocial(raison)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), raison)));
+		List<Nomenclature> nomenclatures = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+			nomenclatureRepository.findAll().stream().map(
+				nomenclature -> {
+					if(nomenclature.getClientId().equals(client.getId())){
+						nomenclatures.add(nomenclature);
+					}
+					return nomenclature;
+				}
+		).collect(Collectors.toList());
+		response.put("nomenclatures", nomenclatures);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+}
 
 
 	@Override

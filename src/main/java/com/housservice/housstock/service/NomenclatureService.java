@@ -15,6 +15,8 @@ public interface NomenclatureService {
 	ResponseEntity<Map<String, Object>> getFamilleNomenclature(int page , int size);
 	ResponseEntity<Map<String, Object>> getAllNomenClatures(int page , int size);
 	ResponseEntity<Map<String, Object>> getRow(List<String> childrenIds);
+	ResponseEntity<Map<String, Object>> getNomenClaturesByRaisonsClient(String raison) throws ResourceNotFoundException;
+
 	ResponseEntity<Map<String, Object>> findNomenclatureNonActive(int page , int size);
 
 	public ResponseEntity<Map<String, Object>>  getIdNomenclatures(String nomNomenclature) throws ResourceNotFoundException;

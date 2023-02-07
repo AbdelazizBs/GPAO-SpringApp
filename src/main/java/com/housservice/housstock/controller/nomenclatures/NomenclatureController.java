@@ -60,7 +60,14 @@ public class NomenclatureController {
 	public ResponseEntity<Map<String, Object>> getRow(@RequestParam(value = "childrensId") List<String> childrenIds ) {
 		return nomenclatureService.getRow(childrenIds);
 	}
-
+	@GetMapping("/getNomenClaturesByRaisonsClient/{raisonS}")
+	@ApiOperation(value = "service to get one Client by Id.")
+	public ResponseEntity<Map<String, Object>> getNomenClaturesByRaisonsClient(
+			@ApiParam(name = "raisonS", value="raison sociale of client", required = true)
+			@PathVariable(value = "raisonS", required = true) @NotEmpty(message = "{http.error.0001}") String raisonS)
+			throws ResourceNotFoundException {
+		return  nomenclatureService.getNomenClaturesByRaisonsClient(raisonS) ;
+	}
 
 	@GetMapping("/nomenclature/{id}")
 	@ApiOperation(value = "service to get one Nomenclature by Id.")
