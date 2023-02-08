@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -389,6 +390,61 @@ public class ClientServiceImpl implements ClientService {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+
+	@Override
+	public ResponseEntity<Map<String, Object>> onSortActiveClient(int page, int size, String field, String order) {
+		try {
+			List<ClientDto> clientDtos ;
+			Page<Client> pageTuts;
+			if (order.equals("1")){
+				pageTuts = clientRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
+			}
+			else {
+				pageTuts = clientRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
+			}
+			clientDtos = pageTuts.getContent().stream().map(client -> {
+				return ClientMapper.MAPPER.toClientDto(client);
+			}).collect(Collectors.toList());
+			clientDtos =clientDtos.stream().filter(client -> !client.isMiseEnVeille()).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("clients", clientDtos);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+	@Override
+	public ResponseEntity<Map<String, Object>> onSortClientNotActive(int page, int size, String field, String order) {
+		try {
+			List<ClientDto> clientDtos ;
+			Page<Client> pageTuts;
+			if (order.equals("1")){
+				pageTuts = clientRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
+			}
+			else {
+				pageTuts = clientRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
+			}
+			clientDtos = pageTuts.getContent().stream().map(client -> {
+				return ClientMapper.MAPPER.toClientDto(client);
+			}).collect(Collectors.toList());
+			clientDtos =clientDtos.stream().filter(ClientDto::isMiseEnVeille).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("clients", clientDtos);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
 
 
 

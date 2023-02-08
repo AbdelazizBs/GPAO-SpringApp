@@ -24,6 +24,8 @@ public interface ClientService {
     List<Article> getArticles(String id) throws ResourceNotFoundException;
     List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException;
 
+	public ResponseEntity<Map<String, Object>> onSortActiveClient(int page, int size, String field, String order);
+	public ResponseEntity<Map<String, Object>> onSortClientNotActive(int page, int size, String field, String order);
 
 	
 	  void createNewClient(  String refClientIris,

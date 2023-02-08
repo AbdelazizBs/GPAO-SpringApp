@@ -23,8 +23,6 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     @Query( "{$or:[{'nom': {$regex : ?0}} ,{'prenom': {$regex : ?0}} ,{'matricule': {$regex : ?0}},{'poste': {$regex : ?0}},{'phone': {$regex : ?0}}] }")
     Page<Personnel> findPersonnelByTextToFind(String textToFind,Pageable pageable);
 
-
-
-
+//    Page<Personnel> findAllByOOrderBy(Pageable pageable);
 
 }

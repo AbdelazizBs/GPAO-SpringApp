@@ -12,15 +12,14 @@ import java.util.Map;
 
 public interface PersonnelService {
 	
-	public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size);
-	public ResponseEntity<Map<String, Object>> onSortActivePersonnel(int page, int size, String field, String orer);
-	public ResponseEntity<Map<String, Object>> onSortPersonnelNotActive(int page, int size, String field, String orer);
-    public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size);
+	 ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size);
+	 ResponseEntity<Map<String, Object>> onSortActivePersonnel(int page, int size, String field, String order);
+	 ResponseEntity<Map<String, Object>> onSortPersonnelNotActive(int page, int size, String field, String order);
+     ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size);
 
 
-    public PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException;
-    public Personnel getPersonnelByEmail(String email) throws ResourceNotFoundException;
-    public Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException;
+     PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException;
+     Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException;
 
 
     // add new personnelDto
@@ -32,7 +31,7 @@ public interface PersonnelService {
 
     void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException;
 
-    public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
+     ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
     void deletePersonnel(String personnelId);
 

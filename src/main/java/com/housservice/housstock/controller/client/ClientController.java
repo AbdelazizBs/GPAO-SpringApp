@@ -222,7 +222,25 @@ public class ClientController {
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	  }
 
+	@GetMapping("/onSortActiveClient")
+	@ApiOperation(value = "service to get get All active client   sorted  and ordered by  params")
+	public ResponseEntity<Map<String, Object>> onSortActiveClient(@RequestParam(defaultValue = "0") int page,
+																	 @RequestParam(defaultValue = "3") int size,
+																	 @RequestParam(defaultValue = "field") String field,
+																	 @RequestParam(defaultValue = "order") String order){
+		return clientService.onSortActiveClient(page,size,field,order);
 
+	}
+
+	@GetMapping("/onSortClientNotActive")
+	@ApiOperation(value = "service to get get All client not active sorted  and ordered by  params")
+	public ResponseEntity<Map<String, Object>> onSortClientNotActive(@RequestParam(defaultValue = "0") int page,
+																		@RequestParam(defaultValue = "3") int size,
+																		@RequestParam(defaultValue = "field") String field,
+																		@RequestParam(defaultValue = "order") String order){
+		return clientService.onSortClientNotActive(page,size,field,order);
+
+	}
 
 
 	  @PutMapping("/miseEnVeille/{idClient}")

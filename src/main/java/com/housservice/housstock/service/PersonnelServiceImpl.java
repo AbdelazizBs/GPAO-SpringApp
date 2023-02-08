@@ -3,7 +3,6 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.PersonnelMapper;
-import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.repository.ComptesRepository;
@@ -12,6 +11,7 @@ import com.housservice.housstock.repository.RolesRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -123,12 +123,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 		return null;
 	}
 
-	@Override
-	public Personnel getPersonnelByEmail(String email) throws ResourceNotFoundException {
-		Comptes comptes = comptesRepository.findByEmail(email);
-		return personnelRepository.findByCompte(comptes).orElseThrow(() -> new ResourceNotFoundException(
-				MessageFormat.format(messageHttpErrorProperties.getError0002(), comptes)));
-	}
 
 	@Override
 	public Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException {
@@ -173,48 +167,16 @@ public class PersonnelServiceImpl implements PersonnelService {
 			List<PersonnelDto> personnels ;
 			Pageable paging = PageRequest.of(page, size);
 			Page<Personnel> pageTuts;
-			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
+			if (order.equals("1")){
+				pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
+			}
+			else {
+				pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
+			}
 			personnels = pageTuts.getContent().stream().map(personnel -> {
 				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
 			}).collect(Collectors.toList());
-			// sort alphabetically by field [nom, prenom, matricule, poste, phone] and order [1, -1]
-			if (order.equals("1")) {
-				switch (field) {
-					case "nom":
-					personnels.sort(Comparator.comparing(PersonnelDto::getNom));
-						break;
-					case "prenom":
-						personnels.sort(Comparator.comparing(PersonnelDto::getPrenom));
-						break;
-					case "matricule":
-						personnels.sort(Comparator.comparing(PersonnelDto::getMatricule));
-						break;
-					case "poste":
-						personnels.sort(Comparator.comparing(PersonnelDto::getPoste));
-						break;
-					case "phone":
-						personnels.sort(Comparator.comparing(PersonnelDto::getPhone));
-						break;
-				}
-			} else if (order.equals("-1")) {
-				switch (field) {
-					case "nom":
-						personnels.sort(Comparator.comparing(PersonnelDto::getNom).reversed());
-						break;
-					case "prenom":
-						personnels.sort(Comparator.comparing(PersonnelDto::getPrenom).reversed());
-						break;
-					case "matricule":
-						personnels.sort(Comparator.comparing(PersonnelDto::getMatricule).reversed());
-						break;
-					case "poste":
-						personnels.sort(Comparator.comparing(PersonnelDto::getPoste).reversed());
-						break;
-					case "phone":
-						personnels.sort(Comparator.comparing(PersonnelDto::getPhone).reversed());
-						break;
-				}
-			}
+			personnels =personnels.stream().filter(personnel -> !personnel.isMiseEnVeille()).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("personnels", personnels);
 			response.put("currentPage", pageTuts.getNumber());
@@ -228,52 +190,29 @@ public class PersonnelServiceImpl implements PersonnelService {
 	}
 @Override
 	public ResponseEntity<Map<String, Object>> onSortPersonnelNotActive(int page, int size, String field, String order) {
-		try {
-			List<PersonnelDto> personnels ;
-			Pageable paging = PageRequest.of(page, size);
-			Page<Personnel> pageTuts;
-			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(true, paging);
-			personnels = pageTuts.getContent().stream().map(personnel -> {
-				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
-			}).collect(Collectors.toList());
-			personnels.sort((p1, p2) -> {
-				if (order.equals("1")) {
-					switch (field) {
-						case "nom":
-							return p1.getNom().compareTo(p2.getNom());
-						case "prenom":
-							return p1.getPrenom().compareTo(p2.getPrenom());
-						case "matricule":
-							return p1.getMatricule().compareTo(p2.getMatricule());
-						case "poste":
-							return p1.getPoste().compareTo(p2.getPoste());
-						default:
-							return p1.getPhone().compareTo(p2.getPhone());
-					}
-				} else {
-					switch (field) {
-						case "nom":
-							return p2.getNom().compareTo(p1.getNom());
-						case "prenom":
-							return p2.getPrenom().compareTo(p1.getPrenom());
-						case "poste":
-							return p2.getPoste().compareTo(p1.getPoste());
-						case "matricule":
-							return p2.getMatricule().compareTo(p1.getMatricule());
-						default:
-							return p2.getPhone().compareTo(p1.getPhone());
-					}
-				}
-			});
-			Map<String, Object> response = new HashMap<>();
-			response.put("personnels", personnels);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	try {
+		List<PersonnelDto> personnels ;
+		Pageable paging = PageRequest.of(page, size);
+		Page<Personnel> pageTuts;
+		if (order.equals("1")){
+			pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
 		}
+		else {
+			pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
+		}
+		personnels = pageTuts.getContent().stream().map(personnel -> {
+			return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
+		}).collect(Collectors.toList());
+		personnels =personnels.stream().filter(personnel -> personnel.isMiseEnVeille()).collect(Collectors.toList());
+		Map<String, Object> response = new HashMap<>();
+		response.put("personnels", personnels);
+		response.put("currentPage", pageTuts.getNumber());
+		response.put("totalItems", pageTuts.getTotalElements());
+		response.put("totalPages", pageTuts.getTotalPages());
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	} catch (Exception e) {
+		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 	}
 
