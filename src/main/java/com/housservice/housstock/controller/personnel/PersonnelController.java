@@ -133,13 +133,23 @@ public class PersonnelController {
 
 
 
-	@GetMapping("/onSort")
+	@GetMapping("/onSortActivePersonnel")
 	@ApiOperation(value = "service to get get All Personnel")
-	public ResponseEntity<Map<String, Object>> onSort(@RequestParam(defaultValue = "0") int page,
+	public ResponseEntity<Map<String, Object>> onSortActivePersonnel(@RequestParam(defaultValue = "0") int page,
 															   @RequestParam(defaultValue = "3") int size,
 													  	 @RequestParam(defaultValue = "field") String field,
 													  @RequestParam(defaultValue = "order") String order){
-		return personnelService.onSort(page,size,field,order);
+		return personnelService.onSortActivePersonnel(page,size,field,order);
+
+	}
+
+	@GetMapping("/onSortPersonnelNotActive")
+	@ApiOperation(value = "service to get get All Personnel")
+	public ResponseEntity<Map<String, Object>> onSortPersonnelNotActive(@RequestParam(defaultValue = "0") int page,
+															   @RequestParam(defaultValue = "3") int size,
+													  	 @RequestParam(defaultValue = "field") String field,
+													  @RequestParam(defaultValue = "order") String order){
+		return personnelService.onSortPersonnelNotActive(page,size,field,order);
 
 	}
 	@GetMapping("/getAllPersonnel")
