@@ -8,8 +8,6 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -69,7 +67,7 @@ public class Nomenclature {
 	
 	private Date date ;
 	
-	private int miseEnVeille;
+	private boolean miseEnVeille;
 	
 	private Date dateMiseEnVeille;
 
@@ -80,7 +78,7 @@ public class Nomenclature {
 	public Nomenclature(String id, @NotBlank @Size(max = 100) String nomNomenclature,
 			@NotBlank @Size(max = 100) String description, TypeNomEnClature type,
 			@NotBlank @Size(max = 100) String nature, @NotBlank @Size(max = 100) String categorie,
-			Date date, int miseEnVeille, Date dateMiseEnVeille) {
+			Date date, boolean miseEnVeille, Date dateMiseEnVeille) {
 		super();
 		this.id = id;
 		this.nomNomenclature = nomNomenclature;

@@ -18,6 +18,8 @@ public interface NomenclatureService {
 	ResponseEntity<Map<String, Object>> getNomenClaturesByRaisonsClient(String raison) throws ResourceNotFoundException;
 
 	ResponseEntity<Map<String, Object>> findNomenclatureNonActive(int page , int size);
+	ResponseEntity<Map<String, Object>> onSortNomenclatureNotActive(int page, int size, String field, String order);
+	ResponseEntity<Map<String, Object>> onSortActiveNomenClature(int page, int size, String field, String order);
 
 	public ResponseEntity<Map<String, Object>>  getIdNomenclatures(String nomNomenclature) throws ResourceNotFoundException;
 

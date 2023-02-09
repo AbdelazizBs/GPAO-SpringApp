@@ -15,8 +15,7 @@ public interface NomenclatureRepository extends MongoRepository<Nomenclature, St
     @Query("{ 'MiseEnVeille' : { $ne: 1}}")
 	Page<Nomenclature> findNomenclatureActif(Pageable pageable);
 
-    @Query("{ 'MiseEnVeille' : 1}")
-    Page<Nomenclature> findNomenclatureNotActif(Pageable pageable);
+
 
 	Optional<Nomenclature> findNomenclatureByPictures(Picture picture) ;
 

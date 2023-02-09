@@ -97,13 +97,31 @@ public class NomenclatureController {
 	}
 
 
-	@GetMapping("/getAllNomenclatureNonActive")
+	@GetMapping("/getAllNomenclatureNotActive")
 	public ResponseEntity<Map<String, Object>> getAllNomenclatureNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 
 		return nomenclatureService.findNomenclatureNonActive(page,size);
 
 	}
+	@GetMapping("/onSortNomenclatureNotActive")
+	@ApiOperation(value = "service to get get All  Personnel not active ordered and sorted by params")
+	public ResponseEntity<Map<String, Object>> onSortNomenclatureNotActive(@RequestParam(defaultValue = "0") int page,
+																	 @RequestParam(defaultValue = "3") int size,
+																	 @RequestParam(defaultValue = "field") String field,
+																	 @RequestParam(defaultValue = "order") String order){
+		return nomenclatureService.onSortNomenclatureNotActive(page,size,field,order);
 
+	}
+
+	@GetMapping("/onSortActiveNomenClature")
+	@ApiOperation(value = "service to get get All active Nomenclature   ordered and sorted by params")
+	public ResponseEntity<Map<String, Object>> onSortActiveNomenClature(@RequestParam(defaultValue = "0") int page,
+																		@RequestParam(defaultValue = "3") int size,
+																		@RequestParam(defaultValue = "field") String field,
+																		@RequestParam(defaultValue = "order") String order){
+		return nomenclatureService.onSortActiveNomenClature(page,size,field,order);
+
+	}
 
 	@GetMapping("/search")
 	@ApiOperation(value = "service to filter nomenclatures ")

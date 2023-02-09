@@ -35,7 +35,7 @@ public class NomenclatureDto {
 	
 	private Date date ;
 	
-	private int miseEnVeille;
+	private boolean miseEnVeille;
 	
 	private Date dateMiseEnVeille;
 	

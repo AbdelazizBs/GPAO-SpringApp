@@ -362,6 +362,7 @@ public class ClientServiceImpl implements ClientService {
 		return ResponseEntity.ok(response);
 	}
 
+
 	@Override
 	public List<String> getRaisonSociales( )   {
 		List<Client> clients = clientRepository.findAll();
