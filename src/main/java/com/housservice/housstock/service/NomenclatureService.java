@@ -16,6 +16,7 @@ public interface NomenclatureService {
 	ResponseEntity<Map<String, Object>> getAllNomenClatures(int page , int size);
 	ResponseEntity<Map<String, Object>> getRow(List<String> childrenIds);
 	ResponseEntity<Map<String, Object>> getNomenClaturesByRaisonsClient(String raison) throws ResourceNotFoundException;
+	ResponseEntity<Map<String, Object>> getNomenClaturesByIntituleFournisseur(String intitule) throws ResourceNotFoundException;
 
 	ResponseEntity<Map<String, Object>> findNomenclatureNonActive(int page , int size);
 	ResponseEntity<Map<String, Object>> onSortNomenclatureNotActive(int page, int size, String field, String order);
@@ -27,7 +28,7 @@ public interface NomenclatureService {
 
     Optional<Nomenclature> getNomenclatureById(String id);
 
-	 List<String> getParent();
+	ResponseEntity<Map<String, Object>> getParent();
 	 List<String> getParentsNameFiltered(String idNomenclature) throws ResourceNotFoundException;
 
 
@@ -43,12 +44,17 @@ public interface NomenclatureService {
 			 String categorie,
 								
 			 MultipartFile[] images) throws ResourceNotFoundException;
+	void affecteNomEnClatureToClient(  String idNomenClatureSelected,
+								 List<String>selectedOptions ) throws ResourceNotFoundException;
+
+	void affecteNomEnClatureToFournisseur(  String idNomenClatureSelected,
+								 List<String>selectedOptions ) throws ResourceNotFoundException;
 
 
-    public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
+     ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
 
-    public void updateNomenclature(String idNomenclature ,
+     void updateNomenclature(String idNomenclature ,
 		
 			 String nomNomenclature,
 			

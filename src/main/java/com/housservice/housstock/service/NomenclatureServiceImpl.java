@@ -4,11 +4,13 @@ import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.NomenclatureMapper;
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.NomenclatureDto;
 import com.housservice.housstock.model.enums.TypeNomEnClature;
 import com.housservice.housstock.repository.ClientRepository;
+import com.housservice.housstock.repository.FournisseurRepository;
 import com.housservice.housstock.repository.NomenclatureRepository;
 import com.housservice.housstock.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +40,19 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	private final ClientRepository clientRepository;
+	private final FournisseurRepository fournisseurRepository;
 
 
 	@Autowired
 	public NomenclatureServiceImpl(NomenclatureRepository nomenclatureRepository, SequenceGeneratorService sequenceGeneratorService,
 							 MessageHttpErrorProperties messageHttpErrorProperties, PictureRepository pictureRepository,
-								   ClientRepository clientRepository) {
+								   ClientRepository clientRepository,
+								   FournisseurRepository fournisseurRepository) {
 		this.nomenclatureRepository = nomenclatureRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.pictureRepository = pictureRepository;
 		this.clientRepository = clientRepository;
+		this.fournisseurRepository = fournisseurRepository;
 	}
 	
 	public static byte[] decompressBytes(byte[] data) {
@@ -305,6 +310,41 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	}
 
 	@Override
+	public void affecteNomEnClatureToClient(String idNomenClatureSelected,
+									  List<String> selectedOptions) throws ResourceNotFoundException {
+		Nomenclature nomenclature = nomenclatureRepository.findById(idNomenClatureSelected).orElseThrow(() ->
+				new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idNomenClatureSelected)));
+				selectedOptions.forEach(option -> {
+					try {
+						Client client = clientRepository.findClientByRaisonSocial(option).orElseThrow(() ->
+								new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
+						nomenclature.setClientId(client.getId());
+						nomenclatureRepository.save(nomenclature);
+					} catch (ResourceNotFoundException e) {
+						throw new RuntimeException(e);
+					}
+				});
+
+	}
+	@Override
+	public void affecteNomEnClatureToFournisseur(String idNomenClatureSelected,
+									  List<String> selectedOptions) throws ResourceNotFoundException {
+		Nomenclature nomenclature = nomenclatureRepository.findById(idNomenClatureSelected).orElseThrow(() ->
+				new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idNomenClatureSelected)));
+		selectedOptions.forEach(option -> {
+			try {
+				Fournisseur fournisseur = fournisseurRepository.findFournisseurByIntitule(option).orElseThrow(() ->
+						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
+				nomenclature.setFournisseurId(fournisseur.getId());
+				nomenclatureRepository.save(nomenclature);
+			} catch (ResourceNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		});
+
+	}
+
+	@Override
 	public void updateNomenclature(String idNomenclature, String nomNomenclature, String description, String type,
 			String nature, String categorie,List<String> parentsName ,MultipartFile[] images) throws ResourceNotFoundException {
 		
@@ -493,6 +533,28 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 	}
 }
 
+@Override
+	public ResponseEntity<Map<String, Object>> getNomenClaturesByIntituleFournisseur(String intitule) throws ResourceNotFoundException {
+		try {
+			Fournisseur fournisseur = fournisseurRepository.findFournisseurByIntitule(intitule)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), intitule)));
+		List<Nomenclature> nomenclatures = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+			nomenclatureRepository.findAll().stream().map(
+				nomenclature -> {
+					if(nomenclature.getFournisseurId().equals(fournisseur.getId())){
+						nomenclatures.add(nomenclature);
+					}
+					return nomenclature;
+				}
+		).collect(Collectors.toList());
+		response.put("nomenclatures", nomenclatures);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+}
+
 
 	@Override
 	public void deleteNomenclatureSelected(List<String> idNomenclaturesSelected) {
@@ -532,13 +594,17 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
 
 	@Override
-	public List<String> getParent( )   {
-		List<Nomenclature> nomenclatures = nomenclatureRepository.findNomenclatureByMiseEnVeille(0) ;
-		// return list nomenclatures after filtered by type
-		return nomenclatures.stream().filter(nomenclature -> !nomenclature.getType().equals("Element"))
-				.map(Nomenclature::getNomNomenclature).collect(Collectors.toList());
-
+	public ResponseEntity<Map<String, Object>> getParent( )   {
+		try{
+		Map<String, Object> response = new HashMap<>();
+		List<Nomenclature> nomenclatures = nomenclatureRepository.findNomenclatureByMiseEnVeille(false) ;
+		response.put("nomenclaturesName",  nomenclatures.stream().map(Nomenclature::getNomNomenclature).collect(Collectors.toList()));
+		 return new ResponseEntity<>(response, HttpStatus.OK);
+	} catch (Exception e) {
+		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+}
+
 	@Override
 	public List<String> getParentsNameFiltered(String idNomEnClature) throws ResourceNotFoundException {
 		Nomenclature nomenclatures = nomenclatureRepository.findById(idNomEnClature)
