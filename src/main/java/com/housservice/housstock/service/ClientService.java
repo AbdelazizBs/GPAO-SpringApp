@@ -26,7 +26,8 @@ public interface ClientService {
 
 	public ResponseEntity<Map<String, Object>> onSortActiveClient(int page, int size, String field, String order);
 	public ResponseEntity<Map<String, Object>> onSortClientNotActive(int page, int size, String field, String order);
-
+	void affecteNomEnClatureToClient(  String idClient,
+									   List<String>selectedOptions ) throws ResourceNotFoundException;
 	
 	  void createNewClient(  String refClientIris,
 							 String raisonSociale,

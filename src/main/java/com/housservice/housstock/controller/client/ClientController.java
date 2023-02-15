@@ -80,7 +80,21 @@ public class ClientController {
 	public List<String> getRaisonSociales() {
 		return clientService.getRaisonSociales();
 	}
-	
+
+
+	@PutMapping(value = "/affecteNomEnClatureToClient/{idClient}")
+	public ResponseEntity<String> affecteNomEnClatureToClient(
+			@ApiParam(name = "idClient", value = "id of client ", required = true)
+			@PathVariable(value = "idClient",
+					required = true) @NotEmpty(message = "{http.error.0001}") String idClient,
+			@RequestParam("selectedOptions")
+			List<String> selectedOptions
+	) throws ResourceNotFoundException {
+
+		clientService.affecteNomEnClatureToClient(idClient,selectedOptions);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+	}
 
 
 	@GetMapping("/getAllClientNonActive")

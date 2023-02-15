@@ -6,13 +6,11 @@ import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.mapper.FournisseurMapper;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.Fournisseur;
+import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.model.dto.FournisseurDto;
-import com.housservice.housstock.repository.ArticleRepository;
-import com.housservice.housstock.repository.ContactRepository;
-import com.housservice.housstock.repository.FournisseurRepository;
-import com.housservice.housstock.repository.PictureRepository;
+import com.housservice.housstock.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,17 +41,19 @@ public class FournisseurServiceImpl implements FournisseurService{
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	
 	final  ContactRepository contactRepository ;
-
+	private final NomenclatureRepository nomenclatureRepository;
 
 
 	@Autowired
 	public FournisseurServiceImpl(FournisseurRepository fournisseurRepository, SequenceGeneratorService sequenceGeneratorService,
-							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository, PictureRepository pictureRepository) {
+							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository, PictureRepository pictureRepository,
+								  NomenclatureRepository nomenclatureRepository) {
 		this.fournisseurRepository = fournisseurRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
 		//this.articleRepository = articleRepository;
 		this.pictureRepository = pictureRepository;
+		this.nomenclatureRepository = nomenclatureRepository;
 	}
 	
 	public static byte[] decompressBytes(byte[] data) {
@@ -130,6 +130,24 @@ public class FournisseurServiceImpl implements FournisseurService{
 				.collect(Collectors.toList());
 	}
 
+
+	@Override
+	public void affecteNomEnClatureToFournisseur(String idFournisseur,
+												 List<String> selectedOptions) throws ResourceNotFoundException {
+		Fournisseur fournisseur = fournisseurRepository.findById(idFournisseur).orElseThrow(() ->
+				new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idFournisseur)));
+		selectedOptions.forEach(option -> {
+			try {
+				Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(option).orElseThrow(() ->
+						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
+				nomenclature.setFournisseurId(fournisseur.getId());
+				nomenclatureRepository.save(nomenclature);
+			} catch (ResourceNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		});
+
+	}
 	@Override
 	public Optional<Fournisseur> getFournisseurById(String id) {
 		return fournisseurRepository.findById(id);

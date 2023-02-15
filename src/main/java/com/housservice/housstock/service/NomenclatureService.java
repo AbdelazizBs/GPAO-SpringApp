@@ -31,6 +31,7 @@ public interface NomenclatureService {
 	ResponseEntity<Map<String, Object>> getParent();
 	 List<String> getParentsNameFiltered(String idNomenclature) throws ResourceNotFoundException;
 
+	public List<String> getNomenclaturesName();
 
 	void createNewNomenclature(  String nomNomenclature,
 								 List<String> parentsName,
@@ -44,11 +45,9 @@ public interface NomenclatureService {
 			 String categorie,
 								
 			 MultipartFile[] images) throws ResourceNotFoundException;
-	void affecteNomEnClatureToClient(  String idNomenClatureSelected,
-								 List<String>selectedOptions ) throws ResourceNotFoundException;
 
-	void affecteNomEnClatureToFournisseur(  String idNomenClatureSelected,
-								 List<String>selectedOptions ) throws ResourceNotFoundException;
+
+
 
 
      ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
@@ -83,5 +82,7 @@ public interface NomenclatureService {
 
 
 	public List<Nomenclature> getLigneSousFamilleByIdFamille(String idNomEnClature) throws ResourceNotFoundException;
+
+
 
 }

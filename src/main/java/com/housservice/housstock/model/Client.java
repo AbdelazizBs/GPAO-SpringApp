@@ -109,7 +109,7 @@ public class Client {
 				  String incoterm, String echeance, String modePaiement,
 				  String phone, String telecopie,
 				  String nomBanque, String adresseBanque, String rib,
-				  String swift,String email, Date dateMiseEnVeille, boolean miseEnVeille,int blocage,Date dateBlocage,
+				  String swift,String email, boolean miseEnVeille,int blocage,
 				  List<Contact> contact, List<CommandeClient> listCommandes) {
 
 		this.refClientIris = refClientIris;
@@ -128,10 +128,8 @@ public class Client {
 		this.adresseBanque = adresseBanque;
 		this.rib = rib;
 		this.swift = swift;
-		this.dateMiseEnVeille = dateMiseEnVeille;
 		this.miseEnVeille = miseEnVeille;
 		this.blocage = blocage;
-		this.dateBlocage = dateBlocage;
 		this.contact = contact;
 		this.listCommandes = listCommandes;
 

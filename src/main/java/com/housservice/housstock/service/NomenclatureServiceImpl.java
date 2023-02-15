@@ -309,40 +309,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		}
 	}
 
-	@Override
-	public void affecteNomEnClatureToClient(String idNomenClatureSelected,
-									  List<String> selectedOptions) throws ResourceNotFoundException {
-		Nomenclature nomenclature = nomenclatureRepository.findById(idNomenClatureSelected).orElseThrow(() ->
-				new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idNomenClatureSelected)));
-				selectedOptions.forEach(option -> {
-					try {
-						Client client = clientRepository.findClientByRaisonSocial(option).orElseThrow(() ->
-								new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
-						nomenclature.setClientId(client.getId());
-						nomenclatureRepository.save(nomenclature);
-					} catch (ResourceNotFoundException e) {
-						throw new RuntimeException(e);
-					}
-				});
 
-	}
-	@Override
-	public void affecteNomEnClatureToFournisseur(String idNomenClatureSelected,
-									  List<String> selectedOptions) throws ResourceNotFoundException {
-		Nomenclature nomenclature = nomenclatureRepository.findById(idNomenClatureSelected).orElseThrow(() ->
-				new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idNomenClatureSelected)));
-		selectedOptions.forEach(option -> {
-			try {
-				Fournisseur fournisseur = fournisseurRepository.findFournisseurByIntitule(option).orElseThrow(() ->
-						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
-				nomenclature.setFournisseurId(fournisseur.getId());
-				nomenclatureRepository.save(nomenclature);
-			} catch (ResourceNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-		});
 
-	}
 
 	@Override
 	public void updateNomenclature(String idNomenclature, String nomNomenclature, String description, String type,
@@ -614,6 +582,15 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		return nomenclatureList.stream().filter(nomenclature -> !nomenclature.getNomNomenclature().equals(nomenclatures.getNomNomenclature()))
 				.map(Nomenclature::getNomNomenclature).collect(Collectors.toList());
 
+	}
+
+
+	@Override
+	public List<String> getNomenclaturesName() {
+		List<Nomenclature> nomenclatures = nomenclatureRepository.findAll();
+		return nomenclatures.stream()
+				.map(Nomenclature::getNomNomenclature)
+				.collect(Collectors.toList());
 	}
 
 

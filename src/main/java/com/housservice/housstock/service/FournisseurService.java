@@ -6,9 +6,9 @@ import com.housservice.housstock.model.dto.ContactDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.List;
 
 
 public interface FournisseurService {
@@ -21,9 +21,9 @@ public interface FournisseurService {
 	public List<String> getIntitules();
 
     Optional<Fournisseur> getFournisseurById(String id);
-    
-   // List<Article> getArticles(String id) throws ResourceNotFoundException;
-   // List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException;
+
+	void affecteNomEnClatureToFournisseur(  String idFournisseur,
+									   List<String>selectedOptions ) throws ResourceNotFoundException;
 
 
   void createNewFournisseur(  String refFrsIris,

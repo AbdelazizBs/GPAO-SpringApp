@@ -185,33 +185,9 @@ public class NomenclatureController {
 	}
 
 
-	@PutMapping(value = "/affecteNomEnClatureToClient/{idNomenClatureSelected}")
-	public ResponseEntity<String> affecteNomEnClatureToClient(
-			@ApiParam(name = "idNomenClatureSelected", value = "id of nomenclatures Selected", required = true)
-			@PathVariable(value = "idNomenClatureSelected",
-					required = true) @NotEmpty(message = "{http.error.0001}") String idNomenClatureSelected,
-			@RequestParam("selectedOptions")
-			List<String> selectedOptions
-			) throws ResourceNotFoundException {
 
-		nomenclatureService.affecteNomEnClatureToClient(idNomenClatureSelected,selectedOptions);
 
-		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
-	}
 
-	@PutMapping(value = "/affecteNomEnClatureToFournisseur/{idNomenClatureSelected}")
-	public ResponseEntity<String> affecteNomEnClatureToFournisseur(
-			@ApiParam(name = "idNomenClatureSelected", value = "id of nomenclatures Selected", required = true)
-			@PathVariable(value = "idNomenClatureSelected",
-					required = true) @NotEmpty(message = "{http.error.0001}") String idNomenClatureSelected,
-			@RequestParam("selectedOptions")
-			List<String> selectedOptions
-			) throws ResourceNotFoundException {
-
-		nomenclatureService.affecteNomEnClatureToFournisseur(idNomenClatureSelected,selectedOptions);
-
-		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
-	}
 
 	@GetMapping("/getLigneSousFamilleByIdFamille/{idNomEnClature}")
 	public List<Nomenclature> getLigneSousFamilleByIdFamille(
@@ -312,5 +288,13 @@ public class NomenclatureController {
 		return nomenclatureService.getParentsNameFiltered(idNomenclature);
 	}
 
+
+
+
+	@GetMapping("/getNomenclaturesName")
+	@ApiOperation(value = "service to get name of nomenclatures")
+	public List<String> getNomenclaturesName() {
+		return nomenclatureService.getNomenclaturesName();
+	}
 
 }

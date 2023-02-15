@@ -4,16 +4,10 @@ import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.ClientMapper;
 import com.housservice.housstock.mapper.ContactMapper;
-import com.housservice.housstock.model.Article;
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Contact;
-import com.housservice.housstock.model.Picture;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
-import com.housservice.housstock.repository.ArticleRepository;
-import com.housservice.housstock.repository.ClientRepository;
-import com.housservice.housstock.repository.ContactRepository;
-import com.housservice.housstock.repository.PictureRepository;
+import com.housservice.housstock.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,18 +40,20 @@ public class ClientServiceImpl implements ClientService {
 	
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	final  ContactRepository contactRepository ;
-
+	private final NomenclatureRepository nomenclatureRepository;
 
 
 	@Autowired
 	public ClientServiceImpl(ClientRepository clientRepository, SequenceGeneratorService sequenceGeneratorService,
-							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository, PictureRepository pictureRepository) {
+							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository, PictureRepository pictureRepository,
+							 NomenclatureRepository nomenclatureRepository) {
 		this.clientRepository = clientRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
 		this.articleRepository = articleRepository;
 		this.pictureRepository = pictureRepository;
+		this.nomenclatureRepository = nomenclatureRepository;
 	}
 	public static byte[] decompressBytes(byte[] data) {
 		Inflater inflater = new Inflater();
@@ -362,7 +358,23 @@ public class ClientServiceImpl implements ClientService {
 		return ResponseEntity.ok(response);
 	}
 
+	@Override
+	public void affecteNomEnClatureToClient(String idClient,
+											List<String> selectedOptions) throws ResourceNotFoundException {
+		Client client = clientRepository.findById(idClient).orElseThrow(() ->
+				new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idClient)));
+		selectedOptions.forEach(option -> {
+			try {
+				Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(option).orElseThrow(() ->
+						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
+				nomenclature.setClientId(client.getId());
+				nomenclatureRepository.save(nomenclature);
+			} catch (ResourceNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		});
 
+	}
 	@Override
 	public List<String> getRaisonSociales( )   {
 		List<Client> clients = clientRepository.findAll();

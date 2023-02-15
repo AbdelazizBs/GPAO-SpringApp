@@ -6,25 +6,22 @@ import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.service.FournisseurService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 
 
 @CrossOrigin
@@ -100,6 +97,20 @@ public class FournisseurController {
 			@RequestParam(defaultValue = "3") int size) {
 		return fournisseurService.search(textToFind, page, size,enVeille);
 
+	}
+
+	@PutMapping(value = "/affecteNomEnClatureToFournisseur/{idFournisseur}")
+	public ResponseEntity<String> affecteNomEnClatureToFournisseur(
+			@ApiParam(name = "idFournisseur", value = "id of fournisseur", required = true)
+			@PathVariable(value = "idFournisseur",
+					required = true) @NotEmpty(message = "{http.error.0001}") String idFournisseur,
+			@RequestParam("selectedOptions")
+			List<String> selectedOptions
+	) throws ResourceNotFoundException {
+
+		fournisseurService.affecteNomEnClatureToFournisseur(idFournisseur,selectedOptions);
+
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}
 
 

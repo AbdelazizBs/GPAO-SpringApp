@@ -4,13 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 
@@ -105,7 +100,7 @@ public class Personnel {
 	public Personnel(String nom, String prenom, Date dateNaissance, String adresse, String photo,
 					 String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
 					 String echelon, String categorie, String matricule, String phone,
-					 Comptes compte, boolean miseEnVeille, String ville, String codePostal,
+					boolean miseEnVeille, String ville, String codePostal,
 					 String email) {
 		this.nom = nom;
 		this.prenom = prenom;
@@ -119,7 +114,6 @@ public class Personnel {
 		this.dateEmbauche = dateDeEmbauche;
 		this.echelon = echelon;
 		this.categorie = categorie;
-		this.compte = compte;
 		this.miseEnVeille = miseEnVeille;
 		this.matricule = matricule;
 		this.phone = phone;

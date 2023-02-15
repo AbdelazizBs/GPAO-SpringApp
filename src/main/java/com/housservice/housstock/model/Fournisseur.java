@@ -1,15 +1,13 @@
 package com.housservice.housstock.model;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -80,13 +78,12 @@ public class Fournisseur {
 
 	}
 	
-	public Fournisseur(String refFrsIris, String intitule, String abrege, String statut, String adresse, String codePostal, String ville, String region,String pays,
-			 String telephone, String telecopie, String linkedin, String email, String siteWeb,String nomBanque,String adresseBanque,String rib,String swift,String codeDouane,String rne,String identifiantTva, int miseEnVeille , Date dateMiseEnVeille,  List<Contact> contact , Date date) {
+	public Fournisseur(String refFrsIris, String intitule, String adresse, String codePostal, String ville, String region,String pays,
+			 String telephone, String telecopie, String email,String nomBanque,String adresseBanque,String rib,
+					   String swift,String codeDouane,String rne,String identifiantTva, int miseEnVeille ,  List<Contact> contact , Date date) {
 
 		this.refFrsIris = refFrsIris;
 		this.intitule = intitule;
-		this.abrege = abrege;
-		this.statut = statut;
 		this.adresse = adresse;
 		this.codePostal = codePostal;
 		this.ville = ville;
@@ -94,9 +91,7 @@ public class Fournisseur {
 		this.pays = pays;
 		this.telephone = telephone;
 		this.telecopie = telecopie;
-		this.linkedin = linkedin;
 		this.email = email;
-		this.siteWeb = siteWeb;	
 		this.nomBanque = nomBanque;
 		this.adresseBanque = adresseBanque;
 		this.rib = rib;
@@ -105,10 +100,10 @@ public class Fournisseur {
 		this.rne = rne;		
 		this.identifiantTva = identifiantTva;
 		this.miseEnVeille = miseEnVeille;
-		this.dateMiseEnVeille = dateMiseEnVeille;
 		this.contact = contact;
 		this.date = date ;
 	}
-	
-	
+
+
+
 }
