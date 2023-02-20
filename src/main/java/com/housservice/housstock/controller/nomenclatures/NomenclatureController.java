@@ -162,6 +162,10 @@ public class NomenclatureController {
 			
 			@RequestParam("description")
 			String description,
+			@RequestParam("raisonSoClient")
+			String raisonSoClient,
+			@RequestParam("intituleFrs")
+			String intituleFrs,
 			
 			@RequestParam("type")
 			@NotEmpty(message = "champ type obligatoire")
@@ -179,7 +183,8 @@ public class NomenclatureController {
 
 			) throws ResourceNotFoundException {
 
-		nomenclatureService.createNewNomenclature(nomNomenclature,parentsName, description, type, nature, categorie, images);
+		nomenclatureService.createNewNomenclature(nomNomenclature,parentsName, description, type, nature, categorie,
+				raisonSoClient,intituleFrs,images);
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}

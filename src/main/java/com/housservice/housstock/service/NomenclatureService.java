@@ -38,12 +38,12 @@ public interface NomenclatureService {
 			  
 			 String description,
 
-								 String type,
-				
+			String type,
+
 			 String nature,
-					
 			 String categorie,
-								
+			 String raisonSoClient,
+			 String intituleFrs,
 			 MultipartFile[] images) throws ResourceNotFoundException;
 
 

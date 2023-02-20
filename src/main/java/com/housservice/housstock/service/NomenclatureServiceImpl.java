@@ -252,7 +252,10 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 									  String description,
 									  String type,
 									  String nature,
-									  String categorie, MultipartFile[] images) throws ResourceNotFoundException {
+									  String categorie,
+									  String raisonSoClient,
+									  String intituleFrs,
+									  MultipartFile[] images) throws ResourceNotFoundException {
 		if (nomenclatureRepository.existsNomenclatureByNomNomenclature(nomNomenclature)) {
 			throw new IllegalArgumentException(	"Nom nomenclature existe déja !!");
 		}
@@ -270,8 +273,20 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 			pictureRepository.save(picture);
 			pictures.add(picture);
 		}
-		nomenclatureDto.setClientId("");
-		nomenclatureDto.setFournisseurId("");
+		Client client = clientRepository.findClientByRaisonSocial(raisonSoClient).orElseThrow(()
+				-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSoClient)));
+		Fournisseur fournisseur = fournisseurRepository.findFournisseurByIntitule(intituleFrs).orElseThrow(()
+				-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intituleFrs)));
+		if (raisonSoClient.equals("")) {
+			nomenclatureDto.setClientId("");
+		} else {
+			nomenclatureDto.setClientId(client.getId());
+		}
+		if (intituleFrs.equals("")) {
+			nomenclatureDto.setFournisseurId("");
+		} else {
+			nomenclatureDto.setFournisseurId(fournisseur.getId());
+		}
 		nomenclatureDto.setType(TypeNomEnClature.valueOf(type));
 		nomenclatureDto.setPictures(pictures);
 		nomenclatureDto.setDate(new Date());

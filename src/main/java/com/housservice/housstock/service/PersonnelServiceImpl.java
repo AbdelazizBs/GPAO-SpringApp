@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -47,15 +45,8 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 	@Override
 	public void  addPersonnel(PersonnelDto personnelDto)   {
-
 		try
 		{
-			Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
-			Matcher matcher = pattern.matcher(personnelDto.getEmail());
-			if (!matcher.matches()) {
-				throw new IllegalArgumentException(	" email " + personnelDto.getEmail() +  "  n'est pas valide !!");
-			}
-
 			if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
 				throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
 			}
@@ -66,30 +57,16 @@ public class PersonnelServiceImpl implements PersonnelService {
 			personnel.setMiseEnVeille(false);
 			personnelRepository.save(personnel);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			throw new IllegalArgumentException(e.getMessage());
 		}
-
 	}
 
 
 	@Override
 	public void  updatePersonnel(PersonnelDto personnelDto,String idPersonnel) throws ResourceNotFoundException {
-		String regex = "^(.+)@(.+)$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(personnelDto.getEmail());
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
-		if (!personnelDto.getEmail().equals("") && !matcher.matches()) {
-			throw new IllegalArgumentException(" email " + personnelDto.getEmail() +  "  n'est pas valide !!");
-		}
-//		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
-//			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
-//		}
-//		if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
-//			throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
-//		}
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
 		personnel.setDateNaissance(personnelDto.getDateNaissance());
@@ -192,7 +169,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 	public ResponseEntity<Map<String, Object>> onSortPersonnelNotActive(int page, int size, String field, String order) {
 	try {
 		List<PersonnelDto> personnels ;
-		Pageable paging = PageRequest.of(page, size);
 		Page<Personnel> pageTuts;
 		if (order.equals("1")){
 			pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
@@ -203,7 +179,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnels = pageTuts.getContent().stream().map(personnel -> {
 			return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
 		}).collect(Collectors.toList());
-		personnels =personnels.stream().filter(personnel -> personnel.isMiseEnVeille()).collect(Collectors.toList());
+		personnels =personnels.stream().filter(PersonnelDto::isMiseEnVeille).collect(Collectors.toList());
 		Map<String, Object> response = new HashMap<>();
 		response.put("personnels", personnels);
 		response.put("currentPage", pageTuts.getNumber());

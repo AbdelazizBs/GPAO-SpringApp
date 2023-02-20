@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -39,7 +41,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/api/v1/personnel")
 @Api(tags = { "personnels Management" })
 public class PersonnelController {
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+			Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
+	public static boolean validate(String emailStr) {
+		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+		return matcher.matches();
+	}
 	private final PersonnelService personnelService;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
@@ -56,6 +64,9 @@ public class PersonnelController {
 	@PutMapping("/addPersonnel")
 	@ApiOperation(value = "service to add new Personnel")
 	public ResponseEntity<String> addPersonnel(@Valid  @RequestBody PersonnelDto personnelDto)   {
+		if (!validate(personnelDto.getEmail())) {
+			throw new IllegalArgumentException(	" email " + personnelDto.getEmail() +  "  n'est pas valide !!");
+		}
 			personnelService.addPersonnel(personnelDto);
 			return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}
@@ -63,6 +74,9 @@ public class PersonnelController {
 	@ApiOperation(value = "service to update  Personnel")
 	public ResponseEntity<String> updatePersonnel(@Valid  @RequestBody PersonnelDto personnelDto,
 												  @PathVariable(value = "idPersonnel", required = true) String idPersonnel) throws ResourceNotFoundException {
+		if (!validate(personnelDto.getEmail())) {
+			throw new IllegalArgumentException(" email " + personnelDto.getEmail() +  "  n'est pas valide !!");
+		}
 		  personnelService.updatePersonnel(personnelDto,idPersonnel);
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
@@ -72,7 +86,8 @@ public class PersonnelController {
 	@ApiOperation(value = "service to get one Utilisateur by Id.")
 	public ResponseEntity <PersonnelDto> getPersonnelById(
 			@ApiParam(name = "id", value="id of utilisateur", required = true)
-			@PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String utilisateurId)
+			@PathVariable(value = "id", required = true)
+			@NotEmpty(message = "{http.error.0001}") String utilisateurId)
 			throws ResourceNotFoundException {
 		PersonnelDto utilisateur = personnelService.getPersonnelById(utilisateurId);
 		if (utilisateur == null) {
