@@ -1,8 +1,7 @@
 package com.housservice.housstock.controller.client;
 
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Article;
+import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
@@ -82,19 +81,6 @@ public class ClientController {
 	}
 
 
-	@PutMapping(value = "/affecteNomEnClatureToClient/{idClient}")
-	public ResponseEntity<String> affecteNomEnClatureToClient(
-			@ApiParam(name = "idClient", value = "id of client ", required = true)
-			@PathVariable(value = "idClient",
-					required = true) @NotEmpty(message = "{http.error.0001}") String idClient,
-			@RequestParam("selectedOptions")
-			List<String> selectedOptions
-	) throws ResourceNotFoundException {
-
-		clientService.affecteNomEnClatureToClient(idClient,selectedOptions);
-
-		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
-	}
 
 
 	@GetMapping("/getAllClientNonActive")
@@ -114,28 +100,6 @@ public class ClientController {
 			return clientService.search(textToFind, page, size,enVeille);
 
 		}
-
-
-	  @GetMapping("/getArticles/{idClient}")
-	  @ApiOperation(value = "service to get one Client by Id.")
-	  public List <Article> getArticles(
-			  @ApiParam(name = "idClient", value="id of client", required = true)
-			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
-	  throws ResourceNotFoundException {
-		  return  clientService.getArticles(idClient) ;
-
-	  }
-
-	  @GetMapping("/getArticlesByRaisons/{raisonS}")
-	  @ApiOperation(value = "service to get one Client by Id.")
-	  public List <Article> getArticlesByRaisons(
-			  @ApiParam(name = "raisonS", value="raison sociale of client", required = true)
-			  @PathVariable(value = "raisonS", required = true) @NotEmpty(message = "{http.error.0001}") String raisonS)
-	  throws ResourceNotFoundException {
-		  return  clientService.getArticlesByRaisons(raisonS) ;
-	  }
-
-
 
 
 	@DeleteMapping("/deleteSelectedClient/{idClientsSelected}")

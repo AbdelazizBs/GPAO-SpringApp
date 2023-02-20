@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Getter
@@ -102,15 +101,13 @@ public class Client {
 	private List <Contact> contact;
 	private List <Picture> pictures;
 
-	private List<CommandeClient> listCommandes = new ArrayList<>();
 
 	public Client(Date date,String refClientIris, String raisonSocial, String regime,
 				  String secteurActivite, String brancheActivite,
 				  String incoterm, String echeance, String modePaiement,
 				  String phone, String telecopie,
 				  String nomBanque, String adresseBanque, String rib,
-				  String swift,String email, boolean miseEnVeille,int blocage,
-				  List<Contact> contact, List<CommandeClient> listCommandes) {
+				  String swift,String email, boolean miseEnVeille,int blocage) {
 
 		this.refClientIris = refClientIris;
 		this.date = date;
@@ -131,7 +128,6 @@ public class Client {
 		this.miseEnVeille = miseEnVeille;
 		this.blocage = blocage;
 		this.contact = contact;
-		this.listCommandes = listCommandes;
 
 	}
 

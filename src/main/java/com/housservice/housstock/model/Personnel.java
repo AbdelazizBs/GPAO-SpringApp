@@ -89,7 +89,6 @@ public class Personnel {
 
 	private String email;
 	
-	private Comptes compte = new Comptes();
 	private boolean miseEnVeille ;
 
 

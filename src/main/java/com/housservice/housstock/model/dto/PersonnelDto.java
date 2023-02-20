@@ -1,7 +1,6 @@
 package com.housservice.housstock.model.dto;
 
 
-import com.housservice.housstock.model.Comptes;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -93,7 +92,6 @@ public class PersonnelDto {
 
 	private String categorie;
 
-	private Comptes compte= new Comptes();
 
 
 	private boolean miseEnVeille ;

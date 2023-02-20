@@ -1,13 +1,11 @@
 package com.housservice.housstock.service;
 
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.PersonnelMapper;
+import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
-import com.housservice.housstock.repository.ComptesRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
-import com.housservice.housstock.repository.RolesRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,20 +26,14 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 	private final PersonnelRepository personnelRepository;
 
-	final
-	ComptesRepository comptesRepository;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 
 
-	final RolesRepository rolesRepository;
 
-	public PersonnelServiceImpl(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties,
-								RolesRepository rolesRepository, ComptesRepository comptesRepository) {
+	public PersonnelServiceImpl(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties) {
 		this.personnelRepository = personnelRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
-		this.rolesRepository = rolesRepository;
-		this.comptesRepository = comptesRepository;
 	}
 
 
@@ -84,12 +76,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 		if (!personnelDto.getEmail().equals("") && !matcher.matches()) {
 			throw new IllegalArgumentException(" email " + personnelDto.getEmail() +  "  n'est pas valide !!");
 		}
-//		if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
-//			throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
-//		}
-//		if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
-//			throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
-//		}
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
 		personnel.setDateNaissance(personnelDto.getDateNaissance());

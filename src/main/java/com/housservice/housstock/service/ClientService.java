@@ -1,7 +1,6 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.dto.ContactDto;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +20,11 @@ public interface ClientService {
 	public List<String> getRaisonSociales();
 
     Optional<Client> getClientById(String id);
-    List<Article> getArticles(String id) throws ResourceNotFoundException;
-    List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException;
+
 
 	public ResponseEntity<Map<String, Object>> onSortActiveClient(int page, int size, String field, String order);
 	public ResponseEntity<Map<String, Object>> onSortClientNotActive(int page, int size, String field, String order);
-	void affecteNomEnClatureToClient(  String idClient,
-									   List<String>selectedOptions ) throws ResourceNotFoundException;
+
 	
 	  void createNewClient(  String refClientIris,
 							 String raisonSociale,
@@ -53,8 +50,10 @@ public interface ClientService {
 							 String rib,
 							 String swift,
 							  MultipartFile[] images) throws ResourceNotFoundException;
-
 	public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
+
+
+
 
 	public void updateClient(String idClient ,String refClientIris,
 							 String raisonSociale,

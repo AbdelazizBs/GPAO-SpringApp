@@ -1,13 +1,17 @@
 package com.housservice.housstock.service;
 
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.ClientMapper;
 import com.housservice.housstock.mapper.ContactMapper;
-import com.housservice.housstock.model.*;
+import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Contact;
+import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
-import com.housservice.housstock.repository.*;
+import com.housservice.housstock.repository.ClientRepository;
+import com.housservice.housstock.repository.ContactRepository;
+import com.housservice.housstock.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,28 +36,22 @@ public class ClientServiceImpl implements ClientService {
 
 	private final ClientRepository clientRepository;
 	
-	private final ArticleRepository articleRepository ;
 	final
 	PictureRepository pictureRepository;
 
-	private final SequenceGeneratorService sequenceGeneratorService;
-	
+
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	final  ContactRepository contactRepository ;
-	private final NomenclatureRepository nomenclatureRepository;
 
 
 	@Autowired
-	public ClientServiceImpl(ClientRepository clientRepository, SequenceGeneratorService sequenceGeneratorService,
-							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository, ArticleRepository articleRepository, PictureRepository pictureRepository,
-							 NomenclatureRepository nomenclatureRepository) {
+	public ClientServiceImpl(ClientRepository clientRepository,
+							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository,
+							 PictureRepository pictureRepository) {
 		this.clientRepository = clientRepository;
-		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
-		this.articleRepository = articleRepository;
 		this.pictureRepository = pictureRepository;
-		this.nomenclatureRepository = nomenclatureRepository;
 	}
 	public static byte[] decompressBytes(byte[] data) {
 		Inflater inflater = new Inflater();
@@ -79,22 +77,6 @@ public class ClientServiceImpl implements ClientService {
 		return clientRepository.findById(clientId);
 	}
 
-
-	@Override
-	public List<Article> getArticles(String clientId) throws ResourceNotFoundException {
-		Client client = clientRepository.findById(clientId)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
-		List<Article> articles = articleRepository.findArticleByClientId(client.getId());
-		return articles;
-	}
-	@Override
-	public List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException {
-		Client client = clientRepository.findClientByRaisonSocial(raison)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), raison)));
-		List<Article> articles = articleRepository.findArticleByClientId(client.getId());
-//		articles.stream().map(article -> decompressBytes(article.getPicture().getBytes()));
-		return articles;
-	}
 
 	
 	@Override
@@ -190,30 +172,7 @@ public class ClientServiceImpl implements ClientService {
 		clientRepository.save(client);
 	}
 
-	@Override
-	public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
 
-		try {
-
-			List<ClientDto> clients;
-			Pageable paging = PageRequest.of(page, size);
-			Page<Client> pageTuts;
-			pageTuts = clientRepository.findClientByTextToFind(textToFind, paging);
-			clients = pageTuts.getContent().stream().map(client -> {
-				return ClientMapper.MAPPER.toClientDto(client);
-			}).collect(Collectors.toList());
-			clients= clients.stream().filter(client -> client.isMiseEnVeille()==enVeille).collect(Collectors.toList());
-			Map<String, Object> response = new HashMap<>();
-			response.put("clients", clients);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
-
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
 	@Override
 	public void miseEnVeille(String idClient) throws ResourceNotFoundException {
 		Client client = clientRepository.findById(idClient)
@@ -324,16 +283,6 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void updateContactClient(ContactDto contactDto,String idContact) throws ResourceNotFoundException {
-		// update contact by id contact and update it in client contact list
-//		Contact contact = contactRepository.findById(idContact)
-//				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idContact)));
-//		contact.setNom(contactDto.getNom());
-//		contact.setEmail(contactDto.getEmail());
-//		contact.setMobile(contactDto.getMobile());
-//		contact.setFonction(contactDto.getFonction());
-//		contact.setPhone(contactDto.getPhone());
-//		contactRepository.save(contact);
-
 		Client client =clientRepository.findClientByContactId(idContact)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  contactDto)));
 		Contact contactToUpdate = contactRepository.findById(idContact)
@@ -358,23 +307,6 @@ public class ClientServiceImpl implements ClientService {
 		return ResponseEntity.ok(response);
 	}
 
-	@Override
-	public void affecteNomEnClatureToClient(String idClient,
-											List<String> selectedOptions) throws ResourceNotFoundException {
-		Client client = clientRepository.findById(idClient).orElseThrow(() ->
-				new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idClient)));
-		selectedOptions.forEach(option -> {
-			try {
-				Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(option).orElseThrow(() ->
-						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
-				nomenclature.setClientId(client.getId());
-				nomenclatureRepository.save(nomenclature);
-			} catch (ResourceNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-		});
-
-	}
 	@Override
 	public List<String> getRaisonSociales( )   {
 		List<Client> clients = clientRepository.findAll();
@@ -518,4 +450,31 @@ public class ClientServiceImpl implements ClientService {
 		client.getPictures().removeIf(picture1 -> picture1.equals(picture));
 		clientRepository.save(client);
 	}
+
+
+	@Override
+	public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
+
+		try {
+
+			List<ClientDto> clients;
+			Pageable paging = PageRequest.of(page, size);
+			Page<Client> pageTuts;
+			pageTuts = clientRepository.findClientByTextToFind(textToFind, paging);
+			clients = pageTuts.getContent().stream().map(client -> {
+				return ClientMapper.MAPPER.toClientDto(client);
+			}).collect(Collectors.toList());
+			clients= clients.stream().filter(client -> client.isMiseEnVeille()==enVeille).collect(Collectors.toList());
+			Map<String, Object> response = new HashMap<>();
+			response.put("clients", clients);
+			response.put("currentPage", pageTuts.getNumber());
+			response.put("totalItems", pageTuts.getTotalElements());
+			response.put("totalPages", pageTuts.getTotalPages());
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 }

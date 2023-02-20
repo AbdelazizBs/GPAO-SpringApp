@@ -1,13 +1,14 @@
 package com.housservice.housstock.service;
 
 
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.ContactRepository;
 import org.springframework.stereotype.Service;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 

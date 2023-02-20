@@ -1,6 +1,5 @@
 package com.housservice.housstock.model.dto;
 
-import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.Picture;
 import lombok.Getter;
@@ -10,7 +9,6 @@ import org.springframework.data.annotation.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -139,6 +137,5 @@ public class ClientDto {
 	private List <Contact> contact;
 	private List <Picture> pictures;
 
-	private List<CommandeClient> listCommandes = new ArrayList<>();
-    
+
 }
