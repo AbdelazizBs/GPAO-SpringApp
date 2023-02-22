@@ -273,18 +273,18 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 			pictureRepository.save(picture);
 			pictures.add(picture);
 		}
-		Client client = clientRepository.findClientByRaisonSocial(raisonSoClient).orElseThrow(()
-				-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSoClient)));
-		Fournisseur fournisseur = fournisseurRepository.findFournisseurByIntitule(intituleFrs).orElseThrow(()
-				-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intituleFrs)));
 		if (raisonSoClient.equals("")) {
 			nomenclatureDto.setClientId("");
 		} else {
+			Client client = clientRepository.findClientByRaisonSocial(raisonSoClient).orElseThrow(()
+					-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSoClient)));
 			nomenclatureDto.setClientId(client.getId());
 		}
 		if (intituleFrs.equals("")) {
 			nomenclatureDto.setFournisseurId("");
 		} else {
+			Fournisseur fournisseur = fournisseurRepository.findFournisseurByIntitule(intituleFrs).orElseThrow(()
+					-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intituleFrs)));
 			nomenclatureDto.setFournisseurId(fournisseur.getId());
 		}
 		nomenclatureDto.setType(TypeNomEnClature.valueOf(type));
@@ -329,7 +329,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
 	@Override
 	public void updateNomenclature(String idNomenclature, String nomNomenclature, String description, String type,
-			String nature, String categorie,List<String> parentsName ,MultipartFile[] images) throws ResourceNotFoundException {
+			String nature, String categorie,List<String> parentsName ,String raisonSoClient,
+								   String intituleFrs,MultipartFile[] images) throws ResourceNotFoundException {
 		
 		if (nomNomenclature.isEmpty() || description.isEmpty() || type.isEmpty() || categorie.isEmpty()) {
 			throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
@@ -353,6 +354,22 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		}
 		pictures.addAll(nomenclature.getPictures());
 		nomenclature.setPictures(pictures);
+		if (raisonSoClient.equals("")) {
+			nomenclature.setClientId("");
+		} else {
+			Client client = clientRepository.findClientByRaisonSocial(raisonSoClient).orElseThrow(()
+					-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSoClient)));
+			nomenclature.setClientId(client.getId());
+			nomenclature.setFournisseurId("");
+		}
+		if (intituleFrs.equals("")) {
+			nomenclature.setFournisseurId("");
+		} else {
+			Fournisseur fournisseur = fournisseurRepository.findFournisseurByIntitule(intituleFrs).orElseThrow(()
+					-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intituleFrs)));
+			nomenclature.setFournisseurId(fournisseur.getId());
+			nomenclature.setClientId("");
+		}
 		nomenclature.setType(TypeNomEnClature.valueOf(type));
 		nomenclature.setDate(nomenclature.getDate());
 		nomenclature.setDateMiseEnVeille(nomenclature.getDateMiseEnVeille());

@@ -53,7 +53,7 @@ public class FournisseurController {
 	}
 
 
-	@GetMapping("/fournisseur/{id}")
+	@GetMapping("/getFournisseurById/{id}")
 	@ApiOperation(value = "service to get one Fournisseur by Id.")
 	public ResponseEntity < Fournisseur > getFournisseurById(
 			@ApiParam(name = "id", value="id of fournisseur", required = true)

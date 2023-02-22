@@ -49,10 +49,8 @@ public class Nomenclature {
 	@Size(max = 100)
 	private String categorie;
 	@NotBlank
-	@Size(max = 100)
 	private String clientId;
 	@NotBlank
-	@Size(max = 100)
 	private String fournisseurId;
 
 	private List<String> childrensId;

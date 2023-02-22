@@ -155,32 +155,26 @@ public class NomenclatureController {
 
 	@PutMapping(value = "/addNomenclature")
 	public ResponseEntity<String> createNewNomenclature(
-					
 			@RequestParam("nomNomenclature")
 			@NotEmpty(message = "champ Nom nomenclature obligatoire")
 			String nomNomenclature,
-			
 			@RequestParam("description")
 			String description,
 			@RequestParam("raisonSoClient")
 			String raisonSoClient,
 			@RequestParam("intituleFrs")
 			String intituleFrs,
-			
 			@RequestParam("type")
 			@NotEmpty(message = "champ type obligatoire")
 			String type,
-			
 			@RequestParam("nature")
 			String nature,
-			
 			@RequestParam("categorie")
 			@NotEmpty(message = "champ categorie obligatoire")
 			String categorie,
 			@RequestParam("parentsName")
 			List<String> parentsName,
 			@RequestParam("images") MultipartFile[] images
-
 			) throws ResourceNotFoundException {
 
 		nomenclatureService.createNewNomenclature(nomNomenclature,parentsName, description, type, nature, categorie,
@@ -222,8 +216,10 @@ public class NomenclatureController {
 			@RequestParam("nature") String nature,	
 			@RequestParam("categorie") String categorie,
 			@RequestParam("parentsName")List<String> parentsName,
+			@RequestParam("raisonSoClient")String raisonSoClient,
+			@RequestParam("intituleFrs")String intituleFrs,
 			@RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
-		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,parentsName,images);
+		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,parentsName,raisonSoClient,intituleFrs,images);
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
 	
