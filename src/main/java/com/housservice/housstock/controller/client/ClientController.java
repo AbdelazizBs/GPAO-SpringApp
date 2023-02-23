@@ -132,15 +132,16 @@ public class ClientController {
 		}
 
 
-	  @GetMapping("/getArticles/{idClient}")
-	  @ApiOperation(value = "service to get one Client by Id.")
-	  public List <Article> getArticles(
-			  @ApiParam(name = "idClient", value="id of client", required = true)
-			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
+	  @GetMapping("/getNomenclaturesParClient/{raison}")
+	  @ApiOperation(value = "service to get nomenclatures by raison.")
+	  public ResponseEntity<Map<String, Object>> getArticles(
+			  @ApiParam(name = "raison", value="raison of client", required = true)
+			  @PathVariable(value = "raison", required = true) @NotEmpty(message = "{http.error.0001}") String raison)
 	  throws ResourceNotFoundException {
-		  return  clientService.getArticles(idClient) ;
+		  return  clientService.getNomenclaturesParClient(raison) ;
 
 	  }
+
 
 	  @GetMapping("/getArticlesByRaisons/{raisonS}")
 	  @ApiOperation(value = "service to get one Client by Id.")

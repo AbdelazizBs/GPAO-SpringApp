@@ -23,7 +23,7 @@ public interface ClientService {
     Optional<Client> getClientById(String id);
 	ResponseEntity<Map<String, Object>> getClientsNameByIds(String nomenclatureId) throws ResourceNotFoundException;
 
-	List<Article> getArticles(String id) throws ResourceNotFoundException;
+	ResponseEntity<Map<String, Object>> getNomenclaturesParClient(String id) throws ResourceNotFoundException;
     List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException;
 
 	public ResponseEntity<Map<String, Object>> onSortActiveClient(int page, int size, String field, String order);

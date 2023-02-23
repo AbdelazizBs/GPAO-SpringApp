@@ -94,18 +94,32 @@ public class ClientServiceImpl implements ClientService {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	@Override
-	public List<Article> getArticles(String clientId) throws ResourceNotFoundException {
-		Client client = clientRepository.findById(clientId)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
-		List<Article> articles = articleRepository.findArticleByClientId(client.getId());
-		return articles;
-	}
+	public ResponseEntity<Map<String, Object>>  getNomenclaturesParClient(String raison) throws ResourceNotFoundException {
+		try {
+			Client client = clientRepository.findClientByRaisonSocial(raison)
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), raison)));
+			List<Nomenclature> nomenclatures = new ArrayList<>();
+			Map<String, Object> response = new HashMap<>();
+			nomenclatureRepository.findAll().stream().map(
+					nomenclature -> {
+						if(nomenclature.getClientId().contains(client.getId())){
+							nomenclatures.add(nomenclature);
+						}
+						return nomenclature;
+					}
+			).collect(Collectors.toList());
+			response.put("nomenclatures", nomenclatures);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
+			}
+		}
 	@Override
 	public List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException {
 		Client client = clientRepository.findClientByRaisonSocial(raison)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), raison)));
 		List<Article> articles = articleRepository.findArticleByClientId(client.getId());
-//		articles.stream().map(article -> decompressBytes(article.getPicture().getBytes()));
 		return articles;
 	}
 
