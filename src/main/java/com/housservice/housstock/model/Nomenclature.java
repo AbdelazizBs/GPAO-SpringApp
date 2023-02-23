@@ -48,10 +48,8 @@ public class Nomenclature {
 	@NotBlank
 	@Size(max = 100)
 	private String categorie;
-	@NotBlank
-	private String clientId;
-	@NotBlank
-	private String fournisseurId;
+	private List<String> clientId;
+	private List<String> fournisseurId;
 
 	private List<String> childrensId;
 	private List<String> parentsName = new ArrayList<>();

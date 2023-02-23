@@ -79,7 +79,20 @@ public class ClientServiceImpl implements ClientService {
 		return clientRepository.findById(clientId);
 	}
 
-
+	@Override
+	public ResponseEntity<Map<String, Object>> getClientsNameByIds(String nomenclatureId) throws ResourceNotFoundException {
+		List<String> raisonsClients = new ArrayList<>();
+		Nomenclature nomenclature = nomenclatureRepository.findById(nomenclatureId)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomenclatureId)));
+		for (String id : nomenclature.getClientId()){
+			Client client = clientRepository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+			raisonsClients.add(client.getRaisonSocial());
+		}
+		Map<String, Object> response = new HashMap<>();
+		response.put("raisonsClients", raisonsClients);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 	@Override
 	public List<Article> getArticles(String clientId) throws ResourceNotFoundException {
 		Client client = clientRepository.findById(clientId)
@@ -367,7 +380,9 @@ public class ClientServiceImpl implements ClientService {
 			try {
 				Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(option).orElseThrow(() ->
 						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
-				nomenclature.setClientId(client.getId());
+				List<String> clientsId = new ArrayList<>(nomenclature.getClientId());
+				clientsId.add(client.getId());
+				nomenclature.setClientId(clientsId);
 				nomenclatureRepository.save(nomenclature);
 			} catch (ResourceNotFoundException e) {
 				throw new RuntimeException(e);

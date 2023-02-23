@@ -161,9 +161,9 @@ public class NomenclatureController {
 			@RequestParam("description")
 			String description,
 			@RequestParam("raisonSoClient")
-			String raisonSoClient,
+			List<String> raisonSoClient,
 			@RequestParam("intituleFrs")
-			String intituleFrs,
+			List<String> intituleFrs,
 			@RequestParam("type")
 			@NotEmpty(message = "champ type obligatoire")
 			String type,
@@ -216,8 +216,8 @@ public class NomenclatureController {
 			@RequestParam("nature") String nature,	
 			@RequestParam("categorie") String categorie,
 			@RequestParam("parentsName")List<String> parentsName,
-			@RequestParam("raisonSoClient")String raisonSoClient,
-			@RequestParam("intituleFrs")String intituleFrs,
+			@RequestParam("raisonSoClient")List<String> raisonSoClient,
+			@RequestParam("intituleFrs")List<String> intituleFrs,
 			@RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
 		nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, type, nature, categorie,parentsName,raisonSoClient,intituleFrs,images);
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());

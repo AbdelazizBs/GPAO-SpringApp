@@ -41,7 +41,7 @@ public class FournisseurController {
 
 		this.fournisseurService = fournisseurService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
-		
+
 	}
 
 	@GetMapping("/getAllFournisseur")
@@ -53,7 +53,7 @@ public class FournisseurController {
 	}
 
 
-	@GetMapping("/getFournisseurById/{id}")
+	@GetMapping("/fournisseur/{id}")
 	@ApiOperation(value = "service to get one Fournisseur by Id.")
 	public ResponseEntity < Fournisseur > getFournisseurById(
 			@ApiParam(name = "id", value="id of fournisseur", required = true)
@@ -65,7 +65,14 @@ public class FournisseurController {
 		return ResponseEntity.ok().body(fournisseur);
 	}
 
-
+	@GetMapping("/getFournisseursNameById/{idNomenclature}")
+	@ApiOperation(value = "service to get one Fournisseurs Intitule by Id nomenclature.")
+	public ResponseEntity<Map<String, Object>> getFournisseursNameById(
+			@ApiParam(name = "idNomenclature", value="id of nomenclature", required = true)
+			@PathVariable(value = "idNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String idNomenclature)
+			throws ResourceNotFoundException {
+		return fournisseurService.getFournisseursNameById(idNomenclature);
+	}
 	@GetMapping("/getIdFournisseurs/{intitule}")
 	@ApiOperation(value = "service to get Id Fournisseur by intitule.")
 	public ResponseEntity<Map<String, Object>>  getIdFournisseurs(  @ApiParam(name = "intitule", value="intitule of fournisseurs", required = true)

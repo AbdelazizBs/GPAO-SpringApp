@@ -42,8 +42,8 @@ public interface NomenclatureService {
 
 			 String nature,
 			 String categorie,
-			 String raisonSoClient,
-			 String intituleFrs,
+			 List<String> raisonSoClient,
+			 List<String> intituleFrs,
 			 MultipartFile[] images) throws ResourceNotFoundException;
 
 
@@ -65,8 +65,8 @@ public interface NomenclatureService {
 					
 			 String categorie,
 			 List<String> parentsName,
-							 String raisonSoClient,
-							 String intituleFrs,
+							 List<String> raisonSoClient,
+							 List<String> intituleFrs,
 
 			 MultipartFile[] images) throws ResourceNotFoundException;
 

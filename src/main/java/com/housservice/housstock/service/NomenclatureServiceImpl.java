@@ -253,8 +253,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 									  String type,
 									  String nature,
 									  String categorie,
-									  String raisonSoClient,
-									  String intituleFrs,
+									  List<String> raisonSoClient,
+									  List<String> intituleFrs,
 									  MultipartFile[] images) throws ResourceNotFoundException {
 		if (nomenclatureRepository.existsNomenclatureByNomNomenclature(nomNomenclature)) {
 			throw new IllegalArgumentException(	"Nom nomenclature existe déja !!");
@@ -273,19 +273,38 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 			pictureRepository.save(picture);
 			pictures.add(picture);
 		}
-		if (raisonSoClient.equals("")) {
-			nomenclatureDto.setClientId("");
+		if (raisonSoClient.isEmpty()) {
+			nomenclatureDto.setClientId(new ArrayList<>());
 		} else {
-			Client client = clientRepository.findClientByRaisonSocial(raisonSoClient).orElseThrow(()
-					-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSoClient)));
-			nomenclatureDto.setClientId(client.getId());
+			List<String> clientsId = new ArrayList<>();
+			raisonSoClient.stream().map(raisonSo -> {
+				try {
+					Client client=	clientRepository.findClientByRaisonSocial(raisonSo).orElseThrow(()
+							-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSo)));
+					clientsId.add(client.getId());
+				} catch (ResourceNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+				return clientsId;
+			}).collect(Collectors.toList());
+			nomenclatureDto.setClientId(clientsId);
 		}
-		if (intituleFrs.equals("")) {
-			nomenclatureDto.setFournisseurId("");
+		if (intituleFrs.isEmpty()) {
+			nomenclatureDto.setFournisseurId(new ArrayList<>());
 		} else {
-			Fournisseur fournisseur = fournisseurRepository.findFournisseurByIntitule(intituleFrs).orElseThrow(()
-					-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intituleFrs)));
-			nomenclatureDto.setFournisseurId(fournisseur.getId());
+			List<String> fournisseursId = new ArrayList<>();
+					intituleFrs.stream().map(intitule -> {
+				Fournisseur fournisseur = null;
+				try {
+					fournisseur = fournisseurRepository.findFournisseurByIntitule(intitule).orElseThrow(()
+							-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intitule)));
+					fournisseursId.add(fournisseur.getId());
+				} catch (ResourceNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+				return fournisseursId;
+			}).collect(Collectors.toList());
+			nomenclatureDto.setFournisseurId(fournisseursId);
 		}
 		nomenclatureDto.setType(TypeNomEnClature.valueOf(type));
 		nomenclatureDto.setPictures(pictures);
@@ -329,8 +348,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
 	@Override
 	public void updateNomenclature(String idNomenclature, String nomNomenclature, String description, String type,
-			String nature, String categorie,List<String> parentsName ,String raisonSoClient,
-								   String intituleFrs,MultipartFile[] images) throws ResourceNotFoundException {
+			String nature, String categorie,List<String> parentsName ,List<String> raisonSoClient,
+								   List<String> intituleFrs,MultipartFile[] images) throws ResourceNotFoundException {
 		
 		if (nomNomenclature.isEmpty() || description.isEmpty() || type.isEmpty() || categorie.isEmpty()) {
 			throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
@@ -354,21 +373,38 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		}
 		pictures.addAll(nomenclature.getPictures());
 		nomenclature.setPictures(pictures);
-		if (raisonSoClient.equals("")) {
-			nomenclature.setClientId("");
+
+		if (raisonSoClient.isEmpty()) {
+			nomenclature.setClientId(new ArrayList<>());
 		} else {
-			Client client = clientRepository.findClientByRaisonSocial(raisonSoClient).orElseThrow(()
-					-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSoClient)));
-			nomenclature.setClientId(client.getId());
-			nomenclature.setFournisseurId("");
+			List<String> clientsId = new ArrayList<>();
+		raisonSoClient.stream().map(raisonSoClient1 -> {
+			Client client = null;
+			try {
+				client = clientRepository.findClientByRaisonSocial(raisonSoClient1).orElseThrow(()
+						-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),raisonSoClient1)));
+			} catch (ResourceNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+			return 	clientsId.add(client.getId());
+			}).collect(Collectors.toList());
+			nomenclature.setClientId(clientsId);
 		}
-		if (intituleFrs.equals("")) {
-			nomenclature.setFournisseurId("");
+		if (intituleFrs.isEmpty()) {
+			nomenclature.setFournisseurId(new ArrayList<>());
 		} else {
-			Fournisseur fournisseur = fournisseurRepository.findFournisseurByIntitule(intituleFrs).orElseThrow(()
-					-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intituleFrs)));
-			nomenclature.setFournisseurId(fournisseur.getId());
-			nomenclature.setClientId("");
+			List<String> fournisseursId = new ArrayList<>();
+			intituleFrs.stream().map(intituleFrs1 -> {
+				Fournisseur fournisseur = null;
+				try {
+					fournisseur = fournisseurRepository.findFournisseurByIntitule(intituleFrs1).orElseThrow(()
+							-> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intituleFrs1)));
+				} catch (ResourceNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+				return fournisseursId.add(fournisseur.getId());
+			}).collect(Collectors.toList());
+			nomenclature.setFournisseurId(fournisseursId);
 		}
 		nomenclature.setType(TypeNomEnClature.valueOf(type));
 		nomenclature.setDate(nomenclature.getDate());
@@ -520,7 +556,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		Map<String, Object> response = new HashMap<>();
 			nomenclatureRepository.findAll().stream().map(
 				nomenclature -> {
-					if(nomenclature.getClientId().equals(client.getId())){
+					if(nomenclature.getClientId().contains(client.getId())){
 						nomenclatures.add(nomenclature);
 					}
 					return nomenclature;
@@ -542,7 +578,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 		Map<String, Object> response = new HashMap<>();
 			nomenclatureRepository.findAll().stream().map(
 				nomenclature -> {
-					if(nomenclature.getFournisseurId().equals(fournisseur.getId())){
+					if(nomenclature.getFournisseurId().contains(fournisseur.getId())){
 						nomenclatures.add(nomenclature);
 					}
 					return nomenclature;

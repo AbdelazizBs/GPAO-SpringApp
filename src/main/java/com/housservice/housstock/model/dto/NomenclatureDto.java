@@ -17,8 +17,8 @@ public class NomenclatureDto {
 	@Id
 	private String id;
 	private String nomNomenclature;
-	private String clientId;
-	private String fournisseurId;
+	private List<String> clientId;
+	private List<String> fournisseurId;
 	private String description;
 	private TypeNomEnClature type;
 	private String nature;

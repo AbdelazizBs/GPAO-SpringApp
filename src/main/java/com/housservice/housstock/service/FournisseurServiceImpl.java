@@ -140,7 +140,9 @@ public class FournisseurServiceImpl implements FournisseurService{
 			try {
 				Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(option).orElseThrow(() ->
 						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
-				nomenclature.setFournisseurId(fournisseur.getId());
+				List<String> frsIds = new ArrayList<>(nomenclature.getClientId());
+				frsIds.add(fournisseur.getId());
+				nomenclature.setClientId(frsIds);
 				nomenclatureRepository.save(nomenclature);
 			} catch (ResourceNotFoundException e) {
 				throw new RuntimeException(e);
@@ -151,6 +153,22 @@ public class FournisseurServiceImpl implements FournisseurService{
 	@Override
 	public Optional<Fournisseur> getFournisseurById(String id) {
 		return fournisseurRepository.findById(id);
+	}
+
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getFournisseursNameById(String nomenclatureId) throws ResourceNotFoundException {
+		List<String> intitules = new ArrayList<>();
+		Nomenclature nomenclature = nomenclatureRepository.findById(nomenclatureId)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomenclatureId)));
+		for (String id : nomenclature.getFournisseurId()) {
+			Fournisseur fournisseur = fournisseurRepository.findById(id).orElseThrow(() ->
+					new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+			intitules.add(fournisseur.getIntitule());
+		}
+		Map<String, Object> response = new HashMap<>();
+		response.put("intitule", intitules);
+		return ResponseEntity.ok(response);
 	}
 
 	@Override

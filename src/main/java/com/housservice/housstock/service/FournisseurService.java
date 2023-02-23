@@ -21,6 +21,8 @@ public interface FournisseurService {
 	public List<String> getIntitules();
 
     Optional<Fournisseur> getFournisseurById(String id);
+	ResponseEntity<Map<String, Object>> getFournisseursNameById(String idNomeclature) throws ResourceNotFoundException;
+
 
 	void affecteNomEnClatureToFournisseur(  String idFournisseur,
 									   List<String>selectedOptions ) throws ResourceNotFoundException;

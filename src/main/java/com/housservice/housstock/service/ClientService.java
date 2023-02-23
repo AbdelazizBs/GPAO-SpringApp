@@ -21,7 +21,9 @@ public interface ClientService {
 	public List<String> getRaisonSociales();
 
     Optional<Client> getClientById(String id);
-    List<Article> getArticles(String id) throws ResourceNotFoundException;
+	ResponseEntity<Map<String, Object>> getClientsNameByIds(String nomenclatureId) throws ResourceNotFoundException;
+
+	List<Article> getArticles(String id) throws ResourceNotFoundException;
     List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException;
 
 	public ResponseEntity<Map<String, Object>> onSortActiveClient(int page, int size, String field, String order);
