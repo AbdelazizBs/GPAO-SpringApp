@@ -30,8 +30,12 @@ public interface NomenclatureService {
 
 	ResponseEntity<Map<String, Object>> getParent();
 	 List<String> getParentsNameFiltered(String idNomenclature) throws ResourceNotFoundException;
+	 List<String> getNomenclatureNameAffectedForClient(String idClient) throws ResourceNotFoundException;
+	 List<String> getNomenclatureNameAffectedForFrs(String idFrs) throws ResourceNotFoundException;
 
-	public List<String> getNomenclaturesName();
+	 List<String> getNomenclaturesName();
+	 List<String> getNomenClaturesNameClient();
+	 List<String> getNomenclaturesNameFrs();
 
 	void createNewNomenclature(  String nomNomenclature,
 								 List<String> parentsName,

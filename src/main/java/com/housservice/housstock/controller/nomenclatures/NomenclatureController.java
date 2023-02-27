@@ -290,12 +290,37 @@ public class NomenclatureController {
 	}
 
 
+	@GetMapping("/getNomenclatureNameAffectedForClient/{idClient}")
+	@ApiOperation(value = "service to get parents name filtered")
+	public List<String> getNomenclatureNameAffected(@ApiParam(name = "idClient", value="id of client", required = true)
+												   @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient) throws ResourceNotFoundException {
+		return nomenclatureService.getNomenclatureNameAffectedForClient(idClient);
+	}
+
+	@GetMapping("/getNomenclatureNameAffectedForFrs/{idFrs}")
+	@ApiOperation(value = "service to get parents name filtered")
+	public List<String> getNomenclatureNameAffectedForFrs(@ApiParam(name = "idFrs", value="id of client", required = true)
+												   @PathVariable(value = "idFrs", required = true) @NotEmpty(message = "{http.error.0001}") String idFrs) throws ResourceNotFoundException {
+		return nomenclatureService.getNomenclatureNameAffectedForFrs(idFrs);
+	}
+
+
 
 
 	@GetMapping("/getNomenclaturesName")
 	@ApiOperation(value = "service to get name of nomenclatures")
 	public List<String> getNomenclaturesName() {
 		return nomenclatureService.getNomenclaturesName();
+	}
+	@GetMapping("/getNomenClaturesNameClient")
+	@ApiOperation(value = "service to get name of nomenclatures")
+	public List<String> getNomenClaturesNameClient() {
+		return nomenclatureService.getNomenClaturesNameClient();
+	}
+	@GetMapping("/getNomenclaturesNameFrs")
+	@ApiOperation(value = "service to get name of nomenclatures")
+	public List<String> getNomenclaturesNameFrs() {
+		return nomenclatureService.getNomenclaturesNameFrs();
 	}
 
 }

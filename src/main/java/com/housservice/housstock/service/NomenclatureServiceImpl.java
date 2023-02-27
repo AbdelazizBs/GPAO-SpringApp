@@ -651,12 +651,37 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 				.map(Nomenclature::getNomNomenclature).collect(Collectors.toList());
 
 	}
+	@Override
+	public List<String> getNomenclatureNameAffectedForClient(String idClient) throws ResourceNotFoundException {
+		return nomenclatureRepository.findNomenclatureByClientId(idClient).stream().map(Nomenclature::getNomNomenclature).collect(Collectors.toList());
+
+	}
+	@Override
+	public List<String> getNomenclatureNameAffectedForFrs(String idFrs) throws ResourceNotFoundException {
+		return nomenclatureRepository.findNomenclatureByFournisseurId(idFrs).stream().map(Nomenclature::getNomNomenclature).collect(Collectors.toList());
+
+
+	}
 
 
 	@Override
 	public List<String> getNomenclaturesName() {
 		List<Nomenclature> nomenclatures = nomenclatureRepository.findAll();
 		return nomenclatures.stream()
+				.map(Nomenclature::getNomNomenclature)
+				.collect(Collectors.toList());
+	}
+	@Override
+	public List<String> getNomenclaturesNameFrs() {
+		List<Nomenclature> nomenclatures = nomenclatureRepository.findAll();
+		return nomenclatures.stream().filter(nomenclature -> nomenclature.getClientId().isEmpty())
+				.map(Nomenclature::getNomNomenclature)
+				.collect(Collectors.toList());
+	}
+	@Override
+	public List<String> getNomenClaturesNameClient() {
+		List<Nomenclature> nomenclatures = nomenclatureRepository.findAll();
+		return nomenclatures.stream().filter(nomenclature -> nomenclature.getFournisseurId().isEmpty())
 				.map(Nomenclature::getNomNomenclature)
 				.collect(Collectors.toList());
 	}

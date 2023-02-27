@@ -390,11 +390,17 @@ public class ClientServiceImpl implements ClientService {
 											List<String> selectedOptions) throws ResourceNotFoundException {
 		Client client = clientRepository.findById(idClient).orElseThrow(() ->
 				new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idClient)));
+		List<Nomenclature> nomenclatures = nomenclatureRepository.findNomenclatureByClientId(idClient);
+		nomenclatures.forEach(nomenclature -> {
+			nomenclature.getClientId().removeIf(id -> id.equals(idClient));
+			nomenclatureRepository.save(nomenclature);
+		});
 		selectedOptions.forEach(option -> {
 			try {
 				Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(option).orElseThrow(() ->
 						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
-				List<String> clientsId = new ArrayList<>(nomenclature.getClientId());
+				List<String> clientsId = new ArrayList<>();
+				clientsId.addAll(nomenclature.getClientId());
 				clientsId.add(client.getId());
 				nomenclature.setClientId(clientsId);
 				nomenclatureRepository.save(nomenclature);

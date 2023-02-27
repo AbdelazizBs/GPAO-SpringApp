@@ -1,14 +1,11 @@
 package com.housservice.housstock.service;
 
-import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
+import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.*;
-import com.housservice.housstock.model.dto.ClientDto;
+import com.housservice.housstock.model.dto.CommandeClientDto;
+import com.housservice.housstock.repository.ClientRepository;
+import com.housservice.housstock.repository.CommandeClientRepository;
 import com.housservice.housstock.repository.LigneCommandeClientRepository;
 import com.housservice.housstock.repository.PlanificationRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -20,11 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.dto.CommandeClientDto;
-import com.housservice.housstock.repository.ClientRepository;
-import com.housservice.housstock.repository.CommandeClientRepository;
+import javax.validation.Valid;
+import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CommandeClientServiceImpl implements CommandeClientService {
@@ -110,11 +107,11 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 	@Override
 	public ResponseEntity<Map<String, Object>> getAllCommandeClientNonFermer(int page, int size) {
 		try {
-			List<CommandeClientDto> commands = new ArrayList<CommandeClientDto>();
+			List<CommandeClientDto> commands ;
 			Pageable paging = PageRequest.of(page, size);
 			Page<CommandeClient> pageTuts;
 			pageTuts =  commandeClientRepository.findCommandeClientsByEtat("Non Fermer",paging);
-			commands = pageTuts.getContent().stream().map(c -> buildCommandeClientDtoFromCommandeClient(c)).collect(Collectors.toList());
+			commands = pageTuts.getContent().stream().map(this::buildCommandeClientDtoFromCommandeClient).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("commandes", commands);
 			response.put("currentPage", pageTuts.getNumber());

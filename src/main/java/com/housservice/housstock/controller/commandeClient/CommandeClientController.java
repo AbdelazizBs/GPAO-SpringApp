@@ -45,14 +45,8 @@ public class CommandeClientController {
 	public ResponseEntity<Map<String, Object>> getAllCommandeClientFermer(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 
 		return commandeClientService.getAllCommandeClientFermer(page,size);
-
 	}
 
-
-
-
-
-    
     @GetMapping("/commandeClient/{id}")
 	  @ApiOperation(value = "service to get one Commande Client by Id.")
 	  public ResponseEntity < CommandeClientDto > getCommandeClientById(

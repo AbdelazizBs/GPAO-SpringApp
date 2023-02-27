@@ -28,4 +28,7 @@ public interface NomenclatureRepository extends MongoRepository<Nomenclature, St
 
 @Query( "{$or:[{'nomNomenclature': {$regex : ?0}},{'type': {$regex : ?0}} ,{'nature': {$regex : ?0}} ,{'categorie': {$regex : ?0}}] }")
 Page<Nomenclature> findNomenclatureByTextToFindAndMiseEnVeille(String textToFind,boolean b ,  Pageable pageable);
+
+   List<Nomenclature> findNomenclatureByClientId(String clientId);
+   List<Nomenclature> findNomenclatureByFournisseurId(String frsId);
 }

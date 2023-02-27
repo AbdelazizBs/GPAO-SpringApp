@@ -134,21 +134,26 @@ public class FournisseurServiceImpl implements FournisseurService{
 	@Override
 	public void affecteNomEnClatureToFournisseur(String idFournisseur,
 												 List<String> selectedOptions) throws ResourceNotFoundException {
-		Fournisseur fournisseur = fournisseurRepository.findById(idFournisseur).orElseThrow(() ->
+		Fournisseur  fournisseur = fournisseurRepository.findById(idFournisseur).orElseThrow(() ->
 				new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idFournisseur)));
+		List<Nomenclature> nomenclatures = nomenclatureRepository.findNomenclatureByFournisseurId(idFournisseur);
+		nomenclatures.forEach(nomenclature -> {
+			nomenclature.getFournisseurId().removeIf(id -> id.equals(idFournisseur));
+			nomenclatureRepository.save(nomenclature);
+		});
 		selectedOptions.forEach(option -> {
 			try {
 				Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(option).orElseThrow(() ->
 						new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),option)));
-				List<String> frsIds = new ArrayList<>(nomenclature.getClientId());
-				frsIds.add(fournisseur.getId());
-				nomenclature.setClientId(frsIds);
+				List<String> frsId = new ArrayList<>();
+				frsId.addAll(nomenclature.getFournisseurId());
+				frsId.add(fournisseur.getId());
+				nomenclature.setFournisseurId(frsId);
 				nomenclatureRepository.save(nomenclature);
 			} catch (ResourceNotFoundException e) {
 				throw new RuntimeException(e);
 			}
 		});
-
 	}
 	@Override
 	public Optional<Fournisseur> getFournisseurById(String id) {
