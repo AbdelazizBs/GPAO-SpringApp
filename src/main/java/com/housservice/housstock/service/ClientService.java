@@ -22,6 +22,7 @@ public interface ClientService {
 
     Optional<Client> getClientById(String id);
 	ResponseEntity<Map<String, Object>> getClientsNameByIds(String nomenclatureId) throws ResourceNotFoundException;
+	ResponseEntity<Map<String, Object>> getClientByNameNomenclatures(String nameNomenclature) throws ResourceNotFoundException;
 
 	ResponseEntity<Map<String, Object>> getNomenclaturesParClient(String id) throws ResourceNotFoundException;
     List<Article> getArticlesByRaisons(String raison) throws ResourceNotFoundException;

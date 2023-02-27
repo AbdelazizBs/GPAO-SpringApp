@@ -93,6 +93,21 @@ public class ClientServiceImpl implements ClientService {
 		response.put("raisonsClients", raisonsClients);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getClientByNameNomenclatures(String nameNomenclature) throws ResourceNotFoundException {
+		List<Client> clients = new ArrayList<>();
+		Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(nameNomenclature)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nameNomenclature)));
+		for (String id : nomenclature.getClientId()){
+			Client client = clientRepository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+			clients.add(client);
+		}
+		Map<String, Object> response = new HashMap<>();
+		response.put("clients", clients);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 	@Override
 	public ResponseEntity<Map<String, Object>>  getNomenclaturesParClient(String raison) throws ResourceNotFoundException {
 		try {

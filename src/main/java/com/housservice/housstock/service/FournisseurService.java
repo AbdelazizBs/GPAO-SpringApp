@@ -27,6 +27,7 @@ public interface FournisseurService {
 	void affecteNomEnClatureToFournisseur(  String idFournisseur,
 									   List<String>selectedOptions ) throws ResourceNotFoundException;
 
+	ResponseEntity<Map<String, Object>> getFrsByNameNomenclatures(String nameNomenclature) throws ResourceNotFoundException;
 
   void createNewFournisseur(  String refFrsIris,
 			  

@@ -155,6 +155,22 @@ public class FournisseurServiceImpl implements FournisseurService{
 			}
 		});
 	}
+
+
+	@Override
+	public ResponseEntity<Map<String, Object>> getFrsByNameNomenclatures(String nameNomenclature) throws ResourceNotFoundException {
+		List<Fournisseur> fournisseurs = new ArrayList<>();
+		Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(nameNomenclature)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nameNomenclature)));
+		for (String id : nomenclature.getFournisseurId()){
+			Fournisseur fournisseur = fournisseurRepository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+			fournisseurs.add(fournisseur);
+		}
+		Map<String, Object> response = new HashMap<>();
+		response.put("fournisseurs", fournisseurs);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 	@Override
 	public Optional<Fournisseur> getFournisseurById(String id) {
 		return fournisseurRepository.findById(id);

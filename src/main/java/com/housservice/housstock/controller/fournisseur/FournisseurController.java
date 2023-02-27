@@ -5,6 +5,7 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.model.dto.FournisseurDto;
+import com.housservice.housstock.repository.FournisseurRepository;
 import com.housservice.housstock.service.FournisseurService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,14 +35,17 @@ public class FournisseurController {
 	private final FournisseurService fournisseurService;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
+	private final FournisseurRepository fournisseurRepository;
 
 	@Autowired
-	public FournisseurController(FournisseurService fournisseurService, MessageHttpErrorProperties messageHttpErrorProperties)
+	public FournisseurController(FournisseurService fournisseurService, MessageHttpErrorProperties messageHttpErrorProperties,
+								 FournisseurRepository fournisseurRepository)
 	{
 
 		this.fournisseurService = fournisseurService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 
+		this.fournisseurRepository = fournisseurRepository;
 	}
 
 	@GetMapping("/getAllFournisseur")
@@ -119,36 +123,14 @@ public class FournisseurController {
 
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	}
-
-
-	/*
-	 * @GetMapping("/getArticles/{idFournisseur}")
-	 * 
-	 * @ApiOperation(value = "service to get one Fournisseur by Id.") public List
-	 * <Article> getArticles(
-	 * 
-	 * @ApiParam(name = "idFournisseur", value="id of fournisseur", required = true)
-	 * 
-	 * @PathVariable(value = "idFournisseur", required = true) @NotEmpty(message =
-	 * "{http.error.0001}") String idFournisseur) throws ResourceNotFoundException {
-	 * return fournisseurService.getArticles(idFournisseur) ;
-	 * 
-	 * }
-	 */
-
-	/*
-	 * @GetMapping("/getArticlesByRaisons/{raisonS}")
-	 * 
-	 * @ApiOperation(value = "service to get one Fournisseur by Id.") public List
-	 * <Article> getArticlesByRaisons(
-	 * 
-	 * @ApiParam(name = "raisonS", value="raison sociale of fournisseur", required =
-	 * true)
-	 * 
-	 * @PathVariable(value = "raisonS", required = true) @NotEmpty(message =
-	 * "{http.error.0001}") String raisonS) throws ResourceNotFoundException {
-	 * return fournisseurService.getArticlesByRaisons(raisonS) ; }
-	 */
+	@GetMapping("/getFrsByNameNomenclatures/{nameNomenclature}")
+	@ApiOperation(value = "service to get names Client by Id nomenclature.")
+	public ResponseEntity<Map<String, Object>> getFrsByNameNomenclatures(
+			@ApiParam(name = "nameNomenclature", value="id of nomenclature", required = true)
+			@PathVariable(value = "nameNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String nameNomenclature)
+			throws ResourceNotFoundException {
+		return fournisseurService.getFrsByNameNomenclatures(nameNomenclature) ;
+	}
 
 	@DeleteMapping("/deleteSelectedFournisseur/{idFournisseursSelected}")
 	@ApiOperation(value = "service to delete many Fournisseur by Id.")
