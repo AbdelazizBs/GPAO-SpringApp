@@ -12,18 +12,24 @@ import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.ContactRepository;
 import com.housservice.housstock.repository.PictureRepository;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
@@ -206,6 +212,7 @@ public class ClientServiceImpl implements ClientService {
 							 String rib,
 							 String swift,
 							 MultipartFile[] images) throws ResourceNotFoundException {
+
 		if (!Objects.equals(email, "") && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			throw new IllegalArgumentException("Email invalide !!");
 		}
@@ -214,6 +221,12 @@ public class ClientServiceImpl implements ClientService {
 		}
 		Client client = getClientById(idClient)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idClient)));
+		if (!client.getRefClientIris().equals(refClientIris)) {
+			throw new IllegalArgumentException("Error Id!!");
+		}
+		if (!client.getRaisonSocial().equals(raisonSociale)) {
+			throw new IllegalArgumentException("Error Id!!");
+		}
 		List<Picture> pictures = new ArrayList<>();
 		if (images != null) {
 			for (MultipartFile file : images) {
@@ -296,7 +309,6 @@ public class ClientServiceImpl implements ClientService {
 		contactRepository.save(contactToUpdate);
 		client.getContact().add(contactToUpdate);
 		clientRepository.save(client);
-
 	}
 	@Override
 	public ResponseEntity<Map<String, Object>>  getIdClients(String raisonSociale) throws ResourceNotFoundException {
@@ -474,6 +486,27 @@ public class ClientServiceImpl implements ClientService {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	public ResponseEntity<byte[]> RecordReport(String refClientIris) {
+		try{
+			List<Client> client= clientRepository.findByrefClientIris(refClientIris);
+			File file = ResourceUtils.getFile("classpath:Clients.jrxml");
+			JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
+			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(client);
+			Map<String ,Object> parameter = new HashMap<>();
+			parameter.put("CreatedBy","Hellotest");
+			JasperPrint print = JasperFillManager.fillReport(report, parameter,dataSource);
+			HttpHeaders headers = new HttpHeaders();
+			//set the PDF format
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDispositionFormData("filename", "employees-details.pdf");
+			//create the report in PDF format
+			return new ResponseEntity<byte[]>
+					(JasperExportManager.exportReportToPdf(print), headers, HttpStatus.OK);
+
+		} catch(Exception e) {
+			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

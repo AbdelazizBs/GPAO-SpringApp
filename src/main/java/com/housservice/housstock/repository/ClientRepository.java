@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -26,6 +27,5 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 	Page<Client> findClientByTextToFind(String textToFind,  Pageable pageable);
 
 
-
-
+    List<Client> findByrefClientIris(String id);
 }

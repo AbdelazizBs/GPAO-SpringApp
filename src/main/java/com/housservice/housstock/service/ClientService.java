@@ -90,4 +90,5 @@ public interface ClientService {
 	 void removePictures(String idClient) throws ResourceNotFoundException;
 
 	void removePicture(String idPicture) throws ResourceNotFoundException;
+	public ResponseEntity<byte[]> RecordReport(String refClientIris);
 }

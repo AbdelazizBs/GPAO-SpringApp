@@ -36,7 +36,6 @@ public class ClientController {
 	
 	  private final MessageHttpErrorProperties messageHttpErrorProperties;
 	private final PictureService  pictureService;
-
 	@Autowired
 	  public ClientController(ClientService clientService, MessageHttpErrorProperties messageHttpErrorProperties,
 							  PictureService pictureService) {
@@ -305,7 +304,12 @@ public class ClientController {
 		return response;
 	}
 
+	@GetMapping("/report/{refClientIris}")
+	public ResponseEntity<byte[]> generateReport(@PathVariable String refClientIris){
 
-	 
+		return clientService.RecordReport(refClientIris);
+
+	}
+
 	
 }
