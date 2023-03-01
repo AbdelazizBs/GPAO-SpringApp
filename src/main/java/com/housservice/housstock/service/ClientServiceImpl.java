@@ -320,7 +320,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<String> getRaisonSociales( )   {
+	public List<String> getRaisonSociales()   {
 		List<Client> clients = clientRepository.findAll();
 		return clients.stream()
 				.map(Client::getRaisonSocial)

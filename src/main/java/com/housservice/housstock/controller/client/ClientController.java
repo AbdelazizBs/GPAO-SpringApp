@@ -35,7 +35,7 @@ public class ClientController {
 	  private final ClientService clientService;
 	
 	  private final MessageHttpErrorProperties messageHttpErrorProperties;
-	private final PictureService  pictureService;
+	 final PictureService  pictureService;
 	@Autowired
 	  public ClientController(ClientService clientService, MessageHttpErrorProperties messageHttpErrorProperties,
 							  PictureService pictureService) {
