@@ -87,4 +87,8 @@ public interface FournisseurService {
 
     void removePicture(String idPicture) throws ResourceNotFoundException;
     public ResponseEntity<byte[]> RecordReport(String refFournisseurIris);
+
+    int getFournisseurByMonth();
+    int getallFournisseur();
+    List<Integer> getFrsListe(boolean b);
 }

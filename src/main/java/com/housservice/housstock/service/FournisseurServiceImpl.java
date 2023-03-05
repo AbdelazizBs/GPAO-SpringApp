@@ -27,11 +27,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
@@ -500,6 +503,70 @@ public class FournisseurServiceImpl implements FournisseurService {
 		} catch(Exception e) {
 			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@Override
+	public int getFournisseurByMonth() {
+		try {
+			LocalDate today = LocalDate.now();
+			ZoneId defaultZoneId = ZoneId.systemDefault();
+			LocalDate startD = LocalDate.now().withDayOfMonth(1);
+			Date Firstday = Date.from(startD.atStartOfDay(defaultZoneId).toInstant());
+			LocalDate endD = LocalDate.now().withDayOfMonth(today.getMonth().length(today.isLeapYear()));;
+			Date Lastday = Date.from(endD.atStartOfDay(defaultZoneId).toInstant());
+			List<Fournisseur> fournisseur = fournisseurRepository.findBydateBetween(Firstday, Lastday);
+			return (int) fournisseur.stream().count();
+		} catch(Exception e) {
+		System.out.println(e.getMessage());
+		return 0;
+	}
+	}
+
+	@Override
+	public int getallFournisseur() {
+		try {
+			List<Fournisseur> fournisseur = fournisseurRepository.findAll();
+			return (int) fournisseur.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public List<Integer> getFrsListe(boolean b) {
+		int date;
+		List<Integer> nbAFournisseurs = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+		List<Fournisseur> activeFournisseurs=fournisseurRepository.findFournisseurByMiseEnVeille(b);
+		for(int i=0;i<activeFournisseurs.size();i++){
+			Fournisseur fournisseur=activeFournisseurs.get(i);
+			date=fournisseur.getDate().getMonth()+1;
+			System.out.println(date);
+			switch (date){
+				case 9:
+					nbAFournisseurs.set(0, nbAFournisseurs.get(0) + 1);
+					break;
+				case 10:
+					nbAFournisseurs.set(1, nbAFournisseurs.get(1) + 1);
+					break;
+				case 11:
+					nbAFournisseurs.set(2, nbAFournisseurs.get(2) + 1);
+					break;
+				case 12:
+					nbAFournisseurs.set(3, nbAFournisseurs.get(3) + 1);
+					break;
+				case 1:
+					nbAFournisseurs.set(4, nbAFournisseurs.get(4) + 1);
+					break;
+				case 2:
+					nbAFournisseurs.set(5, nbAFournisseurs.get(5) + 1);
+					break;
+				case 3:
+					nbAFournisseurs.set(6, nbAFournisseurs.get(6) + 1);
+					break;
+			}
+		}
+		return nbAFournisseurs;
 	}
 
 }

@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,7 @@ public interface FournisseurRepository extends MongoRepository <Fournisseur, Str
 
 	Page<Fournisseur> findFournisseurByMiseEnVeille(Pageable pageable, boolean b);
 
+	List<Fournisseur> findFournisseurByMiseEnVeille(boolean b);
 
 	Optional<Fournisseur> findFournisseurByContactId(String idContact ) ;
 	Optional<Fournisseur> findFournisseurByPictures(Picture picture) ;
@@ -28,4 +31,6 @@ public interface FournisseurRepository extends MongoRepository <Fournisseur, Str
 
 
 	List<Fournisseur> findByrefFournisseurIris(String id);
+
+	List<Fournisseur> findBydateBetween(Date fromDate , Date toDate);
 }

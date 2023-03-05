@@ -262,8 +262,6 @@ public class FournisseurController {
 		return response;
 	}
 
-
-
 	@DeleteMapping("/deleteContactFournisseur/{idContact}")
 	@ApiOperation(value = "service to delete one Fournisseur by Id.")
 	public Map< String, Boolean > deleteContactFournisseur(
@@ -307,5 +305,23 @@ public class FournisseurController {
 
 	}
 
+	@GetMapping("/getFournisseurByMonth")
+	public int getFournisseurByMonth(){
+		return fournisseurService.getFournisseurByMonth();
+	}
+
+	@GetMapping("/getallFournisseur")
+	public int getallFournisseur(){
+		return fournisseurService.getallFournisseur();
+	}
+
+	@GetMapping("/getFrsActifListe")
+	public List<Integer> getFrsActifListe(){
+		return fournisseurService.getFrsListe(false);
+	}
+	@GetMapping("/getFrsNoActifListe")
+	public List<Integer> getFrsnoActifListe(){
+		return fournisseurService.getFrsListe(true);
+	}
 
 }
