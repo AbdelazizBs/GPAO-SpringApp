@@ -1,26 +1,26 @@
 package com.housservice.housstock.service;
 
+import com.housservice.housstock.configuration.MessageHttpErrorProperties;
+import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.mapper.LigneCommandClientMapper;
+import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.LigneCommandeClient;
+import com.housservice.housstock.model.Nomenclature;
+import com.housservice.housstock.model.dto.LigneCommandeClientDto;
+import com.housservice.housstock.repository.ArticleRepository;
+import com.housservice.housstock.repository.CommandeClientRepository;
+import com.housservice.housstock.repository.LigneCommandeClientRepository;
+import com.housservice.housstock.repository.NomenclatureRepository;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.validation.Valid;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.housservice.housstock.configuration.MessageHttpErrorProperties;
-import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Article;
-import com.housservice.housstock.model.CommandeClient;
-import com.housservice.housstock.model.LigneCommandeClient;
-import com.housservice.housstock.model.dto.LigneCommandeClientDto;
-import com.housservice.housstock.repository.ArticleRepository;
-import com.housservice.housstock.repository.CommandeClientRepository;
-import com.housservice.housstock.repository.LigneCommandeClientRepository;
 
 @Service
 public class LigneCommandeClientServiceImpl implements LigneCommandeClientService {
@@ -34,17 +34,20 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 	private ArticleRepository articleRepository;
 	
 	private CommandeClientRepository commandeClientRepository;
-	
+	private final NomenclatureRepository nomenclatureRepository;
+
 	@Autowired
 	public LigneCommandeClientServiceImpl(LigneCommandeClientRepository ligneCommandeClientRepository,
 			SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
-			ArticleRepository articleRepository, CommandeClientRepository commandeClientRepository) {
+			ArticleRepository articleRepository, CommandeClientRepository commandeClientRepository,
+										  NomenclatureRepository nomenclatureRepository) {
 		
 		this.ligneCommandeClientRepository = ligneCommandeClientRepository;
 		this.sequenceGeneratorService = sequenceGeneratorService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.articleRepository = articleRepository;
 		this.commandeClientRepository = commandeClientRepository;
+		this.nomenclatureRepository = nomenclatureRepository;
 	}
 
 	@Override
@@ -57,34 +60,14 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 		LigneCommandeClientDto ligneCommandeClientDto = new LigneCommandeClientDto();
 		ligneCommandeClientDto.setId(ligneCommandeClient.getId());
 		ligneCommandeClientDto.setQuantite(ligneCommandeClient.getQuantite());
-		ligneCommandeClientDto.setPrixUnitaire(ligneCommandeClient.getPrixUnitaire());
-		ligneCommandeClientDto.setIdArticle(ligneCommandeClient.getArticle().getId());
-		ligneCommandeClientDto.setDesignationArticle(ligneCommandeClient.getArticle().getDesignation());
-		ligneCommandeClientDto.setIdCommandeClient(ligneCommandeClient.getCommandeClient().getId());
-		ligneCommandeClientDto.setNumCmdClient(ligneCommandeClient.getCommandeClient().getNumCmd());
-		ligneCommandeClientDto.setRefIris(ligneCommandeClient.getArticle().getReferenceIris());
+		ligneCommandeClientDto.setIdNomenclature(ligneCommandeClient.getNomenclature().getId());
 		ligneCommandeClientDto.setDelai(ligneCommandeClient.getDelai());
 
 		return ligneCommandeClientDto;
 	}
 	
 	
-	private LigneCommandeClient buildLigneCommandeClientFromLigneCommandeClientDto(LigneCommandeClientDto ligneCommandeClientDto) {
-		
-		LigneCommandeClient ligneCommandeClient = new LigneCommandeClient();
-		ligneCommandeClient.setId(""+sequenceGeneratorService.generateSequence(LigneCommandeClient.SEQUENCE_NAME));	
-		ligneCommandeClient.setQuantite(ligneCommandeClientDto.getQuantite());
-		ligneCommandeClient.setPrixUnitaire(ligneCommandeClientDto.getPrixUnitaire());
-		ligneCommandeClient.setDelai(ligneCommandeClientDto.getDelai());
-		Article art = articleRepository.findById(ligneCommandeClientDto.getIdArticle()).get();
-		ligneCommandeClient.setArticle(art);
-		CommandeClient cmdCl = commandeClientRepository.findById(ligneCommandeClientDto.getIdCommandeClient()).get();
-		ligneCommandeClient.setCommandeClient(cmdCl);
 
-		return ligneCommandeClient;
-		
-	}
-	
 	@Override
 	public List<LigneCommandeClientDto> getAllLigneCommandeClient() {
 		List<LigneCommandeClient> listLigneCommandeClient = ligneCommandeClientRepository.findAll();
@@ -96,8 +79,9 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 	@Override
 	public List<LigneCommandeClientDto> getAllLigneCommandeClientFermer() {
 		List<LigneCommandeClient> listLigneCommandeClient = ligneCommandeClientRepository.findAll();
+
 		return listLigneCommandeClient.stream()
-				.filter(ligneCommandeClient -> ligneCommandeClient != null && ligneCommandeClient.getCommandeClient().getEtat().equals("Fermer"))
+//				.filter(ligneCommandeClient -> ligneCommandeClient != null && ligneCommandeClient.getCommandeClient().isClosed())
 				.map(ligneCommandeClient -> buildLigneCommandeClientDtoFromLigneCommandeClient(ligneCommandeClient))
 				.collect(Collectors.toList());
 	}
@@ -120,12 +104,18 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 
 	@Override
 	public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
+		Nomenclature nomenclature = nomenclatureRepository.findById(ligneCommandeClientDto.getIdNomenclature()).orElseThrow(
+				() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getIdNomenclature())));
+		LigneCommandeClient ligneCommandeClient = LigneCommandClientMapper.MAPPER.toLigneCommandClient(ligneCommandeClientDto);
+		ligneCommandeClient.setNomenclature(nomenclature);
+		ligneCommandeClientRepository.save(ligneCommandeClient);
 		CommandeClient commandeClient = commandeClientRepository.findById(ligneCommandeClientDto.getIdCommandeClient())
-		.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getIdCommandeClient())));
-	commandeClient.setHaveLc(true);
-commandeClientRepository.save(commandeClient);
-		ligneCommandeClientRepository.save(buildLigneCommandeClientFromLigneCommandeClientDto(ligneCommandeClientDto));
-		
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getIdCommandeClient())));
+		List<LigneCommandeClient> ligneCommandeClients= new ArrayList<>();
+		ligneCommandeClients.add(ligneCommandeClient);
+		commandeClient.setHaveLc(true);
+		commandeClient.setLigneCommandeClient(ligneCommandeClients);
+		commandeClientRepository.save(commandeClient);
 	}
 
 	@Override
@@ -135,13 +125,12 @@ commandeClientRepository.save(commandeClient);
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getId())));
 		
 		ligneCommandeClient.setQuantite(ligneCommandeClientDto.getQuantite());
-		ligneCommandeClient.setPrixUnitaire(ligneCommandeClientDto.getPrixUnitaire());
 		ligneCommandeClient.setDelai(ligneCommandeClientDto.getDelai());
 
-		if(ligneCommandeClient.getArticle() == null || !StringUtils.equals(ligneCommandeClientDto.getIdArticle(), ligneCommandeClient.getArticle().getId())) 
+		if(ligneCommandeClient.getNomenclature() == null || !StringUtils.equals(ligneCommandeClientDto.getIdNomenclature(), ligneCommandeClient.getNomenclature().getId()))
 		{
-			Article article = articleRepository.findById(ligneCommandeClientDto.getIdArticle()).get();
-			ligneCommandeClient.setArticle(article);
+			Nomenclature article = nomenclatureRepository.findById(ligneCommandeClientDto.getIdNomenclature()).get();
+			ligneCommandeClient.setNomenclature(article);
 		}
 		
 		if(ligneCommandeClient.getCommandeClient() == null || !StringUtils.equals(ligneCommandeClientDto.getIdCommandeClient(), ligneCommandeClient.getCommandeClient().getId())) 
@@ -158,12 +147,17 @@ commandeClientRepository.save(commandeClient);
 	public void deleteLigneCommandeClient(String ligneCommandeClientId) throws ResourceNotFoundException {
 		LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findById(ligneCommandeClientId)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientId)));
-		CommandeClient cmdClient = ligneCommandeClient.getCommandeClient();
-		List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByCommandeClient(cmdClient);
-		 if(ligneCommandeClients.size()==1) cmdClient.setHaveLc(false);
-		commandeClientRepository.save(cmdClient);
-		ligneCommandeClientRepository.deleteById(ligneCommandeClientId);
+		CommandeClient commandeClient = commandeClientRepository.findCommandeClientByLigneCommandeClient(ligneCommandeClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClient)));
+		for (LigneCommandeClient ligneCommandeClients  : commandeClient.getLigneCommandeClient()) {
+			if (ligneCommandeClients.equals(ligneCommandeClient)) commandeClient.getLigneCommandeClient().remove(ligneCommandeClient);
 		}
+		if (commandeClient.getLigneCommandeClient().isEmpty()) {
+			commandeClient.setHaveLc(false);
+			commandeClient.setLigneCommandeClient(new ArrayList<>());}
+		commandeClientRepository.save(commandeClient);
+		ligneCommandeClientRepository.deleteById(ligneCommandeClientId);
+	}
 
 
 

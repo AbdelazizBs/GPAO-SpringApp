@@ -21,12 +21,12 @@ public abstract class CommandMapper {
 
     @AfterMapping
     void updateCommandDto(final CommandeClient commandeClient, @MappingTarget final CommandeClientDto commandeClientDto)   {
-
+        commandeClientDto.setRaisonSocialClient(commandeClient.getClient().getRaisonSocial());
+        commandeClientDto.setIdClient(commandeClient.getClient().getId());
     }
 
     @AfterMapping
     void updateCommand(final CommandeClientDto  commandeClientDto, @MappingTarget final CommandeClient commandeClient) {
-
     }
 
 }

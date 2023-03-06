@@ -1,20 +1,17 @@
 package com.housservice.housstock.model;
 
-import java.time.LocalDate;
-import java.util.Date;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,10 +34,8 @@ public class CommandeClient {
 	@Indexed(unique = true)
 	private String numCmd;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String etat;
+
+	private boolean closed = false;
 	
 	@NotBlank
 	@Size(max = 100)
@@ -59,11 +54,11 @@ public class CommandeClient {
 	private Boolean haveLc;
 
 	private String etatProduction;
+	private List<LigneCommandeClient> ligneCommandeClient;
 
-	public CommandeClient(String typeCmd, String numCmd, String etat, Date dateCmd, Date dateCreationCmd, Boolean haveLc, String etatProduction,Client client) {
+	public CommandeClient(String typeCmd, String numCmd,  Date dateCmd, Date dateCreationCmd, Boolean haveLc, String etatProduction,Client client) {
 		this.typeCmd=typeCmd;
 		this.numCmd=numCmd;
-		this.etat=etat;
 		this.dateCmd=dateCmd;
 		this.dateCreationCmd=dateCreationCmd;
 		this.haveLc=haveLc;
@@ -75,8 +70,4 @@ public class CommandeClient {
 	public CommandeClient() {
 
 	}
-
-
-	//private Set<String> listIdLigneCommandeClient = new HashSet<>();
-	
 }

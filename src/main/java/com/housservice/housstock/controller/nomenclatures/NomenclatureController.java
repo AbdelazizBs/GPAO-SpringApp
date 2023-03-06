@@ -105,7 +105,23 @@ public class NomenclatureController {
 		return nomenclatureService.getNomNomenclatures();
 	}
 
+	@GetMapping("/getNameOfNomenclatureOfClient/{idClient}")
+	@ApiOperation(value = "service to get Names Of Nomenclature Of Client.")
+		public List < String > getNameOfNomenclatureOfClient(
+			@ApiParam(name = "idClient", value="id of client", required = true)
+			@PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
+			throws ResourceNotFoundException {
+		return nomenclatureService.getNameOfNomenclatureOfClient(idClient);
+	}
 
+	@GetMapping("/getNameNomenclatureAndDescription/{nameNomenclature}")
+	@ApiOperation(value = "service to get Ref Iris And Client  .")
+	public List<String>  getRefIrisAndClientAndIdArticle(
+			@ApiParam(name = "nameNomenclature", value="designation of article", required = true)
+			@PathVariable(value = "nameNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String nameNomenclature)
+			throws ResourceNotFoundException {
+		return nomenclatureService.getNameNomenclatureAndDescription(nameNomenclature);
+	}
 	@GetMapping("/getAllNomenclatureNotActive")
 	public ResponseEntity<Map<String, Object>> getAllNomenclatureNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 

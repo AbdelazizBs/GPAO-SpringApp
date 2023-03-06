@@ -66,7 +66,7 @@ public class LigneCommandeClientController {
 	  }
     
     @PutMapping("/createLigneCommandeClient")
-	  public ResponseEntity<String> createLigneCommandeClient(@Valid @RequestBody LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
+	  public ResponseEntity<String> createLigneCommandeClient(@RequestBody LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
 		  
     	  ligneCommandeClientService.createNewLigneCommandeClient(ligneCommandeClientDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());

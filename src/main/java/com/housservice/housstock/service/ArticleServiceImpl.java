@@ -153,23 +153,8 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 		article.setMiseEnVeille(1);
 		articleRepository.save(article);
 	}
-	@Override
-	public List<String> getDesignationArticleCient(String idClient) throws ResourceNotFoundException  {
-		Client client = clientRepository.findById(idClient).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
-		List<Article> listArticles = articleRepository.findArticleByClientId(client.getId());
-		return listArticles.stream()
-				.map(Article::getDesignation)
-				.collect(Collectors.toList());
-	}
-	@Override
-	public List<String> getRefIrisAndClientAndIdArticle(String designation) throws ResourceNotFoundException  {
-		Article article  = articleRepository.findArticleByDesignation(designation).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), designation)));
-		ArrayList<String> refIrisAndClient = new ArrayList<>();
-		refIrisAndClient.add(article.getId());
-		refIrisAndClient.add(article.getReferenceIris());
-		refIrisAndClient.add(article.getRefClient());
-		return refIrisAndClient ;
-	}
+
+
 
 	@Override
 	public String getIdArticleWithDesignation(String designation) throws ResourceNotFoundException  {

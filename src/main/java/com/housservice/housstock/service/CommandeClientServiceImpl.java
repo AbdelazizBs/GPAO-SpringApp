@@ -2,7 +2,11 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.*;
+import com.housservice.housstock.mapper.CommandMapper;
+import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.LigneCommandeClient;
+import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.CommandeClientDto;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.CommandeClientRepository;
@@ -64,7 +68,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClientDto.setId(commandeClient.getId());
 		commandeClientDto.setTypeCmd(commandeClient.getTypeCmd());
 		commandeClientDto.setNumCmd(commandeClient.getNumCmd());
-		commandeClientDto.setEtat(commandeClient.getEtat());
 		commandeClientDto.setHaveLc(commandeClient.getHaveLc());
 		commandeClientDto.setDateCmd(commandeClient.getDateCmd());
 		commandeClientDto.setEtatProduction(commandeClient.getEtatProduction());
@@ -86,7 +89,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		commandeClient.setId(commandeClientDto.getId());
 		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
 		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
-		commandeClient.setEtat(commandeClientDto.getEtat());
 		commandeClient.setEtatProduction(commandeClientDto.getEtatProduction());
 		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
 		commandeClient.setHaveLc(commandeClientDto.getHaveLc());
@@ -110,8 +112,10 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 			List<CommandeClientDto> commands ;
 			Pageable paging = PageRequest.of(page, size);
 			Page<CommandeClient> pageTuts;
-			pageTuts =  commandeClientRepository.findCommandeClientsByEtat("Non Fermer",paging);
-			commands = pageTuts.getContent().stream().map(this::buildCommandeClientDtoFromCommandeClient).collect(Collectors.toList());
+			pageTuts =  commandeClientRepository.findCommandeClientByClosed(false,paging);
+			commands = pageTuts.getContent().stream().map(commandeClient -> {
+				return CommandMapper.MAPPER.toCommandDto(commandeClient);
+			}).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("commandes", commands);
 			response.put("currentPage", pageTuts.getNumber());
@@ -129,7 +133,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 			List<CommandeClientDto> commands = new ArrayList<CommandeClientDto>();
 			Pageable paging = PageRequest.of(page, size);
 			Page<CommandeClient> pageTuts;
-			pageTuts =  commandeClientRepository.findCommandeClientsByEtat("Fermer",paging);
+			pageTuts =  commandeClientRepository.findCommandeClientByClosed(true,paging);
 			commands = pageTuts.getContent().stream().map(c -> buildCommandeClientDtoFromCommandeClient(c)).collect(Collectors.toList());
 			Map<String, Object> response = new HashMap<>();
 			response.put("commandes", commands);
@@ -158,13 +162,15 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
 
 	@Override
-	public void createNewCommandeClient(@Valid CommandeClientDto commandeClientDto) {
+	public void createNewCommandeClient(@Valid CommandeClientDto commandeClientDto) throws ResourceNotFoundException {
 			commandeClientDto.setDateCreationCmd(new Date());
-			commandeClientDto.setEtat("Non Fermer");
+			commandeClientDto.setClosed(false);
 			commandeClientDto.setHaveLc(false);
-		commandeClientRepository.save(buildCommandeClientFromCommandeClientDto(commandeClientDto));
-
-
+			commandeClientDto.setLigneCommandeClient(new ArrayList<>());
+			CommandeClient commandeClient = CommandMapper.MAPPER.toCommand(commandeClientDto);
+			Client cl = clientRepository.findById(commandeClientDto.getIdClient()).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), commandeClientDto.getIdClient())));
+			commandeClient.setClient(cl);
+		commandeClientRepository.save(commandeClient);
 	}
 
 
@@ -176,7 +182,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 		
 		commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
 		commandeClient.setNumCmd(commandeClientDto.getNumCmd());
-		commandeClient.setEtat(commandeClientDto.getEtat());
 		commandeClient.setEtatProduction(commandeClientDto.getEtatProduction());
 		commandeClient.setDateCmd(commandeClientDto.getDateCmd());
 		commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
@@ -196,35 +201,35 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 				CommandeClient commandeClient = commandeClientRepository.findById(idCmd)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idCmd)));
 		List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByCommandeClient(commandeClient);
-		commandeClient.setEtat("Fermer");
+		commandeClient.setClosed(true);
 		commandeClient.setEtatProduction("En attente");
-		ligneCommandeClients.stream().forEach(ligneCommandeClient -> ligneCommandeClient.setCommandeClient(commandeClient));
+//		ligneCommandeClients.stream().forEach(ligneCommandeClient -> ligneCommandeClient.setCommandeClient(commandeClient));
 		ligneCommandeClients.stream().forEach(ligneCommandeClient -> ligneCommandeClientRepository.save(ligneCommandeClient));
 // 		processPLanification(ligneCommandeClients);
 		final LocalDate MAX_DATE = LocalDate.parse("2099-12-31");
 		List<LigneCommandeClient> lc = ligneCommandeClients;
 		List<Personnel> personnels = new ArrayList<>();
-		for (int i=0 ;i<lc.size();i++){
-			for (int j=0 ;j<ligneCommandeClients.get(i).getArticle().getEtapeProductions().size(); j++){
-				PlanificationOf planificationOf = new PlanificationOf(
-						ligneCommandeClients.get(i),
-						ligneCommandeClients.get(i).getArticle().getEtapeProductions().get(j) ,
-						new Machine() ,
-						personnels,
-						new Date(),
-						new Date(),
-						MAX_DATE,
-						MAX_DATE,
-						MAX_DATE,
-						MAX_DATE,
-						MAX_DATE,
-						"",
-						"",
-						"",
-						"");
-				planificationRepository.save(planificationOf);
-			}
-		}
+//		for (int i=0 ;i<lc.size();i++){
+//			for (int j=0 ;j<ligneCommandeClients.get(i).getNomenclature().getEtapeProductions().size(); j++){
+//				PlanificationOf planificationOf = new PlanificationOf(
+//						ligneCommandeClients.get(i),
+//						ligneCommandeClients.get(i).getArticle().getEtapeProductions().get(j) ,
+//						new Machine(),
+//						personnels,
+//						new Date(),
+//						new Date(),
+//						MAX_DATE,
+//						MAX_DATE,
+//						MAX_DATE,
+//						MAX_DATE,
+//						MAX_DATE,
+//						"",
+//						"",
+//						"",
+//						"");
+//				planificationRepository.save(planificationOf);
+//			}
+//		}
 
 		if(commandeClient.getClient() == null || !StringUtils.equals(commandeClient.getClient().getId(), commandeClient.getClient().getId()))
 		{

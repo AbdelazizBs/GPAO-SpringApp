@@ -238,8 +238,23 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 				.map(Nomenclature::getNomNomenclature)
 				.collect(Collectors.toList());
 	}
-
-
+	@Override
+	public List<String> getNameNomenclatureAndDescription(String nameNomenclature) throws ResourceNotFoundException  {
+		Nomenclature article  = nomenclatureRepository.findNomenclatureByNomNomenclature(nameNomenclature).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nameNomenclature)));
+		ArrayList<String> refIrisAndClient = new ArrayList<>();
+		refIrisAndClient.add(article.getId());
+		refIrisAndClient.add(article.getNomNomenclature());
+		refIrisAndClient.add(article.getDescription());
+		return refIrisAndClient ;
+	}
+	@Override
+	public List<String> getNameOfNomenclatureOfClient(String idClient) throws ResourceNotFoundException  {
+		Client client = clientRepository.findById(idClient).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
+		List<Nomenclature> nomenclatureList = nomenclatureRepository.findNomenclaturesByClientId(client.getId());
+		return nomenclatureList.stream()
+				.map(Nomenclature::getNomNomenclature)
+				.collect(Collectors.toList());
+	}
 	@Override
 	public Optional<Nomenclature> getNomenclatureById(String id) {
 		return nomenclatureRepository.findById(id);

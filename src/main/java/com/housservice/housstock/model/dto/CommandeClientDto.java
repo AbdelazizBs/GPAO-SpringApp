@@ -1,12 +1,13 @@
 package com.housservice.housstock.model.dto;
 
-import java.time.LocalDate;
-import java.util.Date;
-import javax.validation.constraints.Size;
-import org.springframework.data.annotation.Id;
-
+import com.housservice.housstock.model.LigneCommandeClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+
+import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,9 +21,9 @@ public class CommandeClientDto {
 	
 	@Size(max = 100)
 	private String numCmd;
-	
-	@Size(max = 100)
-	private String etat;
+
+	private boolean closed;
+
 
 	private String etatProduction;
 
@@ -33,8 +34,10 @@ public class CommandeClientDto {
 	private String idClient;
 
 		private String raisonSocialClient;
+	private List<LigneCommandeClient> ligneCommandeClient;
 
-		private Boolean haveLc;
+
+	private Boolean haveLc;
 
 
 }

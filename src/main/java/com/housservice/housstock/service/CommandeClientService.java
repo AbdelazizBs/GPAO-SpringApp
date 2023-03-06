@@ -18,7 +18,7 @@ public interface CommandeClientService {
 	
     public CommandeClientDto buildCommandeClientDtoFromCommandeClient(CommandeClient commandeClient);
 	
-    public void createNewCommandeClient(CommandeClientDto commandeClientDto);
+    public void createNewCommandeClient(CommandeClientDto commandeClientDto) throws ResourceNotFoundException;
 	
     public void updateCommandeClient(@Valid CommandeClientDto commandeClientDto) throws ResourceNotFoundException;
     public void fermeCmd(@Valid String idCmd) throws ResourceNotFoundException;

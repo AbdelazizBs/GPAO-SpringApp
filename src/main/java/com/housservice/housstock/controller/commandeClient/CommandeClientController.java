@@ -61,7 +61,7 @@ public class CommandeClientController {
 	  }
     
     @PutMapping("/addCmdClient")
-	  public ResponseEntity<String> createCommandeClient(@RequestBody CommandeClientDto commandeClientDto) {
+	  public ResponseEntity<String> createCommandeClient(@RequestBody CommandeClientDto commandeClientDto) throws ResourceNotFoundException {
 		  
   	  commandeClientService.createNewCommandeClient(commandeClientDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());

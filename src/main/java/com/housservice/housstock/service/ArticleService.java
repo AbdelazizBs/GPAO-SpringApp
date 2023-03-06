@@ -15,8 +15,6 @@ public interface ArticleService {
 	
     public void setArticleEnVeille(String idMachine) throws ResourceNotFoundException;
 
-    public List<String> getDesignationArticleCient(String idClient) throws ResourceNotFoundException;
-	public List<String>  getRefIrisAndClientAndIdArticle(String designation) throws ResourceNotFoundException;
 	public String getIdArticleWithDesignation(String designation) throws ResourceNotFoundException;
 	public List<EtapeProduction> getTargetEtapesArticle(String idArticle) throws ResourceNotFoundException;
 

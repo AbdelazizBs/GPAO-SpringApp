@@ -29,4 +29,6 @@ Page<Nomenclature> findNomenclatureByTextToFindAndMiseEnVeille(String textToFind
 
    List<Nomenclature> findNomenclatureByClientId(String clientId);
    List<Nomenclature> findNomenclatureByFournisseurId(String frsId);
+
+   List<Nomenclature> findNomenclaturesByClientId(String idClient);
 }

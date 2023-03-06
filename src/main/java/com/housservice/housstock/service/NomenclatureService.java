@@ -26,7 +26,11 @@ public interface NomenclatureService {
 
 	public List<String> getNomNomenclatures();
 
-    Optional<Nomenclature> getNomenclatureById(String id);
+	public List<String> getNameOfNomenclatureOfClient(String idClient) throws ResourceNotFoundException;
+
+	public List<String>  getNameNomenclatureAndDescription(String nameNomenclature) throws ResourceNotFoundException;
+
+	Optional<Nomenclature> getNomenclatureById(String id);
 
 	ResponseEntity<Map<String, Object>> getParent();
 	 List<String> getParentsNameFiltered(String idNomenclature) throws ResourceNotFoundException;
