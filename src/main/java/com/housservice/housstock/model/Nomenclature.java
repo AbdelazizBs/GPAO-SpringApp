@@ -38,6 +38,9 @@ public class Nomenclature {
 	@NotBlank
 	@Size(max = 100)
 	private String description;
+	@NotBlank
+	@Size(max = 100)
+	private String refIris;
 
 	private TypeNomEnClature type;
 
@@ -59,7 +62,7 @@ public class Nomenclature {
 	private List<Nomenclature> childrens;
 
 
-	private List <Picture> pictures ;
+	private Picture picture ;
 	
 	private Date date ;
 	

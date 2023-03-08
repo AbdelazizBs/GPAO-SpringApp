@@ -30,8 +30,9 @@ public class NomenclatureDto {
 	private List<String> parentsId;
 
 	private String categorie;
-	
-	private List <Picture> pictures;
+	private String refIris;
+
+	private Picture picture ;
 	
 	private Date date ;
 	

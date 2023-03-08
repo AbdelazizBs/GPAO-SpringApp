@@ -1,7 +1,6 @@
 package com.housservice.housstock.repository;
 
 import com.housservice.housstock.model.Nomenclature;
-import com.housservice.housstock.model.Picture;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -17,7 +16,6 @@ public interface NomenclatureRepository extends MongoRepository<Nomenclature, St
 
 
 
-	Optional<Nomenclature> findNomenclatureByPictures(Picture picture) ;
 
 	boolean existsNomenclatureByNomNomenclature(String nomNomenclature);
 	
