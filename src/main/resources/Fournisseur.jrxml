@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Fournisseur" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="593f3307-6c70-49ec-9c18-94e392572d1f">
+	<field name="abrege" class="java.lang.String"/>
+	<field name="adresse" class="java.lang.String"/>
+	<field name="adresseBanque" class="java.lang.String"/>
+	<field name="codeDouane" class="java.lang.String"/>
+	<field name="codePostal" class="java.lang.String"/>
+	<field name="date" class="java.util.Date"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="identifiantTva" class="java.lang.String"/>
+	<field name="linkedin" class="java.lang.String"/>
+	<field name="nomBanque" class="java.lang.String"/>
+	<field name="pays" class="java.lang.String"/>
+	<field name="phone" class="java.lang.String"/>
+	<field name="raisonSocial" class="java.lang.String"/>
+	<field name="refFournisseurIris" class="java.lang.String"/>
+	<field name="region" class="java.lang.String"/>
+	<field name="rib" class="java.lang.String"/>
+	<field name="rne" class="java.lang.String"/>
+	<field name="siteWeb" class="java.lang.String"/>
+	<field name="statut" class="java.lang.String"/>
+	<field name="swift" class="java.lang.String"/>
+	<field name="telecopie" class="java.lang.String"/>
+	<field name="ville" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<image>
+				<reportElement x="5" y="0" width="80" height="80" uuid="d47a36bf-b3e0-4b5a-80b8-a30d249939f8"/>
+				<imageExpression><![CDATA["iris.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="410" y="0" width="143" height="20" uuid="ed57f75c-4f97-4120-8d6e-764ebd2a2801"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="116" y="0" width="340" height="30" uuid="545fb634-a0e7-4600-83dc-b7e153c749ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Franklin Gothic Demi" size="24"/>
+				</textElement>
+				<text><![CDATA[LES DETAILS DE RAPORT]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="283" splitType="Stretch">
+			<rectangle>
+				<reportElement x="40" y="30" width="481" height="41" backcolor="#3D5FE7" uuid="b01f0021-3b24-41ff-bbd0-09916a71dd39"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="320" y="30" width="201" height="41" backcolor="#3D5FE7" uuid="73b51c17-800d-41d8-9b65-0c3e69922e91"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="71" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="25d8cedd-24d4-451d-8b8b-b6eeec4b76e6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="112" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="20b021d1-29ee-4c6f-8ded-92d2f0d1fcad"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="153" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="4cbc3dab-f8c5-4ea0-8865-c696bd2823c8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="194" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="b70f5360-56e4-4523-b5d6-4f4dd38f6c9d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="235" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="6e00a43d-2541-4f5f-bf65-ba02a7613b4a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="112" width="241" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="90490e79-b29b-4098-95f2-0c456babdebc"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="153" width="241" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="3186d1a3-595b-4d58-ac68-abaf7506c017"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="194" width="160" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="a205aa5f-6e0c-4de9-aafa-ed3ae0ffcf56"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="360" y="194" width="160" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="c1608f23-89cd-4734-9815-b7c7529cee58"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="45" y="40" width="280" height="20" forecolor="#FFFFFF" uuid="fb6e94eb-be99-4bbb-9530-2f18a8c3fa1e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="12"/>
+				</textElement>
+				<text><![CDATA[LES INFORMATIONS DE FOURNISSEUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="40" width="100" height="20" forecolor="#FFFFFF" uuid="c7f78b01-d654-4791-9d3c-0e09ee24baf5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="12"/>
+				</textElement>
+				<text><![CDATA[MATRICULE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="81" width="51" height="20" forecolor="#030303" uuid="a5077a10-ca10-48b7-9f8c-1c186b669104"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[STATUT :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="121" width="41" height="20" forecolor="#030303" uuid="c7d312ba-3487-4e5e-b695-01ae87573523"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[EMAIL :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="121" width="79" height="20" forecolor="#030303" uuid="e7b36387-7858-4463-92d2-977c9e0e163f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[DATE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="163" width="115" height="20" forecolor="#030303" uuid="37595398-dd5d-4e4b-a61c-3b5670ecf4fd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[RAISON SOCIAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="163" width="79" height="20" forecolor="#030303" uuid="d90709ad-5c35-4c91-bfdb-f04cdeb77e02"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[PHONE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="204" width="53" height="20" forecolor="#030303" uuid="527180f3-565a-4bd0-92aa-0c22a5dcf266"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[REGION :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="204" width="41" height="20" forecolor="#030303" uuid="799530cc-a389-47cc-8fd1-5664917f2c45"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[PAYS :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="204" width="78" height="20" forecolor="#030303" uuid="821dbcc7-ba34-44b6-ad7c-a3d8d5787aef"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[VILLE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="245" width="67" height="20" forecolor="#030303" uuid="fe1023f8-ba7d-4f08-acad-f5ba4e9ca4b1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[ADRESSE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="101" y="80" width="351" height="21" uuid="412ef723-8556-4ac2-a74e-9840e54898b8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{statut}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="120" width="140" height="21" uuid="13f92abe-04cc-4412-870a-83bed96c26f7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="120" width="140" height="21" uuid="becfdba5-0d64-4864-a6e6-85da9c7d4c7b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="162" width="119" height="21" uuid="21723a51-0ec3-47dd-866b-222794814780"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{raisonSocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="337" y="162" width="140" height="21" uuid="0293149a-8b19-413e-8644-b118043af2ca"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="86" y="203" width="74" height="21" uuid="9823ad8b-93de-47ae-9cd8-97c35b1711b8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pays}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="257" y="203" width="74" height="21" uuid="302c55f3-ac1f-4f6e-81eb-9b0e90b2bdda"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{region}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="406" y="203" width="74" height="21" uuid="b9dd5540-cd0b-434e-879b-41ba5a885a3b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ville}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="244" width="74" height="21" uuid="7882ad1d-8282-4c93-9422-1b932360d752"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adresse}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="39" width="93" height="21" forecolor="#FFFFFF" uuid="c7db5f87-1a1b-41b7-bce3-1e9037c23489"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{refFournisseurIris}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="322">
+			<rectangle>
+				<reportElement x="40" y="21" width="481" height="41" backcolor="#3D5FE7" uuid="cc39dea1-346e-4e20-aeaf-254aa5635bcd"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="62" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="42468ecd-7cfb-4d0a-8a20-3d998c069b37"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="103" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="93faaec3-3806-48a4-ace2-e08a488b4449"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="144" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="f7d7c838-beed-4ccb-9370-6200ce9a730a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="226" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="fb97fe91-de4e-4fab-b468-281e5ba717d8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="103" width="241" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="3e82e0c6-d364-4e40-b4db-2642f7ab314c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="144" width="241" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="8ddbc421-7bd8-483a-a0c9-2f384d4112a1"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="40" y="185" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="7e22ca73-410b-4031-99d1-33aa94d81198"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="50" y="32" width="240" height="20" forecolor="#FFFFFF" uuid="eccb8b45-1d47-4ab2-a246-3d61613ac339"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="14"/>
+				</textElement>
+				<text><![CDATA[LES DÉTAILS PERSONNEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="72" width="121" height="20" forecolor="#030303" uuid="990c4390-56d1-49b2-87ac-d30eea177ca8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[ADRESSE BANQUE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="154" width="79" height="20" forecolor="#030303" uuid="07e6604c-c025-4aaf-9d62-13a997edd971"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[TELECOPIE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="161" y="71" width="115" height="21" uuid="8c081fab-9fb7-40c9-a33a-3ffd3b30c967"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adresseBanque}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="361" y="153" width="140" height="21" uuid="75a48474-f0d0-4c05-aa34-9f4b0b6852b2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telecopie}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="40" y="267" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="c2173611-19ee-4e20-85af-3d595203b9d7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="185" width="241" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="61d86b2f-389d-4eb8-b840-1a567b89f067"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="226" width="241" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="eb8dbab3-bce8-48f6-99d4-42b3e4422890"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="267" width="241" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="1da9177e-2e6e-4f92-b66c-d3da886e7e66"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="62" width="241" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="9ae9df0f-ecfc-447d-808f-71752682276e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="49" y="277" width="93" height="20" forecolor="#030303" uuid="0acd0ba1-52f0-4166-a8d4-c4805a33d3e0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[CODE DOUANE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="143" y="276" width="122" height="21" uuid="057cacda-db01-4748-b688-1de22ec5f83f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codeDouane}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="236" width="41" height="20" forecolor="#030303" uuid="23922024-d6fd-4a4c-90b6-6640f8221d69"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[RNE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="320" y="235" width="139" height="21" uuid="7a919ec5-dfc1-4057-87df-5b500ba88cec"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rne}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="195" width="84" height="20" forecolor="#030303" uuid="6db09ac6-fb36-4263-b274-d6f03fd1ef0d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[NOM BANQUE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="374" y="194" width="139" height="21" uuid="8a274eca-3b88-473e-bea8-fbd5598d97c5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomBanque}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="277" width="84" height="20" forecolor="#030303" uuid="546028dc-60f3-4146-94ee-8aba62809356"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[RIB  :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="318" y="276" width="139" height="21" uuid="cd1f7301-6ccd-4984-ae7e-3453dfcfece5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rib}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="48" y="236" width="92" height="20" forecolor="#030303" uuid="50016ead-20f0-40dd-8168-5412e1bd6f23"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[CODE POSTAL :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="135" y="235" width="139" height="21" uuid="1cd7857f-e22b-4123-9f39-cb34f7237cf1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codePostal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="111" width="139" height="21" uuid="4e71b573-f2d6-4bd0-ba99-7b7204ddca97"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{swift}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="289" y="112" width="84" height="20" forecolor="#030303" uuid="bf03be4c-a5e0-4f5b-a395-0901ca95dbd0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[SWIFT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="113" width="61" height="20" forecolor="#030303" uuid="172bda2d-8845-4d7a-910a-0d44ac291e60"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[ABREGE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="103" y="112" width="115" height="21" uuid="08590d03-adad-4ca7-9439-9ad345791eb6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{abrege}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="289" y="72" width="121" height="20" forecolor="#030303" uuid="4ba84986-115a-43e0-8a63-17979a5f2905"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[TVA :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="323" y="72" width="115" height="21" uuid="8ecc0006-fa68-4e7d-ac25-ca6da8aa5a08"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{identifiantTva}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="48" y="154" width="61" height="20" forecolor="#030303" uuid="6ef66e76-9467-4b6e-a6b3-8c1c26a8a275"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[LINKEDIN :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="109" y="153" width="115" height="21" uuid="5e979b8c-aa14-4234-9b7b-09d52624f7f8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{linkedin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="49" y="195" width="121" height="20" forecolor="#030303" uuid="ccad5ca2-0a90-4e42-a48f-ac7ae4f34023"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[ADRESSE BANQUE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="194" width="115" height="21" uuid="f43cc13b-621b-4e44-85b9-4671923f74f7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{siteWeb}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="5" y="2" width="515" height="13" backcolor="#E6E6E6" uuid="700ced38-1f80-4a88-9980-cdb97c1355da"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="520" y="2" width="40" height="13" backcolor="#E6E6E6" uuid="c33b0dcd-890c-4c14-8c0b-5a654f6d1e75"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

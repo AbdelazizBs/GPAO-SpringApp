@@ -89,7 +89,11 @@ public class FournisseurController {
 
 	}
 
+	@GetMapping("/getAllRefFournisseur")
+	public List<Fournisseur> getAllRefFournisseur() {
+		return fournisseurService.getAllRefFournisseur(false);
 
+	}
 	@GetMapping("/search")
 	@ApiOperation(value = "service to filter fournisseurs ")
 	public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
@@ -298,13 +302,6 @@ public class FournisseurController {
 		return response;
 	}
 
-	@GetMapping("/report/{refFournisseurIris}")
-	public ResponseEntity<byte[]> generateReport(@PathVariable String refFournisseurIris){
-
-		return fournisseurService.RecordReport(refFournisseurIris);
-
-	}
-
 	@GetMapping("/getFournisseurByMonth")
 	public int getFournisseurByMonth(){
 		return fournisseurService.getFournisseurByMonth();
@@ -323,5 +320,9 @@ public class FournisseurController {
 	public List<Integer> getFrsnoActifListe(){
 		return fournisseurService.getFrsListe(true);
 	}
+	@GetMapping("/report/{id}")
+	public ResponseEntity<byte[]> generateReport(@PathVariable String id){
+		return fournisseurService.RecordReport(id);
 
+	}
 }

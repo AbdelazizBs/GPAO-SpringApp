@@ -21,11 +21,9 @@ public abstract class ContactMapper {
 
     @AfterMapping
     void updateContactDto(final Contact contact, @MappingTarget final ContactDto contactDto)   {
-
     }
 
     @AfterMapping
     void updateContact(final ContactDto  contactDto, @MappingTarget final Contact contact) {
-
     }
 }

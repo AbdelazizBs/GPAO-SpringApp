@@ -1,5 +1,6 @@
 package com.housservice.housstock.repository;
 
+import com.housservice.housstock.model.Commande;
 import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Picture;
 import org.springframework.data.domain.Page;
@@ -33,4 +34,6 @@ public interface FournisseurRepository extends MongoRepository <Fournisseur, Str
 	List<Fournisseur> findByrefFournisseurIris(String id);
 
 	List<Fournisseur> findBydateBetween(Date fromDate , Date toDate);
+
+    List<Fournisseur> findFournisseurById(String id);
 }

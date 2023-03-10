@@ -4,6 +4,7 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.FournisseurMapper;
 import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.Commande;
 import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.Picture;
@@ -218,12 +219,6 @@ public class FournisseurServiceImpl implements FournisseurService {
 		}
 		Fournisseur fournisseur = getFournisseurById(idFournisseur)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idFournisseur)));
-		if (!fournisseur.getRefFournisseurIris().equals(refFournisseurIris)) {
-			throw new IllegalArgumentException("Error Id!!");
-		}
-		if (!fournisseur.getRaisonSocial().equals(intitulee)) {
-			throw new IllegalArgumentException("Error Id!!");
-		}
 		List<Picture> pictures = new ArrayList<>();
 		if (images != null) {
 			for (MultipartFile file : images) {
@@ -483,27 +478,6 @@ public class FournisseurServiceImpl implements FournisseurService {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	public ResponseEntity<byte[]> RecordReport(String refFournisseurIris) {
-		try{
-			List<Fournisseur> fournisseur= fournisseurRepository.findByrefFournisseurIris(refFournisseurIris);
-			File file = ResourceUtils.getFile("classpath:Fournisseurs.jrxml");
-			JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
-			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(fournisseur);
-			Map<String ,Object> parameter = new HashMap<>();
-			parameter.put("CreatedBy","Hellotest");
-			JasperPrint print = JasperFillManager.fillReport(report, parameter,dataSource);
-			HttpHeaders headers = new HttpHeaders();
-			//set the PDF format
-			headers.setContentType(MediaType.APPLICATION_PDF);
-			headers.setContentDispositionFormData("filename", "employees-details.pdf");
-			//create the report in PDF format
-			return new ResponseEntity<byte[]>
-					(JasperExportManager.exportReportToPdf(print), headers, HttpStatus.OK);
-
-		} catch(Exception e) {
-			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
 
 	@Override
 	public int getFournisseurByMonth() {
@@ -569,4 +543,29 @@ public class FournisseurServiceImpl implements FournisseurService {
 		return nbAFournisseurs;
 	}
 
+	@Override
+	public List<Fournisseur> getAllRefFournisseur(boolean b) {
+		return fournisseurRepository.findFournisseurByMiseEnVeille(b);
+	}
+	public ResponseEntity<byte[]> RecordReport(String id) {
+		try{
+			List<Fournisseur> fournisseur= fournisseurRepository.findFournisseurById(id);
+			File file = ResourceUtils.getFile("classpath:Fournisseur.jrxml");
+			JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
+			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(fournisseur);
+			Map<String ,Object> parameter = new HashMap<>();
+			parameter.put("CreatedBy","Hellotest");
+			JasperPrint print = JasperFillManager.fillReport(report, parameter,dataSource);
+			HttpHeaders headers = new HttpHeaders();
+			//set the PDF format
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDispositionFormData("filename", "employees-details.pdf");
+			//create the report in PDF format
+			return new ResponseEntity<byte[]>
+					(JasperExportManager.exportReportToPdf(print), headers, HttpStatus.OK);
+
+		} catch(Exception e) {
+			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

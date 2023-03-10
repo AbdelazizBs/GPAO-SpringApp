@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Commande" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c8849903-1702-4409-acdd-dbe6d5c8f838">
+	<field name="commentaire" class="java.lang.String"/>
+	<field name="dateCommande" class="java.lang.String"/>
+	<field name="fournisseur" class="java.lang.String"/>
+	<field name="numBcd" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="76">
+			<image>
+				<reportElement x="0" y="-4" width="80" height="80" uuid="6d4d52c1-9809-4f01-b604-8b8c7d1412cb"/>
+				<imageExpression><![CDATA["iris.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="126" y="30" width="340" height="30" uuid="094c7dff-0288-4bd9-a313-29999161b214"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Franklin Gothic Demi" size="24"/>
+				</textElement>
+				<text><![CDATA[LES DETAILS DE RAPORT]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="412" y="0" width="143" height="20" uuid="fa96b1ba-51eb-45bf-ba52-0eda2a7d345d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21"/>
+	</columnHeader>
+	<detail>
+		<band height="295">
+			<rectangle>
+				<reportElement x="34" y="30" width="481" height="41" backcolor="#3D5FE7" uuid="e776e7c0-524f-4e36-84c8-51fff100cbc8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="34" y="71" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="0173991a-688b-44d2-bcdf-8c65a9e9aa7a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="34" y="112" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="d5fd556b-768e-4c4e-8440-8031be4497de"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="34" y="153" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="c04f01fd-f815-4bb0-8451-5ea1d21d9d4f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="34" y="194" width="480" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="eb689986-e486-4eaf-b757-ec881a13415a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="44" y="40" width="270" height="20" forecolor="#FFFFFF" uuid="540f94f7-f0e1-47a0-a82c-3c682f9e2475"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="14"/>
+				</textElement>
+				<text><![CDATA[LES INFORMATIONS DE COMMANDE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="81" width="120" height="20" forecolor="#030303" uuid="16be243a-6971-490b-a872-577f1df7c5e8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[REF FOURNISSEUR :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="121" width="115" height="20" forecolor="#030303" uuid="5f321ae4-37d0-4cb0-bdc0-fedfbfe0edcf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[DATE COMMANDE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="163" width="87" height="20" forecolor="#030303" uuid="5df01ea6-bd2a-4fee-a292-3d42b4ecdc68"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[NUMERO BCD :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="204" width="107" height="20" forecolor="#030303" uuid="051bb6f6-93c4-4c06-86b6-761ea39a48eb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<text><![CDATA[COMMENTAIRE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="158" y="80" width="351" height="21" uuid="fc72f2ff-4033-4146-a35b-f889303f35f9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fournisseur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="120" width="140" height="21" uuid="dc31e67d-e255-44d4-8d01-c4829303a79f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dateCommande}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="163" width="140" height="21" uuid="a32b8273-3bcd-4c68-a007-2fb919228602"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numBcd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="136" y="203" width="122" height="21" uuid="655c6fdf-601d-4549-9d81-a573e82329a4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Rounded MT Bold" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{commentaire}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="6803494a-1fab-47bd-b0c7-d7cc9464cee8"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="b6403a01-93be-4c61-b18a-6450bc272b99"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
