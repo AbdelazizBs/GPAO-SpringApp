@@ -7,26 +7,34 @@ import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.Picture;
-import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.repository.FournisseurRepository;
 import com.housservice.housstock.repository.ContactRepository;
 import com.housservice.housstock.repository.PictureRepository;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
@@ -47,8 +55,8 @@ public class FournisseurServiceImpl implements FournisseurService {
 
 	@Autowired
 	public FournisseurServiceImpl(FournisseurRepository fournisseurRepository,
-                                  MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository,
-                                  PictureRepository pictureRepository) {
+								  MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository,
+								  PictureRepository pictureRepository) {
 		this.fournisseurRepository = fournisseurRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
@@ -94,10 +102,8 @@ public class FournisseurServiceImpl implements FournisseurService {
 	}
 
 	@Override
-	public void createNewFournisseur( String refFrsIris,
-									  String intitule,
-									  String Abrege,
-									  String statut,
+	public void createNewFournisseur( String refFournisseurIris,
+									  String intitulee,
 									  String adresse,
 									  String codePostal,
 									  String ville,
@@ -105,22 +111,24 @@ public class FournisseurServiceImpl implements FournisseurService {
 									  String region,
 									  String phone,
 									  String email,
+									  String statut,
 									  String linkedin,
+									  String abrege,
 									  String siteWeb,
-									  String Tva,
 									  String nomBanque,
 									  String adresseBanque,
 									  String codeDouane,
 									  String rne,
+									  String identifiantTva,
 									  String telecopie,
 									  String rib,
 									  String swift,
 									  MultipartFile[] images) {
-		if (fournisseurRepository.existsFournisseurByRefFrsIris(refFrsIris)) {
+		if (fournisseurRepository.existsFournisseurByRefFournisseurIris(refFournisseurIris)) {
 			throw new IllegalArgumentException(	"Matricule existe deja !!");
 		}
-		if (fournisseurRepository.existsFournisseurByintitule(intitule)) {
-			throw new IllegalArgumentException(	"intitule existe deja !!");
+		if (fournisseurRepository.existsFournisseurByRaisonSocial(intitulee)) {
+			throw new IllegalArgumentException(	"Raison sociale existe deja !!");
 		}
 		FournisseurDto fournisseurDto = new FournisseurDto();
 		List<Picture> pictures = new ArrayList<>();
@@ -136,34 +144,36 @@ public class FournisseurServiceImpl implements FournisseurService {
 			pictureRepository.save(picture);
 			pictures.add(picture);
 		}
-	fournisseurDto.setPictures(pictures);
-	fournisseurDto.setDate(new Date());
-	fournisseurDto.setMiseEnVeille(false);
-	fournisseurDto.setRefFrsIris(refFrsIris);
-	fournisseurDto.setIntitule(intitule);
-	fournisseurDto.setAdresse(adresse);
-	fournisseurDto.setCodePostal(codePostal);
-	fournisseurDto.setVille(ville);
-	fournisseurDto.setPays(pays);
-	fournisseurDto.setRegion(region);
-	fournisseurDto.setTelephone(phone);
-	fournisseurDto.setEmail(email);
-	fournisseurDto.setStatut(statut);
-	fournisseurDto.setAbrege(Abrege);
-	fournisseurDto.setLinkedin(linkedin);
-	fournisseurDto.setSiteWeb(siteWeb);
-	fournisseurDto.setNomBanque(nomBanque);
-	fournisseurDto.setAdresseBanque(adresseBanque);
-	fournisseurDto.setCodeDouane(codeDouane);
-	fournisseurDto.setRne(rne);
-	fournisseurDto.setIdentifiantTva(Tva);
-	fournisseurDto.setTelecopie(telecopie);
-	fournisseurDto.setRib(rib);
-	fournisseurDto.setSwift(swift);
-	List<Contact> contacts = new ArrayList<>();
+
+		fournisseurDto.setPictures(pictures);
+		fournisseurDto.setDate(new Date());
+		fournisseurDto.setMiseEnVeille(false);
+		fournisseurDto.setRefFournisseurIris(refFournisseurIris);
+		fournisseurDto.setRaisonSocial(intitulee);
+		fournisseurDto.setAdresse(adresse);
+		fournisseurDto.setCodePostal(codePostal);
+		fournisseurDto.setVille(ville);
+		fournisseurDto.setPays(pays);
+		fournisseurDto.setRegion(region);
+		fournisseurDto.setPhone(phone);
+		fournisseurDto.setEmail(email);
+		fournisseurDto.setStatut(statut);
+		fournisseurDto.setLinkedin(linkedin);
+		fournisseurDto.setAbrege(abrege);
+		fournisseurDto.setSiteWeb(siteWeb);
+
+		fournisseurDto.setNomBanque(nomBanque);
+		fournisseurDto.setAdresseBanque(adresseBanque);
+		fournisseurDto.setCodeDouane(codeDouane);
+		fournisseurDto.setRne(rne);
+		fournisseurDto.setIdentifiantTva(identifiantTva);
+		fournisseurDto.setTelecopie(telecopie);
+		fournisseurDto.setRib(rib);
+		fournisseurDto.setSwift(swift);
+		List<Contact> contacts = new ArrayList<>();
 		if (fournisseurDto.getContact()==null){
-	fournisseurDto.setContact(contacts);
-}
+			fournisseurDto.setContact(contacts);
+		}
 		Fournisseur fournisseur = FournisseurMapper.MAPPER.toFournisseur(fournisseurDto);
 		fournisseurRepository.save(fournisseur);
 	}
@@ -178,8 +188,8 @@ public class FournisseurServiceImpl implements FournisseurService {
 	}
 
 	@Override
-	public void updateFournisseur(String idFournisseur ,String refFrsIris,
-								  String intitule,
+	public void updateFournisseur(String idFournisseur ,String refFournisseurIris,
+								  String intitulee,
 								  String adresse,
 								  String codePostal,
 								  String ville,
@@ -187,27 +197,33 @@ public class FournisseurServiceImpl implements FournisseurService {
 								  String region,
 								  String phone,
 								  String email,
-								  String Tva,
 								  String statut,
-								  String Abrege,
 								  String linkedin,
-								  String siteWeb,
-								  String nomBanque,
+								  String abrege,
+								  String siteWeb, String nomBanque,
 								  String adresseBanque,
 								  String codeDouane,
 								  String rne,
+								  String identifiantTva,
 								  String telecopie,
 								  String rib,
 								  String swift,
 								  MultipartFile[] images) throws ResourceNotFoundException {
+
 		if (!Objects.equals(email, "") && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			throw new IllegalArgumentException("Email invalide !!");
 		}
-		if (refFrsIris.isEmpty() || intitule.isEmpty() || adresse.isEmpty() || codePostal.isEmpty() || ville.isEmpty() || pays.isEmpty() || region.isEmpty()) {
+		if (refFournisseurIris.isEmpty() || intitulee.isEmpty() || adresse.isEmpty() || codePostal.isEmpty() || ville.isEmpty() || pays.isEmpty() || region.isEmpty()) {
 			throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
 		}
 		Fournisseur fournisseur = getFournisseurById(idFournisseur)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idFournisseur)));
+		if (!fournisseur.getRefFournisseurIris().equals(refFournisseurIris)) {
+			throw new IllegalArgumentException("Error Id!!");
+		}
+		if (!fournisseur.getRaisonSocial().equals(intitulee)) {
+			throw new IllegalArgumentException("Error Id!!");
+		}
 		List<Picture> pictures = new ArrayList<>();
 		if (images != null) {
 			for (MultipartFile file : images) {
@@ -225,29 +241,29 @@ public class FournisseurServiceImpl implements FournisseurService {
 		}
 		pictures.addAll(fournisseur.getPictures());
 		fournisseur.setPictures(pictures);
-		fournisseur.setDate(new Date());
-		fournisseur.setMiseEnVeille(false);
-		fournisseur.setRefFrsIris(refFrsIris);
-		fournisseur.setIntitule(intitule);
-		fournisseur.setAdresse(adresse);
-		fournisseur.setCodePostal(codePostal);
-		fournisseur.setVille(ville);
-		fournisseur.setPays(pays);
-		fournisseur.setRegion(region);
-		fournisseur.setTelephone(phone);
-		fournisseur.setEmail(email);
+		fournisseur.setRaisonSocial(intitulee);
 		fournisseur.setStatut(statut);
-		fournisseur.setAbrege(Abrege);
-		fournisseur.setLinkedin(linkedin);
+		fournisseur.setDate(fournisseur.getDate());
+		fournisseur.setDateMiseEnVeille(fournisseur.getDateMiseEnVeille());
+		fournisseur.setAdresse(adresse);
 		fournisseur.setSiteWeb(siteWeb);
 		fournisseur.setNomBanque(nomBanque);
 		fournisseur.setAdresseBanque(adresseBanque);
-		fournisseur.setCodeDouane(codeDouane);
-		fournisseur.setRne(rne);
-		fournisseur.setIdentifiantTva(Tva);
-		fournisseur.setTelecopie(telecopie);
 		fournisseur.setRib(rib);
 		fournisseur.setSwift(swift);
+		fournisseur.setLinkedin(linkedin);
+		fournisseur.setAbrege(abrege);
+		fournisseur.setRefFournisseurIris(refFournisseurIris);
+		fournisseur.setTelecopie(telecopie);
+		fournisseur.setPhone(phone);
+		fournisseur.setStatut(statut);
+		fournisseur.setIdentifiantTva(identifiantTva);
+		fournisseur.setCodePostal(codePostal);
+		fournisseur.setVille(ville);
+		fournisseur.setPays(pays);
+		fournisseur.setRne(rne);
+		fournisseur.setCodeDouane(codeDouane);
+		fournisseur.setRegion(region);
 		fournisseurRepository.save(fournisseur);
 
 	}
@@ -290,19 +306,19 @@ public class FournisseurServiceImpl implements FournisseurService {
 		fournisseurRepository.save(fournisseur);
 	}
 	@Override
-	public ResponseEntity<Map<String, Object>>  getIdFournisseurs(String intitule) throws ResourceNotFoundException {
-		Fournisseur fournisseur = fournisseurRepository.findFournisseurByintitule(intitule).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intitule)));
+	public ResponseEntity<Map<String, Object>>  getIdFournisseurs(String intitulee) throws ResourceNotFoundException {
+		Fournisseur fournisseur = fournisseurRepository.findFournisseurByRaisonSocial(intitulee).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),intitulee)));
 		Map<String, Object> response = new HashMap<>();
 		response.put("idFournisseur", fournisseur.getId());
-		response.put("refFournisseur", fournisseur.getRefFrsIris());
+		response.put("refFournisseur", fournisseur.getRefFournisseurIris());
 		return ResponseEntity.ok(response);
 	}
 
 	@Override
-	public List<String> getintitule( )   {
+	public List<String> getRaisonSociales()   {
 		List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
 		return fournisseurs.stream()
-				.map(Fournisseur::getIntitule)
+				.map(Fournisseur::getRaisonSocial)
 				.collect(Collectors.toList());
 	}
 
@@ -466,6 +482,91 @@ public class FournisseurServiceImpl implements FournisseurService {
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	public ResponseEntity<byte[]> RecordReport(String refFournisseurIris) {
+		try{
+			List<Fournisseur> fournisseur= fournisseurRepository.findByrefFournisseurIris(refFournisseurIris);
+			File file = ResourceUtils.getFile("classpath:Fournisseurs.jrxml");
+			JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
+			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(fournisseur);
+			Map<String ,Object> parameter = new HashMap<>();
+			parameter.put("CreatedBy","Hellotest");
+			JasperPrint print = JasperFillManager.fillReport(report, parameter,dataSource);
+			HttpHeaders headers = new HttpHeaders();
+			//set the PDF format
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDispositionFormData("filename", "employees-details.pdf");
+			//create the report in PDF format
+			return new ResponseEntity<byte[]>
+					(JasperExportManager.exportReportToPdf(print), headers, HttpStatus.OK);
+
+		} catch(Exception e) {
+			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Override
+	public int getFournisseurByMonth() {
+		try {
+			LocalDate today = LocalDate.now();
+			ZoneId defaultZoneId = ZoneId.systemDefault();
+			LocalDate startD = LocalDate.now().withDayOfMonth(1);
+			Date Firstday = Date.from(startD.atStartOfDay(defaultZoneId).toInstant());
+			LocalDate endD = LocalDate.now().withDayOfMonth(today.getMonth().length(today.isLeapYear()));;
+			Date Lastday = Date.from(endD.atStartOfDay(defaultZoneId).toInstant());
+			List<Fournisseur> fournisseur = fournisseurRepository.findBydateBetween(Firstday, Lastday);
+			return (int) fournisseur.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public int getallFournisseur() {
+		try {
+			List<Fournisseur> fournisseur = fournisseurRepository.findAll();
+			return (int) fournisseur.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public List<Integer> getFrsListe(boolean b) {
+		int date;
+		List<Integer> nbAFournisseurs = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+		List<Fournisseur> activeFournisseurs=fournisseurRepository.findFournisseurByMiseEnVeille(b);
+		for(int i=0;i<activeFournisseurs.size();i++){
+			Fournisseur fournisseur=activeFournisseurs.get(i);
+			date=fournisseur.getDate().getMonth()+1;
+			System.out.println(date);
+			switch (date){
+				case 9:
+					nbAFournisseurs.set(0, nbAFournisseurs.get(0) + 1);
+					break;
+				case 10:
+					nbAFournisseurs.set(1, nbAFournisseurs.get(1) + 1);
+					break;
+				case 11:
+					nbAFournisseurs.set(2, nbAFournisseurs.get(2) + 1);
+					break;
+				case 12:
+					nbAFournisseurs.set(3, nbAFournisseurs.get(3) + 1);
+					break;
+				case 1:
+					nbAFournisseurs.set(4, nbAFournisseurs.get(4) + 1);
+					break;
+				case 2:
+					nbAFournisseurs.set(5, nbAFournisseurs.get(5) + 1);
+					break;
+				case 3:
+					nbAFournisseurs.set(6, nbAFournisseurs.get(6) + 1);
+					break;
+			}
+		}
+		return nbAFournisseurs;
 	}
 
 }

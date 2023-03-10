@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 import java.util.List;
 
-
 @Getter
 @Setter
 @Document(collection="Fournisseur")
@@ -21,89 +20,137 @@ public class Fournisseur {
     @Id
     private String id;
 
-    private String refFrsIris;
-
-    private String intitule;
-
-    private String abrege;
-
+    private String refFournisseurIris;
     private String statut;
-
-    private String adresse;
-
     private String codePostal;
-
+    private String adresse;
     private String ville;
-
     private String region;
-
     private String pays;
-
-    private String telephone;
-
-    private String telecopie;
-
-    private String linkedin;
-
-    private String email;
-
-    private String siteWeb;
-
-    private String nomBanque;
-
-    private String adresseBanque;
-
-    private String rib;
-
-    private String swift;
-
     private String codeDouane;
-
     private String rne;
-
     private String identifiantTva;
 
-    private boolean miseEnVeille;
 
-    private Date dateMiseEnVeille;
 
-    private List <Contact> contact;
 
-    private List <Picture> pictures;
 
     private Date date ;
 
 
-    public Fournisseur() {
+    private String raisonSocial;
 
-    }
 
-    public Fournisseur(String refFrsIris, String intitule, String adresse, String codePostal, String ville, String region,String pays,
-                       String telephone, String telecopie, String email,String nomBanque,String adresseBanque,String rib,
-                       String swift,String codeDouane,String rne,String identifiantTva, boolean miseEnVeille ,  List<Contact> contact , Date date) {
 
-        this.refFrsIris = refFrsIris;
-        this.intitule = intitule;
-        this.adresse = adresse;
+    private String regime;
+
+
+    private String abrege;
+
+
+    private String linkedin;
+
+
+
+
+
+    private String siteWeb;
+
+
+    private String telecopie;
+
+
+
+    private String phone;
+
+
+
+
+    private String nomBanque;
+
+
+    private String adresseBanque;
+
+
+    private String rib;
+
+
+
+    private String swift;
+
+
+    private String email;
+
+
+
+
+    private boolean miseEnVeille;
+
+
+    private Date dateMiseEnVeille;
+
+
+    private List <Contact> contact;
+    private List <Picture> pictures;
+
+    public Fournisseur(String id, String refFournisseurIris, String statut, String codePostal, String adresse, String ville, String region, String pays, String codeDouane, String rne, String identifiantTva, Date date, String raisonSocial, String regime, String abrege, String linkedin, String siteWeb, String telecopie, String phone, String nomBanque, String adresseBanque, String rib, String swift, String email, boolean miseEnVeille, Date dateMiseEnVeille , List<Contact> contact, List<Picture> pictures) {
+        this.id = id;
+        this.refFournisseurIris = refFournisseurIris;
+        this.statut = statut;
         this.codePostal = codePostal;
+        this.adresse = adresse;
         this.ville = ville;
         this.region = region;
         this.pays = pays;
-        this.telephone = telephone;
+        this.codeDouane = codeDouane;
+        this.rne = rne;
+        this.identifiantTva = identifiantTva;
+        this.date = date;
+        this.raisonSocial = raisonSocial;
+        this.regime = regime;
+        this.abrege = abrege;
+        this.linkedin = linkedin;
+        this.siteWeb = siteWeb;
         this.telecopie = telecopie;
-        this.email = email;
+        this.phone = phone;
         this.nomBanque = nomBanque;
         this.adresseBanque = adresseBanque;
         this.rib = rib;
         this.swift = swift;
-        this.codeDouane = codeDouane;
-        this.rne = rne;
-        this.identifiantTva = identifiantTva;
+        this.email = email;
         this.miseEnVeille = miseEnVeille;
+        this.dateMiseEnVeille = dateMiseEnVeille;
         this.contact = contact;
-        this.date = date ;
+        this.pictures = pictures;
     }
 
+    public Fournisseur(Date date, String refFournisseurIris, String raisonSocial, String regime,
+                       String abrege, String linkedin,
+                       String siteWeb,
+                       String phone, String telecopie,
+                       String nomBanque, String adresseBanque, String rib,
+                       String swift, String email, boolean miseEnVeille) {
 
+        this.refFournisseurIris = refFournisseurIris;
+        this.date = date;
+        this.raisonSocial = raisonSocial;
+        this.regime = regime;
+        this.abrege = abrege;
+        this.linkedin = linkedin;
+        this.telecopie = telecopie;
+        this.phone = phone;
+        this.email = email;
+        this.siteWeb = siteWeb;
+        this.nomBanque = nomBanque;
+        this.adresseBanque = adresseBanque;
+        this.rib = rib;
+        this.swift = swift;
+        this.miseEnVeille = miseEnVeille;
+        this.contact = contact;
 
+    }
+
+    public Fournisseur() {
+
+    }
 }

@@ -51,6 +51,19 @@ public class Contact {
     @Indexed(unique = true)
     @Size(max = 100)
     private String mobile;
+
+    public Contact( String nom, String fonction, String phone, String email, String mobile) {
+
+        this.nom = nom;
+        this.fonction = fonction;
+        this.phone = phone;
+        this.email = email;
+        this.mobile = mobile;
+    }
+
+    public Contact() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
