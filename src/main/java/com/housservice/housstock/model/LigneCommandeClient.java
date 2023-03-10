@@ -13,27 +13,35 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Document(collection="LigneCommandeClient")
-public class LigneCommandeClient{
-	@Transient
-	public static final String SEQUENCE_NAME ="ligneCommandeClient_sequence";
-	
-	@Id
-	private String id;
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String quantite;
+@Document(collection = "LigneCommandeClient")
+public class LigneCommandeClient {
+    @Transient
+    public static final String SEQUENCE_NAME = "ligneCommandeClient_sequence";
+
+    @Id
+    private String id;
+
+    @NotBlank
+    @Size(max = 100)
+    @Indexed(unique = true)
+    private String quantite;
 
 
-	private Nomenclature nomenclature;
-	
-	private CommandeClient commandeClient;
+    private Nomenclature nomenclature;
 
-	private String numCmdClient;
+    private String idCommandeClient;
+
+    private String numCmdClient;
 
 
-	private Date delai;
+    private Date delai;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LigneCommandeClient ligneCommandeClient = (LigneCommandeClient) o;
+        return id.equals(ligneCommandeClient.id);
+    }
 
 }
