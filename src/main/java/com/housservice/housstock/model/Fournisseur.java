@@ -129,7 +129,7 @@ public class Fournisseur {
                        String siteWeb,
                        String phone, String telecopie,
                        String nomBanque, String adresseBanque, String rib,
-                       String swift, String email, boolean miseEnVeille) {
+                       String swift, String email,  boolean miseEnVeille) {
 
         this.refFournisseurIris = refFournisseurIris;
         this.date = date;
@@ -146,7 +146,7 @@ public class Fournisseur {
         this.rib = rib;
         this.swift = swift;
         this.miseEnVeille = miseEnVeille;
-        this.contact = contact;
+
 
     }
 

@@ -10,6 +10,7 @@ import com.housservice.housstock.repository.CommandeRepository;
 import com.housservice.housstock.repository.FournisseurRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -136,11 +137,31 @@ public class CommandeServiceImpl implements CommandeService{
     }
 
     @Override
-    public List<String> getAllRefFournisseurs() {
+    public List<String> getAllFournisseurs() {
         List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
         return fournisseurs.stream()
                 .map(Fournisseur::getRefFournisseurIris)
                 .collect(Collectors.toList());
     }
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllCommande(int page, int size) {
+        try {
+            List<CommandeDto> commandes = new ArrayList<CommandeDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<Commande> pageTuts;
+            pageTuts =  commandeRepository.findAll(paging);
+            commandes = pageTuts.getContent().stream().map(commande -> CommandeMapper.MAPPER.toCommandeDto(commande)).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("commandes", commandes);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 

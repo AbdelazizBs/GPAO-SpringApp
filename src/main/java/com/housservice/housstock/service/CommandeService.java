@@ -20,6 +20,7 @@ public interface CommandeService {
     public ResponseEntity<Map<String, Object>> getIdCommandes(String numBcd) throws ResourceNotFoundException;
     int getallCommande();
     public ResponseEntity<Map<String, Object>> onSortActiveCommande(int page, int size, String field, String order);
-    List<String> getAllRefFournisseurs();
+    List<String> getAllFournisseurs();
+    ResponseEntity<Map<String, Object>> getAllCommande(int page , int size);
 
 }

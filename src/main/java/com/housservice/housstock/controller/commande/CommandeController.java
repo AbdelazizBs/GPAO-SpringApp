@@ -128,7 +128,13 @@ public class CommandeController {
     @GetMapping("/getAllRefFournisseurs")
     @ApiOperation(value = "service to get one Reference fournisseur")
     public List<String> getAllRefFournisseurs() {
-        return commandeService.getAllRefFournisseurs();
+        return commandeService.getAllFournisseurs();
     }
+    @GetMapping("/getAllCommande")
+    @ApiOperation(value = "service to get tout les Commandes ")
+    public ResponseEntity<Map<String, Object>> getAllCommande(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+        return commandeService.getAllCommande(page,size);
+    }
+
 
 }

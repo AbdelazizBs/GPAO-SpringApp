@@ -303,15 +303,15 @@ class HousstockApplicationTests {
 	}
 	@Test
 	public void testCreateNewFournisseur(){
-		Client client = new Client(new Date(),"ABC456","Ma société","Régimeee","Automobile","Informatique","FOB","30 jours","Virement","0123456789","0123456798","Ma Banque","2 Rue des Banques","12345678901234567890123456","SWIFT123","contact@masociete.com",false,0);
+		Fournisseur fournisseur = new Fournisseur(new Date(),"ref01","Ma société","Régimeee","test","Linkdin","web","145827","001254","uib","marsa","145239987003325","SWIFT123","contact@masociete.com",false);
 
-		clientRepository.save(client);
+		fournisseurRepository.save(fournisseur);
 	}
 	@Test
 	public void testGetFournisseurtById(){
 		Fournisseur fournisseur=fournisseurRepository.findById("63fbb9a06cdf695a8104adb2").get();
 		System.out.println(fournisseur);
-		//verification que  l'objet client n'est pas null
+		//verification que  l'objet fournissseur n'est pas null
 		assertNotNull(fournisseur);
 		//verifier que le numero de telephone de premier contact de l'objet client  est egale aver la valeur expecteé  "123456789".
 		assertEquals("123456789", fournisseur.getContact().get(0).getPhone());
@@ -335,7 +335,7 @@ class HousstockApplicationTests {
 	@Test
 	public void testDeleteFournisseur(){
 		fournisseurRepository.deleteById("63f73c2f5cfa3d46c96fe12b");
-		//verifier que le client a ete supprime
+		//verifier que le fournisseur a ete supprime
 		Optional<Fournisseur> deletedFournisseur = fournisseurRepository.findById("63f73c2f5cfa3d46c96fe12b");
 		assertFalse(deletedFournisseur.isPresent());
 	}
