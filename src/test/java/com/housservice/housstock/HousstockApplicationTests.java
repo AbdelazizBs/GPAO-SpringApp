@@ -10,6 +10,7 @@ import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.ContactRepository;
+import com.housservice.housstock.repository.FournisseurRepository;
 import com.housservice.housstock.repository.PictureRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ class HousstockApplicationTests {
 	@Autowired
 	PictureRepository pictureRepository;
 	private ContactDto contactDto;
+	@Autowired
+	private FournisseurRepository fournisseurRepository;
 
 	@Test
 	public void testCreateNewClient(){
@@ -296,6 +299,261 @@ class HousstockApplicationTests {
 		}
 		// Vérification que la liste de photos du client est vide
 		assertTrue(client.getPictures().isEmpty());
+
+	}
+	@Test
+	public void testCreateNewFournisseur(){
+		Client client = new Client(new Date(),"ABC456","Ma société","Régimeee","Automobile","Informatique","FOB","30 jours","Virement","0123456789","0123456798","Ma Banque","2 Rue des Banques","12345678901234567890123456","SWIFT123","contact@masociete.com",false,0);
+
+		clientRepository.save(client);
+	}
+	@Test
+	public void testGetFournisseurtById(){
+		Fournisseur fournisseur=fournisseurRepository.findById("63fbb9a06cdf695a8104adb2").get();
+		System.out.println(fournisseur);
+		//verification que  l'objet client n'est pas null
+		assertNotNull(fournisseur);
+		//verifier que le numero de telephone de premier contact de l'objet client  est egale aver la valeur expecteé  "123456789".
+		assertEquals("123456789", fournisseur.getContact().get(0).getPhone());
+	}
+	@Test
+	public void testUpdateFournisseur(){
+
+		Fournisseur fournisseur=fournisseurRepository.findById("64006599df102013ae97d348").get();
+		if (fournisseur != null) {
+			//client.setPhone("00123456");
+			fournisseur.setAdresse("sousse");
+			fournisseurRepository.save(fournisseur);
+		}
+
+		System.out.println(fournisseur);
+		Fournisseur updatedFournisseur = fournisseurRepository.findById("64006599df102013ae97d348").orElse(null);
+		assertNotNull(updatedFournisseur);
+
+		assertEquals("sousse", updatedFournisseur.getAdresse());
+	}
+	@Test
+	public void testDeleteFournisseur(){
+		fournisseurRepository.deleteById("63f73c2f5cfa3d46c96fe12b");
+		//verifier que le client a ete supprime
+		Optional<Fournisseur> deletedFournisseur = fournisseurRepository.findById("63f73c2f5cfa3d46c96fe12b");
+		assertFalse(deletedFournisseur.isPresent());
+	}
+	@Test
+	public void testDeleteFournisseurSelected(){
+		List<String> idFournisseursSelected=new ArrayList<>();
+		idFournisseursSelected.add("63fbb9a06cdf695a8104adb2");
+		idFournisseursSelected.add("63fc9a9d912111525e44aa31");
+		for (String id : idFournisseursSelected){
+			fournisseurRepository.deleteById(id);
+		}
+		Optional<Fournisseur> deletedFournisseur1 = fournisseurRepository.findById("63fbb9a06cdf695a8104adb2");
+		Optional<Fournisseur> deletedFournisseur2 = fournisseurRepository.findById("63fc9a9d912111525e44aa31");
+		assertFalse(deletedFournisseur1.isPresent());
+		assertFalse(deletedFournisseur2.isPresent());
+
+	}
+	@Test
+	public void testMiseEnVeilleFournisseur(){
+		Fournisseur fournisseur=fournisseurRepository.findById("63fb8ce9b114844bd801dfb4").get();
+		fournisseur.setMiseEnVeille(true);
+		fournisseurRepository.save(fournisseur);
+
+		Client updatedClient = clientRepository.findById("63fb8ce9b114844bd801dfb4").get();
+		assertTrue(updatedClient.isMiseEnVeille());
+	}
+	@Test
+	public void testAddContactFournisseur(){
+		Fournisseur fournisseur=fournisseurRepository.findById("64006599df102013ae97d348").get();
+		List<Contact> contacts=new ArrayList<>();
+		Contact contact1=new Contact("achref","jjj","478596","achref@gmail.com","123045");
+		//contact1 = ContactMapper.MAPPER.toContact(contactDto);
+
+		contacts.add(contact1);
+		contactRepository.save(contact1);
+		fournisseur.setContact(contacts);
+		fournisseurRepository.save(fournisseur);
+		Fournisseur updatedFournisseur = fournisseurRepository.findById("64006599df102013ae97d348").get();
+		assertNotNull(updatedFournisseur .getContact());
+		assertEquals(1, updatedFournisseur .getContact().size());
+		assertEquals(contact1, updatedFournisseur .getContact().get(0));
+
+
+	}
+	@Test
+	public void testUpdateContactFournisseur(){
+
+		Fournisseur fournisseur=fournisseurRepository.findFournisseurByContactId("63fbb9c16cdf695a8104adb3").get();
+		Contact contactToUpdate = contactRepository.findById("63fbb9c16cdf695a8104adb3").get();
+		fournisseur.getContact().removeIf(contact1 -> contact1.equals(contactToUpdate));
+
+		contactToUpdate.setNom("arij ");
+		contactToUpdate.setEmail("arij.doe@example.com");
+		contactToUpdate.setMobile("1235");
+		contactToUpdate.setFonction("Director");
+		contactToUpdate.setPhone("123456789");
+		contactRepository.save(contactToUpdate);
+		fournisseur.getContact().add(contactToUpdate);
+		fournisseurRepository.save(fournisseur);
+
+
+
+
+
+	}
+	@Test
+	public void testDeleteContactFournisseur(){
+		Fournisseur fournisseur=fournisseurRepository.findFournisseurByContactId("63fbc31daac54631846057fb").get();
+		Contact contact = contactRepository.findById("63fbc31daac54631846057fb").get();
+		List<Contact> contactList = fournisseur.getContact();
+		contactList.removeIf(c -> c.equals(contact));
+		fournisseur.setContact(contactList);
+		fournisseurRepository.save(fournisseur);
+		contactRepository.deleteById("63fbc31daac54631846057fb");
+	}
+	@Test
+	public ResponseEntity<Map<String, Object>> testGetIdFournisseurs(){
+		Fournisseur fournisseur=  fournisseurRepository.findFournisseurByRaisonSocial("Ma société").get();
+		Map<String, Object> response = new HashMap<>();
+		response.put("idClient", fournisseur.getId());
+		response.put("refClient",fournisseur.getRefFournisseurIris());
+		return ResponseEntity.ok(response);
+
+	}
+	@Test
+	public List<String> testGetRaisonSocialesFournisseur( ){
+		List<Fournisseur> fournisseurs=new ArrayList<>();
+		List<String> raisonSociales=new ArrayList<>();
+		Fournisseur fournisseur1=fournisseurRepository.findById("64006599df102013ae97d348").get();
+		Fournisseur fournisseur2=fournisseurRepository.findById("64011b5b867bcf7f664c927c").get();
+		fournisseurs.add(fournisseur1);
+		fournisseurs.add(fournisseur2);
+		raisonSociales=fournisseurs.stream()
+				.map(Fournisseur::getRaisonSocial)
+				.collect(Collectors.toList());
+		assertEquals(2, raisonSociales.size());
+		assertTrue(raisonSociales.contains(fournisseur1.getRaisonSocial()));
+		assertTrue(raisonSociales.contains(fournisseur2.getRaisonSocial()));
+		return raisonSociales;
+
+
+
+	}
+
+	@Test
+	public void testGetActiveFournisseur(){
+		List<FournisseurDto> activeFournisseurs=new ArrayList<>();
+		Pageable paging= PageRequest.of(1, 10);
+		Page<Fournisseur> pageTuts;
+		pageTuts=fournisseurRepository.findFournisseurByMiseEnVeille(paging, false);
+		activeFournisseurs = pageTuts.getContent().stream().map(fournisseur-> FournisseurMapper.MAPPER.toFournisseurDto(fournisseur)).collect(Collectors.toList());
+		Map<String, Object> response = new HashMap<>();
+		response.put("fournisseur", activeFournisseurs);
+		response.put("currentPage", pageTuts.getNumber());
+		response.put("totalItems", pageTuts.getTotalElements());
+		response.put("totalPages", pageTuts.getTotalPages());
+		assertNotNull(pageTuts.getContent());
+		assertTrue(pageTuts.getSize() <= paging.getPageSize());
+		activeFournisseurs.forEach(fournisseurDto -> assertFalse(fournisseurDto.isMiseEnVeille()));
+	}
+	@Test
+	public void testGetNotActiveFournisseur(){
+		List<FournisseurDto> activeFournisseurs=new ArrayList<>();
+		Pageable paging= PageRequest.of(1, 10);
+		Page<Fournisseur> pageTuts;
+		pageTuts=fournisseurRepository.findFournisseurByMiseEnVeille(paging, true);
+		activeFournisseurs = pageTuts.getContent().stream().map(fournisseur-> FournisseurMapper.MAPPER.toFournisseurDto(fournisseur)).collect(Collectors.toList());
+		Map<String, Object> response = new HashMap<>();
+		response.put("fournisseur", activeFournisseurs);
+		response.put("currentPage", pageTuts.getNumber());
+		response.put("totalItems", pageTuts.getTotalElements());
+		response.put("totalPages", pageTuts.getTotalPages());
+		assertNotNull(pageTuts.getContent());
+		assertTrue(pageTuts.getSize() <= paging.getPageSize());
+		activeFournisseurs.forEach(clientDto -> assertFalse(clientDto.isMiseEnVeille()));
+	}
+	@Test
+	public void testOnSortActiveFournisseeur(){
+		List<FournisseurDto> activeFourniseurs=new ArrayList<>();
+
+		Page<Fournisseur> pageTuts;
+		String order="1";
+		if (order.equals("1")){
+			pageTuts = fournisseurRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC,"refFournisseurIris" )));
+		}
+		else {
+			pageTuts = fournisseurRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC, "refFournisseurIris")));
+		}
+		activeFourniseurs= pageTuts.getContent().stream().map(fournisseur-> FournisseurMapper.MAPPER.toFournisseurDto(fournisseur)).collect(Collectors.toList());
+		Map<String, Object> response = new HashMap<>();
+		response.put("client", activeFourniseurs);
+		response.put("currentPage", pageTuts.getNumber());
+		response.put("totalItems", pageTuts.getTotalElements());
+		response.put("totalPages", pageTuts.getTotalPages());
+		assertNotNull(pageTuts.getContent());
+
+		activeFourniseurs.forEach(clientDto -> assertFalse(clientDto.isMiseEnVeille()));
+		;
+
+	}
+	@Test
+	public void  testOnSortNotActiveFournisseur(){
+		List<FournisseurDto> activeFourniseurs=new ArrayList<>();
+
+		Page<Fournisseur> pageTuts;
+		String order="1";
+		if (order.equals("1")){
+			pageTuts = fournisseurRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC,"refFournisseurIris" )));
+		}
+		else {
+			pageTuts = fournisseurRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "refFournisseurIris")));
+		}
+		activeFourniseurs = pageTuts.getContent().stream().map(fournisseur-> FournisseurMapper.MAPPER.toFournisseurDto(fournisseur)).collect(Collectors.toList());
+		Map<String, Object> response = new HashMap<>();
+		response.put("client", activeFourniseurs);
+		response.put("currentPage", pageTuts.getNumber());
+		response.put("totalItems", pageTuts.getTotalElements());
+		response.put("totalPages", pageTuts.getTotalPages());
+		assertNotNull(pageTuts.getContent());
+
+		activeFourniseurs.forEach(clientDto -> assertFalse(clientDto.isMiseEnVeille()));
+		;
+
+
+	}
+
+
+
+
+	@Test
+	public void testRemovePictureFournisseur(){
+		Picture picture=pictureRepository.findById("63fcc261e157b504b885c506").get();
+		Fournisseur fournisseur = fournisseurRepository.findFournisseurByPictures(picture).get();
+		pictureRepository.deleteById("63fcc261e157b504b885c506");
+		fournisseur.getPictures().removeIf(picture1 -> picture1.equals(picture));
+		fournisseurRepository.save(fournisseur);
+		// Vérification que  la photo a été supprimée
+		assertFalse(fournisseur.getPictures().contains(picture));
+		// Vérification que la liste de photos du fournisseur est vide
+		assertFalse(pictureRepository.findById("63fcc261e157b504b885c506").isPresent());
+
+
+	}
+	@Test
+	public void testRemovePicturesFournisseur(){
+		Fournisseur fournisseur = fournisseurRepository.findById("63fcc1e9e157b504b885c505").get();
+		List<Picture> pictures = fournisseur.getPictures();
+		for (Picture picture : pictures) {
+			pictureRepository.deleteById(picture.getId());
+		}
+		fournisseur.getPictures().removeAll(fournisseur.getPictures());
+		fournisseurRepository.save(fournisseur);
+		// Vérification que toutes les photos ont été supprimées
+		for (Picture picture : pictures) {
+			assertFalse(pictureRepository.existsById(picture.getId()));
+		}
+		// Vérification que la liste de photos du fournisseur est vide
+		assertTrue(fournisseur.getPictures().isEmpty());
 
 	}
 
