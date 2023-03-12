@@ -3,6 +3,8 @@ package com.housservice.housstock.controller.commande;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Commande;
+import com.housservice.housstock.model.dto.ArticleDto;
+import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.service.CommandeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -134,6 +137,34 @@ public class CommandeController {
     @ApiOperation(value = "service to get tout les Commandes ")
     public ResponseEntity<Map<String, Object>> getAllCommande(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         return commandeService.getAllCommande(page,size);
+    }
+    @PutMapping("/addArticleCommande/{idCommande}")
+    public ResponseEntity <String> addArticleCommande(
+            @ApiParam(name = "idCommande", value="id of client", required = true)
+            @PathVariable(value = "idCommande", required = true) @NotEmpty(message = "{http.error.0001}")  String idCommande,
+            @Valid @RequestBody(required = true) ArticleDto articleDto) throws ResourceNotFoundException {
+        commandeService.addArticleCommande(articleDto,idCommande);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+
+    }
+    @PutMapping("/updateContactClient/{idArticle}")
+    public ResponseEntity <String> updateArticleCommande(
+            @ApiParam(name = "idArticle", value="id of contact", required = true)
+            @PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}")  String idArticle,
+            @Valid @RequestBody(required = true) ArticleDto ArticleDto ) throws ResourceNotFoundException {
+        commandeService.updateArticleCommande(ArticleDto,idArticle);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    }
+    @DeleteMapping("/deleteArticleCommande/{idArticle}")
+    @ApiOperation(value = "service to delete one Commande by Id.")
+    public Map< String, Boolean > deleteArticleCommande(
+            @ApiParam(name = "idArticle", value="id of commande", required = true)
+            @PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}") String idArticle)
+            throws ResourceNotFoundException {
+        commandeService.deleteArticleCommande(idArticle);
+        Map < String, Boolean > response = new HashMap< >();
+        response.put("deleted", Boolean.TRUE);
+        return response;
     }
 
 

@@ -1,11 +1,13 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.mapper.ArticleMapper;
 import com.housservice.housstock.mapper.CommandeMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.Commande;
-import com.housservice.housstock.model.Fournisseur;
+import com.housservice.housstock.model.*;
+import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.model.dto.CommandeDto;
+import com.housservice.housstock.repository.ArticleRepository;
 import com.housservice.housstock.repository.CommandeRepository;
 import com.housservice.housstock.repository.FournisseurRepository;
 import org.springframework.data.domain.Page;
@@ -25,13 +27,16 @@ import java.util.stream.Collectors;
 public class CommandeServiceImpl implements CommandeService{
     private final CommandeRepository commandeRepository;
     private final FournisseurRepository fournisseurRepository;
+    private final ArticleRepository articleRepository;
     private final MessageHttpErrorProperties messageHttpErrorProperties;
 
-    public CommandeServiceImpl(CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, MessageHttpErrorProperties messageHttpErrorProperties) {
+    public CommandeServiceImpl(CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, ArticleRepository articleRepository, MessageHttpErrorProperties messageHttpErrorProperties) {
 
         this.commandeRepository = commandeRepository;
         this.fournisseurRepository = fournisseurRepository;
+        this.articleRepository = articleRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
+
     }
 
     @Override
@@ -41,15 +46,16 @@ public class CommandeServiceImpl implements CommandeService{
 
     @Override
     public void createNewCommande(Date date,String commentaire, String numBcd, String fournisseur) throws ResourceNotFoundException {
-        if (commandeRepository.existsCommandeByNumBcd(numBcd)) {
-            throw new IllegalArgumentException(	"Matricule existe deja !!");
 
-        }
         CommandeDto commandeDto = new CommandeDto();
         commandeDto.setDate(date);
         commandeDto.setCommentaire(commentaire);
         commandeDto.setFournisseur(fournisseur);
-        commandeDto.setNumBcd(fournisseur);
+        commandeDto.setNumBcd(numBcd);
+        List<Article> articles = new ArrayList<>();
+        if (commandeDto.getArticle()==null){
+            commandeDto.setArticle(articles);
+        }
         Commande  commande = CommandeMapper.MAPPER.toCommande(commandeDto);
         commandeRepository.save(commande);
 
@@ -163,5 +169,59 @@ public class CommandeServiceImpl implements CommandeService{
         }
     }
 
-}
+    @Override
+    public void addArticleCommande(ArticleDto articleDto, String idCommande) throws ResourceNotFoundException {
+        Commande commande = getCommandeById(idCommande)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idCommande)));
+        List<Article> articles = new ArrayList<>();
+        Article article1 = ArticleMapper.MAPPER.toArticle(articleDto);
+        if(commande.getArticle()==null){
+            articles.add(article1);
+            articleRepository.save(article1);
+            commande.setArticle(articles);
+            commandeRepository.save(commande);
+        }
+        articleRepository.save(article1);
+        articles.add(article1);
+        articles.addAll(commande.getArticle());
+        commande.setArticle(articles);
+        commandeRepository.save(commande);
+
+    }
+
+    @Override
+    public void updateArticleCommande(ArticleDto articleDto, String idArticle) throws ResourceNotFoundException {
+        Commande commande =commandeRepository.findCommandeByArticleId(idArticle)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  articleDto)));
+        Article articleToUpdate = articleRepository.findById(idArticle)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  articleDto.getId())));
+        commande.getArticle().removeIf(article1 -> article1.equals(articleToUpdate));
+        articleToUpdate.setCommentaire(articleDto.getCommentaire());
+        articleToUpdate.setPrix(articleDto.getPrix());
+        articleToUpdate.setQuantite(articleDto.getQuantite());
+        articleToUpdate.setPrixUnitaire(articleDto.getPrixUnitaire());
+        articleToUpdate.setDesignationMatiere(articleDto.getDesignationMatiere());
+        articleToUpdate.setDateLivraison(articleDto.getDateLivraison());
+        articleRepository.save(articleToUpdate);
+        commande.getArticle().add(articleToUpdate);
+        commandeRepository.save(commande);
+
+    }
+
+    @Override
+    public void deleteArticleCommande(String idArticle) throws ResourceNotFoundException {
+        Commande commande= commandeRepository.findCommandeByArticleId(idArticle)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idArticle)));
+        Article article = articleRepository.findById(idArticle)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idArticle)));
+        for (Article article1  : commande.getArticle())
+        { if (article1.equals(article)) { commande.getArticle().remove(article); } }
+        commande.setArticle(new ArrayList<>());
+        commandeRepository.save(commande);
+        articleRepository.deleteById(idArticle);
+
+    }
+    }
+
+
 

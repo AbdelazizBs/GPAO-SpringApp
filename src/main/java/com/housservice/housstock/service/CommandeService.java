@@ -2,6 +2,8 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Commande;
+import com.housservice.housstock.model.dto.ArticleDto;
+import com.housservice.housstock.model.dto.ContactDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
@@ -22,5 +24,8 @@ public interface CommandeService {
     public ResponseEntity<Map<String, Object>> onSortActiveCommande(int page, int size, String field, String order);
     List<String> getAllFournisseurs();
     ResponseEntity<Map<String, Object>> getAllCommande(int page , int size);
+    void addArticleCommande(ArticleDto articleDto, String idCommande ) throws ResourceNotFoundException;
+    void updateArticleCommande( ArticleDto article, String idArticle) throws ResourceNotFoundException;
+    void deleteArticleCommande(String idArticle) throws ResourceNotFoundException;
 
 }

@@ -160,7 +160,7 @@ public class Client {
 		this.swift = swift;
 		this.miseEnVeille = miseEnVeille;
 		this.blocage = blocage;
-		this.contact = contact;
+
 
 	}
 
