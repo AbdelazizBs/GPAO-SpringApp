@@ -3,6 +3,7 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Commande;
 import com.housservice.housstock.model.Fournisseur;
+import com.housservice.housstock.model.dto.ArticleDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,5 +25,10 @@ public interface CommandeService {
     public ResponseEntity<Map<String, Object>> onSortActiveCommande(int page, int size, String field, String order);
     List<String> getAllFournisseurs();
     ResponseEntity<byte[]> RecordReport(String id);
+    void addArticleCommande(ArticleDto articleDto, String idCommande ) throws ResourceNotFoundException;
+    void updateArticleCommande( ArticleDto article, String idArticle) throws ResourceNotFoundException;
+    void deleteArticleCommande(String idArticle) throws ResourceNotFoundException;
+    List<String> getAllMatiere();
+    void addMatiere(String designation)throws ResourceNotFoundException;
 
 }

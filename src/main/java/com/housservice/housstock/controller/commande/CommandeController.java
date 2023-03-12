@@ -3,6 +3,7 @@ package com.housservice.housstock.controller.commande;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Commande;
+import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.service.CommandeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -105,12 +108,13 @@ public class CommandeController {
                                                                        @RequestParam(defaultValue = "3") int size,
                                                                        @RequestParam(defaultValue = "field") String field,
                                                                        @RequestParam(defaultValue = "order") String order){
+        System.out.println(order);
         return commandeService.onSortActiveCommande(page,size,field,order);
 
     }
+
     @GetMapping("/getIdCommandes/{numBcd}")
     @ApiOperation(value = "service to get Id Commande by numBcd.")
-
     public ResponseEntity<Map<String, Object>>  getIdFournisseurs(  @ApiParam(name = "numBcd", value="numBcd of commandes", required = true)
                                                                     @PathVariable(value = "numBcd", required = true) @NotEmpty(message = "{http.error.0001}") String numBcd) throws ResourceNotFoundException {
         return commandeService.getIdCommandes(numBcd);
@@ -130,6 +134,52 @@ public class CommandeController {
     public ResponseEntity<byte[]> generateReport(@PathVariable String id){
 
         return commandeService.RecordReport(id);
+
+    }
+
+    @PutMapping("/addArticleCommande/{idCommande}")
+    public ResponseEntity <String> addArticleCommande(
+            @ApiParam(name = "idCommande", value="id of client", required = true)
+            @PathVariable(value = "idCommande", required = true) @NotEmpty(message = "{http.error.0001}")  String idCommande,
+            @Valid @RequestBody(required = true) ArticleDto articleDto) throws ResourceNotFoundException {
+        commandeService.addArticleCommande(articleDto,idCommande);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+
+    }
+    @PutMapping("/updateArticleClient/{idArticle}")
+    public ResponseEntity <String> updateArticleCommande(
+            @ApiParam(name = "idArticle", value="id of Article", required = true)
+            @PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}")  String idArticle,
+            @Valid @RequestBody(required = true) ArticleDto ArticleDto ) throws ResourceNotFoundException {
+        commandeService.updateArticleCommande(ArticleDto,idArticle);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    }
+    @DeleteMapping("/deleteArticleCommande/{idArticle}")
+    @ApiOperation(value = "service to delete one Article Commande by Id.")
+    public Map< String, Boolean > deleteContactFournisseur(
+            @ApiParam(name = "idArticle", value="idArticle", required = true)
+            @PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}") String idArticle)
+            throws ResourceNotFoundException {
+        commandeService.deleteArticleCommande(idArticle);
+        Map < String, Boolean > response = new HashMap< >();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
+
+
+
+    @GetMapping("/getAllMatiere")
+    @ApiOperation(value = "service to get one Reference fournisseur")
+    public List<String> getAllMatiere() {
+        return commandeService.getAllMatiere();
+    }
+
+    @PutMapping("/addMatiere/{designation}")
+    public ResponseEntity <String> addMatiere(
+            @ApiParam(name = "designation", value="designation", required = true)
+            @PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}")  String designation) throws ResourceNotFoundException {
+        commandeService.addMatiere(designation);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
     }
 }

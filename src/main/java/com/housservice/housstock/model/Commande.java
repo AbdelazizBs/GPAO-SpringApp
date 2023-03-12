@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @Document(collection = "Commande")
-
 public class Commande {
     @Transient
     public static final String SEQUENCE_NAME ="Commande_sequence";
@@ -24,14 +23,19 @@ public class Commande {
     private String numBcd;
     private String dateCommande;
     private String commentaire;
+    private List<Article> article;
 
 
-    public Commande(String fournisseur, String numBcd,  String commentaire,String dateCommande) {
+    public Commande(String fournisseur, String numBcd,  String commentaire,String dateCommande,List<Article> article) {
         this.fournisseur = fournisseur;
         this.numBcd = numBcd;
         this.dateCommande = dateCommande;
         this.commentaire = commentaire;
+        this.article = article;
+
+
     }
+
 
     public Commande(){}
 }

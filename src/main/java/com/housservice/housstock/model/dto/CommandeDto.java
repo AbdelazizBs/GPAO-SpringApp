@@ -1,5 +1,7 @@
 package com.housservice.housstock.model.dto;
 
+import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.Contact;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -23,6 +25,7 @@ public class CommandeDto {
     private String dateCommande;
     private String Commentaire;
 
+    private List<Article> article;
 
 
 
