@@ -1,6 +1,7 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.Nomenclature;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,7 +100,11 @@ public interface NomenclatureService {
     void deleteNomenclatureEnVeilleSelected(List<String> idNomenClatureSelected);
 
 
-    public List<Nomenclature> getLigneSousFamilleByIdFamille(String idNomEnClature) throws ResourceNotFoundException;
+    List<Nomenclature> getLigneSousFamilleByIdFamille(String idNomEnClature) throws ResourceNotFoundException;
+
+    void addEtapeToNomenclature(List<EtapeProduction> etapeProductions, String idNomenclature) throws ResourceNotFoundException;
+
+    List<EtapeProduction> getTargetEtapesNomenclature(String idNomenclature) throws ResourceNotFoundException;
 
 
 }

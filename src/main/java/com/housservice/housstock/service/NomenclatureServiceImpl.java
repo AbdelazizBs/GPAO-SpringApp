@@ -3,10 +3,7 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.NomenclatureMapper;
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Fournisseur;
-import com.housservice.housstock.model.Nomenclature;
-import com.housservice.housstock.model.Picture;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.NomenclatureDto;
 import com.housservice.housstock.model.enums.TypeNomEnClature;
 import com.housservice.housstock.repository.ClientRepository;
@@ -709,11 +706,25 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
 
     @Override
+    public void addEtapeToNomenclature(List<EtapeProduction> etapeProductions, String idNomenclature) throws ResourceNotFoundException {
+        Nomenclature nomenclature = nomenclatureRepository.findById(idNomenclature)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomenclature)));
+        nomenclature.setEtapeProductions(etapeProductions);
+        nomenclatureRepository.save(nomenclature);
+    }
+
+
+    @Override
     public void deleteNomenclatureEnVeilleSelected(List<String> idNomenClatureSelected) {
         for (String id : idNomenClatureSelected) {
             nomenclatureRepository.deleteById(id);
         }
     }
 
+    @Override
+    public List<EtapeProduction> getTargetEtapesNomenclature(String idNomenclature) throws ResourceNotFoundException {
+        Nomenclature nomenclature = nomenclatureRepository.findById(idNomenclature).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomenclature)));
+        return nomenclature.getEtapeProductions();
+    }
 
 }

@@ -19,89 +19,91 @@ import java.util.List;
 @Setter
 @Document(collection = "Nomenclature")
 public class Nomenclature {
-	
-	@Transient
+
+    @Transient
     public static final String SEQUENCE_NAME = "nomenclature_sequence";
-	
-	@Id
-	private String id;
-	
-	// Référence IRIS
-	
-	// idParent
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String nomNomenclature;
-	
-	@NotBlank
-	@Size(max = 100)
-	private String description;
-	@NotBlank
-	@Size(max = 100)
-	private String refIris;
+    @Id
+    private String id;
 
-	private TypeNomEnClature type;
+    // Référence IRIS
 
-	@NotBlank
-	@Size(max = 100)
-	private String nature;
-	
-	@NotBlank
-	@Size(max = 100)
-	private String categorie;
-	private List<String> clientId;
-	private List<String> fournisseurId;
+    // idParent
 
-	private List<String> childrensId;
-	private List<String> parentsName = new ArrayList<>();
+    @NotBlank
+    @Size(max = 100)
+    @Indexed(unique = true)
+    private String nomNomenclature;
 
-	private List<String> parentsId;
+    @NotBlank
+    @Size(max = 100)
+    private String description;
+    @NotBlank
+    @Size(max = 100)
+    private String refIris;
 
-	private List<Nomenclature> childrens;
+    private TypeNomEnClature type;
 
+    @NotBlank
+    @Size(max = 100)
+    private String nature;
 
-	private Picture picture ;
-	
-	private Date date ;
-	
-	private boolean miseEnVeille;
-	
-	private Date dateMiseEnVeille;
+    @NotBlank
+    @Size(max = 100)
+    private String categorie;
+    private List<String> clientId;
+    private List<String> fournisseurId;
 
-	public Nomenclature() {
-	
-	}
+    private List<String> childrensId;
+    private List<String> parentsName = new ArrayList<>();
 
-	public Nomenclature(String id, @NotBlank @Size(max = 100) String nomNomenclature,
-			@NotBlank @Size(max = 100) String description, TypeNomEnClature type,
-			@NotBlank @Size(max = 100) String nature, @NotBlank @Size(max = 100) String categorie,
-			Date date, boolean miseEnVeille, Date dateMiseEnVeille) {
-		super();
-		this.id = id;
-		this.nomNomenclature = nomNomenclature;
-		this.description = description;
-		this.type = type;
-		this.nature = nature;
-		this.categorie = categorie;
-		this.date = date;
-		this.miseEnVeille = miseEnVeille;
-		this.dateMiseEnVeille = dateMiseEnVeille;
-	}
+    private List<String> parentsId;
+
+    private List<Nomenclature> childrens;
 
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		Nomenclature nomenclature = (Nomenclature) o;
-		return id.equals(nomenclature.id);
-	}
-	
-    
+    private Picture picture;
+
+    private Date date;
+
+    private boolean miseEnVeille;
+
+    private Date dateMiseEnVeille;
+    private List<EtapeProduction> etapeProductions;
+
+
+    public Nomenclature() {
+
+    }
+
+    public Nomenclature(String id, @NotBlank @Size(max = 100) String nomNomenclature,
+                        @NotBlank @Size(max = 100) String description, TypeNomEnClature type,
+                        @NotBlank @Size(max = 100) String nature, @NotBlank @Size(max = 100) String categorie,
+                        Date date, boolean miseEnVeille, Date dateMiseEnVeille) {
+        super();
+        this.id = id;
+        this.nomNomenclature = nomNomenclature;
+        this.description = description;
+        this.type = type;
+        this.nature = nature;
+        this.categorie = categorie;
+        this.date = date;
+        this.miseEnVeille = miseEnVeille;
+        this.dateMiseEnVeille = dateMiseEnVeille;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Nomenclature nomenclature = (Nomenclature) o;
+        return id.equals(nomenclature.id);
+    }
+
+
 }

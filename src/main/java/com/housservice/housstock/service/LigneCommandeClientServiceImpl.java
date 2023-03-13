@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -69,8 +70,8 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
     public List<LigneCommandeClientDto> getAllLigneCommandeClient() {
         List<LigneCommandeClient> listLigneCommandeClient = ligneCommandeClientRepository.findAll();
         return listLigneCommandeClient.stream()
-                .map(ligneCommandeClient -> buildLigneCommandeClientDtoFromLigneCommandeClient(ligneCommandeClient))
-                .filter(ligneCommandeClient -> ligneCommandeClient != null)
+                .map(this::buildLigneCommandeClientDtoFromLigneCommandeClient)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -86,12 +87,8 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 
     @Override
     public LigneCommandeClientDto getLigneCommandeClientById(String id) {
-
         Optional<LigneCommandeClient> ligneCommandeClientOpt = ligneCommandeClientRepository.findById(id);
-        if (ligneCommandeClientOpt.isPresent()) {
-            return buildLigneCommandeClientDtoFromLigneCommandeClient(ligneCommandeClientOpt.get());
-        }
-        return null;
+        return ligneCommandeClientOpt.map(this::buildLigneCommandeClientDtoFromLigneCommandeClient).orElse(null);
     }
 
     @Override

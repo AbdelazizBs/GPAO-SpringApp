@@ -2,6 +2,7 @@ package com.housservice.housstock.controller.nomenclatures;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.dto.NomenclatureDto;
 import com.housservice.housstock.service.NomenclatureService;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -124,6 +126,16 @@ public class NomenclatureController {
             throws ResourceNotFoundException {
         return nomenclatureService.getIdAndRefIrisOfNomenclature(nameNomenclature);
     }
+
+    @PutMapping("/addEtapeToNomenclature/{idNomenclature}")
+    public ResponseEntity<String> addEtapeToNomenclature(
+            @ApiParam(name = "idNomenclature", value = "id of nomenclature", required = true)
+            @PathVariable(value = "idNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String idNomenclature,
+            @Valid @RequestBody(required = true) List<EtapeProduction> productions) throws ResourceNotFoundException {
+        nomenclatureService.addEtapeToNomenclature(productions, idNomenclature);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    }
+
 
     @GetMapping("/getAllNomenclatureNotActive")
     public ResponseEntity<Map<String, Object>> getAllNomenclatureNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
@@ -314,6 +326,16 @@ public class NomenclatureController {
     @ApiOperation(value = "service to get name of nomenclatures")
     public List<String> getNomenclaturesNameFrs() {
         return nomenclatureService.getNomenclaturesNameFrs();
+    }
+
+
+    @GetMapping("/getTargetEtapesNomenclature/{idNomenclature}")
+    @ApiOperation(value = "service to get id nomenclature .")
+    public List<EtapeProduction> getTargetEtapesNomenclature(
+            @ApiParam(name = "idNomenclature", value = "id of nomenclature", required = true)
+            @PathVariable(value = "idNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String idNomenclature)
+            throws ResourceNotFoundException {
+        return nomenclatureService.getTargetEtapesNomenclature(idNomenclature);
     }
 
 }
