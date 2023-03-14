@@ -3,8 +3,8 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.PlanificationOf;
 import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.PlanificationOf;
 import com.housservice.housstock.model.dto.PlanificationOfDTO;
 import com.housservice.housstock.repository.*;
 import org.springframework.stereotype.Service;
@@ -15,22 +15,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PlanificationServiceImpl implements  PlanificationService{
+public class PlanificationServiceImpl implements PlanificationService {
 
     final SequenceGeneratorService sequenceGeneratorService;
     private final MessageHttpErrorProperties messageHttpErrorProperties;
-final
-PersonnelRepository personnelRepository;
-
-final
-MachineRepository machineRepository ;
-final
-EtapeProductionRepository etapeProductionRepository ;
+    final
+    PersonnelRepository personnelRepository;
 
     final
-    PlanificationRepository planificationRepository ;
-final
-LigneCommandeClientRepository ligneCommandeClientRepository;
+    MachineRepository machineRepository;
+    final
+    EtapeProductionRepository etapeProductionRepository;
+
+    final
+    PlanificationRepository planificationRepository;
+    final
+    LigneCommandeClientRepository ligneCommandeClientRepository;
+
     public PlanificationServiceImpl(SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties, PersonnelRepository personnelRepository, MachineRepository machineRepository, EtapeProductionRepository etapeProductionRepository, LigneCommandeClientRepository ligneCommandeClientRepository, PlanificationRepository planificationRepository) {
         this.sequenceGeneratorService = sequenceGeneratorService;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
@@ -42,18 +43,6 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
     }
 
 
-
-
-    @Override
-    public List<PlanificationOfDTO> getPlanificationMachineByIdLc(String id) {
-         return planificationRepository.findByLigneCommandeClientIdAndEtapeProductionsTypeEtape(id,"Machine").stream().map(planificationOf ->
-             buildPlanificationOfDTOFromPlanificationOf(planificationOf)).collect(Collectors.toList());
-    }
-    @Override
-    public List<PlanificationOfDTO> getPlanificationManuelleByIdLc(String id) {
-         return planificationRepository.findByLigneCommandeClientIdAndEtapeProductionsTypeEtape(id,"Manuelle").stream().map(planificationOf ->
-             buildPlanificationOfDTOFromPlanificationOf(planificationOf)).collect(Collectors.toList());
-    }
     @Override
     public void updatePlanfication(@Valid PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
         planificationRepository.save(buildPlanificationOfFromPlanificationOfDTO(planificationOfDTO));
@@ -63,8 +52,7 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
 
     @Override
     public PlanificationOfDTO buildPlanificationOfDTOFromPlanificationOf(PlanificationOf planificationOf) {
-        if (planificationOf == null)
-        {
+        if (planificationOf == null) {
             return null;
         }
 
@@ -84,7 +72,7 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
         planificationOfDTO.setQuantiteNonConforme(planificationOf.getQuantiteNonConforme());
         planificationOfDTO.setHeureFinPrevue(planificationOf.getHeureFinPrevue());
         planificationOfDTO.setIdLigneCommandeClient(planificationOf.getLigneCommandeClient().getId());
-        planificationOfDTO.setNomEtape(planificationOf.getEtapeProductions().getNomEtape());
+        planificationOfDTO.setNomEtape(planificationOf.getNomEtape());
         planificationOfDTO.setIdMachine(planificationOf.getMachine().getId());
         return planificationOfDTO;
 
@@ -94,7 +82,7 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
     public PlanificationOf buildPlanificationOfFromPlanificationOfDTO(PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
         PlanificationOf planificationOf = new PlanificationOf();
 
-        planificationOf.setId(""+sequenceGeneratorService.generateSequence(PlanificationOf.SEQUENCE_NAME));
+        planificationOf.setId("" + sequenceGeneratorService.generateSequence(PlanificationOf.SEQUENCE_NAME));
         planificationOf.setId(planificationOfDTO.getId());
         planificationOf.setCommentaire(planificationOfDTO.getCommentaire());
         planificationOf.setDateLancementPrevue(planificationOfDTO.getDateLancementPrevue());
@@ -110,7 +98,7 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
         List<Personnel> personnels = planificationOfDTO.getIdPersonnels().stream().map(s -> {
             try {
                 return personnelRepository.findById(s)
-                                        .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), s)));
+                        .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), s)));
             } catch (ResourceNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -118,14 +106,12 @@ LigneCommandeClientRepository ligneCommandeClientRepository;
         planificationOf.setPersonnels(personnels);
         planificationOf.setMachine(machineRepository.findById(planificationOfDTO.getIdMachine())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getIdMachine()))));
-        planificationOf.setEtapeProductions(etapeProductionRepository.findByNomEtape(planificationOfDTO.getNomEtape())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getNomEtape()))));
+        planificationOf.setNomEtape(planificationOfDTO.getNomEtape());
         planificationOf.setLigneCommandeClient(ligneCommandeClientRepository.findById(planificationOfDTO.getIdLigneCommandeClient())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getIdLigneCommandeClient()))));
 
         return planificationOf;
     }
-
 
 
 }

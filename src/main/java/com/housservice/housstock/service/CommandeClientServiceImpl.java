@@ -6,7 +6,7 @@ import com.housservice.housstock.mapper.CommandMapper;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.LigneCommandeClient;
-import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.PlanificationOf;
 import com.housservice.housstock.model.dto.CommandeClientDto;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.CommandeClientRepository;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.text.MessageFormat;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -196,46 +195,31 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByIdCommandeClient(commandeClient.getId());
         commandeClient.setClosed(true);
         commandeClient.setEtatProduction("En attente");
-//		ligneCommandeClients.stream().forEach(ligneCommandeClient -> ligneCommandeClient.setCommandeClient(commandeClient));
-        ligneCommandeClients.stream().forEach(ligneCommandeClient -> ligneCommandeClientRepository.save(ligneCommandeClient));
-// 		processPLanification(ligneCommandeClients);
-        final LocalDate MAX_DATE = LocalDate.parse("2099-12-31");
-        List<LigneCommandeClient> lc = ligneCommandeClients;
-        List<Personnel> personnels = new ArrayList<>();
-//		for (int i=0 ;i<lc.size();i++){
-//			for (int j=0 ;j<ligneCommandeClients.get(i).getNomenclature().getEtapeProductions().size(); j++){
-//				PlanificationOf planificationOf = new PlanificationOf(
-//						ligneCommandeClients.get(i),
-//						ligneCommandeClients.get(i).getArticle().getEtapeProductions().get(j) ,
-//						new Machine(),
-//						personnels,
-//						new Date(),
-//						new Date(),
-//						MAX_DATE,
-//						MAX_DATE,
-//						MAX_DATE,
-//						MAX_DATE,
-//						MAX_DATE,
-//						"",
-//						"",
-//						"",
-//						"");
-//				planificationRepository.save(planificationOf);
-//			}
-//		}
-
+        ligneCommandeClientRepository.saveAll(ligneCommandeClients);
+        for (LigneCommandeClient ligneCommandeClient : ligneCommandeClients) {
+            for (int j = 0; j < ligneCommandeClient.getNomenclature().getEtapeProductions().size(); j++) {
+                PlanificationOf planificationOf = new PlanificationOf();
+                planificationOf.setNomEtape(ligneCommandeClient.getNomenclature().getEtapeProductions().get(j).getNomEtape());
+                planificationOf.setLigneCommandeClient(ligneCommandeClient);
+                planificationRepository.save(planificationOf);
+            }
+        }
         if (commandeClient.getClient() == null || !StringUtils.equals(commandeClient.getClient().getId(), commandeClient.getClient().getId())) {
             Client client = clientRepository.findById(commandeClient.getClient().getId()).get();
             commandeClient.setClient(client);
         }
-
         commandeClientRepository.save(commandeClient);
     }
 
 
     @Override
     public void deleteCommandeClient(String commandeClientId) {
-
+        List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByIdCommandeClient(commandeClientId);
+        ligneCommandeClients.forEach(ligneCommandeClient -> {
+            List<PlanificationOf> planificationOf = planificationRepository.findPlanificationOfByLigneCommandeClient(ligneCommandeClient);
+            planificationRepository.deleteAll(planificationOf);
+        });
+        ligneCommandeClientRepository.deleteAll(ligneCommandeClients);
         commandeClientRepository.deleteById(commandeClientId);
 
     }

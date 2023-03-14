@@ -345,6 +345,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclatureDto.setChildrens(new ArrayList<>());
         nomenclatureDto.setRefIris(refIris);
         nomenclatureDto.setParentsName(parentsName);
+        nomenclatureDto.setEtapeProductions(new ArrayList<>());
         Nomenclature nomenclature = NomenclatureMapper.MAPPER.toNomenclature(nomenclatureDto);
         nomenclatureRepository.save(nomenclature);
         if (parentsName != null) {

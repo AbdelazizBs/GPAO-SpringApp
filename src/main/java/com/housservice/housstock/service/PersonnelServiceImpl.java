@@ -24,238 +24,258 @@ import java.util.stream.Collectors;
 @Service
 public class PersonnelServiceImpl implements PersonnelService {
 
-	private final PersonnelRepository personnelRepository;
+    private final PersonnelRepository personnelRepository;
 
-	final
-	ComptesRepository comptesRepository;
+    final
+    ComptesRepository comptesRepository;
 
-	private final MessageHttpErrorProperties messageHttpErrorProperties;
-
-
-	final RolesRepository rolesRepository;
-
-	public PersonnelServiceImpl(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties,
-								RolesRepository rolesRepository, ComptesRepository comptesRepository) {
-		this.personnelRepository = personnelRepository;
-		this.messageHttpErrorProperties = messageHttpErrorProperties;
-		this.rolesRepository = rolesRepository;
-		this.comptesRepository = comptesRepository;
-	}
+    private final MessageHttpErrorProperties messageHttpErrorProperties;
 
 
-	@Override
-	public void  addPersonnel(PersonnelDto personnelDto)   {
-		try
-		{
-			if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
-				throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
-			}
-			if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
-				throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
-			}
-			Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
-			personnel.setMiseEnVeille(false);
-			personnelRepository.save(personnel);
-		}
-		catch (Exception e) {
-			throw new IllegalArgumentException(e.getMessage());
-		}
-	}
+    final RolesRepository rolesRepository;
+
+    public PersonnelServiceImpl(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties,
+                                RolesRepository rolesRepository, ComptesRepository comptesRepository) {
+        this.personnelRepository = personnelRepository;
+        this.messageHttpErrorProperties = messageHttpErrorProperties;
+        this.rolesRepository = rolesRepository;
+        this.comptesRepository = comptesRepository;
+    }
 
 
-	@Override
-	public void  updatePersonnel(PersonnelDto personnelDto,String idPersonnel) throws ResourceNotFoundException {
-		Personnel personnel = personnelRepository.findById(idPersonnel)
-				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
-		personnel.setNom(personnelDto.getNom());
-		personnel.setPrenom(personnelDto.getPrenom());
-		personnel.setDateNaissance(personnelDto.getDateNaissance());
-		personnel.setAdresse(personnelDto.getAdresse());
-		personnel.setPhoto(personnelDto.getPhoto());
-		personnel.setCin(personnelDto.getCin());
-		personnel.setSexe(personnelDto.getSexe());
-		personnel.setRib(personnelDto.getRib());
-		personnel.setPoste(personnelDto.getPoste());
-		personnel.setDateEmbauche(personnelDto.getDateEmbauche());
-		personnel.setEchelon(personnelDto.getEchelon());
-		personnel.setCategorie(personnelDto.getCategorie());
-		personnel.setMatricule(personnelDto.getMatricule());
-		personnel.setPhone(personnelDto.getPhone());
-		personnel.setVille(personnelDto.getVille());
-		personnel.setCodePostal(personnelDto.getCodePostal());
-		personnel.setEmail(personnelDto.getEmail());
-		personnel.setNumCnss(personnelDto.getNumCnss());
-		personnel.setSituationFamiliale(personnelDto.getSituationFamiliale());
-		personnel.setNbrEnfant(personnelDto.getNbrEnfant());
-		personnel.setTypeContrat(personnelDto.getTypeContrat());
-		personnelRepository.save(personnel);
-	}
-
-	@Override
-	public PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException {
-		Optional<Personnel> utilisateurOpt = personnelRepository.findById(id);
-		if (utilisateurOpt.isPresent()) {
-			return PersonnelMapper.MAPPER.toPersonnelDto(utilisateurOpt.get());
-		}
-		return null;
-	}
+    @Override
+    public void addPersonnel(PersonnelDto personnelDto) {
+        try {
+            if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
+                throw new IllegalArgumentException(" cin " + personnelDto.getCin() + "  existe deja !!");
+            }
+            if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())) {
+                throw new IllegalArgumentException("matricule" + personnelDto.getMatricule() + "  existe deja !!");
+            }
+            Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
+            personnel.setMiseEnVeille(false);
+            personnelRepository.save(personnel);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
 
 
-	@Override
-	public Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException {
-		return personnelRepository.findByNom(nom).orElseThrow(() -> new ResourceNotFoundException(
-				MessageFormat.format(messageHttpErrorProperties.getError0002(), nom)));
-	}
+    @Override
+    public void updatePersonnel(PersonnelDto personnelDto, String idPersonnel) throws ResourceNotFoundException {
+        Personnel personnel = personnelRepository.findById(idPersonnel)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
+        personnel.setNom(personnelDto.getNom());
+        personnel.setPrenom(personnelDto.getPrenom());
+        personnel.setDateNaissance(personnelDto.getDateNaissance());
+        personnel.setAdresse(personnelDto.getAdresse());
+        personnel.setPhoto(personnelDto.getPhoto());
+        personnel.setCin(personnelDto.getCin());
+        personnel.setSexe(personnelDto.getSexe());
+        personnel.setRib(personnelDto.getRib());
+        personnel.setPoste(personnelDto.getPoste());
+        personnel.setDateEmbauche(personnelDto.getDateEmbauche());
+        personnel.setEchelon(personnelDto.getEchelon());
+        personnel.setCategorie(personnelDto.getCategorie());
+        personnel.setMatricule(personnelDto.getMatricule());
+        personnel.setPhone(personnelDto.getPhone());
+        personnel.setVille(personnelDto.getVille());
+        personnel.setCodePostal(personnelDto.getCodePostal());
+        personnel.setEmail(personnelDto.getEmail());
+        personnel.setNumCnss(personnelDto.getNumCnss());
+        personnel.setSituationFamiliale(personnelDto.getSituationFamiliale());
+        personnel.setNbrEnfant(personnelDto.getNbrEnfant());
+        personnel.setTypeContrat(personnelDto.getTypeContrat());
+        personnelRepository.save(personnel);
+    }
+
+    @Override
+    public PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException {
+        Optional<Personnel> utilisateurOpt = personnelRepository.findById(id);
+        if (utilisateurOpt.isPresent()) {
+            return PersonnelMapper.MAPPER.toPersonnelDto(utilisateurOpt.get());
+        }
+        return null;
+    }
 
 
-
-	@Override
-	public void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException {
-
-		Personnel personnel = personnelRepository.findById(idPersonnel).orElseThrow(() -> new ResourceNotFoundException(
-				MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
-		personnel.setMiseEnVeille(true);
-		personnelRepository.save(personnel);
-	}
-	@Override
-	public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size) {
-		try {
-			List<PersonnelDto> personnels = new ArrayList<PersonnelDto>();
-			Pageable paging = PageRequest.of(page, size);
-			Page<Personnel> pageTuts;
-			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
-			personnels = pageTuts.getContent().stream().map(personnel -> {
-				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
-			}).collect(Collectors.toList());
-			Map<String, Object> response = new HashMap<>();
-			response.put("personnels", personnels);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-	}
-	@Override
-	public ResponseEntity<Map<String, Object>> onSortActivePersonnel(int page, int size, String field, String order) {
-		try {
-			List<PersonnelDto> personnels ;
-			Pageable paging = PageRequest.of(page, size);
-			Page<Personnel> pageTuts;
-			if (order.equals("1")){
-				pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
-			}
-			else {
-				pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
-			}
-			personnels = pageTuts.getContent().stream().map(personnel -> {
-				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
-			}).collect(Collectors.toList());
-			personnels =personnels.stream().filter(personnel -> !personnel.isMiseEnVeille()).collect(Collectors.toList());
-			Map<String, Object> response = new HashMap<>();
-			response.put("personnels", personnels);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-	}
-@Override
-	public ResponseEntity<Map<String, Object>> onSortPersonnelNotActive(int page, int size, String field, String order) {
-	try {
-		List<PersonnelDto> personnels ;
-		Page<Personnel> pageTuts;
-		if (order.equals("1")){
-			pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
-		}
-		else {
-			pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
-		}
-		personnels = pageTuts.getContent().stream().map(personnel -> {
-			return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
-		}).collect(Collectors.toList());
-		personnels =personnels.stream().filter(PersonnelDto::isMiseEnVeille).collect(Collectors.toList());
-		Map<String, Object> response = new HashMap<>();
-		response.put("personnels", personnels);
-		response.put("currentPage", pageTuts.getNumber());
-		response.put("totalItems", pageTuts.getTotalElements());
-		response.put("totalPages", pageTuts.getTotalPages());
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	} catch (Exception e) {
-		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	}
+    @Override
+    public Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException {
+        return personnelRepository.findByNom(nom).orElseThrow(() -> new ResourceNotFoundException(
+                MessageFormat.format(messageHttpErrorProperties.getError0002(), nom)));
+    }
 
 
+    @Override
+    public void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException {
+
+        Personnel personnel = personnelRepository.findById(idPersonnel).orElseThrow(() -> new ResourceNotFoundException(
+                MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
+        personnel.setMiseEnVeille(true);
+        personnelRepository.save(personnel);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size) {
+        try {
+            List<PersonnelDto> personnels = new ArrayList<PersonnelDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<Personnel> pageTuts;
+            pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);
+            personnels = pageTuts.getContent().stream().map(personnel -> {
+                return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
+            }).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("personnels", personnels);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> onSortActivePersonnel(int page, int size, String field, String order) {
+        try {
+            List<PersonnelDto> personnels;
+            Pageable paging = PageRequest.of(page, size);
+            Page<Personnel> pageTuts;
+            if (order.equals("1")) {
+                pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
+            } else {
+                pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
+            }
+            personnels = pageTuts.getContent().stream().map(personnel -> {
+                return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
+            }).collect(Collectors.toList());
+            personnels = personnels.stream().filter(personnel -> !personnel.isMiseEnVeille()).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("personnels", personnels);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> onSortPersonnelNotActive(int page, int size, String field, String order) {
+        try {
+            List<PersonnelDto> personnels;
+            Page<Personnel> pageTuts;
+            if (order.equals("1")) {
+                pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
+            } else {
+                pageTuts = personnelRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
+            }
+            personnels = pageTuts.getContent().stream().map(personnel -> {
+                return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
+            }).collect(Collectors.toList());
+            personnels = personnels.stream().filter(PersonnelDto::isMiseEnVeille).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("personnels", personnels);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 
 
-	@Override
-	public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size) {
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size) {
 
-		try {
+        try {
 
-			List<PersonnelDto> personnels;
-			Pageable paging = PageRequest.of(page, size);
-			Page<Personnel> pageTuts;
-			pageTuts = personnelRepository.findPersonnelByMiseEnVeille(true, paging);
-			personnels = pageTuts.getContent().stream().map(personnel -> {
-				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
-			}).collect(Collectors.toList());
-			Map<String, Object> response = new HashMap<>();
+            List<PersonnelDto> personnels;
+            Pageable paging = PageRequest.of(page, size);
+            Page<Personnel> pageTuts;
+            pageTuts = personnelRepository.findPersonnelByMiseEnVeille(true, paging);
+            personnels = pageTuts.getContent().stream().map(personnel -> {
+                return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
+            }).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
 
-			response.put("personnels", personnels);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
+            response.put("personnels", personnels);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
 
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-	}
+    }
 
-	@Override
-	public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size,boolean enVeille) {
+    @Override
+    public ResponseEntity<Map<String, Object>> getConcducteurs() {
 
-		try {
+        try {
+            List<PersonnelDto> personnels;
+            personnels = personnelRepository.findAll().stream().map(personnel -> {
+                return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
+            }).collect(Collectors.toList());
+            List<String> nomConducteurs = new ArrayList<>();
+            for (PersonnelDto personnel : personnels) {
+                if (personnel.getPoste().equals("Conducteur")) {
+                    nomConducteurs.add(personnel.getNom());
+                }
+            }
+            Map<String, Object> response = new HashMap<>();
+            response.put("nomConducteurs", nomConducteurs);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-			List<PersonnelDto> personnels;
-			Pageable paging = PageRequest.of(page, size);
-			Page<Personnel> pageTuts;
-			pageTuts = personnelRepository.findPersonnelByTextToFind(textToFind, paging);
-			personnels = pageTuts.getContent().stream().map(personnel -> {
-				return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
-			}).collect(Collectors.toList());
-			personnels = personnels.stream().filter(personnel -> personnel.isMiseEnVeille() == enVeille).collect(Collectors.toList());
-			Map<String, Object> response = new HashMap<>();
-			response.put("personnels", personnels);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
+    }
 
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+    @Override
+    public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
 
-	}
+        try {
 
-	@Override
-	public void deletePersonnel(String idPersonnel) {
-		personnelRepository.deleteById(idPersonnel);
-	}
-	@Override
-	public void deletePersonnelSelected(List<String> idPersonnelsSelected){
-		for (String id : idPersonnelsSelected){
-			personnelRepository.deleteById(id);
-		}
-	}
+            List<PersonnelDto> personnels;
+            Pageable paging = PageRequest.of(page, size);
+            Page<Personnel> pageTuts;
+            pageTuts = personnelRepository.findPersonnelByTextToFind(textToFind, paging);
+            personnels = pageTuts.getContent().stream().map(personnel -> {
+                return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
+            }).collect(Collectors.toList());
+            personnels = personnels.stream().filter(personnel -> personnel.isMiseEnVeille() == enVeille).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("personnels", personnels);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @Override
+    public void deletePersonnel(String idPersonnel) {
+        personnelRepository.deleteById(idPersonnel);
+    }
+
+    @Override
+    public void deletePersonnelSelected(List<String> idPersonnelsSelected) {
+        for (String id : idPersonnelsSelected) {
+            personnelRepository.deleteById(id);
+        }
+    }
 
 }
