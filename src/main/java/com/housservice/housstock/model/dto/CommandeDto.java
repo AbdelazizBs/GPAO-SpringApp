@@ -16,7 +16,7 @@ import java.util.List;
 public class CommandeDto {
     @Id
     private String id;
-    private Date date ;
+    private String date ;
     private String Commentaire;
     @Size(min = 2, message = "fournisseur raisonSocial(intitule) should have at least 2 characters")
     @NotEmpty(message = "fournisseur raisonSocial(intitule)  should not empty")

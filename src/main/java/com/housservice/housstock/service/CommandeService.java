@@ -15,8 +15,8 @@ public interface CommandeService {
 
     Optional<Commande> getCommandeById(String id);
 
-    void createNewCommande(Date date, String commentaire, String numBcd, String Fournisseur) throws ResourceNotFoundException;
-    void UpdateCommande(String idCommande,String commentaire, String numBcd, String Fournisseur) throws ResourceNotFoundException;
+    void createNewCommande(String date, String commentaire, String numBcd, String Fournisseur) throws ResourceNotFoundException;
+    void UpdateCommande(String idCommande,String commentaire, String numBcd, String Fournisseur,String date) throws ResourceNotFoundException;
     void deleteCommande(Commande commande);
     void deleteCommandeSelected(List<String> idCommandesSelected);
     public ResponseEntity<Map<String, Object>> getIdCommandes(String numBcd) throws ResourceNotFoundException;
@@ -27,5 +27,8 @@ public interface CommandeService {
     void addArticleCommande(ArticleDto articleDto, String idCommande ) throws ResourceNotFoundException;
     void updateArticleCommande( ArticleDto article, String idArticle) throws ResourceNotFoundException;
     void deleteArticleCommande(String idArticle) throws ResourceNotFoundException;
+    List<String> getAllMatiere();
+    void addMatiere(String designation)throws ResourceNotFoundException;
+
 
 }

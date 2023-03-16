@@ -11,13 +11,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "Matiere Primaire")
 public class MatierePrimaire {
     @Transient
-    public static final String SEQUENCE_NAME ="article_sequence";
+    public static final String SEQUENCE_NAME ="matiere_sequence";
+
+
 
 
     @Id
     private String id;
-    private  String refMatiereiris;
     private String designation;
-    private String famille;
-    private String uniteAchat;
+
+
+    public MatierePrimaire(String id, String designation) {
+        this.id = id;
+        this.designation = designation;
+    }
 }
+
+

@@ -23,8 +23,7 @@ public class ArticleDto {
     @Size(min = 2, message = "Article dateLivraison should have at least 2 characters")
     @NotEmpty(message = "Article dateLivraisoni should not empty")
     private Date dateLivraison;
-    @Size(min = 2, message = "Article commentaire should have at least 2 characters")
-    @NotEmpty(message = "Article commentaire should not empty")
+
     private String commentaire;
     @Size(min = 2, message = "Article prixUnitaire should have at least 2 characters")
     @NotEmpty(message = "Article prixUnitaire should not empty")

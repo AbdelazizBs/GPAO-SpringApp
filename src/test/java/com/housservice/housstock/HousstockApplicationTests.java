@@ -2,21 +2,15 @@ package com.housservice.housstock;
 
 import com.housservice.housstock.mapper.ClientMapper;
 import com.housservice.housstock.mapper.FournisseurMapper;
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Fournisseur;
-import com.housservice.housstock.model.Picture;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.model.dto.FournisseurDto;
-import com.housservice.housstock.repository.ClientRepository;
-import com.housservice.housstock.repository.ContactRepository;
-import com.housservice.housstock.repository.FournisseurRepository;
-import com.housservice.housstock.repository.PictureRepository;
+import com.housservice.housstock.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.housservice.housstock.model.Contact;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,6 +38,10 @@ class HousstockApplicationTests {
 	private ContactDto contactDto;
 	@Autowired
 	private FournisseurRepository fournisseurRepository;
+	@Autowired
+	private CommandeRepository commandeRepository;
+	@Autowired
+	private ArticleRepository articleRepository;
 
 	@Test
 	public void testCreateNewClient(){
@@ -303,40 +302,40 @@ class HousstockApplicationTests {
 	}
 	@Test
 	public void testCreateNewFournisseur(){
-		Fournisseur fournisseur = new Fournisseur(new Date(),"ref01","Ma société","Régimeee","test","Linkdin","web","145827","001254","uib","marsa","145239987003325","SWIFT123","contact@masociete.com",false);
+		Fournisseur fournisseur = new Fournisseur(new Date(),"ref100","Masociété","Régimeee","test","Linkdin","web","145827","001254","uib","marsa","145239987003325","SWIFT123","contact@masociete.com",false);
 
 		fournisseurRepository.save(fournisseur);
 	}
 	@Test
 	public void testGetFournisseurtById(){
-		Fournisseur fournisseur=fournisseurRepository.findById("63fbb9a06cdf695a8104adb2").get();
+		Fournisseur fournisseur=fournisseurRepository.findById("640f1783cb493c516924847d").get();
 		System.out.println(fournisseur);
 		//verification que  l'objet fournissseur n'est pas null
 		assertNotNull(fournisseur);
-		//verifier que le numero de telephone de premier contact de l'objet client  est egale aver la valeur expecteé  "123456789".
-		assertEquals("123456789", fournisseur.getContact().get(0).getPhone());
+		//verifier que le numero de telephone de premier contact de l'objet fournisseur est egale aver la valeur expecteé  "123456789".
+		assertEquals("145827", fournisseur.getPhone());
 	}
 	@Test
 	public void testUpdateFournisseur(){
 
-		Fournisseur fournisseur=fournisseurRepository.findById("64006599df102013ae97d348").get();
+		Fournisseur fournisseur=fournisseurRepository.findById("64013ae575f94978f6c052ed").get();
 		if (fournisseur != null) {
 			//client.setPhone("00123456");
-			fournisseur.setAdresse("sousse");
+			fournisseur.setRegion("tunis");
 			fournisseurRepository.save(fournisseur);
 		}
 
 		System.out.println(fournisseur);
-		Fournisseur updatedFournisseur = fournisseurRepository.findById("64006599df102013ae97d348").orElse(null);
+		Fournisseur updatedFournisseur = fournisseurRepository.findById("64013ae575f94978f6c052ed").orElse(null);
 		assertNotNull(updatedFournisseur);
 
-		assertEquals("sousse", updatedFournisseur.getAdresse());
+		assertEquals("tunis", updatedFournisseur.getAdresse());
 	}
 	@Test
 	public void testDeleteFournisseur(){
-		fournisseurRepository.deleteById("63f73c2f5cfa3d46c96fe12b");
+		fournisseurRepository.deleteById("640064fddf102013ae97d347");
 		//verifier que le fournisseur a ete supprime
-		Optional<Fournisseur> deletedFournisseur = fournisseurRepository.findById("63f73c2f5cfa3d46c96fe12b");
+		Optional<Fournisseur> deletedFournisseur = fournisseurRepository.findById("640064fddf102013ae97d347");
 		assertFalse(deletedFournisseur.isPresent());
 	}
 	@Test
@@ -555,6 +554,117 @@ class HousstockApplicationTests {
 		// Vérification que la liste de photos du fournisseur est vide
 		assertTrue(fournisseur.getPictures().isEmpty());
 
+	}
+	@Test
+	public void testCreateNewCommande(){
+		Commande commande=new Commande("2023/03/14","bbb","14587","f1");
+		commandeRepository.save(commande);
+
+	}
+	@Test
+	public void testUpdateCommande(){
+		Commande commande=commandeRepository.findById("64006599df102013ae97d348").get();
+		if (commande != null) {
+
+			commande.setNumBcd("010203");
+			commandeRepository.save(commande);
+		}
+
+		System.out.println(commande);
+		Commande updatedCommande = commandeRepository.findById("64006599df102013ae97d348").orElse(null);
+		assertNotNull(updatedCommande);
+
+		assertEquals("010203", updatedCommande.getNumBcd());
+
+	}
+	@Test
+	public void testGetCommandeById(){
+		Commande commande=commandeRepository.findById("63fbb9a06cdf695a8104adb2").get();
+		System.out.println(commande);
+		//verification que  l'objet ccommande n'est pas null
+		assertNotNull(commande);
+		//verifier que le numero bcd de l'objet commande  est egale aver la valeur expecteé  "123456789".
+		assertEquals("123456789", commande.getNumBcd());
+	}
+	@Test
+	public void testDeleteCommande(){
+		commandeRepository.deleteById("63f73c2f5cfa3d46c96fe12b");
+		//verifier que le commande a ete supprime
+		Optional<Commande> deletedCommande = commandeRepository.findById("63f73c2f5cfa3d46c96fe12b");
+		assertFalse(deletedCommande.isPresent());
+	}
+	@Test
+	public void testDeleteCommandeSelected(){
+		List<String> idCommandesSelected=new ArrayList<>();
+		idCommandesSelected.add("63fbb9a06cdf695a8104adb2");
+		idCommandesSelected.add("63fc9a9d912111525e44aa31");
+		for (String id : idCommandesSelected){
+			commandeRepository.deleteById(id);
+		}
+		Optional<Commande> deletedCommande1 = commandeRepository.findById("63fbb9a06cdf695a8104adb2");
+		Optional<Commande> deletedCommande2 = commandeRepository.findById("63fc9a9d912111525e44aa31");
+		assertFalse(deletedCommande1.isPresent());
+		assertFalse(deletedCommande2.isPresent());
+
+	}
+	@Test
+	public ResponseEntity<Map<String, Object>> testGetIdCommandes(){
+		Commande commande=  commandeRepository.findCommandeByNumBcd("10254").get();
+		Map<String, Object> response = new HashMap<>();
+		response.put("idCommande", commande.getId());
+
+		return ResponseEntity.ok(response);
+
+	}
+	@Test
+	public void testAddArticleCommande(){
+		Commande commande=commandeRepository.findById("64006599df102013ae97d348").get();
+		Date date = new Date(2023, 3, 3);
+		List<Article> articles=new ArrayList<>();
+		Article article1=new Article("desi",date ,"bbbbb",100,145,1050);
+		//contact1 = ContactMapper.MAPPER.toContact(contactDto);
+
+		articles.add(article1);
+		articleRepository.save(article1);
+		commande.setArticle(articles);
+		commandeRepository.save(commande);
+		Commande updatedCommande = commandeRepository.findById("64006599df102013ae97d348").get();
+		assertNotNull(updatedCommande.getArticle());
+		assertEquals(1, updatedCommande.getArticle().size());
+		assertEquals(article1, updatedCommande.getArticle().get(0));
+
+
+	}
+	@Test
+	public void testUpdateArticleCommande(){
+		Date date = new Date(2023, 3, 3);
+		Commande commande=commandeRepository.findCommandeByArticleId("63fbb9c16cdf695a8104adb3").get();
+		Article articleToUpdate = articleRepository.findById("63fbb9c16cdf695a8104adb3").get();
+		commande.getArticle().removeIf(article1 -> article1.equals(articleToUpdate));
+
+		articleToUpdate.setCommentaire("comment ");
+		articleToUpdate.setQuantite(150);
+		articleToUpdate.setPrix(1458);
+		articleToUpdate.setDateLivraison(date);
+		articleToUpdate.setPrixUnitaire(234567);
+		articleRepository.save(articleToUpdate);
+		commande.getArticle().add(articleToUpdate);
+		commandeRepository.save(commande);
+
+
+
+
+
+	}
+	@Test
+	public void testDeleteArticleCommande(){
+		Commande commande=commandeRepository.findCommandeByArticleId("63fbc31daac54631846057fb").get();
+		Article article = articleRepository.findById("63fbc31daac54631846057fb").get();
+		List<Article> articleList = commande.getArticle();
+		articleList.removeIf(c -> c.equals(article));
+		commande.setArticle(articleList);
+		commandeRepository.save(commande);
+		articleRepository.deleteById("63fbc31daac54631846057fb");
 	}
 
 

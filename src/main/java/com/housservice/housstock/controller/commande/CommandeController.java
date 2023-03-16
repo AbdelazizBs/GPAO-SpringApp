@@ -59,7 +59,7 @@ public class CommandeController {
     public ResponseEntity<String> createNewCommande(
             @RequestParam("date")
             @NotEmpty
-            Date date,
+            String date,
             @RequestParam("commentaire")
             @NotEmpty
             String commentaire,
@@ -83,6 +83,9 @@ public class CommandeController {
             @RequestParam("commentaire")
             @NotEmpty
             String commentaire,
+            @RequestParam("date")
+            @NotEmpty
+            String date,
             @RequestParam("numBcd")
             @NotEmpty
             String numBcd,
@@ -90,7 +93,7 @@ public class CommandeController {
             @NotEmpty
             String fournisseur) throws ResourceNotFoundException {
 
-        commandeService.UpdateCommande(idCommande,commentaire,numBcd,fournisseur);
+        commandeService.UpdateCommande(idCommande,commentaire,numBcd,fournisseur,date);
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
@@ -147,7 +150,7 @@ public class CommandeController {
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
     }
-    @PutMapping("/updateContactClient/{idArticle}")
+    @PutMapping("/updateCommandeClient/{idArticle}")
     public ResponseEntity <String> updateArticleCommande(
             @ApiParam(name = "idArticle", value="id of contact", required = true)
             @PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}")  String idArticle,

@@ -20,13 +20,13 @@ public class Commande {
 
     @Id
     private String id;
-    private Date dateCommande;
+    private String dateCommande;
     private String Commentaire;
     private String numBcd;
     private String Fournisseur;
     private List<Article> article;
 
-    public Commande(String id, Date dateCommande, String commentaire, String numBcd, String fournisseur, List<Article> article) {
+    public Commande(String id, String dateCommande, String commentaire, String numBcd, String fournisseur, List<Article> article) {
         this.id = id;
         this.dateCommande = dateCommande;
         Commentaire = commentaire;
@@ -35,7 +35,7 @@ public class Commande {
         this.article = article;
     }
 
-    public Commande(Date dateCommande, String commentaire, String numBcd, String fournisseur) {
+    public Commande(String dateCommande, String commentaire, String numBcd, String fournisseur) {
 
 this.dateCommande=dateCommande;
         Commentaire = commentaire;
