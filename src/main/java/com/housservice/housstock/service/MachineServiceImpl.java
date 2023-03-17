@@ -22,20 +22,16 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.text.MessageFormat;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
 @Service
 public class MachineServiceImpl implements MachineService {
-
     private MachineRepository machineRepository;
-
     private EtapeProductionRepository etapeProductionRepository;
-
     private SequenceGeneratorService sequenceGeneratorService;
-
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     final
     EtatMachineRepository etatMachineRepository;
@@ -55,29 +51,10 @@ public class MachineServiceImpl implements MachineService {
 
 
     @Override
-    public MachineDto buildMachineDtoFromMachine(Machine machine) {
-        if (machine == null) {
-            return null;
-        }
-
-        MachineDto machineDto = new MachineDto();
-        machineDto.setId(machine.getId());
-        machineDto.setReference(machine.getReference());
-        machineDto.setLibelle(machine.getLibelle());
-        machineDto.setNomEtatMachine(machine.getEtatMachine().getNomEtat());
-        machineDto.setNbrConducteur(machine.getNbrConducteur());
-        machineDto.setDateMaintenance(machine.getDateMaintenance());
-        machineDto.setNomEtapeProduction(machine.getEtapeProduction().getNomEtape());
-
-        return machineDto;
-    }
-
-
-    @Override
     public MachineDto getMachineById(String machineId) {
         Optional<Machine> machineOpt = machineRepository.findById(machineId);
         if (machineOpt.isPresent()) {
-            return buildMachineDtoFromMachine(machineOpt.get());
+            return MachineMapper.MAPPER.toMachineDto(machineOpt.get());
         }
         return null;
     }
@@ -89,13 +66,14 @@ public class MachineServiceImpl implements MachineService {
     }
 
 
-    // delay to update methode is the static LocalDate For EtatMachine
-
-
     @Override
     public void createNewMachine(@Valid MachineDto machineDto) throws ResourceNotFoundException {
         Machine machine = machineRepository.save(MachineMapper.MAPPER.toMachine(machineDto));
-        EtatMachine etatMachine = new EtatMachine("en repos", LocalDate.now(), LocalDate.now(), machine.getId());
+        EtatMachine etatMachine = new EtatMachine();
+        etatMachine.setLastEtat("en repos");
+        etatMachine.setNomEtat(new ArrayList<>(Collections.singletonList("en repos")));
+        etatMachine.setDateFin(new ArrayList<>());
+        etatMachine.setDateDebut(new ArrayList<>(Collections.singletonList(LocalDateTime.now())));
         EtapeProduction etapeProduction = etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getNomEtapeProduction())));
         etatMachineRepository.save(etatMachine);
@@ -115,6 +93,8 @@ public class MachineServiceImpl implements MachineService {
         });
         machine.setPersonnel(list);
         machineRepository.save(machine);
+        etatMachine.setIdMachine(machine.getId());
+        etatMachineRepository.save(etatMachine);
     }
 
 
@@ -138,8 +118,6 @@ public class MachineServiceImpl implements MachineService {
             list.add(personnel);
         });
         machine.setPersonnel(list);
-        machine.setEtatMachine(etatMachineRepository.findEtatMachineByNomEtat(machineDto.getNomEtatMachine())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getNomEtatMachine()))));
         machine.setEtapeProduction(etapeProductionRepository.findByNomEtape(machineDto.getNomEtapeProduction())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machineDto.getNomEtapeProduction()))));
         machineRepository.save(machine);
@@ -179,11 +157,11 @@ public class MachineServiceImpl implements MachineService {
     public ResponseEntity<Map<String, Object>> getMachineEnVeille(int page, int size) {
 
         try {
-            List<MachineDto> machines = new ArrayList<MachineDto>();
+            List<MachineDto> machines;
             Pageable paging = PageRequest.of(page, size);
             Page<Machine> pageTuts;
             pageTuts = machineRepository.findByEnVeille(true, paging);
-            machines = pageTuts.getContent().stream().map(machine -> buildMachineDtoFromMachine(machine)).collect(Collectors.toList());
+            machines = pageTuts.getContent().stream().map(machine -> MachineMapper.MAPPER.toMachineDto(machine)).collect(Collectors.toList());
             Map<String, Object> response = new HashMap<>();
             response.put("machines", machines);
             response.put("currentPage", pageTuts.getNumber());
@@ -225,71 +203,86 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     public void setEtatEnmarche(final String idMachine) throws ResourceNotFoundException {
-        final Machine machine = machineRepository.findById(idMachine)
+        Machine machine = machineRepository.findById(idMachine)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        etatMachineActuelle.setDateFin(LocalDate.now());
-        etatMachineRepository.save(etatMachineActuelle);
-        EtatMachine etatMachineEnMarche = new EtatMachine("en marche", LocalDate.now(), LocalDate.of(2026, 10, 10), idMachine);
-        machine.setEtatMachine(etatMachineEnMarche);
-        etatMachineRepository.save(etatMachineEnMarche);
+        EtatMachine etatMachine = machine.getEtatMachine();
+        List<LocalDateTime> dates = new ArrayList<>(etatMachine.getDateFin());
+        dates.add(LocalDateTime.now());
+        etatMachine.setDateFin(dates);
+        List<LocalDateTime> datesDebut = new ArrayList<>(etatMachine.getDateDebut());
+        datesDebut.add(LocalDateTime.now());
+        etatMachine.setDateDebut(datesDebut);
+        etatMachine.setLastEtat("en marche");
+        etatMachineRepository.save(etatMachine);
+        machine.setEtatMachine(etatMachine);
         machineRepository.save(machine);
     }
 
     @Override
     public void setEtatEnPause(final String idMachine) throws ResourceNotFoundException {
-        final Machine machine = machineRepository.findById(idMachine)
+        Machine machine = machineRepository.findById(idMachine)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        etatMachineActuelle.setDateFin(LocalDate.now());
-        etatMachineRepository.save(etatMachineActuelle);
-        EtatMachine etatMachineEnMarche = new EtatMachine("en pause", LocalDate.now(), LocalDate.of(2026, 10, 10), idMachine);
-        machine.setEtatMachine(etatMachineEnMarche);
-        etatMachineRepository.save(etatMachineEnMarche);
+        EtatMachine etatMachine = machine.getEtatMachine();
+        List<LocalDateTime> datesFin = new ArrayList<>(etatMachine.getDateFin());
+        datesFin.add(LocalDateTime.now());
+        etatMachine.setDateFin(datesFin);
+        List<LocalDateTime> datesDebut = new ArrayList<>(etatMachine.getDateDebut());
+        datesDebut.add(LocalDateTime.now());
+        etatMachine.setDateDebut(datesDebut);
+        etatMachine.setLastEtat("en pause");
+        etatMachineRepository.save(etatMachine);
+        machine.setEtatMachine(etatMachine);
         machineRepository.save(machine);
     }
 
     @Override
     public void setEtatEnRepos(final String idMachine) throws ResourceNotFoundException {
-        final Machine machine = machineRepository.findById(idMachine)
+        Machine machine = machineRepository.findById(idMachine)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        etatMachineActuelle.setDateFin(LocalDate.now());
-        etatMachineRepository.save(etatMachineActuelle);
-        EtatMachine etatMachineEnMarche = new EtatMachine("en repos", LocalDate.now(), LocalDate.of(2026, 10, 10), idMachine);
-        machine.setEtatMachine(etatMachineEnMarche);
-        etatMachineRepository.save(etatMachineEnMarche);
+        EtatMachine etatMachine = machine.getEtatMachine();
+        List<LocalDateTime> datesFin = new ArrayList<>(etatMachine.getDateFin());
+        datesFin.add(LocalDateTime.now());
+        etatMachine.setDateFin(datesFin);
+        List<LocalDateTime> datesDebut = new ArrayList<>(etatMachine.getDateDebut());
+        datesDebut.add(LocalDateTime.now());
+        etatMachine.setDateDebut(datesDebut);
+        etatMachine.setLastEtat("en repos");
+        etatMachineRepository.save(etatMachine);
+        machine.setEtatMachine(etatMachine);
         machineRepository.save(machine);
     }
 
     @Override
     public void setEtatEnMaintenance(final String idMachine) throws ResourceNotFoundException {
-        final Machine machine = machineRepository.findById(idMachine)
+        Machine machine = machineRepository.findById(idMachine)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        etatMachineActuelle.setDateFin(LocalDate.now());
-        etatMachineRepository.save(etatMachineActuelle);
-        EtatMachine etatMachineEnMarche = new EtatMachine("en maintenance", LocalDate.now(), LocalDate.of(2026, 10, 10), idMachine);
-        machine.setEtatMachine(etatMachineEnMarche);
-        etatMachineRepository.save(etatMachineEnMarche);
+        EtatMachine etatMachine = machine.getEtatMachine();
+        List<LocalDateTime> datesFin = new ArrayList<>(etatMachine.getDateFin());
+        datesFin.add(LocalDateTime.now());
+        etatMachine.setDateFin(datesFin);
+        List<LocalDateTime> datesDebut = new ArrayList<>(etatMachine.getDateDebut());
+        datesDebut.add(LocalDateTime.now());
+        etatMachine.setDateDebut(datesDebut);
+        etatMachine.setLastEtat("en maintenance");
+        etatMachineRepository.save(etatMachine);
+        machine.setEtatMachine(etatMachine);
         machineRepository.save(machine);
     }
 
     @Override
     public void setEtatEnPanne(final String idMachine) throws ResourceNotFoundException {
-        final Machine machine = machineRepository.findById(idMachine)
+        Machine machine = machineRepository.findById(idMachine)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        EtatMachine etatMachineActuelle = etatMachineRepository.findById(machine.getEtatMachine().getId())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idMachine)));
-        etatMachineActuelle.setDateFin(LocalDate.now());
-        etatMachineRepository.save(etatMachineActuelle);
-        EtatMachine etatMachineEnMarche = new EtatMachine("en panne", LocalDate.now(), LocalDate.of(2026, 10, 10), idMachine);
-        machine.setEtatMachine(etatMachineEnMarche);
-        etatMachineRepository.save(etatMachineEnMarche);
+        EtatMachine etatMachine = machine.getEtatMachine();
+        List<LocalDateTime> datesFin = new ArrayList<>(etatMachine.getDateFin());
+        datesFin.add(LocalDateTime.now());
+        etatMachine.setDateFin(datesFin);
+        List<LocalDateTime> datesDebut = new ArrayList<>(etatMachine.getDateDebut());
+        datesDebut.add(LocalDateTime.now());
+        etatMachine.setDateDebut(datesDebut);
+        etatMachine.setLastEtat("en panne");
+        etatMachineRepository.save(etatMachine);
+        machine.setEtatMachine(etatMachine);
         machineRepository.save(machine);
     }
 

@@ -3,7 +3,6 @@ package com.housservice.housstock.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import java.util.Date;
@@ -19,7 +18,6 @@ public class MachineDto {
     @Transient
     public static final String SEQUENCE_NAME = "machine_sequence";
 
-    @Id
     private String id;
 
     private String reference;
@@ -33,6 +31,7 @@ public class MachineDto {
 
     private String nomEtatMachine;
     private Boolean enVeille;
+    
     private String nomEtapeProduction;
 
 

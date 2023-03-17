@@ -30,7 +30,8 @@ public abstract class MachineMapper {
             nomConducteurs.add(personnel.getNom());
         }
         machineDto.setNomEtapeProduction(machine.getEtapeProduction().getNomEtape());
-        machineDto.setNomEtatMachine(machine.getEtatMachine().getNomEtat());
+        // set etat machine name when mapping and check if
+        machineDto.setNomEtatMachine(machine.getEtatMachine().getLastEtat());
         machineDto.setNomConducteurs(nomConducteurs);
     }
 
