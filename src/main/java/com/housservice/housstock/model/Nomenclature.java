@@ -1,6 +1,5 @@
 package com.housservice.housstock.model;
 
-import com.housservice.housstock.model.enums.TypeNomEnClature;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -26,10 +25,6 @@ public class Nomenclature {
     @Id
     private String id;
 
-    // Référence IRIS
-
-    // idParent
-
     @NotBlank
     @Size(max = 100)
     @Indexed(unique = true)
@@ -42,7 +37,7 @@ public class Nomenclature {
     @Size(max = 100)
     private String refIris;
 
-    private TypeNomEnClature type;
+    private String type;
 
     @NotBlank
     @Size(max = 100)
@@ -54,8 +49,7 @@ public class Nomenclature {
     private List<String> clientId;
     private List<String> fournisseurId;
 
-    private List<String> childrensId;
-    private List<String> parentsName = new ArrayList<>();
+    private List<String> childrensName = new ArrayList<>();
 
     private List<String> parentsId;
 
@@ -77,7 +71,7 @@ public class Nomenclature {
     }
 
     public Nomenclature(String id, @NotBlank @Size(max = 100) String nomNomenclature,
-                        @NotBlank @Size(max = 100) String description, TypeNomEnClature type,
+                        @NotBlank @Size(max = 100) String description, String type,
                         @NotBlank @Size(max = 100) String nature, @NotBlank @Size(max = 100) String categorie,
                         Date date, boolean miseEnVeille, Date dateMiseEnVeille) {
         super();
