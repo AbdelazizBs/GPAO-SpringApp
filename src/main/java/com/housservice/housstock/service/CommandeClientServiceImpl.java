@@ -171,7 +171,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
         CommandeClient commandeClient = commandeClientRepository.findById(commandeClientDto.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), commandeClientDto.getId())));
-
         commandeClient.setTypeCmd(commandeClientDto.getTypeCmd());
         commandeClient.setNumCmd(commandeClientDto.getNumCmd());
         commandeClient.setEtatProduction(commandeClientDto.getEtatProduction());
@@ -201,11 +200,14 @@ public class CommandeClientServiceImpl implements CommandeClientService {
                 PlanificationOf planificationOf = new PlanificationOf();
                 planificationOf.setNomEtape(ligneCommandeClient.getNomenclature().getEtapeProductions().get(j).getNomEtape());
                 planificationOf.setLigneCommandeClient(ligneCommandeClient);
+                planificationOf.setQuantiteInitiale(ligneCommandeClient.getQuantite());
                 planificationRepository.save(planificationOf);
             }
         }
         if (commandeClient.getClient() == null || !StringUtils.equals(commandeClient.getClient().getId(), commandeClient.getClient().getId())) {
-            Client client = clientRepository.findById(commandeClient.getClient().getId()).get();
+            assert commandeClient.getClient() != null;
+            Client client = clientRepository.findById(commandeClient.getClient().getId()).
+                    orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), commandeClient.getClient().getId())));
             commandeClient.setClient(client);
         }
         commandeClientRepository.save(commandeClient);

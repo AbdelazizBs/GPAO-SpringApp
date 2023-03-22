@@ -2,6 +2,7 @@ package com.housservice.housstock.controller.PlanificationOf;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.PlanificationOf;
 import com.housservice.housstock.model.dto.PlanificationOfDTO;
 import com.housservice.housstock.service.PlanificationService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -28,16 +30,31 @@ public class PlanificationOfController {
     }
 
 
-    @PutMapping("/updatePlanfication/{id}")
+    @PutMapping("/updatePlanfication")
     public ResponseEntity<String> updatePlanfication(
-            @ApiParam(name = "id", value = "id of planification", required = true)
-            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String idPlanification,
             @Valid @RequestBody PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
         planificationService.updatePlanfication(planificationOfDTO);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
 
     }
+
+    @GetMapping("/getPlanificationEtape/{idLc}")
+    public List<PlanificationOf> getPlanificationEtape(
+            @ApiParam(name = "idLc", value = "id of ligneCmd", required = true)
+            @PathVariable(value = "idLc", required = true) @NotEmpty(message = "{http.error.0001}") String idLc) throws ResourceNotFoundException {
+        return planificationService.getPlanificationEtape(idLc);
+    }
+
+    @GetMapping("/getPlanificationByIdLigneCmdAndNamEtape/{idLc}/{nameEtape}")
+    public PlanificationOf getPlanificationByIdLigneCmdAndNamEtape(
+            @ApiParam(name = "idLc", value = "id of ligneCmd", required = true)
+            @PathVariable(value = "idLc", required = true) @NotEmpty(message = "{http.error.0001}") String idLc,
+            @ApiParam(name = "nameEtape", value = "nomEtape", required = true)
+            @PathVariable(value = "nameEtape", required = true) @NotEmpty(message = "{http.error.0001}") String nameEtape) throws ResourceNotFoundException {
+        return planificationService.getPlanificationByIdLigneCmdAndNamEtape(idLc, nameEtape);
+    }
+
 
 }
 

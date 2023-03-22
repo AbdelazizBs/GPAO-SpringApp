@@ -6,7 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,27 +30,14 @@ public class PlanificationOf {
 
     private List<Personnel> personnels;
 
-    private LocalDate dateLancementPrevue;
 
-    private LocalDate dateLancementReel;
-    private LocalDate heureDebutPrevue;
-    private LocalDate heureFinPrevue;
-    private LocalDate heureFinReel;
-    private LocalDate heureDebutReel;
-    private LocalDate duréeReelOperation;
+    private Date dateLancementReel;
+    private LocalDateTime heureFinReel;
+    private LocalDateTime heureDebutReel;
 
     @Size(max = 100)
     private String quantiteInitiale;
 
-    @Size(max = 100)
-    private String quantiteConforme;
-
-    @Size(max = 100)
-    private String quantiteNonConforme;
-
-
-    @Size(max = 100)
-    private String commentaire;
 
     public PlanificationOf() {
 

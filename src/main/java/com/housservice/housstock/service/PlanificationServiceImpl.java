@@ -3,6 +3,7 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.LigneCommandeClient;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.PlanificationOf;
 import com.housservice.housstock.model.dto.PlanificationOfDTO;
@@ -58,22 +59,15 @@ public class PlanificationServiceImpl implements PlanificationService {
 
         PlanificationOfDTO planificationOfDTO = new PlanificationOfDTO();
         planificationOfDTO.setId(planificationOf.getId());
-        planificationOfDTO.setCommentaire(planificationOf.getCommentaire());
         List<String> idPersonnels = planificationOf.getPersonnels().stream().map(personnel -> personnel.getId()).collect(Collectors.toList());
         planificationOfDTO.setIdPersonnels(idPersonnels);
-        planificationOfDTO.setDuréeReelOperation(planificationOf.getDuréeReelOperation());
         planificationOfDTO.setDateLancementReel(planificationOf.getDateLancementReel());
-        planificationOfDTO.setDateLancementPrevue(planificationOf.getDateLancementPrevue());
-        planificationOfDTO.setHeureDebutPrevue(planificationOf.getHeureDebutPrevue());
         planificationOfDTO.setHeureDebutReel(planificationOf.getHeureDebutReel());
         planificationOfDTO.setHeureFinReel(planificationOf.getHeureFinReel());
         planificationOfDTO.setQuantiteInitiale(planificationOf.getQuantiteInitiale());
-        planificationOfDTO.setQuantiteConforme(planificationOf.getQuantiteConforme());
-        planificationOfDTO.setQuantiteNonConforme(planificationOf.getQuantiteNonConforme());
-        planificationOfDTO.setHeureFinPrevue(planificationOf.getHeureFinPrevue());
         planificationOfDTO.setIdLigneCommandeClient(planificationOf.getLigneCommandeClient().getId());
         planificationOfDTO.setNomEtape(planificationOf.getNomEtape());
-        planificationOfDTO.setIdMachine(planificationOf.getMachine().getId());
+        planificationOfDTO.setRefMachine(planificationOf.getMachine().getReference());
         return planificationOfDTO;
 
     }
@@ -84,16 +78,9 @@ public class PlanificationServiceImpl implements PlanificationService {
 
         planificationOf.setId("" + sequenceGeneratorService.generateSequence(PlanificationOf.SEQUENCE_NAME));
         planificationOf.setId(planificationOfDTO.getId());
-        planificationOf.setCommentaire(planificationOfDTO.getCommentaire());
-        planificationOf.setDateLancementPrevue(planificationOfDTO.getDateLancementPrevue());
         planificationOf.setDateLancementReel(planificationOfDTO.getDateLancementReel());
-        planificationOf.setHeureDebutPrevue(planificationOfDTO.getHeureDebutPrevue());
         planificationOf.setHeureDebutReel(planificationOfDTO.getHeureDebutReel());
-        planificationOf.setDuréeReelOperation(planificationOfDTO.getDuréeReelOperation());
-        planificationOf.setHeureFinPrevue(planificationOfDTO.getHeureFinPrevue());
         planificationOf.setHeureFinReel(planificationOfDTO.getHeureFinReel());
-        planificationOf.setQuantiteConforme(planificationOfDTO.getQuantiteConforme());
-        planificationOf.setQuantiteNonConforme(planificationOfDTO.getQuantiteNonConforme());
         planificationOf.setQuantiteInitiale(planificationOfDTO.getQuantiteInitiale());
         List<Personnel> personnels = planificationOfDTO.getIdPersonnels().stream().map(s -> {
             try {
@@ -104,8 +91,8 @@ public class PlanificationServiceImpl implements PlanificationService {
             }
         }).collect(Collectors.toList());
         planificationOf.setPersonnels(personnels);
-        planificationOf.setMachine(machineRepository.findById(planificationOfDTO.getIdMachine())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getIdMachine()))));
+        planificationOf.setMachine(machineRepository.findMachineByReference(planificationOfDTO.getRefMachine())
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getRefMachine()))));
         planificationOf.setNomEtape(planificationOfDTO.getNomEtape());
         planificationOf.setLigneCommandeClient(ligneCommandeClientRepository.findById(planificationOfDTO.getIdLigneCommandeClient())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getIdLigneCommandeClient()))));
@@ -113,5 +100,19 @@ public class PlanificationServiceImpl implements PlanificationService {
         return planificationOf;
     }
 
+    @Override
+    public List<PlanificationOf> getPlanificationEtape(String idLc) throws ResourceNotFoundException {
+        LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findById(idLc)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idLc)));
+        return planificationRepository.findPlanificationOfByLigneCommandeClient(ligneCommandeClient);
+    }
+
+    @Override
+    public PlanificationOf getPlanificationByIdLigneCmdAndNamEtape(String idLc, String nomEtape) throws ResourceNotFoundException {
+        LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findById(idLc)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idLc)));
+        List<PlanificationOf> planificationOf = planificationRepository.findPlanificationOfByLigneCommandeClient(ligneCommandeClient);
+        return planificationOf.stream().filter(planificationOf1 -> planificationOf1.getNomEtape().equals(nomEtape)).findFirst().orElse(null);
+    }
 
 }
