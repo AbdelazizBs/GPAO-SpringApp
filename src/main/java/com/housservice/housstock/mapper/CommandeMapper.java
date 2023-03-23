@@ -8,23 +8,28 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
+
 @Mapper(componentModel = "spring")
 public abstract class CommandeMapper {
 
-    public static CommandeMapper MAPPER = Mappers.getMapper(CommandeMapper.class);
+    public static CommandeMapper  MAPPER = Mappers.getMapper(CommandeMapper.class);
+
 
     public abstract CommandeDto toCommandeDto(Commande commande);
 
     public abstract Commande toCommande(CommandeDto  commandeDto);
+
+
+
     @AfterMapping
-    void updateCommandeDto(final Commande  commande, @MappingTarget final CommandeDto commandeDto)   {
+    void updateCommandeDto(final Commande commande, @MappingTarget final CommandeDto commandeDto)   {
 
     }
 
     @AfterMapping
-    void updateCommande(final CommandeDto commandeDto, @MappingTarget final Commande commande) {
+    void updateCommande(final CommandeDto  commandeDto, @MappingTarget final Commande commande) {
 
     }
-
 
 }
+

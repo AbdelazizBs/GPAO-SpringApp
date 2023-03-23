@@ -17,4 +17,6 @@ public interface CommandeRepository extends MongoRepository<Commande, String> {
     Optional<Commande> findCommandeByNumBcd(String numBcd);
 
     Optional<Commande> findCommandeByArticleId(String idContact ) ;
+
+    Page<Commande> findCommandeByMiseEnVeille(Pageable paging, boolean b);
 }

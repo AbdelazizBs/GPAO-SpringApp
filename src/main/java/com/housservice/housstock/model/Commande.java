@@ -20,22 +20,21 @@ public class Commande {
     @Id
     private String id;
     private String fournisseur;
+    private Date dateCommande;
     private String numBcd;
-    private String dateCommande;
+    private boolean miseEnVeille;
     private String commentaire;
     private List<Article> article;
 
 
-    public Commande(String fournisseur, String numBcd,  String commentaire,String dateCommande,List<Article> article) {
+    public Commande(String fournisseur, Date dateCommande, String numBcd, boolean miseEnVeille,  String commentaire, List<Article> article) {
         this.fournisseur = fournisseur;
-        this.numBcd = numBcd;
         this.dateCommande = dateCommande;
+        this.numBcd = numBcd;
+        this.miseEnVeille = miseEnVeille;
         this.commentaire = commentaire;
         this.article = article;
-
-
     }
-
 
     public Commande(){}
 }

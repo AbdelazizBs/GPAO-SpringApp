@@ -1,21 +1,14 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.mapper.ArticleMapper;
-import com.housservice.housstock.mapper.ClientMapper;
-import com.housservice.housstock.mapper.CommandeMapper;
-import com.housservice.housstock.mapper.MatiereMapper;
+import com.housservice.housstock.mapper.*;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.*;
-import com.housservice.housstock.model.dto.ArticleDto;
-import com.housservice.housstock.model.dto.CommandeDto;
-import com.housservice.housstock.model.dto.MatiereDto;
-import com.housservice.housstock.repository.ArticleRepository;
-import com.housservice.housstock.repository.CommandeRepository;
-import com.housservice.housstock.repository.FournisseurRepository;
-import com.housservice.housstock.repository.MatiereRepository;
+import com.housservice.housstock.model.dto.*;
+import com.housservice.housstock.repository.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,16 +32,17 @@ public class CommandeServiceImpl implements CommandeService{
     private final FournisseurRepository fournisseurRepository;
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     private final ArticleRepository articleRepository;
+    private final CommandeSuiviRepository commandeSuiviRepository;
 
     private final MatiereRepository matiereRepository;
 
-    public CommandeServiceImpl(CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, MessageHttpErrorProperties messageHttpErrorProperties,MatiereRepository matiereRepository , ArticleRepository articleRepository) {
-
+    public CommandeServiceImpl(CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, MessageHttpErrorProperties messageHttpErrorProperties, ArticleRepository articleRepository, CommandeSuiviRepository commandeSuiviRepository, MatiereRepository matiereRepository) {
         this.commandeRepository = commandeRepository;
         this.fournisseurRepository = fournisseurRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.articleRepository = articleRepository;
-        this.matiereRepository= matiereRepository;
+        this.commandeSuiviRepository = commandeSuiviRepository;
+        this.matiereRepository = matiereRepository;
     }
 
     @Override
@@ -62,7 +56,7 @@ public class CommandeServiceImpl implements CommandeService{
             List<CommandeDto> commandes = new ArrayList<CommandeDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<Commande> pageTuts;
-            pageTuts =  commandeRepository.findAll(paging);
+            pageTuts =  commandeRepository.findCommandeByMiseEnVeille(paging,false);
             commandes = pageTuts.getContent().stream().map(commande -> CommandeMapper.MAPPER.toCommandeDto(commande)).collect(Collectors.toList());
             Map<String, Object> response = new HashMap<>();
             response.put("commandes", commandes);
@@ -76,12 +70,9 @@ public class CommandeServiceImpl implements CommandeService{
         }
     }
     @Override
-    public void createNewCommande(String fournisseur, String numBcd,String dateCommande,String commentaire ) throws ResourceNotFoundException {
-        CommandeDto commandeDto = new CommandeDto();
-        commandeDto.setDateCommande(dateCommande);
-        commandeDto.setCommentaire(commentaire);
-        commandeDto.setFournisseur(fournisseur);
-        commandeDto.setNumBcd(numBcd);
+    public void createNewCommande(CommandeDto commandeDto) throws ResourceNotFoundException {
+        commandeDto.setMiseEnVeille(false);
+
         List<Article> articles = new ArrayList<>();
         if (commandeDto.getArticle()==null){
             commandeDto.setArticle(articles);
@@ -91,17 +82,15 @@ public class CommandeServiceImpl implements CommandeService{
     }
 
     @Override
-    public void UpdateCommande(String dateCommande, String commentaire, String numBcd, String fournisseur,String id) throws ResourceNotFoundException {
-        if (commentaire.isEmpty() || numBcd.isEmpty() || fournisseur.isEmpty()) {
-            throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
-        }
-        Commande commande = getCommandeById(id)
+    public void UpdateCommande(Commande commande,String id) throws ResourceNotFoundException {
+
+        Commande commandes = getCommandeById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
-        commande.setCommentaire(commentaire);
-        commande.setFournisseur(fournisseur);
-        commande.setNumBcd(numBcd);
-        commande.setDateCommande(dateCommande);
-        commandeRepository.save(commande);
+        commandes.setCommentaire(commande.getCommentaire());
+        commandes.setFournisseur(commande.getFournisseur());
+        commandes.setNumBcd(commande.getNumBcd());
+        commandes.setDateCommande(commande.getDateCommande());
+        commandeRepository.save(commandes);
     }
 
     @Override
@@ -212,8 +201,8 @@ public class CommandeServiceImpl implements CommandeService{
         articles.addAll(commande.getArticle());
         commande.setArticle(articles);
         commandeRepository.save(commande);
-
     }
+
 
     @Override
     public void updateArticleCommande(ArticleDto articleDto, String idArticle) throws ResourceNotFoundException {
@@ -260,6 +249,43 @@ public class CommandeServiceImpl implements CommandeService{
         Matiere matiere = MatiereMapper.MAPPER.toMatiere(matiereDto);
         matiereRepository.save(matiere);
     }
+
+    @Override
+    public void miseEnVeille(String id,CommandeSuiviDto commandeSuiviDto) throws ResourceNotFoundException {
+
+        Commande commande = commandeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+        commande.setMiseEnVeille(true);
+        String name= commande.getFournisseur();
+        Fournisseur fournisseur = fournisseurRepository.findFournisseurByRaisonSocial(name).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),name)));
+        fournisseur.setRate(commandeSuiviDto.getRate());
+        fournisseurRepository.save(fournisseur);
+        commandeRepository.save(commande);
+        CommandeSuivi commandeSuivi = CommandeSuiviMapper.MAPPER.toCommandeSuivi(commandeSuiviDto);
+        commandeSuivi.setRaisonSocial(fournisseur.getRaisonSocial());
+        commandeSuiviRepository.save(commandeSuivi);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getCommandeNotActive(int page, int size) {
+        try {
+
+            List<CommandeSuiviDto> commandes = new ArrayList<CommandeSuiviDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<CommandeSuivi> pageTuts;
+            pageTuts =  commandeSuiviRepository.findAll(paging);
+            commandes = pageTuts.getContent().stream().map(commandeSuivi -> CommandeSuiviMapper.MAPPER.toCommandeSuiviDto(commandeSuivi)).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("commandes", commandes);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }
 

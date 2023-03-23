@@ -17,16 +17,17 @@ import java.util.List;
 public class CommandeDto {
     @Id
     private String id;
-    private String Fournisseur;
-    @Size(min = 2, message = "fournisseur raisonSocial(intitule) should have at least 2 characters")
-    @NotEmpty(message = "fournisseur raisonSocial(intitule)  should not empty")
+    @NotEmpty
+    private String fournisseur;
+    private Date dateCommande;
+    @Size(min = 2, message = "fournisseur numBcd should have at least 2 characters")
+    @NotEmpty(message = "fournisseur numBcd  should not empty")
     private String numBcd;
+    private boolean miseEnVeille;
 
-    private String dateCommande;
-    private String Commentaire;
+    private String commentaire;
 
     private List<Article> article;
-
 
 
 }

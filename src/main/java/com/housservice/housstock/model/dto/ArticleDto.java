@@ -22,8 +22,7 @@ public class ArticleDto {
 
     @NotNull(message = "personnel date embauche should not empty")
     private Date dateLivraison;
-    @NotNull
-    private int prixUnitaire;
+    private String prixUnitaire;
     @NotNull
     private int quantite;
     @NotNull

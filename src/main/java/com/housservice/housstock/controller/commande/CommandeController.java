@@ -3,7 +3,8 @@ package com.housservice.housstock.controller.commande;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Commande;
-import com.housservice.housstock.model.dto.ArticleDto;
+import com.housservice.housstock.model.CommandeSuivi;
+import com.housservice.housstock.model.dto.*;
 import com.housservice.housstock.service.CommandeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -67,38 +68,20 @@ public class CommandeController {
     }
     @PutMapping(value = "/addCommande")
     public ResponseEntity<String> createNewCommande(
-            @RequestParam("fournisseur")
-            @NotEmpty
-            String fournisseur,
-            @RequestParam("numBcd")
-            @NotEmpty
-            String numBcd,
-            @RequestParam("commentaire")
-            String commentaire,
-            @RequestParam("dateCommande")
-            @NotEmpty
-            String dateCommande
-
+            @Valid  @RequestBody CommandeDto commandeDto
     ) throws ResourceNotFoundException {
-        System.out.println(fournisseur);
-        commandeService.createNewCommande(fournisseur,numBcd,dateCommande,commentaire);
+        commandeService.createNewCommande(commandeDto);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
     }
     @PutMapping("/updateCommande/{id}")
     public ResponseEntity <String> updateCommande(
             @ApiParam(name = "id", value="id", required = true)
             @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String id,
-            @RequestParam("commentaire")
-            String commentaire,
-            @RequestParam("numBcd")
-            String numBcd,
-            @RequestParam("fournisseur")
-            String fournisseur,
-            @RequestParam("dateCommande")
-            String dateCommande
+            @Valid  @RequestBody Commande commande
+
 
     ) throws ResourceNotFoundException {
-        commandeService.UpdateCommande(dateCommande,commentaire,numBcd,fournisseur,id);
+        commandeService.UpdateCommande(commande,id);
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
@@ -182,4 +165,20 @@ public class CommandeController {
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
     }
+    @GetMapping("/getAllCommandeNonActive")
+    public ResponseEntity<Map<String, Object>> getAllFournisseurNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+        return commandeService.getCommandeNotActive(page,size);
+
+    }
+
+    @PutMapping("/miseEnVeille/{id}")
+    public ResponseEntity <String> miseEnVeille(
+            @ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
+            @Valid @RequestBody(required = true)CommandeSuiviDto commandeSuiviDto) throws ResourceNotFoundException {
+            System.out.println(commandeSuiviDto.getDate());
+            commandeService.miseEnVeille(id,commandeSuiviDto);
+
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    }
+
 }

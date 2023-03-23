@@ -27,14 +27,14 @@ public class Article {
     private String designationMatiere;
     private Date dateLivraison;
     private String commentaire;
-    private int prixUnitaire;
+    private String prixUnitaire;
     private int quantite;
     private int prix;
 
     public Article() {
     }
 
-    public Article(String designationMatiere, Date dateLivraison, String commentaire, int prixUnitaire, int quantite, int prix) {
+    public Article(String designationMatiere, Date dateLivraison, String commentaire, String prixUnitaire, int quantite, int prix) {
         this.designationMatiere = designationMatiere;
         this.dateLivraison = dateLivraison;
         this.commentaire = commentaire;

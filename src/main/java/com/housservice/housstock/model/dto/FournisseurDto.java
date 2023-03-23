@@ -39,7 +39,7 @@ public class FournisseurDto {
 	private String raisonSocial;
 
 
-
+	private int rate;
 	@Size(min = 2, message = "fournisseur pays should have at least 2 characters")
 	@NotEmpty(message = "fournisseur pays  should not empty")
 	private String pays;
