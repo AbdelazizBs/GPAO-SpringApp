@@ -65,9 +65,6 @@ public class PersonnelController {
     @PutMapping("/addPersonnel")
     @ApiOperation(value = "service to add new Personnel")
     public ResponseEntity<String> addPersonnel(@Valid @RequestBody PersonnelDto personnelDto) {
-        if (!validate(personnelDto.getEmail())) {
-            throw new IllegalArgumentException(" email " + personnelDto.getEmail() + "  n'est pas valide !!");
-        }
         personnelService.addPersonnel(personnelDto);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
     }

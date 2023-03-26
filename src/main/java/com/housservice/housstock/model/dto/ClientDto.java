@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -16,129 +15,116 @@ import java.util.List;
 
 
 /**
- * 
  * @author houssem.khadraoui@gmail.com
- *
  */
 @Getter
 @Setter
 public class ClientDto {
-	
-	@Id
-	private String id;
 
+    @Id
+    private String id;
 
-	@Size(min = 2, message = "client matricule should have at least 2 characters")
-	@NotEmpty(message = "client matricule  should not empty")
-	private String refClientIris;
 
+    @Size(min = 2, message = "client matricule should have at least 2 characters")
+    @NotEmpty(message = "client matricule  should not empty")
+    private String refClientIris;
 
-	private Date date ;
 
+    private Date date;
 
-	@Size(min = 2, message = "client raisonSocial(intitule) should have at least 2 characters")
-	@NotEmpty(message = "client raisonSocial(intitule)  should not empty")
-	private String raisonSocial;
 
+    @Size(min = 2, message = "client raisonSocial(intitule) should have at least 2 characters")
+    @NotEmpty(message = "client raisonSocial(intitule)  should not empty")
+    private String raisonSocial;
 
 
-	@Size(min = 2, message = "client pays should have at least 2 characters")
-	@NotEmpty(message = "client pays  should not empty")
-	private String pays;
+    @Size(min = 2, message = "client pays should have at least 2 characters")
+    @NotEmpty(message = "client pays  should not empty")
+    private String pays;
 
-	private String regime;
+    private String regime;
 
 
-	private String secteurActivite;
+    private String secteurActivite;
 
 
-	private String brancheActivite;
+    private String brancheActivite;
 
 
-	@Size(min = 2, message = "client adresse should have at least 2 characters")
-	@NotEmpty(message = "client adresse  should not empty")
-	private  String adresse ;
+    @Size(min = 2, message = "client adresse should have at least 2 characters")
+    @NotEmpty(message = "client adresse  should not empty")
+    private String adresse;
 
 
-	private String statut;
+    private String statut;
 
 
-	@Size(min = 2, message = "client codePostal should have at least 2 characters")
-	@NotEmpty(message = "client codePostal  should not empty")
-	private String codePostal;
+    @Size(min = 2, message = "client codePostal should have at least 2 characters")
+    @NotEmpty(message = "client codePostal  should not empty")
+    private String codePostal;
 
 
+    @Size(min = 2, message = "client ville should have at least 2 characters")
+    @NotEmpty(message = "client ville  should not empty")
+    private String ville;
 
-	@Size(min = 2, message = "client ville should have at least 2 characters")
-	@NotEmpty(message = "client ville  should not empty")
-	private String ville;
 
+    private String region;
 
-	private String region;
 
+    private String codeDouane;
 
-	private String codeDouane;
 
+    private String rne;
 
 
-	private String rne;
+    private String cif;
 
 
+    private String incoterm;
 
-	private String cif;
+    private String telecopie;
 
 
+    @Size(min = 2, message = "client phone should have at least 2 characters")
+    @NotEmpty(message = "client phone  should not empty")
+    private String phone;
 
-	private String incoterm;
+    private String echeance;
 
-	private String telecopie;
 
+    private String modePaiement;
 
-	@Size(min = 2, message = "client phone should have at least 2 characters")
-	@NotEmpty(message = "client phone  should not empty")
-	private String phone;
 
-	private String echeance;
+    private String nomBanque;
 
 
+    private String adresseBanque;
 
-	private String modePaiement;
 
+    private String rib;
 
 
-	private String nomBanque;
+    private String swift;
 
+    private String email;
 
-	private String adresseBanque;
 
+    private boolean miseEnVeille;
 
-	private String rib;
 
+    private Date dateMiseEnVeille;
 
 
-	private String swift;
+    private int blocage;
 
-	@Email(message = "email is not valid")
-	private String email;
 
+    private Date dateBlocage;
 
 
+    private List<Contact> contact;
+    private List<Picture> pictures;
 
-	private boolean miseEnVeille;
+    private List<CommandeClient> listCommandes = new ArrayList<>();
 
-
-	private Date dateMiseEnVeille;
-
-
-	private int blocage;
-
-
-	private Date dateBlocage;
-
-
-	private List <Contact> contact;
-	private List <Picture> pictures;
-
-	private List<CommandeClient> listCommandes = new ArrayList<>();
-    
 }

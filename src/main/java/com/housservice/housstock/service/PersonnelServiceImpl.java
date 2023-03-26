@@ -227,7 +227,7 @@ public class PersonnelServiceImpl implements PersonnelService {
             }).collect(Collectors.toList());
             List<String> nomConducteurs = new ArrayList<>();
             for (PersonnelDto personnel : personnels) {
-                if (personnel.getPoste().equals("Conducteur")) {
+                if (personnel.getPoste().equals("Conducteur machine")) {
                     nomConducteurs.add(personnel.getNom());
                 }
             }
