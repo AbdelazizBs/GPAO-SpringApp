@@ -23,6 +23,7 @@ public class Nomenclature {
     @Transient
     public static final String SEQUENCE_NAME = "nomenclature_sequence";
 
+
     @Id
     private String id;
 
