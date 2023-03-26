@@ -63,6 +63,7 @@ public class Nomenclature {
     private boolean miseEnVeille;
 
     private Date dateMiseEnVeille;
+
     private List<EtapeProduction> etapeProductions;
 
 

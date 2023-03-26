@@ -18,7 +18,7 @@ public interface NomenclatureRepository extends MongoRepository<Nomenclature, St
     boolean existsNomenclatureByNomNomenclature(String nomNomenclature);
 
     Optional<Nomenclature> findNomenclatureByNomNomenclature(String nomNomenclature);
-
+    
     List<Nomenclature> findNomenclatureByMiseEnVeille(boolean miseEnVeille);
 
     List<Nomenclature> findNomenclatureByMiseEnVeilleAndType(boolean miseEnVeille, String type);
