@@ -635,17 +635,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @Override
-    public List<String> getParentsNameFiltered(String idNomEnClature) throws ResourceNotFoundException {
-        Nomenclature nomenclatures = nomenclatureRepository.findById(idNomEnClature)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomEnClature)));
-        List<Nomenclature> nomenclatureList = nomenclatureRepository.findAll();
-        // return list nomenclatures after filtered by type
-        return nomenclatureList.stream().filter(nomenclature -> !nomenclature.getNomNomenclature().equals(nomenclatures.getNomNomenclature()))
-                .map(Nomenclature::getNomNomenclature).collect(Collectors.toList());
-
-    }
+    
 
     @Override
     public List<String> getNomenclatureNameAffectedForClient(String idClient) throws ResourceNotFoundException {

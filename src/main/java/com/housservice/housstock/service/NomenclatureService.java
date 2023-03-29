@@ -42,7 +42,6 @@ public interface NomenclatureService {
 
     ResponseEntity<Map<String, Object>> getParent();
 
-    List<String> getParentsNameFiltered(String idNomenclature) throws ResourceNotFoundException;
 
     List<String> getNomenclatureNameAffectedForClient(String idClient) throws ResourceNotFoundException;
 
