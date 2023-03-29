@@ -3,6 +3,7 @@ package com.housservice.housstock.model.dto;
 import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.Picture;
+import com.housservice.housstock.model.enums.TypeNomEnClature;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -20,12 +21,15 @@ public class NomenclatureDto {
     private List<String> clientId;
     private List<String> fournisseurId;
     private String description;
-    private String type;
+    private TypeNomEnClature type;
     private String nature;
-    private List<String> parentsId;
-    private List<String> childrensName;
+    private List<String> childrensId;
+    private List<String> parentsName;
     private List<Nomenclature> childrens;
     private List<EtapeProduction> etapeProductions;
+
+
+    private List<String> parentsId;
 
     private String categorie;
     private String refIris;

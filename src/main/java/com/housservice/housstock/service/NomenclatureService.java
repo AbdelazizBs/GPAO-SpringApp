@@ -40,9 +40,9 @@ public interface NomenclatureService {
 
     Optional<Nomenclature> getNomenclatureById(String id);
 
-    ResponseEntity<Map<String, Object>> getChildrens();
+    ResponseEntity<Map<String, Object>> getParent();
 
-    List<String> getChildrensFilteredAndOpenToUpdate(String idNomenclature) throws ResourceNotFoundException;
+    List<String> getParentsNameFiltered(String idNomenclature) throws ResourceNotFoundException;
 
     List<String> getNomenclatureNameAffectedForClient(String idClient) throws ResourceNotFoundException;
 
@@ -55,7 +55,7 @@ public interface NomenclatureService {
     List<String> getNomenclaturesNameFrs();
 
     void createNewNomenclature(String nomNomenclature,
-                               List<String> childrensName,
+                               List<String> parentsName,
 
                                String description,
                                String refiIris,
@@ -84,7 +84,7 @@ public interface NomenclatureService {
                             String nature,
 
                             String categorie,
-                            List<String> childrensName,
+                            List<String> parentsName,
                             List<String> raisonSoClient,
                             List<String> intituleFrs,
 

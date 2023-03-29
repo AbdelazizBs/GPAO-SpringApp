@@ -18,10 +18,8 @@ public interface NomenclatureRepository extends MongoRepository<Nomenclature, St
     boolean existsNomenclatureByNomNomenclature(String nomNomenclature);
 
     Optional<Nomenclature> findNomenclatureByNomNomenclature(String nomNomenclature);
-    
-    List<Nomenclature> findNomenclatureByMiseEnVeille(boolean miseEnVeille);
 
-    List<Nomenclature> findNomenclatureByMiseEnVeilleAndType(boolean miseEnVeille, String type);
+    List<Nomenclature> findNomenclatureByMiseEnVeille(boolean miseEnVeille);
 
     @Query("{$or:[{'nomNomenclature': {$regex : ?0}},{'type': {$regex : ?0}} ,{'nature': {$regex : ?0}} ,{'categorie': {$regex : ?0}}] }")
     Page<Nomenclature> findNomenclatureByTextToFindAndMiseEnVeille(String textToFind, boolean b, Pageable pageable);
