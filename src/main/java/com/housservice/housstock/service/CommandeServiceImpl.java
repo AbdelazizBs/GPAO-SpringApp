@@ -118,7 +118,6 @@ public class CommandeServiceImpl implements CommandeService{
     public int getallCommande() {
         try {
             List<Commande> commande = commandeRepository.findAll();
-            System.out.println(commande);
             return (int) commande.stream().count();
         } catch (Exception e) {
             System.out.println(e.getMessage());

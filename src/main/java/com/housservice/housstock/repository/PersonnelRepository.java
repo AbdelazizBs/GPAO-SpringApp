@@ -20,4 +20,5 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     Page<Personnel> findPersonnelByTextToFind(String textToFind,Pageable pageable);
 
 
+    Optional<Personnel> findByEmail(String email);
 }

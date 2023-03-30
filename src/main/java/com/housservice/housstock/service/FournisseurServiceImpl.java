@@ -515,7 +515,6 @@ public class FournisseurServiceImpl implements FournisseurService {
 		for(int i=0;i<activeFournisseurs.size();i++){
 			Fournisseur fournisseur=activeFournisseurs.get(i);
 			date=fournisseur.getDate().getMonth()+1;
-			System.out.println(date);
 			switch (date){
 				case 9:
 					nbAFournisseurs.set(0, nbAFournisseurs.get(0) + 1);
