@@ -32,6 +32,7 @@ public class PersonnelDto {
 	private String photo;
 
 	private String ville;
+	private Date date ;
 
 
 	private String codePostal;

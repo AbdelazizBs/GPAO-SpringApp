@@ -3,21 +3,31 @@ package com.housservice.housstock.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
+
 @Getter
 @Setter
 @Document(collection = "comptes")
 public class Compte {
-    @Indexed(unique=true)
+    @Id
+    private String id;
     private String email;
-    private String password;
-    private String post;
 
-    public Compte(String email, String password, String post) {
+    private String password;
+    private String idPersonnel;
+    private String role;
+    private Date datelastlogin;
+
+    public Compte(String email, String password, String idPersonnel, String role, Date datelastlogin) {
         this.email = email;
         this.password = password;
-        this.post = post;
+        this.idPersonnel = idPersonnel;
+        this.role = role;
+        this.datelastlogin = datelastlogin;
     }
 
     public Compte() {

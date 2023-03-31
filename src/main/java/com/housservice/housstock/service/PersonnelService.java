@@ -4,6 +4,7 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -36,5 +37,8 @@ public interface PersonnelService {
     void deletePersonnel(String personnelId);
 
     void deletePersonnelSelected(List<String> idPersonnelsSelected);
+    int getPersonnalByMonth();
+    int getallPersonnal();
+    List<Integer> getPersListe(boolean b);
 
 }

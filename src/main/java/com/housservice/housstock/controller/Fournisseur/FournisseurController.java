@@ -1,4 +1,4 @@
-package com.housservice.housstock.controller.fournisseur;
+package com.housservice.housstock.controller.Fournisseur;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
@@ -322,6 +322,10 @@ public class FournisseurController {
 	@GetMapping("/getFrsNoActifListe")
 	public List<Integer> getFrsnoActifListe(){
 		return fournisseurService.getFrsListe(true);
+	}
+	@GetMapping("/getallcommande")
+	public int getAllCommande(){
+		return fournisseurService.getAllCommande();
 	}
 
 }

@@ -3,6 +3,7 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.PersonnelMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.repository.PersonnelRepository;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -267,5 +270,71 @@ public class PersonnelServiceImpl implements PersonnelService {
 			personnelRepository.deleteById(id);
 		}
 	}
+	@Override
+	public int getPersonnalByMonth() {
+		try {
+			LocalDate today = LocalDate.now();
+			ZoneId defaultZoneId = ZoneId.systemDefault();
+			LocalDate startD = LocalDate.now().withDayOfMonth(1);
+			Date Firstday = Date.from(startD.atStartOfDay(defaultZoneId).toInstant());
+			LocalDate endD = LocalDate.now().withDayOfMonth(today.getMonth().length(today.isLeapYear()));;
+			Date Lastday = Date.from(endD.atStartOfDay(defaultZoneId).toInstant());
+			List<Personnel> personnal = personnelRepository.findBydateBetween(Firstday, Lastday);
+			return (int) personnal.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public int getallPersonnal() {
+		try {
+			List<Personnel> personnel = personnelRepository.findAll();
+			return (int) personnel.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public List<Integer> getPersListe(boolean b) {
+		int date;
+
+		List<Integer> nbPersonnels = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+
+		List<Personnel> activePersonnels =personnelRepository.findPersonnelByMiseEnVeille(b);
+		for(int i = 0; i< activePersonnels.size(); i++){
+			Personnel personnel= activePersonnels.get(i);
+			date=personnel.getDate().getMonth()+1;
+			System.out.println(date);
+			switch (date){
+				case 9:
+					nbPersonnels .set(0, nbPersonnels .get(0) + 1);
+					break;
+				case 10:
+					nbPersonnels .set(1, nbPersonnels .get(1) + 1);
+					break;
+				case 11:
+					nbPersonnels .set(2, nbPersonnels .get(2) + 1);
+					break;
+				case 12:
+					nbPersonnels .set(3, nbPersonnels .get(3) + 1);
+					break;
+				case 1:
+					nbPersonnels .set(4, nbPersonnels .get(4) + 1);
+					break;
+				case 2:
+					nbPersonnels .set(5, nbPersonnels .get(5) + 1);
+					break;
+				case 3:
+					nbPersonnels .set(6, nbPersonnels .get(6) + 1);
+					break;
+			}
+		}
+		return nbPersonnels ;
+	}
+
 
 }

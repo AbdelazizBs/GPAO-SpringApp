@@ -91,4 +91,5 @@ public interface FournisseurService {
 	int getFournisseurByMonth();
 	int getallFournisseur();
 	List<Integer> getFrsListe(boolean b);
+	int getAllCommande();
 }

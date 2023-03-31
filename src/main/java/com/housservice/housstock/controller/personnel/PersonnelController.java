@@ -153,5 +153,24 @@ public class PersonnelController {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
+	@GetMapping("/getPersonnalByMonth")
+	public int getPersonnalByMonth(){
+		return personnelService.getPersonnalByMonth();
+	}
+
+	@GetMapping("/getallPersonnal")
+	public int getallPersonnal(){
+		return personnelService.getallPersonnal();
+	}
+
+	@GetMapping("/getPersActifListe")
+	public List<Integer> getPersActifListe(){
+		return personnelService.getPersListe(false);
+	}
+	@GetMapping("/getPersNoActifListe")
+	public List<Integer> getPersNoActifListe(){
+		return personnelService.getPersListe(true);
+	}
+
 
 }
