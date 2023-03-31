@@ -54,7 +54,7 @@ public class CompteServiceImpl implements CompteService{
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         Compte compte = compteRepository.findByEmail(loginRequest.getEmail());
         if (compte == null) {
-            throw new LoginException("Invalid email or password.");
+            throw new LoginException("Invalid username or password.");
         }
         if (bcrypt.matches(loginRequest.getPassword(),compte.getPassword())) {
             String token = generateToken(compte);
@@ -62,7 +62,7 @@ public class CompteServiceImpl implements CompteService{
             compteRepository.save(compte);
             return token;
         } else {
-            throw new LoginException("Invalid email or password.");
+            throw new LoginException("Invalid username or password.");
         }
     }
 
@@ -85,9 +85,8 @@ public class CompteServiceImpl implements CompteService{
     @Override
     public void add(CompteDto compteDto) throws ResourceNotFoundException {
         try {
-
             compteDto.setPassword(passwordEncoder.encode(compteDto.getPassword()));
-            Optional<Personnel> personnel = personnelRepository.findByEmail(compteDto.getEmail());
+            Optional<Personnel> personnel = personnelRepository.findByFullName(compteDto.getIdPersonnel());
             compteDto.setIdPersonnel(personnel.get().getId());
             Compte compte = CompteMapper.MAPPER.toCompte(compteDto);
             compteRepository.save(compte);
@@ -188,6 +187,14 @@ public class CompteServiceImpl implements CompteService{
         List<Roles> roles = rolesRepository.findAll();
         return roles.stream()
                 .map(Roles::getRole)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getAllPer() {
+        List<Personnel> personnels = personnelRepository.findAll();
+        return personnels.stream()
+                .map(Personnel::getFullName)
                 .collect(Collectors.toList());
     }
 }

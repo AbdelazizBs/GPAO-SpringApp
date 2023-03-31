@@ -50,15 +50,10 @@ public class Personnel {
 	private String ville;
 
 
-
-
-
 	private String rib;
 
 
 	private String poste;
-
-
 
 
 	private String phone;
@@ -85,7 +80,7 @@ public class Personnel {
 
 	private String categorie;
 
-
+	private String fullName;
 
 	private String email;
 	
@@ -100,7 +95,7 @@ public class Personnel {
 					 String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
 					 String echelon, String categorie, String matricule, String phone,
 					boolean miseEnVeille, String ville, String codePostal,
-					 String email) {
+					 String email,String fullName) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaissance = dateNaissance;
@@ -119,5 +114,6 @@ public class Personnel {
 		this.ville = ville;
 		this.codePostal = codePostal;
 		this.email = email;
+		this.fullName=fullName;
 	}
 }

@@ -4,15 +4,10 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.FournisseurMapper;
 import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.Commande;
-import com.housservice.housstock.model.Fournisseur;
-import com.housservice.housstock.model.Contact;
-import com.housservice.housstock.model.Picture;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.model.dto.ContactDto;
-import com.housservice.housstock.repository.FournisseurRepository;
-import com.housservice.housstock.repository.ContactRepository;
-import com.housservice.housstock.repository.PictureRepository;
+import com.housservice.housstock.repository.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +40,8 @@ import java.util.zip.Inflater;
 public class FournisseurServiceImpl implements FournisseurService {
 
 	private final FournisseurRepository fournisseurRepository;
+	private final CommandeRepository commandeRepository;
+	private final CommandeSuiviRepository commandeSuiviRepository;
 
 	final
 	PictureRepository pictureRepository;
@@ -57,11 +54,13 @@ public class FournisseurServiceImpl implements FournisseurService {
 	@Autowired
 	public FournisseurServiceImpl(FournisseurRepository fournisseurRepository,
 							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository,
-							 PictureRepository pictureRepository) {
+							 PictureRepository pictureRepository,CommandeRepository commandeRepository,CommandeSuiviRepository commandeSuiviRepository) {
 		this.fournisseurRepository = fournisseurRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
 		this.pictureRepository = pictureRepository;
+		this.commandeRepository =commandeRepository;
+		this.commandeSuiviRepository=commandeSuiviRepository;
 	}
 	public static byte[] decompressBytes(byte[] data) {
 		Inflater inflater = new Inflater();
@@ -567,4 +566,26 @@ public class FournisseurServiceImpl implements FournisseurService {
 			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	@Override
+	public int getAllCommande() {
+		try {
+			List<Commande> commande = commandeRepository.findAll();
+
+			return (int) (commande.stream().count());
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+	@Override
+	public int getAllCommandeSuivi() {
+		try {
+			List<CommandeSuivi> commande = commandeSuiviRepository.findAll();
+			return (int) commande.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
 }

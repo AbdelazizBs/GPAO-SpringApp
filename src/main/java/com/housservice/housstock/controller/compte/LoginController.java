@@ -107,7 +107,9 @@ public class LoginController {
     @GetMapping("/getAllRole")
     public List<String> getAllRole(){
         return loginService.getAllRole();
-
     }
-
+    @GetMapping("/getAllPer")
+    public List<String> getAllPer(){
+        return loginService.getAllPer();
+    }
 }

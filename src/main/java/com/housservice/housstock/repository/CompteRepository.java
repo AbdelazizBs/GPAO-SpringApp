@@ -9,8 +9,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 public interface CompteRepository extends MongoRepository<Compte, String> {
-    Compte findByEmail(String email);
 
     @Query( "{$or:[{'email': {$regex : ?0}} ,{'password': {$regex : ?0}},{'idPersonnel': {$regex : ?0}},{'role': {$regex : ?0}}]}")
     Page<Compte> findCompteByTextToFind(String textToFind, Pageable pageable);
+
+    Compte findByEmail(String email);
 }

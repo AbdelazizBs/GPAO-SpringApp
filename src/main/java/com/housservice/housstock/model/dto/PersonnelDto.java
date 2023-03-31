@@ -37,7 +37,7 @@ public class PersonnelDto {
 	private String codePostal;
 
 	@NotBlank
-	@Size(max = 100)
+	@Size(min = 8, max = 8, message = "Input must be exactly 8 characters")
 	@Indexed(unique = true)
 	private String cin;
 
@@ -50,7 +50,7 @@ public class PersonnelDto {
 
 
 
-
+	private String fullName;
 
 	private String rib;
 

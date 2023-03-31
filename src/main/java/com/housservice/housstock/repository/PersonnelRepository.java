@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public interface PersonnelRepository extends MongoRepository<Personnel, String>{
@@ -21,4 +23,11 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
 
 
     Optional<Personnel> findByEmail(String email);
+
+    List<Personnel> findPersonnelByMiseEnVeille(boolean b);
+
+    List<Personnel> findBydateEmbaucheBetween(Date firstday, Date lastday);
+
+
+    Optional<Personnel> findByFullName(String idPersonnel);
 }

@@ -36,5 +36,8 @@ public interface PersonnelService {
     void deletePersonnel(String personnelId);
 
     void deletePersonnelSelected(List<String> idPersonnelsSelected);
+    int getPersonnalByMonth();
+    int getallPersonnal();
+    List<Integer> getPersListe(boolean b);
 
 }

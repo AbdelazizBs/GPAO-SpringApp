@@ -42,13 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll();
         http.authorizeRequests().antMatchers(GET,"/api/v1/personnel/**").hasAnyAuthority("RH","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/client/**").hasAnyAuthority("commercial","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/fournisseur/**").hasAnyAuthority("commercial","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/commande/**").hasAnyAuthority("commercial","Admin");
+        http.authorizeRequests().antMatchers(GET,"/api/v1/fournisseur/**").hasAnyAuthority("Magasin","Admin");
+        http.authorizeRequests().antMatchers(GET,"/api/v1/commande/**").hasAnyAuthority("Magasin","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/compte/**").hasAnyAuthority("Admin");
-
         http.addFilterBefore(new FilterAuthorization(),UsernamePasswordAuthenticationFilter.class);
     }
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

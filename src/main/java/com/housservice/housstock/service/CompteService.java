@@ -24,4 +24,6 @@ public interface CompteService {
     public void deleteCompte(Compte compte);
     Optional<Compte> getCompteById(String id);
 
+    List<String> getAllPer();
+
 }

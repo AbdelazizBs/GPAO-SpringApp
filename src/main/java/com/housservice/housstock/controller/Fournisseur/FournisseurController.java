@@ -323,6 +323,16 @@ public class FournisseurController {
 	@GetMapping("/report/{id}")
 	public ResponseEntity<byte[]> generateReport(@PathVariable String id){
 		return fournisseurService.RecordReport(id);
-
 	}
+
+	@GetMapping("/getallcommande")
+	public int getAllCommande(){
+		return fournisseurService.getAllCommande();
+	}
+
+	@GetMapping("/getAllCommandeSuivi")
+	public int getAllCommandeSuivi(){
+		return fournisseurService.getAllCommandeSuivi();
+	}
+
 }

@@ -311,5 +311,24 @@ public class ClientController {
 
 	}
 
+	@GetMapping("/getClientByMonth")
+	public int getClientByMonth(){
+		return clientService.getClientByMonth();
+	}
+
+	@GetMapping("/getallClient")
+	public int getallClient(){
+		return clientService.getallClient();
+	}
+
+	@GetMapping("/getClientActifListe")
+	public List<Integer> getClientActifListe(){
+		return clientService.getClientListe(false);
+	}
+	@GetMapping("/getClientNoActifListe")
+	public List<Integer> getClientNoActifListe(){
+		return clientService.getClientListe(true);
+	}
+
 	
 }

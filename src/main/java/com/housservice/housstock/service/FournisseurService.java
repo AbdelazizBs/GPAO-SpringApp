@@ -92,5 +92,7 @@ public interface FournisseurService {
 
     List<Fournisseur>getAllRefFournisseur(boolean b);
     ResponseEntity<byte[]> RecordReport(String id) ;
+    int getAllCommande();
+    int getAllCommandeSuivi();
 
-    }
+}
