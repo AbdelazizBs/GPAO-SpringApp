@@ -7,6 +7,7 @@ import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.repository.*;
+import com.housservice.housstock.service.CommandeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,6 +43,8 @@ class HousstockApplicationTests {
 	private CommandeRepository commandeRepository;
 	@Autowired
 	private ArticleRepository articleRepository;
+	@Autowired
+	private CommandeService commandeService;
 
 	@Test
 	public void testCreateNewClient(){
@@ -557,7 +560,7 @@ class HousstockApplicationTests {
 	}
 	@Test
 	public void testCreateNewCommande(){
-		Commande commande=new Commande("2023/03/14","bbb","14587","f1");
+		Commande commande=new Commande("2023/01/14","bnjn","14587","f2");
 		commandeRepository.save(commande);
 
 	}
@@ -666,7 +669,18 @@ class HousstockApplicationTests {
 		commandeRepository.save(commande);
 		articleRepository.deleteById("63fbc31daac54631846057fb");
 	}
+@Test
+	public void testIntGetAllCommande(){
+	/*Commande commande1=new Commande("2023/01/14","nothing","14478","f1");
+	commandeRepository.save(commande1);
+	Commande commande2=new Commande("2023/01/15","nothing","155478","f2");
+	commandeRepository.save(commande2);*/
 
+	List<Commande> commandes = commandeRepository.findAll();
+	int nbCommande = commandes.size();
+	assertEquals(12, nbCommande);
+
+}
 
 
 
