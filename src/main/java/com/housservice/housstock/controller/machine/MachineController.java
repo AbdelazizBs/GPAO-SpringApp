@@ -40,7 +40,7 @@ public class MachineController {
         return machineService.getType();
     }
 
-    @GetMapping("/search")
+   /* @GetMapping("/search")
     @ApiOperation(value = "service to filter machines ")
     public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
                                                       @RequestParam boolean enVeille,
@@ -48,7 +48,7 @@ public class MachineController {
                                                       @RequestParam(defaultValue = "3") int size) {
         return machineService.search(textToFind, page, size, enVeille);
 
-    }
+    }*/
 
     @PutMapping(value = "/addMachine")
     public ResponseEntity<String> createNewMachine(

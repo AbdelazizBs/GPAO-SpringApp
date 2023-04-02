@@ -20,7 +20,7 @@ public interface MachineService {
                           String type
                           ) throws ResourceNotFoundException;
 
-    public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
+   // public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
     public void updateMachine(String idMachine ,String refMachine,
                               String nomConducteur, String libelle,
                               int nbConducteur, Date dateMaintenance,
