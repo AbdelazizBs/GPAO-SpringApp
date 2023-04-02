@@ -21,8 +21,8 @@ public class MatierePrimaire {
     private String designation;
 
 
-    public MatierePrimaire(String id, String designation) {
-        this.id = id;
+    public MatierePrimaire( String designation) {
+
         this.designation = designation;
     }
 }

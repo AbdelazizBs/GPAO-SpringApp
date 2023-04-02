@@ -19,7 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,6 +44,8 @@ class HousstockApplicationTests {
 	private ArticleRepository articleRepository;
 	@Autowired
 	private CommandeService commandeService;
+	@Autowired
+	private MatierePrimaireRepository matierePrimaireRepository;
 
 	@Test
 	public void testCreateNewClient(){
@@ -670,7 +671,7 @@ class HousstockApplicationTests {
 		articleRepository.deleteById("63fbc31daac54631846057fb");
 	}
 @Test
-	public void testIntGetAllCommande(){
+	public void testGetAllCommande(){
 	/*Commande commande1=new Commande("2023/01/14","nothing","14478","f1");
 	commandeRepository.save(commande1);
 	Commande commande2=new Commande("2023/01/15","nothing","155478","f2");
@@ -681,6 +682,39 @@ class HousstockApplicationTests {
 	assertEquals(12, nbCommande);
 
 }
+	@Test
+	public void testGetAllClient(){
+
+
+		List<Client> clients = clientRepository.findAll();
+		int nbClient = clients.size();
+		assertEquals(2, nbClient);
+
+	}
+	@Test
+	public void testGetAllFournisseurs(){
+
+
+		List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
+		int nbFournisseur = fournisseurs.size();
+		assertEquals(22, nbFournisseur);
+
+	}
+	@Test
+	public void testAddMatiere(){
+		MatierePrimaire matierePrimaire=new MatierePrimaire("carton");
+		matierePrimaireRepository.save(matierePrimaire);
+	}
+	@Test
+	public void testGetAllMatiere(){
+		List<MatierePrimaire> matieres = matierePrimaireRepository.findAll();
+		List<String> nbmatiere=new ArrayList<>();
+		 nbmatiere=matieres.stream()
+				.map(MatierePrimaire::getDesignation)
+				.collect(Collectors.toList());
+		assertEquals(1, matieres.size());
+
+	}
 
 
 
