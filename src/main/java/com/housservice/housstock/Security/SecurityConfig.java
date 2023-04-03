@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET,"/api/v1/fournisseur/**").hasAnyAuthority("Magasin","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/commande/**").hasAnyAuthority("Magasin","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/compte/**").hasAnyAuthority("Admin");
+        http.authorizeRequests().antMatchers(GET,"/api/v1/machine/**").hasAnyAuthority("production","Admin");
         http.addFilterBefore(new FilterAuthorization(),UsernamePasswordAuthenticationFilter.class);
     }
     @Bean

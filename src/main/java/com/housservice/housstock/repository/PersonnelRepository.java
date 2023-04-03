@@ -30,4 +30,6 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
 
 
     Optional<Personnel> findByFullName(String idPersonnel);
+
+    List<Personnel> findPersonnelByPoste(String conducteurMachine);
 }

@@ -56,6 +56,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 			if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
 				throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
 			}
+			personnelDto.setFullName(personnelDto.getNom()+" "+personnelDto.getPrenom());
 			Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
 			personnel.setMiseEnVeille(false);
 			personnelRepository.save(personnel);
