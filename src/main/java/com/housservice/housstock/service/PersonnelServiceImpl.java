@@ -3,7 +3,6 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.PersonnelMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.repository.PersonnelRepository;
@@ -279,7 +278,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 			Date Firstday = Date.from(startD.atStartOfDay(defaultZoneId).toInstant());
 			LocalDate endD = LocalDate.now().withDayOfMonth(today.getMonth().length(today.isLeapYear()));;
 			Date Lastday = Date.from(endD.atStartOfDay(defaultZoneId).toInstant());
-			List<Personnel> personnal = personnelRepository.findBydateBetween(Firstday, Lastday);
+			List<Personnel> personnal = personnelRepository.findBydateEmbaucheBetween(Firstday, Lastday);
 			return (int) personnal.stream().count();
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -307,7 +306,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		List<Personnel> activePersonnels =personnelRepository.findPersonnelByMiseEnVeille(b);
 		for(int i = 0; i< activePersonnels.size(); i++){
 			Personnel personnel= activePersonnels.get(i);
-			date=personnel.getDate().getMonth()+1;
+			date=personnel.getDateEmbauche().getMonth()+1;
 			System.out.println(date);
 			switch (date){
 				case 9:
@@ -334,6 +333,14 @@ public class PersonnelServiceImpl implements PersonnelService {
 			}
 		}
 		return nbPersonnels ;
+	}
+	@Override
+	public void Restaurer(String idPersonnel) throws ResourceNotFoundException {
+
+		Personnel personnel = personnelRepository.findById(idPersonnel).orElseThrow(() -> new ResourceNotFoundException(
+				MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
+		personnel.setMiseEnVeille(false);
+		personnelRepository.save(personnel);
 	}
 
 

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -33,7 +34,21 @@ public class MachineController {
         this.machineService = machineService;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
     }
+    @GetMapping("/getConducteur")
+    @ApiOperation(value = "service to get one Type")
+    public List<String> getConducteur() {
+        return machineService.getConducteur();
+    }
 
+
+    @PutMapping("/addType/{type}")
+    public ResponseEntity <String> addType(
+            @ApiParam(name = "type", value="type", required = true)
+            @PathVariable(value = "type", required = true) @NotEmpty(message = "{http.error.0001}")  String type) throws ResourceNotFoundException {
+        machineService.addType(type);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+
+    }
     @GetMapping("/getType")
     @ApiOperation(value = "service to get one Type")
     public List<String> getType() {
@@ -52,56 +67,33 @@ public class MachineController {
 
     @PutMapping(value = "/addMachine")
     public ResponseEntity<String> createNewMachine(
-            @RequestParam("refMachine")
-            @NotEmpty
-            String refMachine,
-            @RequestParam("nomConducteur")
-            @NotEmpty
-            String nomConducteur,
-            @RequestParam("type")
-            @NotEmpty
-            String type,
-            @RequestParam("nbConducteur")
-            @NotEmpty
-            int nbConducteur,
-            @RequestParam("libelle")
-            @NotEmpty
-            String libelle,
-            @RequestParam("dateMaintenance")
-            @NotEmpty Date dateMaintenance
-
-
+            @Valid @RequestBody MachineDto machineDto
     ) throws ResourceNotFoundException {
-        machineService.createNewMachine(refMachine,nomConducteur, libelle,  nbConducteur,dateMaintenance,type);
+        machineService.createNewMachine(machineDto);
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
     }
+    @GetMapping("/getAllMachine")
+    @ApiOperation(value = "service to get get All Personnel")
+    public ResponseEntity<Map<String, Object>> getAllMachine(@RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "3") int size){
+        return machineService.getAllMachine(page,size);
 
+    }
+    @GetMapping("/getAllMachineEnVielle")
+    @ApiOperation(value = "service to get get All Personnel")
+    public ResponseEntity<Map<String, Object>> getAllMachineEnVielle(@RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "3") int size){
+        return machineService.getAllMachineEnVielle(page,size);
+
+    }
     @PutMapping("/updateMachine/{idMachine}")
     public ResponseEntity<String> updateMachine(
             @ApiParam(name = "idMachine", value = "id of machine", required = true)
             @PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}") String idMachine,
-            @RequestParam("refMachine")
-            @NotEmpty
-            String refMachine,
-            @RequestParam("nomConducteur")
-            @NotEmpty
-            String nomConducteur,
-            @RequestParam("type")
-            @NotEmpty
-            String type,
-            @RequestParam("nbConducteur")
-            @NotEmpty
-            int nbConducteur,
-            @RequestParam("libelle")
-            @NotEmpty
-            String libelle,
-            @RequestParam("dateMaintenance")
-            @NotEmpty Date dateMaintenance
-
-
+            @Valid @RequestBody MachineDto machineDto
     ) throws ResourceNotFoundException {
-        machineService.createNewMachine(refMachine,nomConducteur, libelle,  nbConducteur,dateMaintenance,type);
+        machineService.updateMachine(machineDto,idMachine);
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
@@ -137,6 +129,16 @@ public class MachineController {
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
+
+    @DeleteMapping("/deleteSelectedMachine/{idMachinesSelected}")
+    @ApiOperation(value = "service to delete many Personnel by Id.")
+    public Map<String, Boolean> deletePersonnelSelected(
+            @ApiParam(name = "idMachinesSelected", value = "ids of machine Selected", required = true) @PathVariable(value = "idMachinesSelected", required = true) @NotEmpty(message = "{http.error.0001}") List<String> idMachinesSelected) {
+        machineService.deleteMachineSelected(idMachinesSelected);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
     @DeleteMapping("/deleteMachine/{id}")
     @ApiOperation(value = "service to delete one Machine by Id.")
     public Map < String, Boolean > deletemachine(
@@ -150,6 +152,13 @@ public class MachineController {
         Map < String, Boolean > response = new HashMap< >();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+    @PutMapping("/restaurer/{id}")
+    public ResponseEntity<String> restaurer(
+            @ApiParam(name = "idMachine", value = "id of machine", required = true) @PathVariable(value = "idMachine", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+            throws ResourceNotFoundException {
+        machineService.Restaurer(id);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 
 }

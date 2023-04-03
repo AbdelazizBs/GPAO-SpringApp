@@ -3,18 +3,13 @@ package com.housservice.housstock.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.mapper.CommandeMapper;
 import com.housservice.housstock.mapper.CompteMapper;
-import com.housservice.housstock.mapper.FournisseurMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.*;
-import com.housservice.housstock.model.dto.CommandeDto;
 import com.housservice.housstock.model.dto.CompteDto;
-import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.repository.CompteRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
 import com.housservice.housstock.repository.RolesRepository;
-import org.apache.tomcat.jni.PasswordCallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import javax.security.auth.login.LoginException;
 import java.text.MessageFormat;
 import java.util.*;
@@ -54,7 +48,7 @@ public class CompteServiceImpl implements CompteService{
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         Compte compte = compteRepository.findByEmail(loginRequest.getEmail());
         if (compte == null) {
-            throw new LoginException("Invalid email or password.");
+            throw new LoginException("Invalid username or password.");
         }
         if (bcrypt.matches(loginRequest.getPassword(),compte.getPassword())) {
             String token = generateToken(compte);
@@ -62,7 +56,7 @@ public class CompteServiceImpl implements CompteService{
             compteRepository.save(compte);
             return token;
         } else {
-            throw new LoginException("Invalid email or password.");
+            throw new LoginException("Invalid username or password.");
         }
     }
 
@@ -85,9 +79,8 @@ public class CompteServiceImpl implements CompteService{
     @Override
     public void add(CompteDto compteDto) throws ResourceNotFoundException {
         try {
-
             compteDto.setPassword(passwordEncoder.encode(compteDto.getPassword()));
-            Optional<Personnel> personnel = personnelRepository.findByEmail(compteDto.getEmail());
+            Optional<Personnel> personnel = personnelRepository.findByFullName(compteDto.getIdPersonnel());
             compteDto.setIdPersonnel(personnel.get().getId());
             Compte compte = CompteMapper.MAPPER.toCompte(compteDto);
             compteRepository.save(compte);
@@ -189,5 +182,27 @@ public class CompteServiceImpl implements CompteService{
         return roles.stream()
                 .map(Roles::getRole)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getAllPer() {
+        List<Personnel> personnels = personnelRepository.findAll();
+        return personnels.stream()
+                .map(Personnel::getFullName)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public void miseEnVeille(String idCompte) throws ResourceNotFoundException {
+        Compte compte = compteRepository.findById(idCompte)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idCompte)));
+        compte.setMiseEnVeille(true);
+        compteRepository.save(compte);
+    }
+    @Override
+    public void Restaurer(String idCompte)throws ResourceNotFoundException{
+        Compte compte = compteRepository.findById(idCompte)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idCompte)));
+        compte.setMiseEnVeille(false);
+        compteRepository.save(compte);
     }
 }

@@ -328,6 +328,13 @@ public class ClientController {
 	public List<Integer> getClientNoActifListe(){
 		return clientService.getClientListe(true);
 	}
+	@PutMapping("/restaurer/{id}")
+	public ResponseEntity<String> restaurer(
+			@ApiParam(name = "idPersonnel", value = "id of client", required = true) @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+			throws ResourceNotFoundException {
+		clientService.Restaurer(id);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
 
 	
 }

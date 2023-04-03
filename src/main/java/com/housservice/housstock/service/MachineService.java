@@ -3,6 +3,7 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 
 import com.housservice.housstock.model.Machine;
+import com.housservice.housstock.model.dto.MachineDto;
 import org.springframework.http.ResponseEntity;
 
 
@@ -14,20 +15,20 @@ import java.util.Optional;
 public interface MachineService {
     public ResponseEntity<Map<String, Object>> onSortActiveMachine(int page, int size, String field, String order);
     public ResponseEntity<Map<String, Object>> onSortMachineNotActive(int page, int size, String field, String order);
-    void createNewMachine(String refMachine,
-                          String nomConducteur, String libelle,
-                          int nbConducteur, Date dateMaintenance,
-                          String type
-                          ) throws ResourceNotFoundException;
+    void createNewMachine(MachineDto machineDto) throws ResourceNotFoundException;
 
    // public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
-    public void updateMachine(String idMachine ,String refMachine,
-                              String nomConducteur, String libelle,
-                              int nbConducteur, Date dateMaintenance,
-                              String type) throws ResourceNotFoundException;
+    public void updateMachine(MachineDto machineDto,String idmachine) throws ResourceNotFoundException;
     void miseEnVeille(String idMachine ) throws ResourceNotFoundException;
     void deleteMachine(Machine machine);
-    Optional<Machine> getMachineById(String id);
+    void deleteMachineSelected(List<String> idMachinesSelected);
 
+    Optional<Machine> getMachineById(String id);
+    ResponseEntity<Map<String, Object>> getAllMachine(int page, int size);
+    ResponseEntity<Map<String, Object>> getAllMachineEnVielle(int page, int size);
     List<String> getType();
+    public List<String> getConducteur();
+    public void addType(String type) throws ResourceNotFoundException;
+
+    void Restaurer(String idMachine) throws ResourceNotFoundException;
 }

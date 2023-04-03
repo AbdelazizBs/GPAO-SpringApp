@@ -24,4 +24,11 @@ public interface CompteService {
     public void deleteCompte(Compte compte);
     Optional<Compte> getCompteById(String id);
 
+    List<String> getAllPer();
+
+    void miseEnVeille(String idCompte) throws ResourceNotFoundException;
+
+
+
+    void Restaurer(String idCompte)throws ResourceNotFoundException;
 }

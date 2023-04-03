@@ -1,4 +1,4 @@
-package com.housservice.housstock.controller.Fournisseur;
+package com.housservice.housstock.controller.fournisseur;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
@@ -38,7 +38,7 @@ public class FournisseurController {
 	final PictureService  pictureService;
 	@Autowired
 	public FournisseurController(FournisseurService fournisseurService, MessageHttpErrorProperties messageHttpErrorProperties,
-								 PictureService pictureService) {
+							PictureService pictureService) {
 		this.fournisseurService = fournisseurService;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.pictureService = pictureService;
@@ -69,7 +69,7 @@ public class FournisseurController {
 	@ApiOperation(value = "service to get Id Fournisseur by raisonSociale.")
 
 	public ResponseEntity<Map<String, Object>>  getIdFournisseurs(  @ApiParam(name = "raisonSociale", value="raisonSociale of fournisseurs", required = true)
-																	@PathVariable(value = "raisonSociale", required = true) @NotEmpty(message = "{http.error.0001}") String raisonSociale) throws ResourceNotFoundException {
+															   @PathVariable(value = "raisonSociale", required = true) @NotEmpty(message = "{http.error.0001}") String raisonSociale) throws ResourceNotFoundException {
 		return fournisseurService.getIdFournisseurs(raisonSociale);
 	}
 
@@ -89,7 +89,11 @@ public class FournisseurController {
 
 	}
 
+	@GetMapping("/getAllRefFournisseur")
+	public List<Fournisseur> getAllRefFournisseur() {
+		return fournisseurService.getAllRefFournisseur(false);
 
+	}
 	@GetMapping("/search")
 	@ApiOperation(value = "service to filter fournisseurs ")
 	public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
@@ -198,9 +202,9 @@ public class FournisseurController {
 	@GetMapping("/onSortActiveFournisseur")
 	@ApiOperation(value = "service to get get All active fournisseur   sorted  and ordered by  params")
 	public ResponseEntity<Map<String, Object>> onSortActiveFournisseur(@RequestParam(defaultValue = "0") int page,
-																	   @RequestParam(defaultValue = "3") int size,
-																	   @RequestParam(defaultValue = "field") String field,
-																	   @RequestParam(defaultValue = "order") String order){
+																  @RequestParam(defaultValue = "3") int size,
+																  @RequestParam(defaultValue = "field") String field,
+																  @RequestParam(defaultValue = "order") String order){
 		return fournisseurService.onSortActiveFournisseur(page,size,field,order);
 
 	}
@@ -208,9 +212,9 @@ public class FournisseurController {
 	@GetMapping("/onSortFournisseurNotActive")
 	@ApiOperation(value = "service to get get All fournisseur not active sorted  and ordered by  params")
 	public ResponseEntity<Map<String, Object>> onSortFournisseurNotActive(@RequestParam(defaultValue = "0") int page,
-																		  @RequestParam(defaultValue = "3") int size,
-																		  @RequestParam(defaultValue = "field") String field,
-																		  @RequestParam(defaultValue = "order") String order){
+																	 @RequestParam(defaultValue = "3") int size,
+																	 @RequestParam(defaultValue = "field") String field,
+																	 @RequestParam(defaultValue = "order") String order){
 		return fournisseurService.onSortFournisseurNotActive(page,size,field,order);
 
 	}
@@ -298,13 +302,6 @@ public class FournisseurController {
 		return response;
 	}
 
-	@GetMapping("/report/{refFournisseurIris}")
-	public ResponseEntity<byte[]> generateReport(@PathVariable String refFournisseurIris){
-
-		return fournisseurService.RecordReport(refFournisseurIris);
-
-	}
-
 	@GetMapping("/getFournisseurByMonth")
 	public int getFournisseurByMonth(){
 		return fournisseurService.getFournisseurByMonth();
@@ -323,9 +320,26 @@ public class FournisseurController {
 	public List<Integer> getFrsnoActifListe(){
 		return fournisseurService.getFrsListe(true);
 	}
+	@GetMapping("/report/{id}")
+	public ResponseEntity<byte[]> generateReport(@PathVariable String id){
+		return fournisseurService.RecordReport(id);
+	}
+
 	@GetMapping("/getallcommande")
 	public int getAllCommande(){
 		return fournisseurService.getAllCommande();
+	}
+
+	@GetMapping("/getAllCommandeSuivi")
+	public int getAllCommandeSuivi(){
+		return fournisseurService.getAllCommandeSuivi();
+	}
+	@PutMapping("/restaurer/{id}")
+	public ResponseEntity<String> restaurer(
+			@ApiParam(name = "idFournisseur", value = "id of fournisseur", required = true) @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+			throws ResourceNotFoundException {
+		fournisseurService.Restaurer(id);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 	}
 
 }

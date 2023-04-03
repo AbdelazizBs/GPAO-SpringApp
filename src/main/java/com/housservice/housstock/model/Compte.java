@@ -21,6 +21,7 @@ public class Compte {
     private String idPersonnel;
     private String role;
     private Date datelastlogin;
+    private boolean miseEnVeille;
 
     public Compte(String email, String password, String idPersonnel, String role, Date datelastlogin) {
         this.email = email;

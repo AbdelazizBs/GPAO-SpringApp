@@ -41,4 +41,5 @@ public interface PersonnelService {
     int getallPersonnal();
     List<Integer> getPersListe(boolean b);
 
+    void Restaurer(String idPersonnel) throws ResourceNotFoundException;
 }

@@ -17,4 +17,5 @@ public class CompteDto {
     private String idPersonnel;
     private String role;
     private Date datelastlogin;
+    private boolean miseEnVeille;
 }

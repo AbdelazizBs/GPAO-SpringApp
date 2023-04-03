@@ -4,16 +4,10 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.FournisseurMapper;
 import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.Commande;
-import com.housservice.housstock.model.Fournisseur;
-import com.housservice.housstock.model.Contact;
-import com.housservice.housstock.model.Picture;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.model.dto.ContactDto;
-import com.housservice.housstock.repository.CommandeRepository;
-import com.housservice.housstock.repository.FournisseurRepository;
-import com.housservice.housstock.repository.ContactRepository;
-import com.housservice.housstock.repository.PictureRepository;
+import com.housservice.housstock.repository.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +39,11 @@ import java.util.zip.Inflater;
 public class FournisseurServiceImpl implements FournisseurService {
 
 	private final FournisseurRepository fournisseurRepository;
+	private final CommandeRepository commandeRepository;
+	private final CommandeSuiviRepository commandeSuiviRepository;
 
 	final
 	PictureRepository pictureRepository;
-	private final CommandeRepository commandeRepository;
 
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
@@ -57,13 +52,14 @@ public class FournisseurServiceImpl implements FournisseurService {
 
 	@Autowired
 	public FournisseurServiceImpl(FournisseurRepository fournisseurRepository,
-								  MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository,
-								  PictureRepository pictureRepository, CommandeRepository commandeRepository) {
+							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository,
+							 PictureRepository pictureRepository,CommandeRepository commandeRepository,CommandeSuiviRepository commandeSuiviRepository) {
 		this.fournisseurRepository = fournisseurRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
 		this.pictureRepository = pictureRepository;
-		this.commandeRepository = commandeRepository;
+		this.commandeRepository =commandeRepository;
+		this.commandeSuiviRepository=commandeSuiviRepository;
 	}
 	public static byte[] decompressBytes(byte[] data) {
 		Inflater inflater = new Inflater();
@@ -106,27 +102,27 @@ public class FournisseurServiceImpl implements FournisseurService {
 
 	@Override
 	public void createNewFournisseur( String refFournisseurIris,
-									  String intitulee,
-									  String adresse,
-									  String codePostal,
-									  String ville,
-									  String pays,
-									  String region,
-									  String phone,
-									  String email,
-									  String statut,
-									  String linkedin,
-									  String abrege,
-									  String siteWeb,
-									  String nomBanque,
-									  String adresseBanque,
-									  String codeDouane,
-									  String rne,
-									  String identifiantTva,
-									  String telecopie,
-									  String rib,
-									  String swift,
-									  MultipartFile[] images) {
+								 String intitulee,
+								 String adresse,
+								 String codePostal,
+								 String ville,
+								 String pays,
+								 String region,
+								 String phone,
+								 String email,
+								 String statut,
+								 String linkedin,
+								 String abrege,
+								 String siteWeb,
+								 String nomBanque,
+								 String adresseBanque,
+								 String codeDouane,
+								 String rne,
+								 String identifiantTva,
+								 String telecopie,
+								 String rib,
+								 String swift,
+								 MultipartFile[] images) {
 		if (fournisseurRepository.existsFournisseurByRefFournisseurIris(refFournisseurIris)) {
 			throw new IllegalArgumentException(	"Matricule existe deja !!");
 		}
@@ -192,26 +188,26 @@ public class FournisseurServiceImpl implements FournisseurService {
 
 	@Override
 	public void updateFournisseur(String idFournisseur ,String refFournisseurIris,
-								  String intitulee,
-								  String adresse,
-								  String codePostal,
-								  String ville,
-								  String pays,
-								  String region,
-								  String phone,
-								  String email,
-								  String statut,
-								  String linkedin,
-								  String abrege,
-								  String siteWeb, String nomBanque,
-								  String adresseBanque,
-								  String codeDouane,
-								  String rne,
-								  String identifiantTva,
-								  String telecopie,
-								  String rib,
-								  String swift,
-								  MultipartFile[] images) throws ResourceNotFoundException {
+							 String intitulee,
+							 String adresse,
+							 String codePostal,
+							 String ville,
+							 String pays,
+							 String region,
+							 String phone,
+							 String email,
+							 String statut,
+							 String linkedin,
+							 String abrege,
+							 String siteWeb, String nomBanque,
+							 String adresseBanque,
+							 String codeDouane,
+							 String rne,
+							 String identifiantTva,
+							 String telecopie,
+							 String rib,
+							 String swift,
+							 MultipartFile[] images) throws ResourceNotFoundException {
 
 		if (!Objects.equals(email, "") && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			throw new IllegalArgumentException("Email invalide !!");
@@ -221,12 +217,6 @@ public class FournisseurServiceImpl implements FournisseurService {
 		}
 		Fournisseur fournisseur = getFournisseurById(idFournisseur)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idFournisseur)));
-		if (!fournisseur.getRefFournisseurIris().equals(refFournisseurIris)) {
-			throw new IllegalArgumentException("Error Id!!");
-		}
-		if (!fournisseur.getRaisonSocial().equals(intitulee)) {
-			throw new IllegalArgumentException("Error Id!!");
-		}
 		List<Picture> pictures = new ArrayList<>();
 		if (images != null) {
 			for (MultipartFile file : images) {
@@ -486,27 +476,6 @@ public class FournisseurServiceImpl implements FournisseurService {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	public ResponseEntity<byte[]> RecordReport(String refFournisseurIris) {
-		try{
-			List<Fournisseur> fournisseur= fournisseurRepository.findByrefFournisseurIris(refFournisseurIris);
-			File file = ResourceUtils.getFile("classpath:Fournisseurs.jrxml");
-			JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
-			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(fournisseur);
-			Map<String ,Object> parameter = new HashMap<>();
-			parameter.put("CreatedBy","Hellotest");
-			JasperPrint print = JasperFillManager.fillReport(report, parameter,dataSource);
-			HttpHeaders headers = new HttpHeaders();
-			//set the PDF format
-			headers.setContentType(MediaType.APPLICATION_PDF);
-			headers.setContentDispositionFormData("filename", "employees-details.pdf");
-			//create the report in PDF format
-			return new ResponseEntity<byte[]>
-					(JasperExportManager.exportReportToPdf(print), headers, HttpStatus.OK);
-
-		} catch(Exception e) {
-			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
 
 	@Override
 	public int getFournisseurByMonth() {
@@ -520,9 +489,9 @@ public class FournisseurServiceImpl implements FournisseurService {
 			List<Fournisseur> fournisseur = fournisseurRepository.findBydateBetween(Firstday, Lastday);
 			return (int) fournisseur.stream().count();
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			return 0;
-		}
+		System.out.println(e.getMessage());
+		return 0;
+	}
 	}
 
 	@Override
@@ -530,16 +499,6 @@ public class FournisseurServiceImpl implements FournisseurService {
 		try {
 			List<Fournisseur> fournisseur = fournisseurRepository.findAll();
 			return (int) fournisseur.stream().count();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			return 0;
-		}
-	}
-	@Override
-	public int getAllCommande() {
-		try {
-			List<Commande> commande = commandeRepository.findAll();
-			return (int) commande.stream().count();
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			return 0;
@@ -554,7 +513,6 @@ public class FournisseurServiceImpl implements FournisseurService {
 		for(int i=0;i<activeFournisseurs.size();i++){
 			Fournisseur fournisseur=activeFournisseurs.get(i);
 			date=fournisseur.getDate().getMonth()+1;
-			System.out.println(date);
 			switch (date){
 				case 9:
 					nbAFournisseurs.set(0, nbAFournisseurs.get(0) + 1);
@@ -580,6 +538,60 @@ public class FournisseurServiceImpl implements FournisseurService {
 			}
 		}
 		return nbAFournisseurs;
+	}
+
+	@Override
+	public List<Fournisseur> getAllRefFournisseur(boolean b) {
+		return fournisseurRepository.findFournisseurByMiseEnVeille(b);
+	}
+	public ResponseEntity<byte[]> RecordReport(String id) {
+		try{
+			List<Fournisseur> fournisseur= fournisseurRepository.findFournisseurById(id);
+			File file = ResourceUtils.getFile("classpath:Fournisseur.jrxml");
+			JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
+			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(fournisseur);
+			Map<String ,Object> parameter = new HashMap<>();
+			parameter.put("CreatedBy","Hellotest");
+			JasperPrint print = JasperFillManager.fillReport(report, parameter,dataSource);
+			HttpHeaders headers = new HttpHeaders();
+			//set the PDF format
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.setContentDispositionFormData("filename", "employees-details.pdf");
+			//create the report in PDF format
+			return new ResponseEntity<byte[]>
+					(JasperExportManager.exportReportToPdf(print), headers, HttpStatus.OK);
+
+		} catch(Exception e) {
+			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	@Override
+	public int getAllCommande() {
+		try {
+			List<Commande> commande = commandeRepository.findAll();
+
+			return (int) (commande.stream().count());
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+	@Override
+	public int getAllCommandeSuivi() {
+		try {
+			List<CommandeSuivi> commande = commandeSuiviRepository.findAll();
+			return (int) commande.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+	@Override
+	public void Restaurer(String idFournisseur) throws ResourceNotFoundException {
+		Fournisseur fournisseur = fournisseurRepository.findById(idFournisseur)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idFournisseur)));
+		fournisseur.setMiseEnVeille(false);
+		fournisseurRepository.save(fournisseur);
 	}
 
 }

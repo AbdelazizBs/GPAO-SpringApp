@@ -1,6 +1,5 @@
 package com.housservice.housstock.repository;
 
-import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Personnel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,13 +17,19 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     boolean existsPersonnelByMatricule(String matricule);
 
     Page<Personnel> findPersonnelByMiseEnVeille(boolean b, Pageable pageable);
-   List<Personnel> findPersonnelByMiseEnVeille(boolean b);
 
     @Query( "{$or:[{'nom': {$regex : ?0}} ,{'prenom': {$regex : ?0}} ,{'matricule': {$regex : ?0}},{'poste': {$regex : ?0}},{'phone': {$regex : ?0}}] }")
     Page<Personnel> findPersonnelByTextToFind(String textToFind,Pageable pageable);
 
 
-
     Optional<Personnel> findByEmail(String email);
-    List<Personnel> findBydateBetween(Date fromDate , Date toDate);
+
+    List<Personnel> findPersonnelByMiseEnVeille(boolean b);
+
+    List<Personnel> findBydateEmbaucheBetween(Date firstday, Date lastday);
+
+
+    Optional<Personnel> findByFullName(String idPersonnel);
+
+    List<Personnel> findPersonnelByPoste(String conducteurMachine);
 }

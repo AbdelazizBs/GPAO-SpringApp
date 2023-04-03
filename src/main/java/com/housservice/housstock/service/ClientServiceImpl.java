@@ -4,10 +4,8 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.ClientMapper;
 import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Contact;
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.repository.ClientRepository;
@@ -577,6 +575,14 @@ public class ClientServiceImpl implements ClientService {
 		}
 		return nbClients ;
 	}
+	@Override
+	public void Restaurer(String idClient) throws ResourceNotFoundException {
+		Client client = clientRepository.findById(idClient)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
+		client.setMiseEnVeille(false);
+		clientRepository.save(client);
+	}
+
 
 
 
