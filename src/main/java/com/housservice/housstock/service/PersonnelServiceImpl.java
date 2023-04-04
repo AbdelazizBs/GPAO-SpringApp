@@ -3,6 +3,7 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.PersonnelMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.repository.PersonnelRepository;
@@ -67,7 +68,14 @@ public class PersonnelServiceImpl implements PersonnelService {
 		}
 
 	}
-
+	@Override
+	public void Restaurer(String id) throws ResourceNotFoundException {
+		System.out.println(id);
+		Personnel personnel = personnelRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+		personnel.setMiseEnVeille(false);
+		personnelRepository.save(personnel);
+	}
 
 	@Override
 	public void  updatePersonnel(PersonnelDto personnelDto,String idPersonnel) throws ResourceNotFoundException {

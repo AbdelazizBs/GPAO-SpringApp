@@ -55,7 +55,7 @@ public class MachineController {
         return machineService.getType();
     }
 
-   /* @GetMapping("/search")
+    @GetMapping("/search")
     @ApiOperation(value = "service to filter machines ")
     public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
                                                       @RequestParam boolean enVeille,
@@ -63,7 +63,7 @@ public class MachineController {
                                                       @RequestParam(defaultValue = "3") int size) {
         return machineService.search(textToFind, page, size, enVeille);
 
-    }*/
+    }
 
     @PutMapping(value = "/addMachine")
     public ResponseEntity<String> createNewMachine(
@@ -152,6 +152,13 @@ public class MachineController {
         Map < String, Boolean > response = new HashMap< >();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+    @PutMapping("/restaurer/{id}")
+    public ResponseEntity <String> restaurer(
+            @ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+            throws ResourceNotFoundException {
+        machineService.Restaurer(id);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 
 }

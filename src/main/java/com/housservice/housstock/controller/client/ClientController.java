@@ -63,7 +63,13 @@ public class ClientController {
 		    		  .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), clientId)));
 		      return ResponseEntity.ok().body(client);
 		  }
-
+	@PutMapping("/restaurer/{id}")
+	public ResponseEntity <String> restaurer(
+			@ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+			throws ResourceNotFoundException {
+		clientService.Restaurer(id);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
 	  
 	@GetMapping("/getIdClients/{raisonSociale}")
 	@ApiOperation(value = "service to get Id Client by raisonSociale.")

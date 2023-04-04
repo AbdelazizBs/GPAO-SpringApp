@@ -16,7 +16,7 @@ public interface PersonnelService {
 	 ResponseEntity<Map<String, Object>> onSortActivePersonnel(int page, int size, String field, String order);
 	 ResponseEntity<Map<String, Object>> onSortPersonnelNotActive(int page, int size, String field, String order);
      ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size);
-
+    public void Restaurer(String id) throws ResourceNotFoundException;
 
      PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException;
      Personnel getPersonnelByNom(String nom) throws ResourceNotFoundException;

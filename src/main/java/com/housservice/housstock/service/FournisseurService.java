@@ -24,7 +24,7 @@ public interface FournisseurService {
 
     public ResponseEntity<Map<String, Object>> onSortActiveFournisseur(int page, int size, String field, String order);
     public ResponseEntity<Map<String, Object>> onSortFournisseurNotActive(int page, int size, String field, String order);
-
+    public void Restaurer(String id) throws ResourceNotFoundException;
 
     void createNewFournisseur(  String refFournisseurIris,
                            String raisonSociale,

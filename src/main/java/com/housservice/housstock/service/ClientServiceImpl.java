@@ -5,6 +5,7 @@ import com.housservice.housstock.mapper.ClientMapper;
 import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Compte;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.ClientDto;
@@ -85,7 +86,14 @@ public class ClientServiceImpl implements ClientService {
 		return clientRepository.findById(clientId);
 	}
 
-
+	@Override
+	public void Restaurer(String id) throws ResourceNotFoundException {
+		System.out.println(id);
+		Client client = clientRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+		client.setMiseEnVeille(false);
+		clientRepository.save(client);
+	}
 	
 	@Override
 	public void deleteClient(Client client) {

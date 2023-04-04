@@ -6,7 +6,6 @@ import com.housservice.housstock.model.Authrespone;
 import com.housservice.housstock.model.Compte;
 import com.housservice.housstock.model.LoginRequest;
 import com.housservice.housstock.model.dto.CompteDto;
-import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.service.CompteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -111,5 +110,25 @@ public class LoginController {
     @GetMapping("/getAllPer")
     public List<String> getAllPer(){
         return loginService.getAllPer();
+    }
+
+    @PutMapping("/miseEnVeille/{id}")
+    public ResponseEntity <String> miseEnVeille(
+            @ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) throws ResourceNotFoundException {
+        loginService.miseEnVeille(id);
+
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    }
+
+    @GetMapping("/getAllCompteEnVeille")
+    public ResponseEntity<Map<String, Object>> getAllCompteNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+        return loginService.getAllCompteVeille(page,size);
+    }
+    @PutMapping("/restaurer/{id}")
+    public ResponseEntity <String> restaurer(
+            @ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+            throws ResourceNotFoundException {
+        loginService.Restaurer(id);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 }

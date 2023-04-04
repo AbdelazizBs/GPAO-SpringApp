@@ -23,13 +23,16 @@ public class Compte {
     private String idPersonnel;
     private String role;
     private Date datelastlogin;
+    private boolean miseEnVeille;
 
-    public Compte(String email, String password, String idPersonnel, String role, Date datelastlogin) {
+
+    public Compte(String email, String password, String idPersonnel, String role, Date datelastlogin, boolean miseEnVeille) {
         this.email = email;
         this.password = password;
         this.idPersonnel = idPersonnel;
         this.role = role;
         this.datelastlogin = datelastlogin;
+        this.miseEnVeille = miseEnVeille;
     }
 
     public Compte() {

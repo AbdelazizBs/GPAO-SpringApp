@@ -85,6 +85,7 @@ public class CompteServiceImpl implements CompteService{
     @Override
     public void add(CompteDto compteDto) throws ResourceNotFoundException {
         try {
+            compteDto.setMiseEnVeille(false);
             compteDto.setPassword(passwordEncoder.encode(compteDto.getPassword()));
             Optional<Personnel> personnel = personnelRepository.findByFullName(compteDto.getIdPersonnel());
             compteDto.setIdPersonnel(personnel.get().getId());
@@ -94,6 +95,15 @@ public class CompteServiceImpl implements CompteService{
         {
             throw new IllegalArgumentException(e.getMessage());
         }
+    }
+
+    @Override
+    public void Restaurer(String id) throws ResourceNotFoundException {
+        System.out.println(id);
+        Compte compte = compteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+        compte.setMiseEnVeille(false);
+        compteRepository.save(compte);
     }
     @Override
     public void updateCompte(CompteDto compteDto,String id) throws ResourceNotFoundException {
@@ -122,7 +132,7 @@ public class CompteServiceImpl implements CompteService{
             List<CompteDto> comptes = new ArrayList<CompteDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<Compte> pageTuts;
-            pageTuts =  compteRepository.findAll(paging);
+            pageTuts =  compteRepository.findMachineByMiseEnVeille(false, paging);
             comptes = pageTuts.getContent().stream().map(compte -> {
                 return CompteMapper.MAPPER.toCompteDto(compte);
             }).collect(Collectors.toList());
@@ -136,7 +146,26 @@ public class CompteServiceImpl implements CompteService{
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllCompteVeille(int page, int size) {
+        try {
+            List<CompteDto> comptes = new ArrayList<CompteDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<Compte> pageTuts;
+            pageTuts =  compteRepository.findMachineByMiseEnVeille(true, paging);
+            comptes = pageTuts.getContent().stream().map(compte -> {
+                return CompteMapper.MAPPER.toCompteDto(compte);
+            }).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("comptes", comptes);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @Override
     public ResponseEntity<Map<String, Object>> onSortActiveCompte(int page, int size, String field, String order) {
         try {
@@ -196,5 +225,14 @@ public class CompteServiceImpl implements CompteService{
         return personnels.stream()
                 .map(Personnel::getFullName)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void miseEnVeille(String idCompte) throws ResourceNotFoundException {
+        Compte compte = compteRepository.findById(idCompte)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idCompte)));
+        compte.setMiseEnVeille(true);
+        compteRepository.save(compte);
+
     }
 }

@@ -25,5 +25,7 @@ public interface CompteService {
     Optional<Compte> getCompteById(String id);
 
     List<String> getAllPer();
-
+    public void miseEnVeille(String idCompte) throws ResourceNotFoundException;
+    public ResponseEntity<Map<String, Object>> getAllCompteVeille(int page, int size);
+    public void Restaurer(String id) throws ResourceNotFoundException;
 }

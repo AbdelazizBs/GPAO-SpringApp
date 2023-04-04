@@ -17,7 +17,7 @@ public interface MachineService {
     public ResponseEntity<Map<String, Object>> onSortMachineNotActive(int page, int size, String field, String order);
     void createNewMachine(MachineDto machineDto) throws ResourceNotFoundException;
 
-   // public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
+    public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
     public void updateMachine(MachineDto machineDto,String idmachine) throws ResourceNotFoundException;
     void miseEnVeille(String idMachine ) throws ResourceNotFoundException;
     void deleteMachine(Machine machine);
@@ -29,4 +29,5 @@ public interface MachineService {
     List<String> getType();
     public List<String> getConducteur();
     public void addType(String type) throws ResourceNotFoundException;
+    public void Restaurer(String id) throws ResourceNotFoundException;
 }

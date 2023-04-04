@@ -64,7 +64,13 @@ public class FournisseurController {
 		return ResponseEntity.ok().body(fournisseur);
 	}
 
-
+	@PutMapping("/restaurer/{id}")
+	public ResponseEntity <String> restaurer(
+			@ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+			throws ResourceNotFoundException {
+		fournisseurService.Restaurer(id);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
 	@GetMapping("/getIdFournisseurs/{raisonSociale}")
 	@ApiOperation(value = "service to get Id Fournisseur by raisonSociale.")
 

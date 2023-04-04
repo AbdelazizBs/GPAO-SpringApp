@@ -51,7 +51,13 @@ public class PersonnelController {
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
 	}
-
+	@PutMapping("/restaurer/{id}")
+	public ResponseEntity <String> restaurer(
+			@ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+			throws ResourceNotFoundException {
+		personnelService.Restaurer(id);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
 	@GetMapping("/getPersonnelById/{id}")
 	@ApiOperation(value = "service to get one Utilisateur by Id.")
 	public ResponseEntity <PersonnelDto> getPersonnelById(

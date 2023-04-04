@@ -168,7 +168,6 @@ public class CommandeController {
     @GetMapping("/getAllCommandeNonActive")
     public ResponseEntity<Map<String, Object>> getAllFournisseurNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         return commandeService.getCommandeNotActive(page,size);
-
     }
 
     @PutMapping("/miseEnVeille/{id}")
@@ -180,5 +179,6 @@ public class CommandeController {
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
+
 
 }

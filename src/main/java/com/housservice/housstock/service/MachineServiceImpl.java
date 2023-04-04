@@ -6,10 +6,7 @@ import com.housservice.housstock.mapper.MatiereMapper;
 import com.housservice.housstock.mapper.PersonnelMapper;
 import com.housservice.housstock.mapper.TypeMachineMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.Machine;
-import com.housservice.housstock.model.Matiere;
-import com.housservice.housstock.model.Personnel;
-import com.housservice.housstock.model.TypeMachine;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.model.dto.MatiereDto;
 import com.housservice.housstock.model.dto.PersonnelDto;
@@ -99,6 +96,14 @@ public class MachineServiceImpl implements MachineService
 
     }
     @Override
+    public void Restaurer(String id) throws ResourceNotFoundException {
+        System.out.println(id);
+        Machine machine = machineRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+        machine.setMiseEnVeille(false);
+        machineRepository.save(machine);
+    }
+    @Override
     public ResponseEntity<Map<String, Object>> getAllMachine(int page, int size) {
         try {
             List<MachineDto> machines = new ArrayList<MachineDto>();
@@ -152,7 +157,7 @@ public class MachineServiceImpl implements MachineService
 
     }
 
-    /*@Override
+    @Override
     public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
         try {
 
@@ -174,7 +179,7 @@ public class MachineServiceImpl implements MachineService
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+    }
 
     @Override
     public void updateMachine(MachineDto machineDto,String idMachine) throws ResourceNotFoundException {

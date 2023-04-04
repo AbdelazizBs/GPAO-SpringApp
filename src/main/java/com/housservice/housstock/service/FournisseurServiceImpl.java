@@ -578,6 +578,14 @@ public class FournisseurServiceImpl implements FournisseurService {
 		}
 	}
 	@Override
+	public void Restaurer(String id) throws ResourceNotFoundException {
+		System.out.println(id);
+		Fournisseur fournisseur = fournisseurRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+		fournisseur.setMiseEnVeille(false);
+		fournisseurRepository.save(fournisseur);
+	}
+	@Override
 	public int getAllCommandeSuivi() {
 		try {
 			List<CommandeSuivi> commande = commandeSuiviRepository.findAll();
