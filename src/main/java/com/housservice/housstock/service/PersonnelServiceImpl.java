@@ -66,9 +66,10 @@ public class PersonnelServiceImpl implements PersonnelService {
         Personnel personnel = personnelRepository.findById(idPersonnel)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), personnelDto.getId())));
         personnel.setNom(personnelDto.getNom());
-        personnel.setPrenom(personnelDto.getPrenom());
         personnel.setDateNaissance(personnelDto.getDateNaissance());
-        personnel.setAdresse(personnelDto.getAdresse());
+        personnel.setAdresse(personnelDto.getAdresse());        
+        personnel.setRegion(personnelDto.getRegion());
+        personnel.setPays(personnelDto.getPays());       
         personnel.setPhoto(personnelDto.getPhoto());
         personnel.setCin(personnelDto.getCin());
         personnel.setSexe(personnelDto.getSexe());

@@ -97,40 +97,37 @@ public class ExcelHelper {
 						break;
 
 					case 3:
-						personnel.setPrenom(currentCell.getStringCellValue());
-						break;
-					case 4:
 						personnel.setAdresse(currentCell.getStringCellValue());
 						break;
 
-					case 5:
+					case 4:
 						personnel.setDateNaissance(currentCell.getDateCellValue());
 						break;
 
-					case 6:
+					case 5:
 						personnel.setSexe(currentCell.getStringCellValue());
 
 						break;
 
-					case 7:
+					case 6:
 						personnel.setPhone(currentCell.getStringCellValue());
 
 						break;
-					case 8:
+					case 7:
 						personnel.setDateEmbauche(currentCell.getDateCellValue());
 						break;
-					case 9:
+					case 8:
 						personnel.setRib(currentCell.getStringCellValue());
 						break;
 
-					case 10:
+					case 9:
 						personnel.setPoste(currentCell.getStringCellValue());
 						break;
 
-					case 11:
+					case 10:
 						personnel.setEchelon(currentCell.getStringCellValue());
 						break;
-					case 12:
+					case 11:
 						personnel.setCategorie(currentCell.getStringCellValue());
 						break;
 
@@ -194,14 +191,10 @@ public class ExcelHelper {
 						break;
 
 					case 2:
-						personnel.setPrenom(currentCell.getRow().getCell(7).getStringCellValue());
-						break;
-
-					case 3:
 						personnel.setPhone(currentCell.getRow().getCell(12).getStringCellValue());
 						break;
 
-					case 4:
+					case 3:
 						personnel.setPoste(currentCell.getRow().getCell(15).getStringCellValue());
 						break;
 

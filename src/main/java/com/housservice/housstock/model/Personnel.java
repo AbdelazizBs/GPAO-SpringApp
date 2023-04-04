@@ -24,7 +24,7 @@ public class Personnel {
 	private String nom;
 
 
-	private String prenom;
+	
 
 	private String codePostal;
 
@@ -49,6 +49,8 @@ public class Personnel {
 
 	private String ville;
 
+	private String region;
+	private String pays;
 
 
 
@@ -103,7 +105,6 @@ public class Personnel {
 					boolean miseEnVeille, String ville, String codePostal,
 					 String email) {
 		this.nom = nom;
-		this.prenom = prenom;
 		this.dateNaissance = dateNaissance;
 		this.adresse = adresse;
 		this.photo = photo;

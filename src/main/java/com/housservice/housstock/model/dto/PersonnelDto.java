@@ -23,19 +23,21 @@ public class PersonnelDto {
     @Size(min = 2, message = "personnel name should have at least 2 characters")
     private String nom;
 
-    @Size(min = 2, message = "personnel name should have at least 2 characters")
-    @NotEmpty(message = "personnel prenom should not empty")
-    private String prenom;
-
 
     @Size(min = 2, message = "personnel adresse should have at least 2 characters")
     @NotEmpty(message = "personnel adresse should not empty")
     private String adresse;
+    
+    @Size(min = 2, message = "personnel pays should have at least 2 characters")
+    @NotEmpty(message = "personnel pays  should not empty")
+    private String pays;
 
 
     private String photo;
 
     private String ville;
+    
+    private String region;
 
 
     private String codePostal;
