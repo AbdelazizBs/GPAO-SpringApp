@@ -42,6 +42,12 @@ public interface NomenclatureService {
 
     ResponseEntity<Map<String, Object>> getParent();
 
+    ResponseEntity<Map<String, Object>> getChildrensNameElements();
+
+    ResponseEntity<Map<String, Object>> getChildrensNameArticles();
+
+    ResponseEntity<Map<String, Object>> getSelectedChildrensName(String nomenclatureId) throws ResourceNotFoundException;
+
 
     List<String> getNomenclatureNameAffectedForClient(String idClient) throws ResourceNotFoundException;
 
@@ -55,6 +61,7 @@ public interface NomenclatureService {
 
     void createNewNomenclature(String nomNomenclature,
                                List<String> parentsName,
+                               List<String> childrensName,
 
                                String description,
                                String refiIris,
@@ -84,6 +91,7 @@ public interface NomenclatureService {
 
                             String categorie,
                             List<String> parentsName,
+                            List<String> childrensName,
                             List<String> raisonSoClient,
                             List<String> intituleFrs,
 

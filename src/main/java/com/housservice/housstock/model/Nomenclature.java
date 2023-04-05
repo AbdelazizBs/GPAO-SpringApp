@@ -26,9 +26,6 @@ public class Nomenclature {
     @Id
     private String id;
 
-    // Référence IRIS
-
-    // idParent
 
     @NotBlank
     @Size(max = 100)
@@ -51,11 +48,12 @@ public class Nomenclature {
     @NotBlank
     @Size(max = 100)
     private String categorie;
-    private List<String> clientId;
-    private List<String> fournisseurId;
+    private List<String> clientId = new ArrayList<>();
+    private List<String> fournisseurId = new ArrayList<>();
 
     private List<String> childrensId;
     private List<String> parentsName = new ArrayList<>();
+    private List<String> childrensName = new ArrayList<>();
 
     private List<String> parentsId;
 

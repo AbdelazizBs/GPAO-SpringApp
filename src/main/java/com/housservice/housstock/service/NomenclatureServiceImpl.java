@@ -10,6 +10,7 @@ import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.FournisseurRepository;
 import com.housservice.housstock.repository.NomenclatureRepository;
 import com.housservice.housstock.repository.PictureRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -73,7 +74,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getFamilleNomenclature(int page, int size) {
-
         try {
             List<Nomenclature> nomenclatures;
             Pageable paging = PageRequest.of(page, size);
@@ -82,7 +82,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
             Map<String, Object> response = new HashMap<>();
             nomenclatures = pageTuts.getContent().stream().filter(nomenclature -> nomenclature.getParentsId().isEmpty())
                     .collect(Collectors.toList());
-
             nomenclatures = nomenclatures.stream().map(nomenclature -> {
                 nomenclature.getChildrensId().stream().map(childrenId -> {
                     Nomenclature nomenclatureOptional;
@@ -266,6 +265,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     @Override
     public void createNewNomenclature(String nomNomenclature,
                                       List<String> parentsName,
+                                      List<String> childrensName,
                                       String description,
                                       String refIris,
                                       String type,
@@ -277,156 +277,80 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         if (nomenclatureRepository.existsNomenclatureByNomNomenclature(nomNomenclature)) {
             throw new IllegalArgumentException("Nom nomenclature existe déja !!");
         }
-        NomenclatureDto nomenclatureDto = new NomenclatureDto();
+        Nomenclature nomenclature = new Nomenclature();
+        nomenclature.setType(TypeNomEnClature.valueOf(type));
+        nomenclature.setDate(new Date());
+        nomenclature.setMiseEnVeille(false);
+        nomenclature.setNomNomenclature(nomNomenclature);
+        nomenclature.setDescription(description);
+        nomenclature.setNature(nature);
+        nomenclature.setCategorie(categorie);
+        nomenclature.setParentsId(new ArrayList<>());
+        nomenclature.setChildrensId(new ArrayList<>());
+        nomenclature.setChildrens(new ArrayList<>());
+        nomenclature.setRefIris(refIris);
+        nomenclature.setChildrensName(childrensName);
+        nomenclature.setParentsName(parentsName);
+        nomenclature.setId(ObjectId.get().toString());
         Picture picture = new Picture();
-
         if (image.length == 0) {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File emptyImg = new File(classLoader.getResource("empty.png").getFile());
-            picture.setBytes(Files.readAllBytes(emptyImg.toPath()));
-            picture.setFileName("empty");
-            picture.setType("image/*");
-            nomenclatureDto.setPicture(picture);
-        } else {
-            for (MultipartFile file1 : image) {
-                picture.setFileName(file1.getOriginalFilename());
-                picture.setType(file1.getContentType());
-                try {
-                    picture.setBytes(file1.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                pictureRepository.save(picture);
-                nomenclatureDto.setPicture(picture);
-            }
+            getEmptyPicture(nomenclature, picture);
         }
-        if (raisonSoClient.isEmpty()) {
-            nomenclatureDto.setClientId(new ArrayList<>());
-        } else {
-            List<String> clientsId = new ArrayList<>();
-            raisonSoClient.stream().map(raisonSo -> {
-                try {
-                    Client client = clientRepository.findClientByRaisonSocial(raisonSo).orElseThrow(()
-                            -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), raisonSo)));
-                    clientsId.add(client.getId());
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                return clientsId;
-            }).collect(Collectors.toList());
-            nomenclatureDto.setClientId(clientsId);
+        setPictureToNomenclature(image, nomenclature, picture);
+        if (!raisonSoClient.isEmpty()) {
+            affectationClientsIds(raisonSoClient, nomenclature);
         }
-        if (intituleFrs.isEmpty()) {
-            nomenclatureDto.setFournisseurId(new ArrayList<>());
-        } else {
-            List<String> fournisseursId = new ArrayList<>();
-            intituleFrs.stream().map(intitule -> {
-                Fournisseur fournisseur = null;
-                try {
-                    fournisseur = fournisseurRepository.findFournisseurByIntitule(intitule).orElseThrow(()
-                            -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), intitule)));
-                    fournisseursId.add(fournisseur.getId());
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                return fournisseursId;
-            }).collect(Collectors.toList());
-            nomenclatureDto.setFournisseurId(fournisseursId);
+        if (!intituleFrs.isEmpty()) {
+            setFrsIds(intituleFrs, nomenclature);
         }
-        nomenclatureDto.setType(TypeNomEnClature.valueOf(type));
-        nomenclatureDto.setDate(new Date());
-        nomenclatureDto.setMiseEnVeille(false);
-        nomenclatureDto.setNomNomenclature(nomNomenclature);
-        nomenclatureDto.setDescription(description);
-        nomenclatureDto.setNature(nature);
-        nomenclatureDto.setCategorie(categorie);
-        nomenclatureDto.setParentsId(new ArrayList<>());
-        nomenclatureDto.setChildrensId(new ArrayList<>());
-        nomenclatureDto.setChildrens(new ArrayList<>());
-        nomenclatureDto.setRefIris(refIris);
-        nomenclatureDto.setParentsName(parentsName);
-        Nomenclature nomenclature = NomenclatureMapper.MAPPER.toNomenclature(nomenclatureDto);
-        nomenclatureRepository.save(nomenclature);
         if (parentsName != null) {
-            List<String> childrens = new ArrayList<>();
-            List<String> parents = new ArrayList<>();
-            for (String parentName : parentsName) {
-                try {
-                    Nomenclature parent = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
-                            new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), parentName)));
-                    childrens.add(nomenclature.getId());
-                    childrens.addAll(parent.getChildrensId());
-                    parent.setChildrensId(childrens);
-                    nomenclatureRepository.save(parent);
-                    parents.add(parent.getId());
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            nomenclature.setParentsId(parents);
-            nomenclatureRepository.save(nomenclature);
-
-
+            affectParents(parentsName, nomenclature);
         }
+        if (childrensName != null) {
+            affectChildrens(childrensName, nomenclature);
+        }
+        nomenclature.setParentsName(parentsName);
+        nomenclature.setChildrensName(childrensName);
+        nomenclatureRepository.save(nomenclature);
     }
 
+    private void affectParents(List<String> parentsName, Nomenclature nomenclature) {
+        List<String> parentsIdForParent = new ArrayList<>();
+        List<String> parentsNameForParent = new ArrayList<>();
+        List<String> childrensNameListForParent = new ArrayList<>();
+        List<String> childrensIdForParent = new ArrayList<>();
+        for (String parentName : parentsName) {
+            try {
+                Nomenclature parent = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
+                        new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), parentName)));
+                childrensIdForParent.addAll(parent.getChildrensId());
+                childrensIdForParent.add(nomenclature.getId());
+                childrensNameListForParent.addAll(parent.getChildrensName());
+                childrensNameListForParent.add(nomenclature.getNomNomenclature());
+                parent.setChildrensName(childrensNameListForParent);
+                parent.setChildrensId(childrensIdForParent);
+                nomenclatureRepository.save(parent);
+                parentsNameForParent.add(parent.getNomNomenclature());
+                parentsIdForParent.add(parent.getId());
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        nomenclature.setParentsId(parentsIdForParent);
+        nomenclature.setParentsName(parentsNameForParent);
+        nomenclatureRepository.save(nomenclature);
+    }
 
     @Override
     public void updateNomenclature(String idNomenclature, String nomNomenclature, String description, String refIris, String type,
-                                   String nature, String categorie, List<String> parentsName, List<String> raisonSoClient,
+                                   String nature, String categorie, List<String> parentsName, List<String> childrensName, List<String> raisonSoClient,
                                    List<String> intituleFrs, MultipartFile[] image) throws ResourceNotFoundException {
 
-        if (nomNomenclature.isEmpty() || description.isEmpty() || type.isEmpty() || categorie.isEmpty()) {
+        if (isEmpty(nomNomenclature, description, type, categorie)) {
             throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
         }
         Nomenclature nomenclature = getNomenclatureById(idNomenclature)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomenclature)));
-        for (MultipartFile file1 : image) {
-            Picture picture = new Picture();
-
-            picture.setFileName(file1.getOriginalFilename());
-            picture.setType(file1.getContentType());
-            try {
-                picture.setBytes(file1.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            pictureRepository.save(picture);
-            nomenclature.setPicture(picture);
-        }
-
-        if (raisonSoClient.isEmpty()) {
-            nomenclature.setClientId(new ArrayList<>());
-        } else {
-            List<String> clientsId = new ArrayList<>();
-            raisonSoClient.stream().map(raisonSoClient1 -> {
-                Client client = null;
-                try {
-                    client = clientRepository.findClientByRaisonSocial(raisonSoClient1).orElseThrow(()
-                            -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), raisonSoClient1)));
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                return clientsId.add(client.getId());
-            }).collect(Collectors.toList());
-            nomenclature.setClientId(clientsId);
-        }
-        if (intituleFrs.isEmpty()) {
-            nomenclature.setFournisseurId(new ArrayList<>());
-        } else {
-            List<String> fournisseursId = new ArrayList<>();
-            intituleFrs.stream().map(intituleFrs1 -> {
-                Fournisseur fournisseur = null;
-                try {
-                    fournisseur = fournisseurRepository.findFournisseurByIntitule(intituleFrs1).orElseThrow(()
-                            -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), intituleFrs1)));
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                return fournisseursId.add(fournisseur.getId());
-            }).collect(Collectors.toList());
-            nomenclature.setFournisseurId(fournisseursId);
-        }
         nomenclature.setType(TypeNomEnClature.valueOf(type));
         nomenclature.setDate(nomenclature.getDate());
         nomenclature.setDateMiseEnVeille(nomenclature.getDateMiseEnVeille());
@@ -435,42 +359,200 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setCategorie(categorie);
         nomenclature.setRefIris(refIris);
         nomenclature.setNomNomenclature(nomNomenclature);
-        if (!nomenclature.getParentsId().isEmpty()) {
-            nomenclature.getParentsId().stream().map(
-                    id -> {
-                        try {
-                            return nomenclatureRepository.findById(id).orElseThrow(() ->
-                                    new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
-                        } catch (ResourceNotFoundException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-            ).forEach(parent -> {
-                parent.getChildrensId().removeIf(id -> id.equals(nomenclature.getId()));
-                nomenclatureRepository.save(parent);
-            });
-        }
-        if (!parentsName.isEmpty()) {
-            List<String> parentsId = new ArrayList<>();
-            for (String parentName : parentsName) {
-                try {
-                    Nomenclature parent = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
-                            new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), parentName)));
-                    parent.getChildrensId().add(nomenclature.getId());
-                    nomenclatureRepository.save(parent);
-                    parentsId.add(parent.getId());
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            nomenclature.setParentsId(parentsId);
-            nomenclatureRepository.save(nomenclature);
-        } else {
-            nomenclature.setParentsId(new ArrayList<>());
-        }
         nomenclature.setParentsName(parentsName);
+        nomenclature.setChildrensName(childrensName);
+        setPictureToNomenclature(image, nomenclature, nomenclature.getPicture());
+//        if (!nomenclature.getParentsId().isEmpty()) {
+//            nomenclature.getParentsId().stream().map(
+//                    id -> {
+//                        try {
+//                            return nomenclatureRepository.findById(id).orElseThrow(() ->
+//                                    new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+//                        } catch (ResourceNotFoundException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//            ).forEach(parent -> {
+//                parent.getChildrensId().removeIf(id -> id.equals(nomenclature.getId()));
+//                nomenclatureRepository.save(parent);
+//            });
+//        }
+//        if (!parentsName.isEmpty()) {
+//            List<String> parentsId = new ArrayList<>();
+//            for (String parentName : parentsName) {
+//                try {
+//                    Nomenclature parent = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
+//                            new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), parentName)));
+//                    parent.getChildrensId().add(nomenclature.getId());
+//                    nomenclatureRepository.save(parent);
+//                    parentsId.add(parent.getId());
+//                } catch (ResourceNotFoundException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//            nomenclature.setParentsId(parentsId);
+//            nomenclatureRepository.save(nomenclature);
+//        } else {
+//            nomenclature.setParentsId(new ArrayList<>());
+//        }
+
+        if (!raisonSoClient.isEmpty()) {
+            affectationClientsIds(raisonSoClient, nomenclature);
+        }
+        if (!intituleFrs.isEmpty()) {
+            setFrsIds(intituleFrs, nomenclature);
+        }
+        if (parentsName.isEmpty()) {
+            nomenclature.setParentsId(new ArrayList<>());
+            nomenclature.setParentsName(new ArrayList<>());
+        } else {
+            updateAffectationParents(parentsName, nomenclature);
+        }
+        if (childrensName.isEmpty()) {
+            nomenclature.setChildrensId(new ArrayList<>());
+            nomenclature.setChildrensName(new ArrayList<>());
+        } else {
+            updateAffectationChildrens(parentsName, nomenclature);
+        }
         nomenclatureRepository.save(nomenclature);
 
+    }
+
+    private static boolean isEmpty(String nomNomenclature, String description, String type, String categorie) {
+        return nomNomenclature.isEmpty() || description.isEmpty() || type.isEmpty() || categorie.isEmpty();
+    }
+
+    private void updateAffectationChildrens(List<String> parentsName, Nomenclature nomenclature) {
+        List<String> childrensIdForNewNomenclature = new ArrayList<>();
+        List<String> childrensNameForNewNomenclature = new ArrayList<>();
+        List<String> parentsIdIdList = new ArrayList<>();
+        List<String> parentsNameList = new ArrayList<>();
+        for (String parentName : parentsName) {
+            try {
+                Nomenclature child = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
+                        new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), parentName)));
+                parentsIdIdList.addAll(child.getParentsId());
+                parentsIdIdList.stream().filter(id -> id.equals(nomenclature.getId())).collect(Collectors.toList()).add(nomenclature.getId());
+                parentsNameList.addAll(child.getParentsName());
+                child.setParentsId(parentsIdIdList);
+                child.setParentsName(parentsNameList);
+                nomenclatureRepository.save(child);
+                childrensIdForNewNomenclature.add(child.getId());
+                childrensNameForNewNomenclature.add(child.getNomNomenclature());
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        nomenclature.setChildrensId(childrensIdForNewNomenclature);
+        nomenclature.setChildrensName(childrensNameForNewNomenclature);
+        nomenclatureRepository.save(nomenclature);
+    }
+
+    private void updateAffectationParents(List<String> parentsName, Nomenclature nomenclature) {
+        List<String> parentsIdForNewNomenclature = new ArrayList<>();
+        List<String> parentsNameForNewNomenclature = new ArrayList<>();
+        List<String> childrensIdList = new ArrayList<>();
+        List<String> childrensNameList = new ArrayList<>();
+        for (String parentName : parentsName) {
+            try {
+                Nomenclature parent = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
+                        new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), parentName)));
+                childrensIdList.addAll(parent.getChildrensId());
+                childrensIdList.removeIf(id -> id.equals(nomenclature.getId()));
+                childrensIdList.add(nomenclature.getId());
+                childrensNameList.addAll(parent.getChildrensName());
+                childrensNameList.add(nomenclature.getNomNomenclature());
+                parent.setChildrensId(childrensIdList);
+                parent.setChildrensName(childrensNameList);
+                nomenclatureRepository.save(parent);
+                parentsIdForNewNomenclature.add(parent.getId());
+                parentsNameForNewNomenclature.add(parent.getNomNomenclature());
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        nomenclature.setParentsId(parentsIdForNewNomenclature);
+        nomenclature.setParentsName(parentsNameForNewNomenclature);
+        nomenclatureRepository.save(nomenclature);
+    }
+
+    private void affectChildrens(List<String> childrensName, Nomenclature nomenclature) {
+        List<String> parentsNameListForChildren = new ArrayList<>();
+        List<String> parentsIdForChildren = new ArrayList<>();
+        List<String> childrensIdForChildren = new ArrayList<>();
+        List<String> childrensNameForChildren = new ArrayList<>();
+        for (String childName : childrensName) {
+            try {
+                Nomenclature child = nomenclatureRepository.findNomenclatureByNomNomenclature(childName).orElseThrow(() ->
+                        new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), childName)));
+                parentsIdForChildren.addAll(child.getParentsId());
+                parentsIdForChildren.add(nomenclature.getId());
+                parentsNameListForChildren.addAll(child.getParentsName());
+                parentsNameListForChildren.add(nomenclature.getNomNomenclature());
+                child.setParentsId(parentsIdForChildren);
+                child.setParentsName(parentsNameListForChildren);
+                nomenclatureRepository.save(child);
+                childrensIdForChildren.add(child.getId());
+                childrensNameForChildren.add(child.getNomNomenclature());
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        nomenclature.setChildrensId(childrensIdForChildren);
+        nomenclature.setChildrensName(childrensNameForChildren);
+    }
+
+    private void setFrsIds(List<String> intituleFrs, Nomenclature nomenclature) {
+        List<String> fournisseursId = new ArrayList<>();
+        intituleFrs.stream().map(intitule -> {
+            Fournisseur fournisseur = null;
+            try {
+                fournisseur = fournisseurRepository.findFournisseurByIntitule(intitule).orElseThrow(()
+                        -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), intitule)));
+                fournisseursId.add(fournisseur.getId());
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            return fournisseursId;
+        }).collect(Collectors.toList());
+        nomenclature.setFournisseurId(fournisseursId);
+    }
+
+    private void affectationClientsIds(List<String> raisonSoClient, Nomenclature nomenclature) {
+        List<String> clientsId = new ArrayList<>();
+        raisonSoClient.stream().map(raisonSo -> {
+            try {
+                Client client = clientRepository.findClientByRaisonSocial(raisonSo).orElseThrow(()
+                        -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), raisonSo)));
+                clientsId.add(client.getId());
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            return clientsId;
+        }).collect(Collectors.toList());
+        nomenclature.setClientId(clientsId);
+    }
+
+    private static void setPictureToNomenclature(MultipartFile[] image, Nomenclature nomenclature, Picture picture) {
+        for (MultipartFile file1 : image) {
+            picture.setFileName(file1.getOriginalFilename());
+            picture.setType(file1.getContentType());
+            try {
+                picture.setBytes(file1.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            nomenclature.setPicture(picture);
+        }
+    }
+
+    private void getEmptyPicture(Nomenclature nomenclature, Picture picture) throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File emptyImg = new File(classLoader.getResource("empty.png").getFile());
+        picture.setBytes(Files.readAllBytes(emptyImg.toPath()));
+        picture.setFileName("empty");
+        picture.setType("image/*");
+        nomenclature.setPicture(picture);
     }
 
 
@@ -624,6 +706,48 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
 
     @Override
+    public ResponseEntity<Map<String, Object>> getChildrensNameArticles() {
+        try {
+            Map<String, Object> response = new HashMap<>();
+            List<Nomenclature> nomenclatures = nomenclatureRepository.findNomenclatureByMiseEnVeille(false);
+            response.put("childrensName", nomenclatures.stream().filter(
+                    nomenclature -> !nomenclature.getType().equals(TypeNomEnClature.Element)).map(Nomenclature::getNomNomenclature).collect(Collectors.toList()));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getChildrensNameElements() {
+        try {
+            Map<String, Object> response = new HashMap<>();
+            List<Nomenclature> nomenclatures = nomenclatureRepository.findNomenclatureByMiseEnVeille(false);
+            response.put("childrensName", nomenclatures.stream().filter(
+                    nomenclature -> nomenclature.getType().equals(TypeNomEnClature.Element)).map(Nomenclature::getNomNomenclature).collect(Collectors.toList()));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getSelectedChildrensName(String nomenclatureId) throws ResourceNotFoundException {
+        List<String> elementsName = new ArrayList<>();
+        Nomenclature nomenclature = nomenclatureRepository.findById(nomenclatureId)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomenclatureId)));
+        for (String id : nomenclature.getChildrensId()) {
+            Nomenclature nomenclature1 = nomenclatureRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+            elementsName.add(nomenclature1.getNomNomenclature());
+        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("childrensName", elementsName);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getParent() {
         try {
             Map<String, Object> response = new HashMap<>();
@@ -635,7 +759,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
 
     @Override
     public List<String> getNomenclatureNameAffectedForClient(String idClient) throws ResourceNotFoundException {

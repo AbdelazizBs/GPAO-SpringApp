@@ -26,10 +26,11 @@ public class NomenclatureDto {
     private List<String> childrensId;
     private List<String> parentsName;
     private List<Nomenclature> childrens;
+    private List<String> childrensName;
+    private List<String> parentsId;
+
     private List<EtapeProduction> etapeProductions;
 
-
-    private List<String> parentsId;
 
     private String categorie;
     private String refIris;

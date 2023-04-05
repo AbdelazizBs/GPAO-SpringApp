@@ -208,12 +208,13 @@ public class NomenclatureController {
             String categorie,
             @RequestParam("parentsName")
             List<String> parentsName,
+            @RequestParam("childrensName")
+            List<String> childrensName,
             @RequestParam("image") MultipartFile[] image
     ) throws ResourceNotFoundException, IOException {
 
-        nomenclatureService.createNewNomenclature(nomNomenclature, parentsName, description, refiIris, type, nature, categorie,
+        nomenclatureService.createNewNomenclature(nomNomenclature, parentsName, childrensName, description, refiIris, type, nature, categorie,
                 raisonSoClient, intituleFrs, image);
-
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
     }
 
@@ -246,10 +247,11 @@ public class NomenclatureController {
             @RequestParam("nature") String nature,
             @RequestParam("categorie") String categorie,
             @RequestParam("parentsName") List<String> parentsName,
+            @RequestParam("childrensName") List<String> childrensName,
             @RequestParam("raisonSoClient") List<String> raisonSoClient,
             @RequestParam("intituleFrs") List<String> intituleFrs,
             @RequestParam("image") MultipartFile[] image) throws ResourceNotFoundException {
-        nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, refIris, type, nature, categorie, parentsName, raisonSoClient, intituleFrs, image);
+        nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, refIris, type, nature, categorie, parentsName, childrensName, raisonSoClient, intituleFrs, image);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 
@@ -281,10 +283,31 @@ public class NomenclatureController {
     }
 
 
+    @GetMapping("/getChildrensNameElements")
+    @ApiOperation(value = "service to get cjhildrens name type element  of nomEnClature")
+    public ResponseEntity<Map<String, Object>> getChildrensNameElements() {
+        return nomenclatureService.getChildrensNameElements();
+    }
+
+    @GetMapping("/getChildrensNameArticles")
+    @ApiOperation(value = "service to get cjhildrens name  type Article  of nomEnClature")
+    public ResponseEntity<Map<String, Object>> getChildrensNameArticles() {
+        return nomenclatureService.getChildrensNameArticles();
+    }
+
     @GetMapping("/getParent")
     @ApiOperation(value = "service to get parents name of nomEnClature")
     public ResponseEntity<Map<String, Object>> getParent() {
         return nomenclatureService.getParent();
+    }
+
+    @GetMapping("/getSelectedChildrensNmae/{nomenclatureId}")
+    @ApiOperation(value = "service to get names Elements by Id nomenclature.")
+    public ResponseEntity<Map<String, Object>> getSelectedChildrensNmae(
+            @ApiParam(name = "nomenclatureId", value = "id of nomenclature", required = true)
+            @PathVariable(value = "nomenclatureId", required = true) @NotEmpty(message = "{http.error.0001}") String nomenclatureId)
+            throws ResourceNotFoundException {
+        return nomenclatureService.getSelectedChildrensName(nomenclatureId);
     }
 
 
