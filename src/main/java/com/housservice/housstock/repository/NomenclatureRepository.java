@@ -29,4 +29,8 @@ public interface NomenclatureRepository extends MongoRepository<Nomenclature, St
     List<Nomenclature> findNomenclatureByFournisseurId(String frsId);
 
     List<Nomenclature> findNomenclaturesByClientId(String idClient);
+
+    List<Nomenclature> findNomenclatureByParentsId(String idParent);
+
+    List<Nomenclature> findNomenclatureByChildrensId(String idChildren);
 }

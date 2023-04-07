@@ -23,8 +23,6 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 @CrossOrigin
@@ -34,13 +32,6 @@ import java.util.regex.Pattern;
 @Validated
 public class ClientController {
 
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-    public static boolean validate(String emailStr) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-        return matcher.matches();
-    }
 
     private final ClientService clientService;
 
@@ -215,9 +206,7 @@ public class ClientController {
             @RequestParam("images") MultipartFile[] images
 
     ) throws ResourceNotFoundException {
-        if (!email.equals("") && !validate(email)) {
-            throw new IllegalArgumentException(" email " + email + "  n'est pas valide !!");
-        }
+
         clientService.createNewClient(refClientIris, raisonSociale, adresse, codePostal, ville, pays, region, phone, email, statut, brancheActivite, secteurActivite, incoterm
                 , echeance, modePaiement, nomBanque, adresseBanque, codeDouane, rne, cif, telecopie, rib, swift, images);
 
@@ -253,9 +242,7 @@ public class ClientController {
             @RequestParam("rib") String rib,
             @RequestParam("swift") String swift,
             @RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
-        if (!validate(email)) {
-            throw new IllegalArgumentException(" email " + email + "  n'est pas valide !!");
-        }
+
         clientService.updateClient(idClient, refClientIris, raisonSociale, adresse, codePostal, ville, pays, region, phone, email, statut, brancheActivite, secteurActivite, incoterm
                 , echeance, modePaiement, nomBanque, adresseBanque, codeDouane, rne, cif, telecopie, rib, swift, images);
 

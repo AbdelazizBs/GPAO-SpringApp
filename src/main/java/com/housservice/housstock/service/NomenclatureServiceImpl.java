@@ -351,6 +351,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         }
         Nomenclature nomenclature = getNomenclatureById(idNomenclature)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomenclature)));
+        removechildrensAndParentParamsFromAllNomenclaturesAfterUpdate(nomenclature);
         nomenclature.setType(TypeNomEnClature.valueOf(type));
         nomenclature.setDate(nomenclature.getDate());
         nomenclature.setDateMiseEnVeille(nomenclature.getDateMiseEnVeille());
@@ -358,64 +359,51 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setNature(nature);
         nomenclature.setCategorie(categorie);
         nomenclature.setRefIris(refIris);
-        nomenclature.setNomNomenclature(nomNomenclature);
+        setPictureToNomenclature(image, nomenclature, nomenclature.getPicture());
         nomenclature.setParentsName(parentsName);
         nomenclature.setChildrensName(childrensName);
-        setPictureToNomenclature(image, nomenclature, nomenclature.getPicture());
-//        if (!nomenclature.getParentsId().isEmpty()) {
-//            nomenclature.getParentsId().stream().map(
-//                    id -> {
-//                        try {
-//                            return nomenclatureRepository.findById(id).orElseThrow(() ->
-//                                    new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
-//                        } catch (ResourceNotFoundException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//            ).forEach(parent -> {
-//                parent.getChildrensId().removeIf(id -> id.equals(nomenclature.getId()));
-//                nomenclatureRepository.save(parent);
-//            });
-//        }
-//        if (!parentsName.isEmpty()) {
-//            List<String> parentsId = new ArrayList<>();
-//            for (String parentName : parentsName) {
-//                try {
-//                    Nomenclature parent = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
-//                            new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), parentName)));
-//                    parent.getChildrensId().add(nomenclature.getId());
-//                    nomenclatureRepository.save(parent);
-//                    parentsId.add(parent.getId());
-//                } catch (ResourceNotFoundException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//            nomenclature.setParentsId(parentsId);
-//            nomenclatureRepository.save(nomenclature);
-//        } else {
-//            nomenclature.setParentsId(new ArrayList<>());
-//        }
+        nomenclature.setNomNomenclature(nomNomenclature);
+        allAffectationMethod(parentsName, childrensName, raisonSoClient, intituleFrs, nomenclature);
+        nomenclatureRepository.save(nomenclature);
+    }
 
+    private void allAffectationMethod(List<String> parentsName, List<String> childrensName, List<String> raisonSoClient, List<String> intituleFrs, Nomenclature nomenclature) {
+        updateAffectationParents(parentsName, nomenclature);
+        updateAffectationChildrens(childrensName, nomenclature);
         if (!raisonSoClient.isEmpty()) {
             affectationClientsIds(raisonSoClient, nomenclature);
         }
         if (!intituleFrs.isEmpty()) {
             setFrsIds(intituleFrs, nomenclature);
         }
-        if (parentsName.isEmpty()) {
-            nomenclature.setParentsId(new ArrayList<>());
-            nomenclature.setParentsName(new ArrayList<>());
-        } else {
-            updateAffectationParents(parentsName, nomenclature);
-        }
-        if (childrensName.isEmpty()) {
-            nomenclature.setChildrensId(new ArrayList<>());
-            nomenclature.setChildrensName(new ArrayList<>());
-        } else {
-            updateAffectationChildrens(parentsName, nomenclature);
-        }
-        nomenclatureRepository.save(nomenclature);
 
+    }
+
+    private void removechildrensAndParentParamsFromAllNomenclaturesAfterUpdate(Nomenclature nomenclature) {
+        nomenclature.getParentsId().forEach(id -> {
+            Nomenclature parent = null;
+            try {
+                parent = nomenclatureRepository.findById(id).orElseThrow(() ->
+                        new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            parent.getChildrensId().removeIf(childId -> childId.equals(nomenclature.getId()));
+            parent.getChildrensName().removeIf(childName -> childName.equals(nomenclature.getNomNomenclature()));
+            nomenclatureRepository.save(parent);
+        });
+        nomenclature.getChildrensId().forEach(id -> {
+            Nomenclature child = null;
+            try {
+                child = nomenclatureRepository.findById(id).orElseThrow(() ->
+                        new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            child.getParentsId().removeIf(parentId -> parentId.equals(nomenclature.getId()));
+            child.getParentsName().removeIf(parentName -> parentName.equals(nomenclature.getNomNomenclature()));
+            nomenclatureRepository.save(child);
+        });
     }
 
     private static boolean isEmpty(String nomNomenclature, String description, String type, String categorie) {
@@ -432,8 +420,10 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                 Nomenclature child = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
                         new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), parentName)));
                 parentsIdIdList.addAll(child.getParentsId());
-                parentsIdIdList.stream().filter(id -> id.equals(nomenclature.getId())).collect(Collectors.toList()).add(nomenclature.getId());
+
+                parentsIdIdList.add(nomenclature.getId());
                 parentsNameList.addAll(child.getParentsName());
+                parentsNameList.add(nomenclature.getNomNomenclature());
                 child.setParentsId(parentsIdIdList);
                 child.setParentsName(parentsNameList);
                 nomenclatureRepository.save(child);
@@ -445,7 +435,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         }
         nomenclature.setChildrensId(childrensIdForNewNomenclature);
         nomenclature.setChildrensName(childrensNameForNewNomenclature);
-        nomenclatureRepository.save(nomenclature);
     }
 
     private void updateAffectationParents(List<String> parentsName, Nomenclature nomenclature) {
@@ -458,7 +447,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                 Nomenclature parent = nomenclatureRepository.findNomenclatureByNomNomenclature(parentName).orElseThrow(() ->
                         new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), parentName)));
                 childrensIdList.addAll(parent.getChildrensId());
-                childrensIdList.removeIf(id -> id.equals(nomenclature.getId()));
                 childrensIdList.add(nomenclature.getId());
                 childrensNameList.addAll(parent.getChildrensName());
                 childrensNameList.add(nomenclature.getNomNomenclature());
@@ -473,7 +461,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         }
         nomenclature.setParentsId(parentsIdForNewNomenclature);
         nomenclature.setParentsName(parentsNameForNewNomenclature);
-        nomenclatureRepository.save(nomenclature);
     }
 
     private void affectChildrens(List<String> childrensName, Nomenclature nomenclature) {
@@ -481,6 +468,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         List<String> parentsIdForChildren = new ArrayList<>();
         List<String> childrensIdForChildren = new ArrayList<>();
         List<String> childrensNameForChildren = new ArrayList<>();
+
         for (String childName : childrensName) {
             try {
                 Nomenclature child = nomenclatureRepository.findNomenclatureByNomNomenclature(childName).orElseThrow(() ->
@@ -719,12 +707,10 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getChildrensNameElements() {
+    public ResponseEntity<Map<String, Object>> getChildrensName() {
         try {
             Map<String, Object> response = new HashMap<>();
-            List<Nomenclature> nomenclatures = nomenclatureRepository.findNomenclatureByMiseEnVeille(false);
-            response.put("childrensName", nomenclatures.stream().filter(
-                    nomenclature -> nomenclature.getType().equals(TypeNomEnClature.Element)).map(Nomenclature::getNomNomenclature).collect(Collectors.toList()));
+            response.put("childrensName", nomenclatureRepository.findNomenclatureByMiseEnVeille(false).stream().map(Nomenclature::getNomNomenclature).collect(Collectors.toList()));
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

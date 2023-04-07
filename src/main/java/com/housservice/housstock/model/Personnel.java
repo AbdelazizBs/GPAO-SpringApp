@@ -14,112 +14,99 @@ import java.util.Date;
 @Document(collection = "Personnel")
 public class Personnel {
 
-	@Transient
-	public static final String SEQUENCE_NAME = "personnel_sequence";
+    @Transient
+    public static final String SEQUENCE_NAME = "personnel_sequence";
 
-	@Id
-	private String id;
-
-
-	private String nom;
+    @Id
+    private String id;
 
 
-	
-
-	private String codePostal;
+    private String nom;
 
 
-
-	
-
-	private String adresse;
-	
-
-	private String photo;
+    private String codePostal;
 
 
-	private String matricule;
+    private String adresse;
 
 
-	private String cin;
+    private String photo;
 
 
-
-	private String sexe;
-
-	private String ville;
-
-	private String region;
-	private String pays;
+    private String matricule;
 
 
+    private String cin;
 
 
-	private String rib;
+    private String sexe;
+
+    private String ville;
+
+    private String region;
+    private String pays;
 
 
-	private String poste;
+    private String rib;
 
 
+    private String poste;
 
 
-	private String phone;
+    private String phone;
 
 
-	private Date dateEmbauche;
+    private Date dateEmbauche;
 
 
-
-	private Date dateNaissance;
-
+    private Date dateNaissance;
 
 
-	private String echelon;
+    private String echelon;
 
-	private String numCnss;
+    private String numCnss;
 
-	private String situationFamiliale;
+    private String situationFamiliale;
 
-	private String nbrEnfant;
+    private String nbrEnfant;
 
-	private String typeContrat;
-
-
-	private String categorie;
+    private String typeContrat;
 
 
-
-	private String email;
-	
-	private Comptes compte = new Comptes();
-	private boolean miseEnVeille ;
+    private String categorie;
 
 
-	public Personnel() {
+    private String email;
 
-	}
+    private Comptes compte = new Comptes();
+    private boolean miseEnVeille;
 
-	public Personnel(String nom, String prenom, Date dateNaissance, String adresse, String photo,
-					 String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
-					 String echelon, String categorie, String matricule, String phone,
-					boolean miseEnVeille, String ville, String codePostal,
-					 String email) {
-		this.nom = nom;
-		this.dateNaissance = dateNaissance;
-		this.adresse = adresse;
-		this.photo = photo;
-		this.cin = cin;
-		this.sexe = sexe;
-		this.rib = rib;
-		this.poste = poste;
-		this.dateEmbauche = dateDeEmbauche;
-		this.echelon = echelon;
-		this.categorie = categorie;
-		this.miseEnVeille = miseEnVeille;
-		this.matricule = matricule;
-		this.phone = phone;
-		this.ville = ville;
-		this.codePostal = codePostal;
-		this.email = email;
-	}
+
+    public Personnel() {
+
+    }
+
+    public Personnel(String nom, Date dateNaissance, String adresse, String photo,
+                     String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
+                     String echelon, String categorie, String matricule, String phone,
+                     boolean miseEnVeille, String ville, String codePostal,
+                     String email) {
+        this.nom = nom;
+        this.dateNaissance = dateNaissance;
+        this.adresse = adresse;
+        this.photo = photo;
+        this.cin = cin;
+        this.sexe = sexe;
+        this.rib = rib;
+        this.poste = poste;
+        this.dateEmbauche = dateDeEmbauche;
+        this.echelon = echelon;
+        this.categorie = categorie;
+        this.miseEnVeille = miseEnVeille;
+        this.matricule = matricule;
+        this.phone = phone;
+        this.ville = ville;
+        this.codePostal = codePostal;
+        this.email = email;
+    }
 }

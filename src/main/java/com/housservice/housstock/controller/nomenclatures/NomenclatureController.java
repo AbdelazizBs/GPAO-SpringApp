@@ -283,10 +283,10 @@ public class NomenclatureController {
     }
 
 
-    @GetMapping("/getChildrensNameElements")
+    @GetMapping("/getChildrensName")
     @ApiOperation(value = "service to get cjhildrens name type element  of nomEnClature")
-    public ResponseEntity<Map<String, Object>> getChildrensNameElements() {
-        return nomenclatureService.getChildrensNameElements();
+    public ResponseEntity<Map<String, Object>> getChildrensName() {
+        return nomenclatureService.getChildrensName();
     }
 
     @GetMapping("/getChildrensNameArticles")
@@ -295,13 +295,13 @@ public class NomenclatureController {
         return nomenclatureService.getChildrensNameArticles();
     }
 
-    @GetMapping("/getParent")
+    @GetMapping("/getParentsName")
     @ApiOperation(value = "service to get parents name of nomEnClature")
     public ResponseEntity<Map<String, Object>> getParent() {
         return nomenclatureService.getParent();
     }
 
-    @GetMapping("/getSelectedChildrensNmae/{nomenclatureId}")
+    @GetMapping("/getSelectedChildrensName/{nomenclatureId}")
     @ApiOperation(value = "service to get names Elements by Id nomenclature.")
     public ResponseEntity<Map<String, Object>> getSelectedChildrensNmae(
             @ApiParam(name = "nomenclatureId", value = "id of nomenclature", required = true)

@@ -42,7 +42,7 @@ public interface NomenclatureService {
 
     ResponseEntity<Map<String, Object>> getParent();
 
-    ResponseEntity<Map<String, Object>> getChildrensNameElements();
+    ResponseEntity<Map<String, Object>> getChildrensName();
 
     ResponseEntity<Map<String, Object>> getChildrensNameArticles();
 
