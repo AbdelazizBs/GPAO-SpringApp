@@ -310,6 +310,15 @@ public class NomenclatureController {
         return nomenclatureService.getSelectedChildrensName(nomenclatureId);
     }
 
+    @GetMapping("/getChildrensNomenclatureToUpdate/{nomenclatureId}")
+    @ApiOperation(value = "service to get childrens by Id nomenclature.")
+    public ResponseEntity<Map<String, Object>> getChildrensNomenclatureToUpdate(
+            @ApiParam(name = "nomenclatureId", value = "id of nomenclature", required = true)
+            @PathVariable(value = "nomenclatureId", required = true) @NotEmpty(message = "{http.error.0001}") String nomenclatureId)
+            throws ResourceNotFoundException {
+        return nomenclatureService.getChildrensNomenclatureToUpdate(nomenclatureId);
+    }
+
 
     @GetMapping("/getNomenclatureNameAffectedForClient/{idClient}")
     @ApiOperation(value = "service to get parents name filtered")

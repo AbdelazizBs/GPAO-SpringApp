@@ -48,6 +48,8 @@ public interface NomenclatureService {
 
     ResponseEntity<Map<String, Object>> getSelectedChildrensName(String nomenclatureId) throws ResourceNotFoundException;
 
+    ResponseEntity<Map<String, Object>> getChildrensNomenclatureToUpdate(String nomenclatureId) throws ResourceNotFoundException;
+
 
     List<String> getNomenclatureNameAffectedForClient(String idClient) throws ResourceNotFoundException;
 

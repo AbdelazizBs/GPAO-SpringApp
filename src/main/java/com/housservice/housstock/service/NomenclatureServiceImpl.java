@@ -288,6 +288,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setParentsId(new ArrayList<>());
         nomenclature.setChildrensId(new ArrayList<>());
         nomenclature.setChildrens(new ArrayList<>());
+        nomenclature.setEtapeProductions(new ArrayList<>());
         nomenclature.setRefIris(refIris);
         nomenclature.setChildrensName(childrensName);
         nomenclature.setParentsName(parentsName);
@@ -734,6 +735,21 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> getChildrensNomenclatureToUpdate(String nomenclatureId) throws ResourceNotFoundException {
+        List<Nomenclature> childrensNomenclature = new ArrayList<>();
+        Nomenclature nomenclature = nomenclatureRepository.findById(nomenclatureId)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomenclatureId)));
+        for (String id : nomenclature.getChildrensId()) {
+            Nomenclature nomenclature1 = nomenclatureRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+            childrensNomenclature.add(nomenclature1);
+        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("childrensNomenclature", childrensNomenclature);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getParent() {
         try {
             Map<String, Object> response = new HashMap<>();
@@ -825,7 +841,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     @Override
     public List<EtapeProduction> getTargetEtapesNomenclature(String idNomenclature) throws ResourceNotFoundException {
         Nomenclature nomenclature = nomenclatureRepository.findById(idNomenclature).orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomenclature)));
-        return nomenclature.getEtapeProductions();
+        List<EtapeProduction> etapeProductions = new ArrayList<>(nomenclature.getEtapeProductions());
+        return etapeProductions;
     }
 
 }
