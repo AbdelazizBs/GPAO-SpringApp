@@ -1,6 +1,8 @@
 package com.housservice.housstock.repository;
 
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.Picture;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -32,4 +34,6 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     Optional<Personnel> findByFullName(String idPersonnel);
 
     List<Personnel> findPersonnelByPoste(String conducteurMachine);
+    Optional<Personnel> findPersonnelByPictures(Picture picture) ;
+
 }

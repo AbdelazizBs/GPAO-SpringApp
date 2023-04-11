@@ -3,10 +3,13 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.PersonnelMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.repository.PersonnelRepository;
+import com.housservice.housstock.repository.PictureRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +17,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -31,18 +37,19 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
+	private final PictureRepository pictureRepository;
 
 
 
-	public PersonnelServiceImpl(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties) {
+	public PersonnelServiceImpl(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties,PictureRepository pictureRepository) {
 		this.personnelRepository = personnelRepository;
+		this.pictureRepository=pictureRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	}
 
 
 	@Override
 	public void  addPersonnel(PersonnelDto personnelDto)   {
-
 		try
 		{
 			Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
@@ -57,9 +64,13 @@ public class PersonnelServiceImpl implements PersonnelService {
 			if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
 				throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
 			}
+			List<Picture> pictures = new ArrayList<>();
+			personnelDto.setPictures(pictures);
 			personnelDto.setFullName(personnelDto.getNom()+" "+personnelDto.getPrenom());
 			Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
 			personnel.setMiseEnVeille(false);
+			List<Picture> pictures1 = new ArrayList<>();
+			personnel.setPictures(pictures1);
 			personnelRepository.save(personnel);
 		}
 		catch (Exception e)
@@ -345,5 +356,45 @@ public class PersonnelServiceImpl implements PersonnelService {
 		}
 		return nbPersonnels ;
 	}
+	@Override
+	public void addphoto(MultipartFile[] images, String email){
+		Personnel personnel = personnelRepository.findByEmail(email).get();
+		List<Picture> pictures = new ArrayList<>();
+		for (MultipartFile file : images) {
+			Picture picture = new Picture();
+			picture.setFileName(file.getOriginalFilename());
+			System.out.println(picture.getFileName());
+			picture.setType(file.getContentType());
+			try {
+				picture.setBytes(file.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			pictureRepository.save(picture);
+			pictures.add(picture);
+		}
+		personnel.setPictures(pictures);
+		personnelRepository.save(personnel);
 
+	}
+	@Override
+	public void removePictures(String icPersonnel) throws ResourceNotFoundException {
+		Personnel personnel = personnelRepository.findById(icPersonnel)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), icPersonnel)));
+		for (String id : personnel.getPictures().stream().map(Picture::getId).collect(Collectors.toList())) {
+			pictureRepository.deleteById(id);
+		}
+		personnel.getPictures().removeAll(personnel.getPictures());
+		personnelRepository.save(personnel);
+	}
+	@Override
+	public void removePicture(String idPic) throws ResourceNotFoundException {
+		Picture picture = pictureRepository.findById(idPic)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPic)));
+		Personnel personnel = personnelRepository.findPersonnelByPictures(picture)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), picture)));
+		pictureRepository.deleteById(idPic);
+		personnel.getPictures().removeIf(picture1 -> picture1.equals(picture));
+		personnelRepository.save(personnel);
+	}
 }

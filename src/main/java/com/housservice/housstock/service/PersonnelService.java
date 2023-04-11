@@ -5,6 +5,7 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -40,4 +41,8 @@ public interface PersonnelService {
     int getallPersonnal();
     List<Integer> getPersListe(boolean b);
 
+    void addphoto(MultipartFile[] images,String email);
+    void removePictures(String idPersonnel) throws ResourceNotFoundException;
+
+    void removePicture(String idPicture) throws ResourceNotFoundException;
 }

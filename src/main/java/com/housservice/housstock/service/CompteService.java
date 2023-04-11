@@ -1,10 +1,7 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Commande;
-import com.housservice.housstock.model.Compte;
-import com.housservice.housstock.model.Fournisseur;
-import com.housservice.housstock.model.LoginRequest;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.CompteDto;
 import org.springframework.http.ResponseEntity;
 
@@ -22,8 +19,8 @@ public interface CompteService {
     public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size);
     public List<String> getAllRole();
     public void deleteCompte(Compte compte);
-    Optional<Compte> getCompteById(String id);
-
+    Optional<Compte> getCompteById(String username);
+    Optional<Personnel> getPersonnelById(String username);
     List<String> getAllPer();
     public void miseEnVeille(String idCompte) throws ResourceNotFoundException;
     public ResponseEntity<Map<String, Object>> getAllCompteVeille(int page, int size);

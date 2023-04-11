@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.Optional;
+
 public interface CompteRepository extends MongoRepository<Compte, String> {
 
     @Query( "{$or:[{'email': {$regex : ?0}} ,{'password': {$regex : ?0}},{'idPersonnel': {$regex : ?0}},{'role': {$regex : ?0}}]}")
@@ -16,4 +18,6 @@ public interface CompteRepository extends MongoRepository<Compte, String> {
     Compte findByEmail(String email);
 
     Page<Compte> findMachineByMiseEnVeille(boolean b, Pageable paging);
+
+    Optional<Compte> findCompteByEmail(String username);
 }

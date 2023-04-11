@@ -68,7 +68,7 @@ public class CompteServiceImpl implements CompteService{
 
     private String generateToken(Compte compte) {
         // Define the expiration time for the token (e.g. 1 hour).
-        long expirationTime = 3600000; // 1 hour in milliseconds
+        long expirationTime = 360000000; // 1 hour in milliseconds
         // Get the current timestamp.
         long currentTime = System.currentTimeMillis();
         Algorithm algorithm = Algorithm.HMAC256("test".getBytes());
@@ -119,13 +119,19 @@ public class CompteServiceImpl implements CompteService{
         compteRepository.save(compte);
     }
     @Override
-    public Optional<Compte> getCompteById(String id){
-        return compteRepository.findById(id);
+    public Optional<Compte> getCompteById(String username){
+        return compteRepository.findCompteByEmail(username);
+    }
+    @Override
+    public Optional<Personnel> getPersonnelById(String username){
+        Compte compte= compteRepository.findCompteByEmail(username).get();
+        return personnelRepository.findById(compte.getIdPersonnel());
     }
     @Override
     public void deleteCompte(Compte compte) {
         compteRepository.delete(compte);
     }
+
     @Override
     public ResponseEntity<Map<String, Object>> getAllCompte(int page, int size) {
         try {

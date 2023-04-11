@@ -166,7 +166,7 @@ public class CommandeController {
 
     }
     @GetMapping("/getAllCommandeNonActive")
-    public ResponseEntity<Map<String, Object>> getAllFournisseurNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+    public ResponseEntity<Map<String, Object>> getAllCommandeNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         return commandeService.getCommandeNotActive(page,size);
     }
 

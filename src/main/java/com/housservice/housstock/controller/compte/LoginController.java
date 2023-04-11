@@ -2,26 +2,20 @@ package com.housservice.housstock.controller.compte;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.Authrespone;
-import com.housservice.housstock.model.Compte;
-import com.housservice.housstock.model.LoginRequest;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.CompteDto;
 import com.housservice.housstock.service.CompteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.SneakyThrows;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.security.auth.login.LoginException;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -123,6 +117,16 @@ public class LoginController {
     @GetMapping("/getAllCompteEnVeille")
     public ResponseEntity<Map<String, Object>> getAllCompteNonActive(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         return loginService.getAllCompteVeille(page,size);
+    }
+
+
+    @GetMapping("/getCompteid/{id}")
+    public Optional<Compte> getCompteid(@ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) {
+        return loginService.getCompteById(id);
+    }
+    @GetMapping("/getPersonnelid/{username}")
+    public Optional<Personnel> getPersonnelid(@ApiParam(name = "username", value = "username", required = true) @PathVariable(value = "username", required = true) @NotEmpty(message = "{http.error.0001}") String username) {
+        return loginService.getPersonnelById(username);
     }
     @PutMapping("/restaurer/{id}")
     public ResponseEntity <String> restaurer(

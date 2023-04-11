@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static jdk.nashorn.internal.runtime.PropertyDescriptor.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -41,11 +42,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/v1/compte/login")
             .permitAll();
         http.authorizeRequests().antMatchers(GET,"/api/v1/personnel/**").hasAnyAuthority("RH","Admin");
+        http.authorizeRequests().antMatchers(POST,"/api/v1/personnel/**").hasAnyAuthority("RH","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/client/**").hasAnyAuthority("commercial","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/fournisseur/**").hasAnyAuthority("Magasin","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/commande/**").hasAnyAuthority("Magasin","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/compte/**").hasAnyAuthority("Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/machine/**").hasAnyAuthority("production","Admin");
+        http.authorizeRequests().antMatchers(GET,"/api/v1/profile/**").permitAll();
+        http.authorizeRequests().antMatchers(GET,"/api/v1/commandeClient/**").hasAnyAuthority("commercial","Admin");
+        http.authorizeRequests().antMatchers(GET,"/api/v1/listeMatiere/**").hasAnyAuthority("Admin");
+
         http.addFilterBefore(new FilterAuthorization(),UsernamePasswordAuthenticationFilter.class);
     }
     @Bean
