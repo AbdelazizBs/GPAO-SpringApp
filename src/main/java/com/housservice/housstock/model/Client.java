@@ -99,8 +99,8 @@ public class Client {
 
 	private List <Contact> contact;
 	private List <Picture> pictures;
-
-	public Client(String id, String refClientIris, String statut, String codePostal, String adresse, String ville, String region, String pays, String codeDouane, String rne, String cif, Date date, String raisonSocial, String regime, String secteurActivite, String brancheActivite, String incoterm, String telecopie, String phone, String echeance, String modePaiement, String nomBanque, String adresseBanque, String rib, String swift, String email, boolean miseEnVeille, Date dateMiseEnVeille, int blocage, Date dateBlocage, List<Contact> contact, List<Picture> pictures) {
+	private int rate;
+	public Client(String id, String refClientIris, String statut, String codePostal, String adresse, String ville, String region, String pays, String codeDouane, String rne, String cif, Date date, String raisonSocial, String regime, String secteurActivite, String brancheActivite, String incoterm, String telecopie, String phone, String echeance, String modePaiement, String nomBanque, String adresseBanque, String rib, String swift, String email, boolean miseEnVeille, Date dateMiseEnVeille, int blocage, Date dateBlocage, List<Contact> contact, List<Picture> pictures,int rate) {
 		this.id = id;
 		this.refClientIris = refClientIris;
 		this.statut = statut;
@@ -133,6 +133,7 @@ public class Client {
 		this.dateBlocage = dateBlocage;
 		this.contact = contact;
 		this.pictures = pictures;
+		this.rate=rate;
 	}
 
 	public Client(Date date, String refClientIris, String raisonSocial, String regime,

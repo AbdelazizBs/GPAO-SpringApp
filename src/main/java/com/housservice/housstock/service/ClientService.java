@@ -96,4 +96,6 @@ public interface ClientService {
 	List<Integer> getClientListe(boolean b);
 
     void Restaurer(String idClient) throws ResourceNotFoundException;
+	int getAllCommandeClient();
+	int getAllCommandeClientSuivi();
 }

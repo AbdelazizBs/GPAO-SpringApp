@@ -230,15 +230,19 @@ public class MachineServiceImpl implements MachineService
 
     @Override
     public void addType(String type) throws ResourceNotFoundException {
+        type = type.substring(0, 1).toUpperCase() + type.substring(1);
+        if (typeMachineRepository.existsTypeMachineByNom(type))
+            throw new IllegalArgumentException("Matricule existe deja !!");
         typeMachineRepository.deleteByNom("Autre");
-        TypeMachineDto machineDto1 = new TypeMachineDto();
-        machineDto1.setNom(type);
-        TypeMachine matiere1 = TypeMachineMapper.MAPPER.toTypeMachine(machineDto1);
-        typeMachineRepository.save(matiere1);
-        TypeMachineDto machineDto2 = new TypeMachineDto();
-        machineDto2.setNom("Autre");
-        TypeMachine matiere2 = TypeMachineMapper.MAPPER.toTypeMachine(machineDto2);
-        typeMachineRepository.save(matiere2);
+            TypeMachineDto machineDto1 = new TypeMachineDto();
+            machineDto1.setNom(type);
+            TypeMachine matiere1 = TypeMachineMapper.MAPPER.toTypeMachine(machineDto1);
+            typeMachineRepository.save(matiere1);
+            TypeMachineDto machineDto2 = new TypeMachineDto();
+            machineDto2.setNom("Autre");
+            TypeMachine matiere2 = TypeMachineMapper.MAPPER.toTypeMachine(machineDto2);
+            typeMachineRepository.save(matiere2);
+
 
     }
     @Override

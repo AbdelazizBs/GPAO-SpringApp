@@ -169,6 +169,20 @@ public class CommandeController {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+    @GetMapping("/getAllMatiere")
+    @ApiOperation(value = "service to get one Reference fournisseur")
+    public List<String> getAllMatiere() {
+        return commandeService.getAllMatiere();
+    }
+
+    @PutMapping("/addMatiere/{designation}")
+    public ResponseEntity <String> addMatiere(
+            @ApiParam(name = "designation", value="designation", required = true)
+            @PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}")  String designation) throws ResourceNotFoundException {
+        commandeService.addMatiere(designation);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+
+    }
 
 
 }

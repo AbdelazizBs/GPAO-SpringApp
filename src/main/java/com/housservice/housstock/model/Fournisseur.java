@@ -92,6 +92,7 @@ public class Fournisseur {
 
     private List <Contact> contact;
     private List <Picture> pictures;
+    private int rate;
 
     public Fournisseur(String id, String refFournisseurIris, String statut, String codePostal, String adresse, String ville, String region, String pays, String codeDouane, String rne, String identifiantTva, Date date, String raisonSocial, String regime, String abrege, String linkedin, String siteWeb, String telecopie, String phone, String nomBanque, String adresseBanque, String rib, String swift, String email, boolean miseEnVeille, Date dateMiseEnVeille , List<Contact> contact, List<Picture> pictures) {
         this.id = id;

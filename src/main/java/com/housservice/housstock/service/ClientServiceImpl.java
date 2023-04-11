@@ -8,9 +8,7 @@ import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
-import com.housservice.housstock.repository.ClientRepository;
-import com.housservice.housstock.repository.ContactRepository;
-import com.housservice.housstock.repository.PictureRepository;
+import com.housservice.housstock.repository.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,16 +47,20 @@ public class ClientServiceImpl implements ClientService {
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	final  ContactRepository contactRepository ;
+	private final CommandeClientRepository commandeClientRepository;
+	private final CommandeClientSuiviRepository commandeClientSuiviRepository;
 
 
 	@Autowired
 	public ClientServiceImpl(ClientRepository clientRepository,
 							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository,
-							 PictureRepository pictureRepository) {
+							 PictureRepository pictureRepository, CommandeClientRepository commandeClientRepository, CommandeClientSuiviRepository commandeClientSuiviRepository) {
 		this.clientRepository = clientRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
 		this.pictureRepository = pictureRepository;
+		this.commandeClientRepository = commandeClientRepository;
+		this.commandeClientSuiviRepository = commandeClientSuiviRepository;
 	}
 	public static byte[] decompressBytes(byte[] data) {
 		Inflater inflater = new Inflater();
@@ -581,6 +583,27 @@ public class ClientServiceImpl implements ClientService {
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idClient)));
 		client.setMiseEnVeille(false);
 		clientRepository.save(client);
+	}
+	@Override
+	public int getAllCommandeClient() {
+		try {
+			List<CommandeClient> commandeClient = commandeClientRepository.findAll();
+
+			return (int) (commandeClient.stream().count());
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+	@Override
+	public int getAllCommandeClientSuivi() {
+		try {
+			List<CommandeClientSuivi> commandeClient = commandeClientSuiviRepository.findAll();
+			return (int) commandeClient.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
 	}
 
 

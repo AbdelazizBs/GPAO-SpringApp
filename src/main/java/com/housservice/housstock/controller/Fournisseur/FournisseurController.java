@@ -1,4 +1,4 @@
-package com.housservice.housstock.controller.fournisseur;
+package com.housservice.housstock.controller.Fournisseur;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;

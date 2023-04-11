@@ -2,10 +2,12 @@ package com.housservice.housstock;
 
 import com.housservice.housstock.mapper.ClientMapper;
 import com.housservice.housstock.mapper.FournisseurMapper;
+import com.housservice.housstock.mapper.PersonnelMapper;
 import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.ClientDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.model.dto.FournisseurDto;
+import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.repository.*;
 import com.housservice.housstock.service.CommandeService;
 import org.junit.jupiter.api.Test;
@@ -46,6 +48,18 @@ class HousstockApplicationTests {
 	private CommandeService commandeService;
 	@Autowired
 	private MatierePrimaireRepository matierePrimaireRepository;
+	@Autowired
+	private CommandeClientRepository commandeClientRepository;
+	@Autowired
+	private CommandeClientSuiviRepository commandeClientSuiviRepository;
+	@Autowired
+	private CommandeSuiviRepository commandeSuiviRepository;
+	@Autowired
+	private PersonnelRepository personnelRepository;
+	@Autowired
+	private MachineRepository machineRepository;
+	@Autowired
+	private TypeMachineRepository typeMachineRepository;
 
 	@Test
 	public void testCreateNewClient(){
@@ -233,6 +247,7 @@ class HousstockApplicationTests {
 			pageTuts = clientRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC, "refClientIris")));
 		}
 		activeClients = pageTuts.getContent().stream().map(client-> ClientMapper.MAPPER.toClientDto(client)).collect(Collectors.toList());
+		activeClients =activeClients.stream().filter(client -> !client.isMiseEnVeille()).collect(Collectors.toList());
 		Map<String, Object> response = new HashMap<>();
 		response.put("client", activeClients);
 		response.put("currentPage", pageTuts.getNumber());
@@ -246,7 +261,7 @@ class HousstockApplicationTests {
 	}
 	@Test
 	public void  testOnSortNotActiveClient(){
-		List<ClientDto> activeClients=new ArrayList<>();
+		List<ClientDto> NotactiveClients=new ArrayList<>();
 
 		Page<Client> pageTuts;
 		String order="1";
@@ -256,15 +271,16 @@ class HousstockApplicationTests {
 		else {
 			pageTuts = clientRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "refClientIris")));
 		}
-		activeClients = pageTuts.getContent().stream().map(client-> ClientMapper.MAPPER.toClientDto(client)).collect(Collectors.toList());
+		NotactiveClients = pageTuts.getContent().stream().map(client-> ClientMapper.MAPPER.toClientDto(client)).collect(Collectors.toList());
+		NotactiveClients =NotactiveClients.stream().filter(ClientDto::isMiseEnVeille).collect(Collectors.toList());
 		Map<String, Object> response = new HashMap<>();
-		response.put("client", activeClients);
+		response.put("client", NotactiveClients);
 		response.put("currentPage", pageTuts.getNumber());
 		response.put("totalItems", pageTuts.getTotalElements());
 		response.put("totalPages", pageTuts.getTotalPages());
 		assertNotNull(pageTuts.getContent());
 
-		activeClients.forEach(clientDto -> assertFalse(clientDto.isMiseEnVeille()));
+		NotactiveClients.forEach(clientDto -> assertFalse(clientDto.isMiseEnVeille()));
 		;
 
 
@@ -715,6 +731,249 @@ class HousstockApplicationTests {
 		assertEquals(1, matieres.size());
 
 	}
+	/*@Test
+	public void testGetAllCommandeClient(){
+
+
+		List<CommandeClient> commandes = commandeClientRepository.findAll();
+		int nbCommande = commandes.size();
+		assertEquals(12, nbCommande);
+
+	}
+	@Test
+	public void testGetAllCommandeClientSuivi(){
+
+
+		List<CommandeClientSuivi> commandes = commandeClientSuiviRepository.findAll();
+		int nbCommande = commandes.size();
+		assertEquals(12, nbCommande);
+
+	}
+	@Test
+	public void testGetAllCommandeSuivi(){
+
+
+		List<CommandeSuivi> commandes = commandeSuiviRepository.findAll();
+		int nbCommande = commandes.size();
+		assertEquals(12, nbCommande);
+
+	}*/
+	@Test
+	public void testAddPersonnal(){
+		Date date = new Date(2023, 3, 3);
+		Date dateDeEmbauche=new Date("14/09/2022");
+		Personnel personnel=new Personnel("achref", "limem", date, "tunis","photo",
+				"10325698", "homme", "0124785966", "commerciale",dateDeEmbauche,
+				"echelon", "categorie", "14589632", "00125478",
+		false, "monastir", "5020",
+				"achref@gmail.com","limem achref");
+		personnelRepository.save(personnel);
+
+	}
+	@Test
+	public void testUpdatePersonnal(){
+
+		Personnel personnel=personnelRepository.findById("642f27805af5ef3465f4ca5b").get();
+		personnel.setAdresse("monastir");
+		personnelRepository.save(personnel);
+	}
+	@Test
+	public void testGetPersonnalById(){
+		Personnel personnel=personnelRepository.findById("642f27805af5ef3465f4ca5b").get();
+		System.out.println(personnel);
+		//verification que  l'objet client n'est pas null
+		assertNotNull(personnel);
+
+		assertEquals("monastir", personnel.getAdresse());
+	}
+	@Test
+	public void TestGetPersonnalByNom(){
+		Personnel personnel=personnelRepository.findByNom("jihene").get();
+		System.out.println(personnel);
+		//verification que  l'objet client n'est pas null
+		assertNotNull(personnel);
+	}
+	@Test
+	public void testMettreEnVeille(){
+		Personnel personnel=personnelRepository.findById("642f27805af5ef3465f4ca5b").get();
+		personnel.setMiseEnVeille(true);
+		personnelRepository.save(personnel);
+
+		Personnel updatedPersonnal = personnelRepository.findById("642f27805af5ef3465f4ca5b").get();
+		assertTrue(updatedPersonnal.isMiseEnVeille());
+	}
+	@Test
+	public void testGetAllPersonnal(){
+
+
+		List<Personnel> personnels = personnelRepository.findAll();
+		int nbPersonnel = personnels.size();
+		assertEquals(1, nbPersonnel);
+
+	}
+	@Test
+	public void testDeletePersonnal(){
+		personnelRepository.deleteById("642f27805af5ef3465f4ca5b");
+		//verifier que le client a ete supprime
+		Optional<Personnel> deletedPersonnel = personnelRepository.findById("642f27805af5ef3465f4ca5b");
+		assertFalse(deletedPersonnel.isPresent());
+	}
+	@Test
+	public void testDeletePersonnalSelected(){
+		List<String> idPersonnalsSelected=new ArrayList<>();
+		idPersonnalsSelected.add("642f2db32c3c5f4d1622078c");
+		idPersonnalsSelected.add("642f2e3aaf52686bbbe6f627");
+		for (String id : idPersonnalsSelected){
+			personnelRepository.deleteById(id);
+		}
+		Optional<Personnel> deletedPersonnal1 = personnelRepository.findById("642f2db32c3c5f4d1622078c");
+		Optional<Personnel> deletedPersonnal2 = personnelRepository.findById("642f2e3aaf52686bbbe6f627");
+		assertFalse(deletedPersonnal1.isPresent());
+		assertFalse(deletedPersonnal2.isPresent());
+
+	}
+	@Test
+	public void testOnSortActivePersonnal(){
+		List<PersonnelDto> activePersonnels=new ArrayList<>();
+
+		Page<Personnel> pageTuts;
+		String order="1";
+		if (order.equals("1")){
+			pageTuts = personnelRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC,"matricule" )));
+		}
+		else {
+			pageTuts = personnelRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC, "matricule")));
+		}
+		activePersonnels = pageTuts.getContent().stream().map(personnel-> PersonnelMapper.MAPPER.toPersonnelDto(personnel)).collect(Collectors.toList());
+		activePersonnels =activePersonnels.stream().filter(personnel -> !personnel.isMiseEnVeille()).collect(Collectors.toList());
+		Map<String, Object> response = new HashMap<>();
+		response.put("personnel", activePersonnels);
+		response.put("currentPage", pageTuts.getNumber());
+		response.put("totalItems", pageTuts.getTotalElements());
+		response.put("totalPages", pageTuts.getTotalPages());
+		assertNotNull(pageTuts.getContent());
+
+		activePersonnels.forEach(clientDto -> assertFalse(clientDto.isMiseEnVeille()));
+		;
+
+	}
+	@Test
+	public void testOnSortNotActivePersonnal(){
+		List<PersonnelDto> activePersonnels=new ArrayList<>();
+
+		Page<Personnel> pageTuts;
+		String order="1";
+		if (order.equals("1")){
+			pageTuts = personnelRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.ASC,"matricule" )));
+		}
+		else {
+			pageTuts = personnelRepository.findAll(PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "matricule")));
+		}
+		activePersonnels = pageTuts.getContent().stream().map(personnel-> PersonnelMapper.MAPPER.toPersonnelDto(personnel)).collect(Collectors.toList());
+		activePersonnels =activePersonnels.stream().filter(PersonnelDto::isMiseEnVeille).collect(Collectors.toList());
+		Map<String, Object> response = new HashMap<>();
+		response.put("personnel", activePersonnels);
+		response.put("currentPage", pageTuts.getNumber());
+		response.put("totalItems", pageTuts.getTotalElements());
+		response.put("totalPages", pageTuts.getTotalPages());
+		assertNotNull(pageTuts.getContent());
+
+		activePersonnels.forEach(clientDto -> assertFalse(clientDto.isMiseEnVeille()));
+		;
+
+	}
+	@Test
+	public void testRestaurerPersonnel(){
+		Personnel personnel=personnelRepository.findById("6431ff2c6cfd8e7b86839981").get();
+		personnel.setMiseEnVeille(false);
+		personnelRepository.save(personnel);
+	}
+	@Test
+	public void testRestaurerClient(){
+		Client client=clientRepository.findById("64006599df102013ae97d348").get();
+		client.setMiseEnVeille(false);
+		clientRepository.save(client);
+	}
+	@Test
+	public void testRestaurerFournisseur(){
+		Fournisseur fournisseur=fournisseurRepository.findById("64013ae575f94978f6c052ed").get();
+		fournisseur.setMiseEnVeille(false);
+		fournisseurRepository.save(fournisseur);
+	}
+	@Test
+	public void RestaurerMachine(){
+		Machine machine=machineRepository.findById("643204736dd28c481e383cad").get();
+		machine.setMiseEnVeille(false);
+		machineRepository.save(machine);
+	}
+	@Test
+	public void testCreateNewMachine(){
+		Date date = new Date(2023, 3, 3);
+		Machine machine=new  Machine( "0","achref", "libelle", 10,date, "type1", false);
+		String ExistType=typeMachineRepository.findByNom(machine.getType());
+		if (ExistType==null){
+			String errorMessage = "Cannot create machine. Type entity does not exist in the database.";
+			throw new IllegalArgumentException(errorMessage);
+		}
+		machineRepository.save(machine);
+	}
+	@Test
+	public void testUpdateMachine(){
+		Machine machine =machineRepository.findById("643204736dd28c481e383cad").get();
+		machine.setRefMachine("1001");
+		machineRepository.save(machine);
+	}
+	@Test
+	public void testMiseEnVeilleMachine(){
+		Machine machine=machineRepository.findById("643204736dd28c481e383cad").get();
+		machine.setMiseEnVeille(true);
+		machineRepository.save(machine);
+
+		Machine updatedMachine = machineRepository.findById("643204736dd28c481e383cad").get();
+		assertTrue(updatedMachine.isMiseEnVeille());
+
+	}
+	@Test
+	public void testDeleteMachine(){
+		machineRepository.deleteById("643204736dd28c481e383cad");
+		//verifier que la machine a ete supprime
+		Optional<Machine> deletedMachine = machineRepository.findById("643204736dd28c481e383cad");
+		assertFalse(deletedMachine.isPresent());
+	}
+	@Test
+	public void testDeleteMachineSelected(){
+		List<String> idMachinesSelected=new ArrayList<>();
+		idMachinesSelected.add("643207a6ad0eb532b50a09f3");
+		idMachinesSelected.add("643207d1ee161c38396ee2b6");
+		for (String id : idMachinesSelected){
+			machineRepository.deleteById(id);
+		}
+		Optional<Machine> deletedMachine1 = machineRepository.findById("643207a6ad0eb532b50a09f3");
+		Optional<Machine> deletedMachine2 = machineRepository.findById("643207d1ee161c38396ee2b6");
+		assertFalse(deletedMachine1 .isPresent());
+		assertFalse(deletedMachine2.isPresent());
+
+	}
+	@Test
+	public void testCreateType(){
+		TypeMachine typeMachine=new TypeMachine("type1");
+		typeMachineRepository.save(typeMachine);
+	}
+	@Test
+	public void testGetAllType(){
+
+
+		List<TypeMachine> types = typeMachineRepository.findAll();
+		int nbType = types.size();
+		assertEquals(1, nbType);
+
+	}
+
+
+
+
+
+
 
 
 
