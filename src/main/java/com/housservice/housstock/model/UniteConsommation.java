@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@Document(collection = "Type papier")
+@Document(collection = "TypeConsommation")
 public class UniteConsommation {
     @Id
     private  String id;

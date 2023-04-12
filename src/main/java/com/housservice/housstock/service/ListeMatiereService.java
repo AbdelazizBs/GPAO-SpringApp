@@ -20,9 +20,8 @@ public interface ListeMatiereService {
     List<String> getAllMatiere();
 
     public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size);
-    ListeMatiere getListeMatiereByDesignation(String nom) throws ResourceNotFoundException;
 
-    List<ListeMatiere> getAllMatiereByDesignation(String designation);
+    ResponseEntity<Map<String, Object>> getAllMatiereByType(String type,int page, int size);
 
     ResponseEntity<Map<String, Object>> onSortListeMatiere(int page, int size, String field, String order);
 

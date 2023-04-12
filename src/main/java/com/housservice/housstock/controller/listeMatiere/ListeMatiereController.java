@@ -2,7 +2,6 @@ package com.housservice.housstock.controller.listeMatiere;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.ListeMatiere;
 import com.housservice.housstock.model.dto.ListeMatiereDto;
 import com.housservice.housstock.service.ListeMatiereService;
 import io.swagger.annotations.Api;
@@ -39,7 +38,6 @@ public class ListeMatiereController {
                                                       @RequestParam(defaultValue = "0") int page,
                                                       @RequestParam(defaultValue = "3") int size) {
         return listeMatiereService.search(textToFind, page, size);
-
     }
     @PutMapping("/addListeMatiere")
     @ApiOperation(value = "service to add new ListeMatiere")
@@ -89,9 +87,9 @@ public class ListeMatiereController {
     public List<String> getUniteConsommation() {
         return listeMatiereService.getUniteConsommation();
     }
-    @GetMapping("/getListeMatiere/{designation}")
-    public List<ListeMatiere> getAllMatiereByDesignation(@PathVariable(value = "designation", required = true)String designation){
-        return listeMatiereService.getAllMatiereByDesignation(designation);
+    @GetMapping("/getListeMatiere/{Type}")
+    public  ResponseEntity<Map<String, Object>> getAllMatiereByDesignation(@PathVariable(value = "Type", required = true)String Type,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size){
+        return listeMatiereService.getAllMatiereByType(Type,page,size);
     }
 
 

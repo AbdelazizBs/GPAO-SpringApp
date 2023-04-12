@@ -32,8 +32,10 @@ public class ListeMatiere {
     private String laize;
     private String micron;
     private String typePelliculage;
+    private String type;
 
-    public ListeMatiere( String designation, String typePapier, float grammage, String couleur, float largeur, float longueur, int minimumStock, String uniteConsommation, String typePvc, String typeVernis, String typeEncre, String embout, float diametre, String typeCordon, String laize, String micron, String typePelliculage) {
+
+    public ListeMatiere( String designation, String typePapier, float grammage, String couleur, float largeur, float longueur, int minimumStock, String uniteConsommation, String typePvc, String typeVernis, String typeEncre, String embout, float diametre, String typeCordon, String laize, String micron, String typePelliculage, String type) {
 
         this.designation = designation;
         this.typePapier = typePapier;
@@ -52,6 +54,7 @@ public class ListeMatiere {
         this.laize = laize;
         this.micron = micron;
         this.typePelliculage = typePelliculage;
+        this.type=type;
     }
 
     public ListeMatiere() {

@@ -1,12 +1,11 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.mapper.FournisseurMapper;
 import com.housservice.housstock.mapper.ListeMatiereMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.ListeMatiere;
-import com.housservice.housstock.model.Matiere;
-import com.housservice.housstock.model.TypePapier;
-import com.housservice.housstock.model.UniteConsommation;
+import com.housservice.housstock.model.*;
+import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.model.dto.ListeMatiereDto;
 import com.housservice.housstock.repository.ListeMatiereRepository;
 import com.housservice.housstock.repository.MatiereRepository;
@@ -21,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +52,9 @@ public class ListeMatiereServiceImpl implements ListeMatiereService{
           
 
             if (listeMatiereRepository.existsListeMatiereByDesignation(listeMatiereDto.getDesignation())) {
-                throw new IllegalArgumentException(	" cin " + listeMatiereDto.getDesignation() +  "  existe deja !!");
+                throw new IllegalArgumentException(	" Designation " + listeMatiereDto.getDesignation() +  "  existe deja !!");
             }
-            
             ListeMatiere listeMatiere = ListeMatiereMapper.MAPPER.toListeMatiere(listeMatiereDto);
-            
             listeMatiereRepository.save(listeMatiere);
         }
         catch (Exception e)
@@ -96,8 +94,6 @@ public class ListeMatiereServiceImpl implements ListeMatiereService{
     @Override
     public void deleteListeMatiere(String listeMatiereId) {
         listeMatiereRepository.deleteById(listeMatiereId);
-
-
     }
 
     @Override
@@ -134,13 +130,22 @@ public class ListeMatiereServiceImpl implements ListeMatiereService{
     }
 
     @Override
-    public ListeMatiere getListeMatiereByDesignation(String designation) throws ResourceNotFoundException {
-        return listeMatiereRepository.findByDesignation(designation);
-    }
-    @Override
-    public List<ListeMatiere> getAllMatiereByDesignation(String designation)   {
-        List<ListeMatiere> listes = listeMatiereRepository.findAllByDesignation(designation);
-        return listes;
+    public  ResponseEntity<Map<String, Object>> getAllMatiereByType(String type,int page, int size)   {
+        try {
+            List<ListeMatiereDto> listematieres = new ArrayList<ListeMatiereDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<ListeMatiere> pageTuts;
+            pageTuts =  listeMatiereRepository.findAllByType(paging, type);
+            listematieres = pageTuts.getContent().stream().map(listematiere -> ListeMatiereMapper.MAPPER.toListeMatiereDto(listematiere)).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("listematieres", listematieres);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @Override
     public ResponseEntity<Map<String, Object>> onSortListeMatiere(int page, int size, String field, String order) {
