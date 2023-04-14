@@ -150,7 +150,7 @@ public class MachineServiceImpl implements MachineService
 
     }
 
-    /*@Override
+    @Override
     public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
         try {
 
@@ -172,7 +172,7 @@ public class MachineServiceImpl implements MachineService
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+    }
 
     @Override
     public void updateMachine(MachineDto machineDto,String idMachine) throws ResourceNotFoundException {

@@ -29,4 +29,6 @@ public interface ListeMatiereService {
     List<String> getTypePapier();
 
     List<String> getUniteConsommation();
+
+    ResponseEntity<Map<String, Object>> getAllMatiereByType(String type, int page, int size);
 }

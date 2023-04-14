@@ -30,7 +30,7 @@ public class Fournisseur {
     private String codeDouane;
     private String rne;
     private String identifiantTva;
-
+    private String nomMatiere;
 
 
 

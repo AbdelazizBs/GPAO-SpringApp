@@ -7,17 +7,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@Document(collection = "Unite Consommation")
-public class UniteConsommation {
+@Document(collection = "Unite Achat")
+
+public class UniteAchat {
     @Id
     private  String id;
     private String nom;
 
-    public UniteConsommation(String id, String nom) {
-        this.id = id;
+    public UniteAchat() {
+    }
+
+    public UniteAchat(String nom) {
         this.nom = nom;
     }
 
-    public UniteConsommation() {
+    public UniteAchat(String id, String nom) {
+        this.id = id;
+        this.nom = nom;
     }
 }

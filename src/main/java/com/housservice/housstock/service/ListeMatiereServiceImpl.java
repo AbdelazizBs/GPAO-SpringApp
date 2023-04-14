@@ -2,7 +2,6 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.ListeMatiereMapper;
-import com.housservice.housstock.mapper.UniteConsommationMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.ListeMatiere;
 import com.housservice.housstock.model.MatierePrimaire;
@@ -22,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,6 +183,25 @@ public class ListeMatiereServiceImpl implements ListeMatiereService{
         return unites.stream()
                 .map(UniteConsommation::getNom)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public  ResponseEntity<Map<String, Object>> getAllMatiereByType(String type, int page, int size)   {
+        try {
+            List<ListeMatiereDto> listematieres = new ArrayList<ListeMatiereDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<ListeMatiere> pageTuts;
+            pageTuts =  listeMatiereRepository.findAllByType(paging, type);
+            listematieres = pageTuts.getContent().stream().map(listematiere -> ListeMatiereMapper.MAPPER.toListeMatiereDto(listematiere)).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("listematieres", listematieres);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 }
