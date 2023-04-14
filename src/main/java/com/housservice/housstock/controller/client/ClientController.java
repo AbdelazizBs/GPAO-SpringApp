@@ -76,9 +76,8 @@ public class ClientController {
 
     @GetMapping("/getClientByNameNomenclatures/{nameNomenclature}")
     @ApiOperation(value = "service to get names Client by Id nomenclature.")
-    public ResponseEntity<Map<String, Object>> getClientByNameNomenclatures(
-            @ApiParam(name = "nameNomenclature", value = "id of nomenclature", required = true)
-            @PathVariable(value = "nameNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String nameNomenclature)
+    public ResponseEntity<Map<String, Object>> getClientByNameNomenclatures(@ApiParam(name = "nameNomenclature", value = "id of nomenclature", required = true)
+                                                                            @PathVariable(value = "nameNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String nameNomenclature)
             throws ResourceNotFoundException {
         return clientService.getClientByNameNomenclatures(nameNomenclature);
     }
