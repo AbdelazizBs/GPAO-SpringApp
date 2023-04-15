@@ -257,6 +257,7 @@ public class NomenclatureController {
             @RequestParam("categorie") String categorie,
             @RequestParam("parentsName") List<String> parentsName,
             @RequestParam("childrensName") List<String> childrensName,
+            
             @RequestParam("image") MultipartFile[] image) throws ResourceNotFoundException {
         nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, refIris, type, nature, categorie, parentsName, childrensName, image);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
