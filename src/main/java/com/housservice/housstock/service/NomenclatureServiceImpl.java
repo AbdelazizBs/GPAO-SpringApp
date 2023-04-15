@@ -370,12 +370,15 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     public void affectClientAndFrsToNomenclature(String idNomenclature, List<String> raisonSoClient, List<String> intituleFrs) throws ResourceNotFoundException {
         Nomenclature nomenclature = getNomenclatureById(idNomenclature)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomenclature)));
+        nomenclature.setClientId(new ArrayList<>());
+        nomenclature.setFournisseurId(new ArrayList<>());
         if (!raisonSoClient.isEmpty()) {
             affectationClientsIds(raisonSoClient, nomenclature);
         }
         if (!intituleFrs.isEmpty()) {
             setFrsIds(intituleFrs, nomenclature);
         }
+        nomenclatureRepository.save(nomenclature);
     }
 
     private void removechildrensAndParentParamsFromAllNomenclaturesAfterUpdate(Nomenclature nomenclature) {

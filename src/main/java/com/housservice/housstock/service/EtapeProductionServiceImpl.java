@@ -39,12 +39,10 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
         if (etapeProduction == null) {
             return null;
         }
-
         EtapeProductionDto etapeProductionDto = new EtapeProductionDto();
         etapeProductionDto.setId(etapeProduction.getId());
         etapeProductionDto.setNomEtape(etapeProduction.getNomEtape());
         etapeProductionDto.setTypeEtape(etapeProduction.getTypeEtape());
-
         return etapeProductionDto;
     }
 
@@ -54,9 +52,7 @@ public class EtapeProductionServiceImpl implements EtapeProductionService {
         etapeProduction.setId("" + sequenceGeneratorService.generateSequence(EtapeProduction.SEQUENCE_NAME));
         etapeProduction.setNomEtape(etapeProductionDto.getNomEtape());
         etapeProduction.setTypeEtape(etapeProductionDto.getTypeEtape());
-
         return etapeProduction;
-
     }
 
     @Override
