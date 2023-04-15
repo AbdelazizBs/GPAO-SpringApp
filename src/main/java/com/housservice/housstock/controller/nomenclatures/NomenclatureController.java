@@ -194,10 +194,7 @@ public class NomenclatureController {
             String description,
             @RequestParam("refIris")
             String refiIris,
-            @RequestParam("raisonSoClient")
-            List<String> raisonSoClient,
-            @RequestParam("intituleFrs")
-            List<String> intituleFrs,
+
             @RequestParam("type")
             @NotEmpty(message = "champ type obligatoire")
             String type,
@@ -213,8 +210,20 @@ public class NomenclatureController {
             @RequestParam("image") MultipartFile[] image
     ) throws ResourceNotFoundException, IOException {
 
-        nomenclatureService.createNewNomenclature(nomNomenclature, parentsName, childrensName, description, refiIris, type, nature, categorie,
-                raisonSoClient, intituleFrs, image);
+        nomenclatureService.createNewNomenclature(nomNomenclature, parentsName, childrensName, description, refiIris, type, nature, categorie, image);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+    }
+
+    @PutMapping(value = "/affectClientAndFrsToNomenclature/{idNomenclature}")
+    public ResponseEntity<String> affectClientAndFrsToNomenclature(
+            @ApiParam(name = "idNomenclature", value = "id of Nomenclature", required = true)
+            @PathVariable(value = "idNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String idNomenclature,
+            @RequestParam("selectedClient")
+            List<String> raisonSoClient,
+            @RequestParam("selectedFrs")
+            List<String> intituleFrs
+    ) throws ResourceNotFoundException {
+        nomenclatureService.affectClientAndFrsToNomenclature(idNomenclature, raisonSoClient, intituleFrs);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
     }
 
@@ -248,10 +257,8 @@ public class NomenclatureController {
             @RequestParam("categorie") String categorie,
             @RequestParam("parentsName") List<String> parentsName,
             @RequestParam("childrensName") List<String> childrensName,
-            @RequestParam("raisonSoClient") List<String> raisonSoClient,
-            @RequestParam("intituleFrs") List<String> intituleFrs,
             @RequestParam("image") MultipartFile[] image) throws ResourceNotFoundException {
-        nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, refIris, type, nature, categorie, parentsName, childrensName, raisonSoClient, intituleFrs, image);
+        nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, refIris, type, nature, categorie, parentsName, childrensName, image);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 

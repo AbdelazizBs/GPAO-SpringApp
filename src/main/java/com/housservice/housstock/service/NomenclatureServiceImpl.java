@@ -271,8 +271,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                                       String type,
                                       String nature,
                                       String categorie,
-                                      List<String> raisonSoClient,
-                                      List<String> intituleFrs,
                                       MultipartFile[] image) throws ResourceNotFoundException, IOException {
         if (nomenclatureRepository.existsNomenclatureByNomNomenclature(nomNomenclature)) {
             throw new IllegalArgumentException("Nom nomenclature existe déja !!");
@@ -292,18 +290,14 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setRefIris(refIris);
         nomenclature.setChildrensName(childrensName);
         nomenclature.setParentsName(parentsName);
+        nomenclature.setClientId(new ArrayList<>());
+        nomenclature.setFournisseurId(new ArrayList<>());
         nomenclature.setId(ObjectId.get().toString());
         Picture picture = new Picture();
         if (image.length == 0) {
             getEmptyPicture(nomenclature, picture);
         }
         setPictureToNomenclature(image, nomenclature, picture);
-        if (!raisonSoClient.isEmpty()) {
-            affectationClientsIds(raisonSoClient, nomenclature);
-        }
-        if (!intituleFrs.isEmpty()) {
-            setFrsIds(intituleFrs, nomenclature);
-        }
         if (parentsName != null) {
             affectParents(parentsName, nomenclature);
         }
@@ -344,10 +338,9 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public void updateNomenclature(String idNomenclature, String nomNomenclature, String description, String refIris, String type,
-                                   String nature, String categorie, List<String> parentsName, List<String> childrensName, List<String> raisonSoClient,
-                                   List<String> intituleFrs, MultipartFile[] image) throws ResourceNotFoundException {
+                                   String nature, String categorie, List<String> parentsName, List<String> childrensName, MultipartFile[] image) throws ResourceNotFoundException {
 
-        if (isEmpty(nomNomenclature, description, type, categorie)) {
+        if (isEmpty(nomNomenclature, type, categorie)) {
             throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
         }
         Nomenclature nomenclature = getNomenclatureById(idNomenclature)
@@ -364,20 +357,25 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setParentsName(parentsName);
         nomenclature.setChildrensName(childrensName);
         nomenclature.setNomNomenclature(nomNomenclature);
-        allAffectationMethod(parentsName, childrensName, raisonSoClient, intituleFrs, nomenclature);
+        allAffectationMethod(parentsName, childrensName, nomenclature);
         nomenclatureRepository.save(nomenclature);
     }
 
-    private void allAffectationMethod(List<String> parentsName, List<String> childrensName, List<String> raisonSoClient, List<String> intituleFrs, Nomenclature nomenclature) {
+    private void allAffectationMethod(List<String> parentsName, List<String> childrensName, Nomenclature nomenclature) {
         updateAffectationParents(parentsName, nomenclature);
         updateAffectationChildrens(childrensName, nomenclature);
+    }
+
+    @Override
+    public void affectClientAndFrsToNomenclature(String idNomenclature, List<String> raisonSoClient, List<String> intituleFrs) throws ResourceNotFoundException {
+        Nomenclature nomenclature = getNomenclatureById(idNomenclature)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomenclature)));
         if (!raisonSoClient.isEmpty()) {
             affectationClientsIds(raisonSoClient, nomenclature);
         }
         if (!intituleFrs.isEmpty()) {
             setFrsIds(intituleFrs, nomenclature);
         }
-
     }
 
     private void removechildrensAndParentParamsFromAllNomenclaturesAfterUpdate(Nomenclature nomenclature) {
@@ -407,8 +405,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         });
     }
 
-    private static boolean isEmpty(String nomNomenclature, String description, String type, String categorie) {
-        return nomNomenclature.isEmpty() || description.isEmpty() || type.isEmpty() || categorie.isEmpty();
+    private static boolean isEmpty(String nomNomenclature, String type, String categorie) {
+        return nomNomenclature.isEmpty() || type.isEmpty() || categorie.isEmpty();
     }
 
     private void updateAffectationChildrens(List<String> parentsName, Nomenclature nomenclature) {
