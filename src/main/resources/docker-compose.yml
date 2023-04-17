@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  mongo_db:
+    image: "mongo:latest"
+    container_name: "mongo_db"
+    ports:
+      - "27017:27017"
+  housstock-backend:
+    image: azzouz97/housstock-backend:1.0.0
+    container_name: "gpao-backend"
+    ports:
+      - "8080:8080"
+    links:
+      - mongo_db
