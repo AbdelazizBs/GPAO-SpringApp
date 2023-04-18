@@ -1,14 +1,35 @@
-version: "3.7"
+#version: "3.7"
+#services:
+#  mongo_db:
+#    image: "mongo:latest"
+#    container_name: "mongo_db"
+#    ports:
+#      - "27017:27017"
+#  housstock-backend:
+#    image: azzouz97/housstock-backend:1.0.0
+#    container_name: "gpao-backend"
+#    ports:
+#      - "8080:8080"
+#    links:
+#      - mongo_db
+version: "3.8"
 services:
-  mongo_db:
-    image: "mongo:latest"
-    container_name: "mongo_db"
-    ports:
-      - "27017:27017"
   housstock-backend:
     image: azzouz97/housstock-backend:1.0.0
-    container_name: "gpao-backend"
+    container_name: "docker-app-spring"
     ports:
-      - "8080:8080"
+      - 8080:8080
     links:
-      - mongo_db
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodbContainer"
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/db:/data/db
+#    volumes:
+#      - mongo_dbv:/data/db/
+#      - mongo_dbv:/data/configdb/
+#volumes:
+#  mongo_dbv: { }
