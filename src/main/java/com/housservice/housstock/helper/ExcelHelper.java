@@ -269,21 +269,31 @@ public class ExcelHelper {
 					case 3:
 						client.setCodePostal(currentCell.getStringCellValue());
 						break;
-					case 5:
+					case 4:
 						client.setVille(currentCell.getStringCellValue());
+						client.setRegion(currentCell.getStringCellValue());
 						break;
 
-					case 7:
+					case 5:
 //						client.setEcheance(new DataFormatter().formatCellValue(currentCell.getRow().getCell(7)));
 						client.setPays(currentCell.getStringCellValue());
+
 						break;
-					case 8:
+					case 6:
 						client.setPhone(currentCell.getStringCellValue());
 						break;
-					case 9:
+					case 7:
 						client.setEmail(currentCell.getStringCellValue());
+						
+						client.setStatut("Résident");
+						client.setSecteurActivite("");
+						client.setBrancheActivite("");
+						client.setEcheance("");
+						client.setModePaiement("");
+						
 						break;
 
+						
 					default:
 						break;
 
