@@ -119,7 +119,7 @@ public class PersonnelServiceImpl implements PersonnelService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size) {
         try {
-            List<PersonnelDto> personnels = new ArrayList<PersonnelDto>();
+            List<PersonnelDto> personnels ;
             Pageable paging = PageRequest.of(page, size);
             Page<Personnel> pageTuts;
             pageTuts = personnelRepository.findPersonnelByMiseEnVeille(false, paging);

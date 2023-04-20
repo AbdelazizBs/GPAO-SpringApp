@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,13 @@ public class NomenclatureDto {
     private List<String> childrensName;
     private List<String> parentsId;
 
+
+    private double price;
+    private int quantityMin;
+    private int quantityMax;
+    private int quantity;
+    private int quantityStock;
+    private LocalDateTime durationOfFabrication;
     private List<EtapeProduction> etapeProductions;
 
 

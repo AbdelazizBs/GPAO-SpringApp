@@ -292,7 +292,13 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setParentsName(parentsName);
         nomenclature.setClientId(new ArrayList<>());
         nomenclature.setFournisseurId(new ArrayList<>());
+        nomenclature.setQuantity(0);
+        nomenclature.setPrice(0);
+        nomenclature.setQuantityMin(0);
+        nomenclature.setQuantityMax(0);
+        nomenclature.setDurationOfFabrication(null);
         nomenclature.setId(ObjectId.get().toString());
+
         Picture picture = new Picture();
         if (image.length == 0) {
             getEmptyPicture(nomenclature, picture);
@@ -713,6 +719,28 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         try {
             Map<String, Object> response = new HashMap<>();
             response.put("childrensName", nomenclatureRepository.findNomenclatureByMiseEnVeille(false).stream().map(Nomenclature::getNomNomenclature).collect(Collectors.toList()));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getElementOfNomenclature(String idNomenclature) throws ResourceNotFoundException {
+        try {
+            Map<String, Object> response = new HashMap<>();
+            response.put("elementsOfNomenclature", nomenclatureRepository.findById(idNomenclature)
+                    .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomenclature)))
+                    .getChildrensId().stream()
+                    .map(id -> {
+                        try {
+                            return nomenclatureRepository.findById(id)
+                                    .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+                        } catch (ResourceNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).collect(Collectors.toList()));
+
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

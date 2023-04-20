@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-18T10:10:38+0100",
-    comments = "version: 1.4.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
+    date = "2023-04-20T04:06:16+0200",
+    comments = "version: 1.4.1.Final, compiler: javac, environment: Java 17.0.1 (Oracle Corporation)"
 )
 @Component
 public class NomenclatureMapperImpl extends NomenclatureMapper {
@@ -57,6 +57,12 @@ public class NomenclatureMapperImpl extends NomenclatureMapper {
         if ( list6 != null ) {
             nomenclatureDto.setParentsId( new ArrayList<String>( list6 ) );
         }
+        nomenclatureDto.setPrice( nomenclature.getPrice() );
+        nomenclatureDto.setQuantityMin( nomenclature.getQuantityMin() );
+        nomenclatureDto.setQuantityMax( nomenclature.getQuantityMax() );
+        nomenclatureDto.setQuantity( nomenclature.getQuantity() );
+        nomenclatureDto.setQuantityStock( nomenclature.getQuantityStock() );
+        nomenclatureDto.setDurationOfFabrication( nomenclature.getDurationOfFabrication() );
         List<EtapeProduction> list7 = nomenclature.getEtapeProductions();
         if ( list7 != null ) {
             nomenclatureDto.setEtapeProductions( new ArrayList<EtapeProduction>( list7 ) );
@@ -117,6 +123,12 @@ public class NomenclatureMapperImpl extends NomenclatureMapper {
             nomenclature.setChildrens( new ArrayList<Nomenclature>( list6 ) );
         }
         nomenclature.setPicture( nomenclatureDto.getPicture() );
+        nomenclature.setPrice( nomenclatureDto.getPrice() );
+        nomenclature.setQuantityMin( nomenclatureDto.getQuantityMin() );
+        nomenclature.setQuantityMax( nomenclatureDto.getQuantityMax() );
+        nomenclature.setQuantity( nomenclatureDto.getQuantity() );
+        nomenclature.setQuantityStock( nomenclatureDto.getQuantityStock() );
+        nomenclature.setDurationOfFabrication( nomenclatureDto.getDurationOfFabrication() );
         nomenclature.setDate( nomenclatureDto.getDate() );
         nomenclature.setMiseEnVeille( nomenclatureDto.isMiseEnVeille() );
         nomenclature.setDateMiseEnVeille( nomenclatureDto.getDateMiseEnVeille() );

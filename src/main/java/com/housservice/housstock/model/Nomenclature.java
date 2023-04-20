@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +62,13 @@ public class Nomenclature {
 
 
     private Picture picture;
+    private double price;
+    private int quantityMin;
+    private int quantityMax;
+    private int quantity;
+    private int quantityStock;
+    private LocalDateTime durationOfFabrication;
+
 
     private Date date;
 

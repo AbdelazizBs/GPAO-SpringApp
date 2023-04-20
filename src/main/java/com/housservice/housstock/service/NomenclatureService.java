@@ -43,6 +43,7 @@ public interface NomenclatureService {
     ResponseEntity<Map<String, Object>> getParent();
 
     ResponseEntity<Map<String, Object>> getChildrensName();
+    ResponseEntity<Map<String, Object>> getElementOfNomenclature(String idNomenclature) throws ResourceNotFoundException;
 
     ResponseEntity<Map<String, Object>> getChildrensNameArticles();
 
