@@ -105,7 +105,7 @@ public class AffectationController {
     }
     @PutMapping("/updateAffectation/{idAffectation}")
     @ApiOperation(value = "service to update  Affectation")
-    public ResponseEntity<String> updatePersonnel(@Valid  @RequestBody AffectationDto affectationDto,
+    public ResponseEntity<String> updateAffectation(@Valid  @RequestBody AffectationDto affectationDto,
                                                   @PathVariable(value = "idPersonnel", required = true) String idAffectation) throws ResourceNotFoundException {
         affectationService.updateAffectation(affectationDto,idAffectation);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());

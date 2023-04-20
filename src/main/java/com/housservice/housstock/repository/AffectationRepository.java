@@ -18,4 +18,6 @@ public interface AffectationRepository extends MongoRepository<Affectation, Stri
     Page<Affectation> findAffectationByTextToFind(String textToFind, Pageable paging);
 
     Optional<Affectation> findByIdMatiere(String idMatiere);
+
+    Optional<Affectation> findAffectationByIdPrixAchat(String idPrixAchat);
 }

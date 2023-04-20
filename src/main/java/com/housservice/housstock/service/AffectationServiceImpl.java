@@ -69,26 +69,26 @@ public class AffectationServiceImpl implements AffectationService{
         return affectationRepository.findById(idAffectation);
     }
 
+
     @Override
     public void updatePrixAchatAffectation(PrixAchatDto prixAchatDto, String idPrixAchat) throws ResourceNotFoundException {
         Affectation affectation = (Affectation) affectationRepository.findAffectationByPrixAchatId(idPrixAchat)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  prixAchatDto)));
-        PrixAchat prixAchatToUpdate = prixAchatRepository.findById(idPrixAchat)
+        PrixAchat prixAchatToUpdate = affectation.getPrixAchat().stream()
+                .filter(prixAchat -> prixAchat.getId().equals(idPrixAchat))
+                .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  prixAchatDto.getId())));
-        affectation.getPrixAchat().removeIf(prixAchat1 -> prixAchat1.equals(prixAchatToUpdate));
         prixAchatToUpdate.setPrix(prixAchatDto.getPrix());
         prixAchatToUpdate.setDevise(prixAchatDto.getDevise());
         prixAchatToUpdate.setDateEffet(prixAchatDto.getDateEffet());
 
         prixAchatRepository.save(prixAchatToUpdate);
-        affectation.getPrixAchat().add(prixAchatToUpdate);
         affectationRepository.save(affectation);
-
     }
 
     @Override
     public void deletePrixAchatAffectation(String idPrixAchat) throws ResourceNotFoundException {
-        Affectation affectation = (Affectation) affectationRepository.findAffectationByPrixAchatId(idPrixAchat)
+        Affectation affectation = affectationRepository.findAffectationByIdPrixAchat(idPrixAchat)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPrixAchat)));
         PrixAchat prixAchat = prixAchatRepository.findById(idPrixAchat)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPrixAchat)));
