@@ -4,7 +4,6 @@ import com.housservice.housstock.model.Compte;
 import com.housservice.housstock.model.LoginRequest;
 import com.housservice.housstock.repository.CompteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
