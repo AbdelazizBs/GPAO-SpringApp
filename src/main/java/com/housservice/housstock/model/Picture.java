@@ -2,11 +2,10 @@ package com.housservice.housstock.model;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.Size;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.Size;
 
 
 @Getter
@@ -32,5 +31,12 @@ public class Picture {
         this.fileName=originalFilename;
         this.bytes=bytes;
         this.type=contentType;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Picture picture = (Picture) o;
+        return id.equals(picture.id);
     }
 }

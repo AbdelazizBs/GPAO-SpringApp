@@ -1,16 +1,15 @@
 package com.housservice.housstock.model.dto;
 
-import java.time.LocalDate;
-import java.util.List;
-import javax.validation.constraints.Size;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.Picture;
-import org.springframework.data.annotation.Id;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -41,7 +40,7 @@ public class ArticleDto {
 	private String idClient ;
 	private String refClient ;
 	private String raisonSocial ;
-	private Double prix ;
+	private String prix ;
 	private int miseEnVeille;
 
 	private Picture picture ;

@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  housstock-backend:
+    image: azzouz97/housstock-backend:1.0.0
+    container_name: "docker-app-spring"
+    ports:
+      - 8080:8080
+    links:
+      - mongodb
+        
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodbContainer"
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/db:/data/db
+  angular:
+    image: azzouz97/gpao-frontend:1.0.0
+    ports:
+      - "4200:80"
+    depends_on:
+      - housstock-backend
+#    environment:
+#      API_VERSION: "/api/v1"

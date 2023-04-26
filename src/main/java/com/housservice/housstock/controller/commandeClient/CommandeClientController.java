@@ -22,7 +22,7 @@ import java.util.Map;
 @Api(tags = {"Commandes Clients Management"})
 public class CommandeClientController {
 
-	private CommandeClientService commandeClientService;
+	private final CommandeClientService commandeClientService;
 	  
     private final MessageHttpErrorProperties messageHttpErrorProperties;
 		
@@ -45,14 +45,8 @@ public class CommandeClientController {
 	public ResponseEntity<Map<String, Object>> getAllCommandeClientFermer(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 
 		return commandeClientService.getAllCommandeClientFermer(page,size);
-
 	}
 
-
-
-
-
-    
     @GetMapping("/commandeClient/{id}")
 	  @ApiOperation(value = "service to get one Commande Client by Id.")
 	  public ResponseEntity < CommandeClientDto > getCommandeClientById(
@@ -67,7 +61,7 @@ public class CommandeClientController {
 	  }
     
     @PutMapping("/addCmdClient")
-	  public ResponseEntity<String> createCommandeClient(@Valid @RequestBody CommandeClientDto commandeClientDto) {
+	  public ResponseEntity<String> createCommandeClient(@RequestBody CommandeClientDto commandeClientDto) throws ResourceNotFoundException {
 		  
   	  commandeClientService.createNewCommandeClient(commandeClientDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());

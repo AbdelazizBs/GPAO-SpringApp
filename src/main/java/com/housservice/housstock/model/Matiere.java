@@ -1,7 +1,5 @@
 package com.housservice.housstock.model;
 
-import java.math.BigDecimal;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -27,7 +25,7 @@ public class Matiere {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private String codeMatiere;
+	private String refMatiereIris;
 
 	@NotBlank
 	@Size(max = 100)
@@ -37,17 +35,35 @@ public class Matiere {
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private BigDecimal prixUnitaireHt;
+	private String famille;
+	
 
 	@NotBlank
 	@Size(max = 100)
 	@Indexed(unique = true)
-	private BigDecimal tauxTva;
+	private String uniteAchat;
 	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private BigDecimal prixUnitaireTtc;
+	
+	private boolean miseEnVeille ;
+	
+	
+	public Matiere() {
+
+	}
+
+
+	public Matiere(String refMatiereIris,String designation,
+			String famille,String uniteAchat
+		) {
+		super();
+		this.refMatiereIris = refMatiereIris;
+		this.designation = designation;
+		this.famille = famille;
+		this.uniteAchat = uniteAchat;
+		
+	}
+	
+	
 	
 
 }

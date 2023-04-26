@@ -19,7 +19,7 @@ public class Contact {
 
 
     @Transient
-    public static final String SEQUENCE_NAME ="contact_sequence";
+    public static final String SEQUENCE_NAME = "contact_sequence";
 
 
     @Id
@@ -35,12 +35,7 @@ public class Contact {
     @Size(max = 100)
     private String fonction;
 
-    @NotBlank
-    @Indexed(unique = true)
-    @Size(max = 100)
-        private String address;
 
-    @NotBlank
     @Indexed(unique = true)
     @Size(max = 100)
     private String phone;
@@ -51,10 +46,10 @@ public class Contact {
     @Email
     private String email;
 
-    @NotBlank
     @Indexed(unique = true)
     @Size(max = 100)
     private String mobile;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,6 +57,7 @@ public class Contact {
         Contact contact = (Contact) o;
         return id.equals(contact.id);
     }
+
     @Override
     public int hashCode() {
         return id.hashCode();

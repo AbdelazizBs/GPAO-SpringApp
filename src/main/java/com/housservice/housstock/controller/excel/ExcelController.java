@@ -69,9 +69,10 @@ public class ExcelController {
 
 	}
 
+	
+	
 	@PostMapping("/uploadClientFile")
-	public ResponseEntity<ResponseMessage> uploadClientFile(@RequestParam("file") MultipartFile file) throws IOException
-	{
+	public ResponseEntity<ResponseMessage> uploadClientFile(@RequestParam("file") MultipartFile file) throws IOException, ResourceNotFoundException {
 		String message = "";
 
 		if (ExcelHelper.hasExcelFormat(file))
@@ -86,9 +87,9 @@ public class ExcelController {
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 
 	}
+	
 	@PostMapping("/uploadClientFromSageFile")
-	public ResponseEntity<ResponseMessage> excelFormatSageToClient(@RequestParam("file") MultipartFile file) throws IOException
-	{
+	public ResponseEntity<ResponseMessage> excelFormatSageToClient(@RequestParam("file") MultipartFile file) throws IOException, ResourceNotFoundException {
 		String message = "";
 
 		if (ExcelHelper.hasExcelFormat(file))
@@ -107,13 +108,71 @@ public class ExcelController {
 
 	}
 
+	
+	
+	@PostMapping("/uploadFournisseurFile")
+	public ResponseEntity<ResponseMessage> uploadFournisseurFile(@RequestParam("file") MultipartFile file) throws IOException, ResourceNotFoundException {
+		String message = "";
+
+		if (ExcelHelper.hasExcelFormat(file))
+		{
+
+			fileService.saveFournisseur(file);
+
+
+		}
+		message = "Uploaded the file successfully: " + file.getOriginalFilename();
+
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+	}
+	
+	@PostMapping("/uploadFournisseurFromSageFile")
+	public ResponseEntity<ResponseMessage> excelFormatSageToFournisseur(@RequestParam("file") MultipartFile file) throws IOException, ResourceNotFoundException {
+		String message = "";
+
+		if (ExcelHelper.hasExcelFormat(file))
+		{
+
+			fileService.excelFormatSageToFournisseur(file);
+			message = "Uploaded the file successfully: " + file.getOriginalFilename();
+
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+		}
+
+		message = "Please upload an excel file!";
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+
+	}
+	
+	
+	
+	
 	// get xlsx static file from resources folder
 
-	@GetMapping("/downloadPersonnelExpFile")
-	public ResponseEntity<byte[]> downloadPersonnelFile() throws IOException {
+	@GetMapping("/downloadPersonnelStandardFile")
+	public ResponseEntity<byte[]> downloadPersonnelStandardFile() throws IOException {
 		byte[] data = fileService.getPersonnelFileFromResourceAsStream();
 		return ResponseEntity.ok()
 				.header("Content-Disposition", "attachment; filename=PersonnelFormatStandardExp.xlsx")
+				.body(data);
+	}
+	
+	@GetMapping("/downloadClientStandardFile")
+	public ResponseEntity<byte[]> downloadClientStandardFile() throws IOException {
+		byte[] data = fileService.getClientFileFromResourceAsStream();
+		return ResponseEntity.ok()
+				.header("Content-Disposition", "attachment; filename=ClientFormatStandardExp.xlsx")
+				.body(data);
+	}
+	
+	@GetMapping("/downloadFournisseurStandardFile")
+	public ResponseEntity<byte[]> downloadFournisseurStandardFile() throws IOException {
+		byte[] data = fileService.getFournisseurFileFromResourceAsStream();
+		return ResponseEntity.ok()
+				.header("Content-Disposition", "attachment; filename=FournisseurFormatStandardExp.xlsx")
 				.body(data);
 	}
 

@@ -1,0 +1,10 @@
+com\housservice\housstock\mapper\PersonnelMapperImpl.class
+com\housservice\housstock\mapper\ClientMapperImpl.class
+com\housservice\housstock\mapper\MatiereMapperImpl.class
+com\housservice\housstock\mapper\NomenclatureMapperImpl.class
+com\housservice\housstock\mapper\FournisseurMapperImpl.class
+com\housservice\housstock\mapper\ContactMapperImpl.class
+com\housservice\housstock\mapper\LigneCommandClientMapperImpl.class
+com\housservice\housstock\mapper\CommandMapperImpl.class
+com\housservice\housstock\mapper\ArticleMapperImpl.class
+com\housservice\housstock\mapper\MachineMapperImpl.class

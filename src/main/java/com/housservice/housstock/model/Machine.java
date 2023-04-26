@@ -1,60 +1,43 @@
 package com.housservice.housstock.model;
 
-import java.util.Date;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
-@Document(collection="Machine")
+@Document(collection = "Machine")
 public class Machine {
-	
-	@Transient
-	public static final String SEQUENCE_NAME ="machine_sequence";
-	
-	@Id
-	private String id;
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String reference;
-    
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private String libelle;
+    @Transient
+    public static final String SEQUENCE_NAME = "machine_sequence";
 
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private EtatMachine etatMachine;
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	private int nbrConducteur;
-	
-	@NotBlank
-	@Size(max = 100)
-	@Indexed(unique = true)
-	@JsonFormat(pattern="dd/MM/yyyy")	
-	private Date dateMaintenance;
-	private Boolean enVeille ;
+    @Id
+    private String id;
 
 
-	private EtapeProduction etapeProduction;
-	
+    private String reference;
+
+
+    private String libelle;
+
+    private EtatMachine etatMachine;
+
+
+    private int nbrConducteur;
+
+
+    private Date dateMaintenance;
+    private Boolean enVeille;
+
+
+    private EtapeProduction etapeProduction;
+
+    private List<Personnel> personnel;
 
 }

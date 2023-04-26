@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,9 +25,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/article")
 @Api(tags = {"Articles Management"})
+@Validated
 public class ArticleController {
 	
-	  	private ArticleService articleService;
+	  	private final ArticleService articleService;
 
 	    private final MessageHttpErrorProperties messageHttpErrorProperties;
 	    
@@ -77,36 +79,32 @@ public class ArticleController {
 		  }
 	    
 	    @PutMapping("/addArticle")
-		  public ResponseEntity<String> createArticle(final  String referenceIris,
-													  final  String numFicheTechnique,
-													  final  String designation,
-													  final  String typeProduit,
-													  final  String idClient,
-													  final  String refClient,
-													  final  String raisonSocial,
-													  final  Double prix
-				, MultipartFile picture) throws ResourceNotFoundException, IOException {
-			  
-	    	  articleService.createNewArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,picture);
+		  public ResponseEntity<String> createArticle(@RequestParam("referenceIris") @NotEmpty String referenceIris,
+													  @RequestParam("numFicheTechnique") @NotEmpty String numFicheTechnique,
+													  @RequestParam("designation") @NotEmpty String designation,
+													  @RequestParam("typeProduit") @NotEmpty String typeProduit,
+													  @RequestParam("idClient")   String idClient,
+													  @RequestParam("refClient") @NotEmpty  String refClient,
+													  @RequestParam("raisonSocial")@NotEmpty   String raisonSocial,
+													  @RequestParam("file")  MultipartFile[] files)
+				throws ResourceNotFoundException, IOException {
+	    	  articleService.createNewArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,files);
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 		  }
 
 	    @PutMapping("/updateArticle/{articleId}")
 		  public ResponseEntity <String> updateArticle(
-				  @ApiParam(name = "id", value="id of article", required = true)
-				  @PathVariable(value = "articleId", required = true) @NotEmpty(message = "{http.error.0001}")
-				  final  String articleId,
-				  final  String referenceIris,
-				  final  String numFicheTechnique,
-				  final  String designation,
-				  final  String typeProduit,
-				  final  String idClient,
-				  final  String refClient,
-				  final  String raisonSocial,
-				  final  Double prix,
-				  MultipartFile file) throws ResourceNotFoundException, IOException {
+				  @ApiParam(name = "articleId", value="id of article", required = true)
+				  @PathVariable(value = "articleId", required = true) @NotEmpty(message = "{http.error.0001}") String articleId,
+				  @RequestParam("referenceIris")@NotEmpty  String referenceIris,
+				  @RequestParam("numFicheTechnique") @NotEmpty String numFicheTechnique,
+				  @RequestParam("designation") @NotEmpty String designation,
+				  @RequestParam("typeProduit")@NotEmpty  String typeProduit,
+				  @RequestParam("refClient") @NotEmpty String refClient,
+				  @RequestParam("raisonSocial")@NotEmpty  String raisonSocial,
+				  @RequestParam("file")MultipartFile[] files) throws ResourceNotFoundException, IOException {
 			  
-	    	  articleService.updateArticle(referenceIris,numFicheTechnique,designation,typeProduit,idClient,refClient,raisonSocial,prix,articleId,file);
+	    	  articleService.updateArticle(referenceIris,numFicheTechnique,designation,typeProduit,refClient,raisonSocial,articleId,files);
 		      
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 		  }
@@ -125,23 +123,8 @@ public class ArticleController {
 		  }
 
 
-	@GetMapping("/getDesignationArticleCient/{idClient}")
-	@ApiOperation(value = "service to get List of  designation ArticleClient  by idClient.")
-	public List < String > getDesignationArticleCient(
-			@ApiParam(name = "idClient", value="id of client", required = true)
-			@PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}") String idClient)
-			throws ResourceNotFoundException {
-		return articleService.getDesignationArticleCient(idClient);
-	}
 
-		@GetMapping("/getRefIrisAndClient/{designation}")
-	@ApiOperation(value = "service to get Ref Iris And Client  .")
-	public List<String>  getRefIrisAndClientAndIdArticle(
-			@ApiParam(name = "designation", value="designation of article", required = true)
-			@PathVariable(value = "designation", required = true) @NotEmpty(message = "{http.error.0001}") String designation)
-			throws ResourceNotFoundException {
-		return articleService.getRefIrisAndClientAndIdArticle(designation);
-	}
+
 
 	@GetMapping("/getIdArticleWithDesignation/{designation}")
 	@ApiOperation(value = "service to get id Article .")
@@ -171,7 +154,15 @@ public class ArticleController {
 		return articleService.getTargetEtapesArticle(idArticle);
 	}
 
+	@GetMapping("/search")
+	@ApiOperation(value = "service to filter personnel ")
+	public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
+													  @RequestParam int enVeille,
+													  @RequestParam(defaultValue = "0") int page,
+													  @RequestParam(defaultValue = "3") int size) {
+		return articleService.search(textToFind, page, size,enVeille);
 
+	}
 	  
 }
 	  

@@ -6,60 +6,40 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 
-
 @Getter
 @Setter
- public class PlanificationOf {
+public class PlanificationOf {
 
-   @Transient
-   public static final String SEQUENCE_NAME = "planificationOf_sequence";
+    @Transient
+    public static final String SEQUENCE_NAME = "planificationOf_sequence";
 
 
+    @Id
+    private String id;
 
- @Id
-   private String id;
+    private LigneCommandeClient ligneCommandeClient;
 
-    private  LigneCommandeClient ligneCommandeClient ;
+    private String nomEtape;
 
-    private EtapeProduction etapeProductions;
-
-    private  Machine machine;
+    private Machine machine;
 
     private List<Personnel> personnels;
 
-    private LocalDate dateLancementPrevue ;
 
-    private LocalDate dateLancementReel ;
-    private LocalDate heureDebutPrevue ;
-    private LocalDate heureFinPrevue ;
-    private LocalDate heureFinReel ;
-    private LocalDate heureDebutReel ;
-    private LocalDate duréeReelOperation ;
-
+    private Date dateLancementReel;
+    private LocalDateTime heureFinReel;
+    private LocalDateTime heureDebutReel;
 
     @Size(max = 100)
     private String quantiteInitiale;
 
-    @Size(max = 100)
-    private String quantiteConforme;
 
-    @Size(max = 100)
-    private String quantiteNonConforme;
+    public PlanificationOf() {
 
-
-
- @Size(max = 100)
-    private String commentaire;
-
- public PlanificationOf() {
-
- }
-
- public PlanificationOf(LigneCommandeClient ligneCommandeClient, EtapeProduction etapeProduction, Machine machine, List<Personnel> personnels, Date date, Date date1, LocalDate max_date, LocalDate max_date1, LocalDate max_date2, LocalDate max_date3, LocalDate max_date4, String s, String s1, String s2, String s3) {
- }
+    }
 }

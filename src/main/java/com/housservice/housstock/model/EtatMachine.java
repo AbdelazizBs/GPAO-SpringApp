@@ -10,39 +10,39 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
-@Document(collection="EtatMachine")
+@Document(collection = "EtatMachine")
 public class EtatMachine {
 
 
     @Transient
-    public static final String SEQUENCE_NAME ="etat_sequence";
+    public static final String SEQUENCE_NAME = "etat_sequence";
 
     @Id
     private String id;
 
-    private String nomEtat;
+    private List<String> nomEtat;
+    private String lastEtat;
 
 
     @NotBlank
     @Size(max = 100)
     @Indexed(unique = true)
-    private LocalDate dateDebut;
+    private List<LocalDateTime> dateDebut;
 
     private String idMachine;
 
     @NotBlank
     @Size(max = 100)
     @Indexed(unique = true)
-    private LocalDate dateFin;
+    private List<LocalDateTime> dateFin;
 
-    public EtatMachine(String nomEtat, LocalDate dateDebut, LocalDate dateFin,String idMachine) {
-        this.nomEtat=nomEtat;
-        this.dateDebut=dateDebut;
-        this.dateFin=dateFin;
-        this.idMachine=idMachine;
+
+    public EtatMachine() {
+
     }
 }

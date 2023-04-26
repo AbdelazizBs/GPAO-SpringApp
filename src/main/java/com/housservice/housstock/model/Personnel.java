@@ -4,13 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 
@@ -19,112 +14,99 @@ import java.util.Date;
 @Document(collection = "Personnel")
 public class Personnel {
 
-	@Transient
-	public static final String SEQUENCE_NAME = "personnel_sequence";
+    @Transient
+    public static final String SEQUENCE_NAME = "personnel_sequence";
 
-	@Id
-	private String id;
-
-
-	private String nom;
+    @Id
+    private String id;
 
 
-	private String prenom;
-
-	private String codePostal;
+    private String nom;
 
 
-
-	
-
-	private String adresse;
-	
-
-	private String photo;
+    private String codePostal;
 
 
-	private String matricule;
+    private String adresse;
 
 
-	private String cin;
+    private String photo;
 
 
-
-	private String sexe;
-
-	private String ville;
+    private String matricule;
 
 
+    private String cin;
 
 
+    private String sexe;
 
-	private String rib;
+    private String ville;
 
-
-	private String poste;
-
-
-
-
-	private String phone;
+    private String region;
+    private String pays;
 
 
-	private Date dateEmbauche;
+    private String rib;
 
 
-
-	private Date dateNaissance;
-
+    private String poste;
 
 
-	private String echelon;
-
-	private String numCnss;
-
-	private String situationFamiliale;
-
-	private String nbrEnfant;
-
-	private String typeContrat;
+    private String phone;
 
 
-	private String categorie;
+    private Date dateEmbauche;
 
 
-
-	private String email;
-	
-	private Comptes compte = new Comptes();
-	private boolean miseEnVeille ;
+    private Date dateNaissance;
 
 
-	public Personnel() {
+    private String echelon;
 
-	}
+    private String numCnss;
 
-	public Personnel(String nom, String prenom, Date dateNaissance, String adresse, String photo,
-					 String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
-					 String echelon, String categorie, String matricule, String phone,
-					 Comptes compte, boolean miseEnVeille, String ville, String codePostal,
-					 String email) {
-		this.nom = nom;
-		this.prenom = prenom;
-		this.dateNaissance = dateNaissance;
-		this.adresse = adresse;
-		this.photo = photo;
-		this.cin = cin;
-		this.sexe = sexe;
-		this.rib = rib;
-		this.poste = poste;
-		this.dateEmbauche = dateDeEmbauche;
-		this.echelon = echelon;
-		this.categorie = categorie;
-		this.compte = compte;
-		this.miseEnVeille = miseEnVeille;
-		this.matricule = matricule;
-		this.phone = phone;
-		this.ville = ville;
-		this.codePostal = codePostal;
-		this.email = email;
-	}
+    private String situationFamiliale;
+
+    private String nbrEnfant;
+
+    private String typeContrat;
+
+
+    private String categorie;
+
+
+    private String email;
+
+    private Comptes compte = new Comptes();
+    private boolean miseEnVeille;
+
+
+    public Personnel() {
+
+    }
+
+    public Personnel(String nom, Date dateNaissance, String adresse, String photo,
+                     String cin, String sexe, String rib, String poste, Date dateDeEmbauche,
+                     String echelon, String categorie, String matricule, String phone,
+                     boolean miseEnVeille, String ville, String codePostal,
+                     String email) {
+        this.nom = nom;
+        this.dateNaissance = dateNaissance;
+        this.adresse = adresse;
+        this.photo = photo;
+        this.cin = cin;
+        this.sexe = sexe;
+        this.rib = rib;
+        this.poste = poste;
+        this.dateEmbauche = dateDeEmbauche;
+        this.echelon = echelon;
+        this.categorie = categorie;
+        this.miseEnVeille = miseEnVeille;
+        this.matricule = matricule;
+        this.phone = phone;
+        this.ville = ville;
+        this.codePostal = codePostal;
+        this.email = email;
+    }
 }
