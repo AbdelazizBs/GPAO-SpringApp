@@ -226,4 +226,32 @@ public class AffectationProduitServiceImpl implements AffectationProduitService{
         }
 
     }
+    public Optional<Client> getClientid(String id){
+        Optional<Client> client = clientRepository.findById(id);
+        return client;
+    }
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllAffectationClt(int page, int size,String id) {
+        try {
+            List<AffectationProduitDto> affectations = new ArrayList<AffectationProduitDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<AffectationProduit> pageTuts;
+            Client client = clientRepository.findById(id).get();
+            pageTuts = affectationProduitRepository.findAffectationProduitBylistClient(client.getRaisonSocial(), paging);
+            affectations = pageTuts.getContent().stream().map(affectation -> {
+                return AffectationProduitMapper.MAPPER.toAffectationProduitDto(affectation);
+            }).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            System.out.println(affectations.get(0).getDestination()+"azeaz");
+            response.put("affectations", affectations);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
 }

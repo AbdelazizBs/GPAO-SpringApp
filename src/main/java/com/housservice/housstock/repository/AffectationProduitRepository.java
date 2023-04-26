@@ -23,4 +23,6 @@ public interface AffectationProduitRepository extends MongoRepository<Affectatio
 
 
     Page<AffectationProduit> findAffectationByIdProduit(String id, Pageable paging);
+
+    Page<AffectationProduit> findAffectationProduitBylistClient(String raisonSocial, Pageable paging);
 }

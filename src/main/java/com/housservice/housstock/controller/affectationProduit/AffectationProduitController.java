@@ -2,11 +2,8 @@ package com.housservice.housstock.controller.affectationProduit;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.Affectation;
-import com.housservice.housstock.model.AffectationProduit;
+import com.housservice.housstock.model.*;
 
-import com.housservice.housstock.model.ListeMatiere;
-import com.housservice.housstock.model.Produit;
 import com.housservice.housstock.model.dto.AffectationProduitDto;
 import com.housservice.housstock.model.dto.PrixVenteDto;
 import com.housservice.housstock.repository.AffectationProduitRepository;
@@ -123,15 +120,11 @@ public class AffectationProduitController {
 
     }
 
-    @GetMapping("/getClient")
-    @ApiOperation(value = "service to get get All Client")
-    public List<String> getFournisseur(){
-        return affectationProduitService.getClient();
-    }
+
 
     @GetMapping("/getClientRef/{id}")
     @ApiOperation(value = "service to get get All Client")
-    public String getFournisseurRef(@ApiParam(name = "id", value="id of affectation", required = true)
+    public String getClientRef(@ApiParam(name = "id", value="id of affectation", required = true)
                                     @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id){
         return affectationProduitService.getClientRef(id);
     }
@@ -149,4 +142,29 @@ public class AffectationProduitController {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+
+
+
+    @GetMapping("/getClient")
+    @ApiOperation(value = "service to get get All Personnel")
+    public List<String> getClient(){
+        return affectationProduitService.getClient();
+    }
+
+
+    @GetMapping("/getClientid/{id}")
+    @ApiOperation(value = "service to get get All Personnel")
+    public Optional<Client> getClientid(@ApiParam(name = "id", value="id of affectation", required = true)
+                                                  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id){
+        return affectationProduitService.getClientid(id);
+    }
+
+    @GetMapping("/getAllAffectationClt")
+    @ApiOperation(value = "service to get get All Personnel")
+    public ResponseEntity<Map<String, Object>> getAllAffectationClt(@RequestParam(defaultValue = "0") int page,
+                                                                    @RequestParam(defaultValue = "3") int size,
+                                                                    @RequestParam String id){
+        return affectationProduitService.getAllAffectationClt(page,size,id);
+    }
+
 }

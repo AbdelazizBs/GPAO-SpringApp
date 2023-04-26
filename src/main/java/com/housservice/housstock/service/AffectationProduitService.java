@@ -1,9 +1,7 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.model.Affectation;
-import com.housservice.housstock.model.AffectationProduit;
-import com.housservice.housstock.model.Produit;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.AffectationProduitDto;
 import com.housservice.housstock.model.dto.PrixVenteDto;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +27,7 @@ public interface AffectationProduitService {
     String getClientRef(String id);
     void deleteAffectation(AffectationProduit affectationProduit);
     Optional<Produit> getProduit(String id);
+     Optional<Client> getClientid(String id);
+    ResponseEntity<Map<String, Object>> getAllAffectationClt(int page, int size,String id);
 
 }
