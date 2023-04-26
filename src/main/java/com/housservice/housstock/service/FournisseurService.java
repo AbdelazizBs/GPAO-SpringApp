@@ -12,78 +12,87 @@ import java.util.Optional;
 
 public interface FournisseurService {
 
-	ResponseEntity<Map<String, Object>> getActiveFournisseur(int page , int size);
-	ResponseEntity<Map<String, Object>> getFournisseurNotActive(int page , int size);
+    ResponseEntity<Map<String, Object>> getActiveFournisseur(int page , int size);
+    ResponseEntity<Map<String, Object>> getFournisseurNotActive(int page , int size);
 
-	public ResponseEntity<Map<String, Object>>  getIdFournisseurs(String raisonSociale) throws ResourceNotFoundException;
+    public ResponseEntity<Map<String, Object>>  getIdFournisseurs(String raisonSociale) throws ResourceNotFoundException;
 
-	public List<String> getintitule();
+    public List<String> getRaisonSociales();
 
     Optional<Fournisseur> getFournisseurById(String id);
 
 
-	public ResponseEntity<Map<String, Object>> onSortActiveFournisseur(int page, int size, String field, String order);
-	public ResponseEntity<Map<String, Object>> onSortFournisseurNotActive(int page, int size, String field, String order);
+    public ResponseEntity<Map<String, Object>> onSortActiveFournisseur(int page, int size, String field, String order);
+    public ResponseEntity<Map<String, Object>> onSortFournisseurNotActive(int page, int size, String field, String order);
+    public void Restaurer(String id) throws ResourceNotFoundException;
+
+    void createNewFournisseur(  String refFournisseurIris,
+                           String raisonSociale,
+                           String adresse,
+                           String codePostal,
+                           String ville,
+                           String pays,
+                           String region,
+                           String phone,
+                           String email,
+                           String statut,
+                           String linkedin,
+                           String abrege,
+                           String siteWeb,
+                           String nomBanque,
+                           String adresseBanque,
+                           String codeDouane,
+                           String rne,
+                           String identifiantTva,
+                           String telecopie,
+                           String rib,
+                           String swift,
+                           MultipartFile[] images) throws ResourceNotFoundException;
+    public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
 
-	  void createNewFournisseur(String refFrsIris,
-								String intitule,
-								String adresse,
-								String codePostal,
-								String ville,
-								String pays,
-								String region,
-								String phone,
-								String email,
-								String Tva,
-								String statut,
-								String Abrege,
-								String linkedin,
-								String siteWeb,
-								String nomBanque,
-								String adresseBanque,
-								String codeDouane,
-								String rne,
-								String telecopie,
-								String rib,
-								String swift,
-								MultipartFile[] images) throws ResourceNotFoundException;
-	public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
 
 
+    public void updateFournisseur(String idFournisseur ,String refFournisseurIris,
+                             String raisonSociale,
+                             String adresse,
+                             String codePostal,
+                             String ville,
+                             String pays,
+                             String region,
+                             String phone,
+                             String email,
+                             String statut,
+                             String linkedin,
+                             String abrege,
+                             String siteWeb,
+                             String nomBanque,
+                             String adresseBanque,
+                             String codeDouane,
+                             String rne,
+                             String identifiantTva,
+                             String telecopie,
+                             String rib,
+                             String swift,
+                             MultipartFile[] images) throws ResourceNotFoundException;
+    void miseEnVeille(String idFournisseur ) throws ResourceNotFoundException;
+    void addContactFournisseur( ContactDto contactDto, String idFournisseur ) throws ResourceNotFoundException;
+    void updateContactFournisseur( ContactDto contact, String idContact) throws ResourceNotFoundException;
 
+    void deleteFournisseur(Fournisseur fournisseur);
+    void deleteFournisseurSelected(List<String> idFournisseursSelected);
 
-	public void updateFournisseur(String idFournisseur ,String refFrsIris,
-								  String intitule,
-								  String adresse,
-								  String codePostal,
-								  String ville,
-								  String pays,
-								  String region,
-								  String phone,
-								  String email,
-								  String Tva,
-								  String statut,
-								  String Abrege,
-								  String linkedin,
-								  String siteWeb,
-								  String nomBanque,
-								  String adresseBanque,
-								  String codeDouane,
-								  String rne,
-								  String telecopie,
-								  String rib,
-								  String swift,
-								  MultipartFile[] images) throws ResourceNotFoundException;
-	 void miseEnVeille(String idFournisseur ) throws ResourceNotFoundException;
-	 void addContactFournisseur( ContactDto contactDto, String idFournisseur ) throws ResourceNotFoundException;
-	 void updateContactFournisseur( ContactDto contact, String idContact) throws ResourceNotFoundException;
+    void deleteContactFournisseur(String idContact) throws ResourceNotFoundException;
+    void removePictures(String idFournisseur) throws ResourceNotFoundException;
 
-	 void deleteFournisseur(Fournisseur fournisseur);
-	void deleteFournisseurSelected(List<String> idFournisseursSelected);
+    void removePicture(String idPicture) throws ResourceNotFoundException;
+    int getFournisseurByMonth();
+    int getallFournisseur();
+    List<Integer> getFrsListe(boolean b);
 
-	 void deleteContactFournisseur(String idContact) throws ResourceNotFoundException;
-	 void removePictures(String idFournisseur) throws ResourceNotFoundException;
+    List<Fournisseur>getAllRefFournisseur(boolean b);
+    ResponseEntity<byte[]> RecordReport(String id) ;
+    int getAllCommande();
+    int getAllCommandeSuivi();
 
-	void removePicture(String idPicture) throws ResourceNotFoundException;
 }

@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -36,7 +37,16 @@ public class PersonnelController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.pictureService = pictureService;
 	}
+	@PutMapping("/addImage/{email}")
+	public ResponseEntity<String> createNewClient(
+			@ApiParam(name = "email", value = "email", required = true) @PathVariable(value = "email", required = true) @NotEmpty(message = "{http.error.0001}") String email,
+			@RequestParam("images") MultipartFile[] images)
+	{
+		System.out.println(images);
+		personnelService.addphoto(images,email);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
+	}
 	@PutMapping("/addPersonnel")
 	@ApiOperation(value = "service to add new Personnel")
 	public ResponseEntity<String> addPersonnel(@Valid  @RequestBody PersonnelDto personnelDto)   {
@@ -51,7 +61,13 @@ public class PersonnelController {
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
 	}
-
+	@PutMapping("/restaurer/{id}")
+	public ResponseEntity <String> restaurer(
+			@ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+			throws ResourceNotFoundException {
+		personnelService.Restaurer(id);
+		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+	}
 	@GetMapping("/getPersonnelById/{id}")
 	@ApiOperation(value = "service to get one Utilisateur by Id.")
 	public ResponseEntity <PersonnelDto> getPersonnelById(
@@ -153,5 +169,48 @@ public class PersonnelController {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
+	@GetMapping("/getPersonnelByMonth")
+	public int getFournisseurByMonth(){
+		return personnelService.getPersonnalByMonth();
+	}
+
+	@GetMapping("/getallPersonnel")
+	public int getallFournisseur(){
+		return personnelService.getallPersonnal();
+	}
+
+	@GetMapping("/getPrsActifListe")
+	public List<Integer> getFrsActifListe(){
+		return personnelService.getPersListe(false);
+	}
+	@GetMapping("/getPrsNoActifListe")
+	public List<Integer> getFrsnoActifListe(){
+		return personnelService.getPersListe(true);
+	}
+
+	@DeleteMapping("/removePictures/{idPersonnel}")
+	@ApiOperation(value = "service to delete all  Picture by idClient and idPicture.")
+	public Map< String, Boolean > removePictures(
+			@ApiParam(name = "idPersonnel", value="id of Personnel", required = true)
+			@PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}") String idPersonnel)
+			throws ResourceNotFoundException {
+		personnelService.removePictures(idPersonnel);
+		Map < String, Boolean > response = new HashMap< >();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
+
+	@DeleteMapping("/removePicture/{idPicture}")
+	@ApiOperation(value = "service to delete one Picture by Id.")
+	public Map< String, Boolean > removePicture(
+			@ApiParam(name = "idPicture", value="id of picture", required = true)
+			@PathVariable(value = "idPicture", required = true) @NotEmpty(message = "{http.error.0001}") String idPicture)
+			throws ResourceNotFoundException {
+		personnelService.removePicture(idPicture);
+		Map < String, Boolean > response = new HashMap< >();
+		response.put("deleted", Boolean.TRUE);
+		return response;
+	}
+
 
 }

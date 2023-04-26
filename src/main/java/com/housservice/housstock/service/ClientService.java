@@ -16,7 +16,7 @@ public interface ClientService {
 	ResponseEntity<Map<String, Object>> getClientNotActive(int page , int size);
 
 	public ResponseEntity<Map<String, Object>>  getIdClients(String raisonSociale) throws ResourceNotFoundException;
-
+	public void Restaurer(String id) throws ResourceNotFoundException;
 	public List<String> getRaisonSociales();
 
     Optional<Client> getClientById(String id);
@@ -91,4 +91,8 @@ public interface ClientService {
 
 	void removePicture(String idPicture) throws ResourceNotFoundException;
 	public ResponseEntity<byte[]> RecordReport(String refClientIris);
+	int getClientByMonth();
+	int getallClient();
+	List<Integer> getClientListe(boolean b);
+
 }

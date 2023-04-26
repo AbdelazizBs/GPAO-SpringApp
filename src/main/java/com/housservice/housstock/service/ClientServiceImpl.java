@@ -5,6 +5,7 @@ import com.housservice.housstock.mapper.ClientMapper;
 import com.housservice.housstock.mapper.ContactMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Client;
+import com.housservice.housstock.model.Compte;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.dto.ClientDto;
@@ -32,6 +33,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
@@ -83,7 +86,14 @@ public class ClientServiceImpl implements ClientService {
 		return clientRepository.findById(clientId);
 	}
 
-
+	@Override
+	public void Restaurer(String id) throws ResourceNotFoundException {
+		System.out.println(id);
+		Client client = clientRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+		client.setMiseEnVeille(false);
+		clientRepository.save(client);
+	}
 	
 	@Override
 	public void deleteClient(Client client) {
@@ -320,7 +330,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<String> getRaisonSociales( )   {
+	public List<String> getRaisonSociales()   {
 		List<Client> clients = clientRepository.findAll();
 		return clients.stream()
 				.map(Client::getRaisonSocial)
@@ -508,6 +518,72 @@ public class ClientServiceImpl implements ClientService {
 		} catch(Exception e) {
 			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@Override
+	public int getClientByMonth() {
+		try {
+			LocalDate today = LocalDate.now();
+			ZoneId defaultZoneId = ZoneId.systemDefault();
+			LocalDate startD = LocalDate.now().withDayOfMonth(1);
+			Date Firstday = Date.from(startD.atStartOfDay(defaultZoneId).toInstant());
+			LocalDate endD = LocalDate.now().withDayOfMonth(today.getMonth().length(today.isLeapYear()));;
+			Date Lastday = Date.from(endD.atStartOfDay(defaultZoneId).toInstant());
+			List<Client> client = clientRepository.findBydateBetween(Firstday, Lastday);
+			return (int) client.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public int getallClient() {
+		try {
+			List<Client> client = clientRepository.findAll();
+			return (int) client.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public List<Integer> getClientListe(boolean b) {
+		int date;
+
+		List<Integer> nbClients = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+
+		List<Client> activeClients =clientRepository.findClientByMiseEnVeille(b);
+		for(int i = 0; i< activeClients.size(); i++){
+			Client client= activeClients.get(i);
+			date=client.getDate().getMonth()+1;
+			System.out.println(date);
+			switch (date){
+				case 9:
+					nbClients .set(0, nbClients .get(0) + 1);
+					break;
+				case 10:
+					nbClients .set(1, nbClients .get(1) + 1);
+					break;
+				case 11:
+					nbClients .set(2, nbClients .get(2) + 1);
+					break;
+				case 12:
+					nbClients .set(3, nbClients .get(3) + 1);
+					break;
+				case 1:
+					nbClients .set(4, nbClients .get(4) + 1);
+					break;
+				case 2:
+					nbClients .set(5, nbClients .get(5) + 1);
+					break;
+				case 3:
+					nbClients .set(6, nbClients .get(6) + 1);
+					break;
+			}
+		}
+		return nbClients ;
 	}
 
 }

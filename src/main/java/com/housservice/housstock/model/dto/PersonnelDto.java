@@ -1,12 +1,16 @@
 package com.housservice.housstock.model.dto;
 
 
+import com.housservice.housstock.model.Picture;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
+import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,7 +41,7 @@ public class PersonnelDto {
 	private String codePostal;
 
 	@NotBlank
-	@Size(max = 100)
+	@Size(min = 8, max = 8, message = "Input must be exactly 8 characters")
 	@Indexed(unique = true)
 	private String cin;
 
@@ -50,7 +54,7 @@ public class PersonnelDto {
 
 
 
-
+	private String fullName;
 
 	private String rib;
 
@@ -96,5 +100,6 @@ public class PersonnelDto {
 
 	private boolean miseEnVeille ;
 
+	private List<Picture> pictures;
 
 }

@@ -1,1 +1,1 @@
-package com.housservice.housstock.controller.Fournisseur;
+package com.housservice.housstock.controller.fournisseur;

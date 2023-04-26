@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +29,8 @@ public interface ClientRepository extends MongoRepository <Client, String> {
 
 
     List<Client> findByrefClientIris(String id);
+
+    List<Client> findClientByMiseEnVeille(boolean b);
+
+	List<Client> findBydateBetween(Date firstday, Date lastday);
 }
