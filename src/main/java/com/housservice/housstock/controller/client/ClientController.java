@@ -335,10 +335,5 @@ public class ClientController {
 	public List<Integer> getClientNoActifListe(){
 		return clientService.getClientListe(true);
 	}
-	@GetMapping("/getClient")
-	public String getClient(){
-		return "BlocTest";
-	}
-
 	
 }
