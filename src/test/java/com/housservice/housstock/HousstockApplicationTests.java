@@ -972,9 +972,17 @@ class HousstockApplicationTests {
 	public void blocTest(){
 
 
-		
+
 
 	}
+	@Test
+	public void blocTest2(){
+
+
+
+
+	}
+
 
 
 
