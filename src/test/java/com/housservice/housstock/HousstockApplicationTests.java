@@ -968,6 +968,13 @@ class HousstockApplicationTests {
 		assertEquals(1, nbType);
 
 	}
+	@Test
+	public void blocTest(){
+
+
+		
+
+	}
 
 
 
