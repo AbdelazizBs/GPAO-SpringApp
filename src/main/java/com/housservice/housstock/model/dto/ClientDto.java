@@ -42,7 +42,7 @@ public class ClientDto {
     @NotEmpty(message = "client pays  should not empty")
     private String pays;
 
-    private String regime;
+    //private String regime;
 
 
     private String secteurActivite;

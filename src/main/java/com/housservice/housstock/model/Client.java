@@ -43,7 +43,7 @@ public class Client {
 
 
 
-	private String regime;
+	//private String regime;
 
 
 	private String secteurActivite;
@@ -104,7 +104,7 @@ public class Client {
 
 	private List<CommandeClient> listCommandes = new ArrayList<>();
 
-	public Client(Date date,String refClientIris, String raisonSocial, String regime,
+	public Client(Date date,String refClientIris, String raisonSocial, String statut,
 				  String secteurActivite, String brancheActivite,
 				  String incoterm, String echeance, String modePaiement,
 				  String phone, String telecopie,
@@ -115,7 +115,8 @@ public class Client {
 		this.refClientIris = refClientIris;
 		this.date = date;
 		this.raisonSocial = raisonSocial;
-		this.regime = regime;
+		//this.regime = regime;
+		this.statut = statut;
 		this.secteurActivite = secteurActivite;
 		this.brancheActivite = brancheActivite;
 		this.telecopie = telecopie;

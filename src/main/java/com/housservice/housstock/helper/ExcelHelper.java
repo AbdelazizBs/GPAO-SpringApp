@@ -274,9 +274,16 @@ public class ExcelHelper {
 						client.setRegion(currentCell.getStringCellValue());
 						break;
 
-					case 5:
-//						client.setEcheance(new DataFormatter().formatCellValue(currentCell.getRow().getCell(7)));
+					case 5:					
 						client.setPays(currentCell.getStringCellValue());
+						if ((currentCell.getStringCellValue()).equals("Tunisie")||(currentCell.getStringCellValue()).equals("TUNISIE")||(currentCell.getStringCellValue()).equals(""))
+						{
+							client.setStatut("Résident");
+						}
+						else
+						{
+							client.setStatut("Non_résident");
+						}
 
 						break;
 					case 6:
@@ -285,7 +292,6 @@ public class ExcelHelper {
 					case 7:
 						client.setEmail(currentCell.getStringCellValue());
 						
-						client.setStatut("Résident");
 						client.setSecteurActivite("");
 						client.setBrancheActivite("");
 						client.setEcheance("");
@@ -431,24 +437,27 @@ public class ExcelHelper {
 						break;
 
 					case 3:
-						fournisseur.setCodePostal(currentCell.getStringCellValue());
-						break;
-					case 5:
 						fournisseur.setVille(currentCell.getStringCellValue());
 						break;
-
-					case 7:
+					case 4:
 						fournisseur.setPays(currentCell.getStringCellValue());
+						if ((currentCell.getStringCellValue()).equals("Tunisie")||(currentCell.getStringCellValue()).equals("TUNISIE")||(currentCell.getStringCellValue()).equals(""))
+						{
+							fournisseur.setStatut("Local");
+						}
+						else
+						{
+							fournisseur.setStatut("Export");
+						}
 						break;
-					case 8:
+					case 5:
 						fournisseur.setTelephone(currentCell.getStringCellValue());
-						break;
-					case 9:
-						fournisseur.setEmail(currentCell.getStringCellValue());
 						break;
 
 					default:
 						break;
+						
+						
 
 				}
 

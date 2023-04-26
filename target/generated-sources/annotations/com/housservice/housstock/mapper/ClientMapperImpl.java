@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-20T11:15:25+0100",
+    date = "2023-04-26T10:19:24+0100",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 11.0.12 (Oracle Corporation)"
 )
 @Component
@@ -31,7 +31,6 @@ public class ClientMapperImpl extends ClientMapper {
         clientDto.setDate( client.getDate() );
         clientDto.setRaisonSocial( client.getRaisonSocial() );
         clientDto.setPays( client.getPays() );
-        clientDto.setRegime( client.getRegime() );
         clientDto.setSecteurActivite( client.getSecteurActivite() );
         clientDto.setBrancheActivite( client.getBrancheActivite() );
         clientDto.setAdresse( client.getAdresse() );
@@ -95,7 +94,6 @@ public class ClientMapperImpl extends ClientMapper {
         client.setCif( clientDto.getCif() );
         client.setDate( clientDto.getDate() );
         client.setRaisonSocial( clientDto.getRaisonSocial() );
-        client.setRegime( clientDto.getRegime() );
         client.setSecteurActivite( clientDto.getSecteurActivite() );
         client.setBrancheActivite( clientDto.getBrancheActivite() );
         client.setIncoterm( clientDto.getIncoterm() );
