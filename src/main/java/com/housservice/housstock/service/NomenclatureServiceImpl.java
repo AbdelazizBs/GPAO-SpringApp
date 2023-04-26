@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
@@ -144,6 +146,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
             nomenclatures = pageTuts.getContent().stream().map(nomenclature ->
                     NomenclatureMapper.MAPPER.toNomenclatureDto(nomenclature)).collect(Collectors.toList());
             nomenclatures = nomenclatures.stream().filter(nomenclatureDto -> !nomenclatureDto.isMiseEnVeille()).collect(Collectors.toList());
+//            nomenclatures.stream().forEach(nomenclatureDto -> convertToDateViaInstant(nomenclatureDto.getDurationOfFabrication()));
             Map<String, Object> response = new HashMap<>();
             response.put("nomenclatures", nomenclatures);
             response.put("currentPage", pageTuts.getNumber());
@@ -261,7 +264,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         return nomenclatureRepository.findById(id);
     }
 
-
     @Override
     public void createNewNomenclature(String nomNomenclature,
                                       List<String> parentsName,
@@ -271,13 +273,16 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                                       String type,
                                       String nature,
                                       String categorie,
+                                      Date durationOfFabrication,
+                                      int quantity,
+                                      int quantityMax,
+                                      int quantityMin,
                                       MultipartFile[] image) throws ResourceNotFoundException, IOException {
         if (nomenclatureRepository.existsNomenclatureByNomNomenclature(nomNomenclature)) {
             throw new IllegalArgumentException("Nom nomenclature existe déja !!");
         }
         Nomenclature nomenclature = new Nomenclature();
         nomenclature.setType(TypeNomEnClature.valueOf(type));
-        nomenclature.setDate(new Date());
         nomenclature.setMiseEnVeille(false);
         nomenclature.setNomNomenclature(nomNomenclature);
         nomenclature.setDescription(description);
@@ -296,7 +301,10 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setPrice(0);
         nomenclature.setQuantityMin(0);
         nomenclature.setQuantityMax(0);
-        nomenclature.setDurationOfFabrication(null);
+        nomenclature.setDurationOfFabrication(durationOfFabrication);
+        nomenclature.setQuantity(quantity);
+        nomenclature.setQuantityMax(quantityMax);
+        nomenclature.setQuantityMin(quantityMin);
         nomenclature.setId(ObjectId.get().toString());
 
         Picture picture = new Picture();
@@ -344,7 +352,10 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public void updateNomenclature(String idNomenclature, String nomNomenclature, String description, String refIris, String type,
-                                   String nature, String categorie, List<String> parentsName, List<String> childrensName, MultipartFile[] image) throws ResourceNotFoundException {
+                                   String nature, String categorie, List<String> parentsName, List<String> childrensName,      Date durationOfFabrication,
+                                   int quantity,
+                                   int quantityMax,
+                                   int quantityMin, MultipartFile[] image) throws ResourceNotFoundException {
 
         if (isEmpty(nomNomenclature, type, categorie)) {
             throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
@@ -363,6 +374,10 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setParentsName(parentsName);
         nomenclature.setChildrensName(childrensName);
         nomenclature.setNomNomenclature(nomNomenclature);
+        nomenclature.setDurationOfFabrication(durationOfFabrication);
+        nomenclature.setQuantity(quantity);
+        nomenclature.setQuantityMax(quantityMax);
+        nomenclature.setQuantityMin(quantityMin);
         allAffectationMethod(parentsName, childrensName, nomenclature);
         nomenclatureRepository.save(nomenclature);
     }
@@ -760,6 +775,17 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         }
         Map<String, Object> response = new HashMap<>();
         response.put("childrensName", elementsName);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @Override
+    public ResponseEntity<Map<String, Object>> getSelectedChildrens(List<String> nomNomenclature) throws ResourceNotFoundException {
+        Map<String, Object> response = new HashMap<>();
+        List<Nomenclature> nomenclatures = new ArrayList<>();
+        for (String nom : nomNomenclature) {
+            nomenclatures.add(nomenclatureRepository.findNomenclatureByNomNomenclature(nom)
+                    .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nom))));
+        }
+        response.put("childrens", nomenclatures);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

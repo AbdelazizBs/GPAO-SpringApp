@@ -4,9 +4,12 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.Nomenclature;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,6 +51,7 @@ public interface NomenclatureService {
     ResponseEntity<Map<String, Object>> getChildrensNameArticles();
 
     ResponseEntity<Map<String, Object>> getSelectedChildrensName(String nomenclatureId) throws ResourceNotFoundException;
+    ResponseEntity<Map<String, Object>> getSelectedChildrens(List<String> nomNomenclature) throws ResourceNotFoundException;
 
     ResponseEntity<Map<String, Object>> getChildrensNomenclatureToUpdate(String nomenclatureId) throws ResourceNotFoundException;
 
@@ -73,6 +77,11 @@ public interface NomenclatureService {
 
                                String nature,
                                String categorie,
+                               Date durationOfFabrication,
+                               int quantity,
+                               int quantityMax,
+                               int quantityMin,
+
                                MultipartFile[] image) throws ResourceNotFoundException, IOException;
 
 
@@ -93,7 +102,10 @@ public interface NomenclatureService {
                             String categorie,
                             List<String> parentsName,
                             List<String> childrensName,
-
+                            Date durationOfFabrication,
+                            int quantity,
+                            int quantityMax,
+                            int quantityMin,
                             MultipartFile[] image) throws ResourceNotFoundException;
 
     void affectClientAndFrsToNomenclature(String idNomenclature,
