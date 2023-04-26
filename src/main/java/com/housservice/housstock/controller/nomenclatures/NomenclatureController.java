@@ -19,6 +19,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -194,7 +196,6 @@ public class NomenclatureController {
             String description,
             @RequestParam("refIris")
             String refiIris,
-
             @RequestParam("type")
             @NotEmpty(message = "champ type obligatoire")
             String type,
@@ -205,12 +206,20 @@ public class NomenclatureController {
             String categorie,
             @RequestParam("parentsName")
             List<String> parentsName,
-            @RequestParam("childrensName")
+            @RequestParam("durationOfFabrication")
+            Date durationOfFabrication,
+            @RequestParam("quantity")
+            int quantity,
+            @RequestParam("quantityMax")
+            int quantityMax,
+            @RequestParam("quantityMin")
+            int quantityMin,
+                @RequestParam("childrensName")
             List<String> childrensName,
             @RequestParam("image") MultipartFile[] image
     ) throws ResourceNotFoundException, IOException {
 
-        nomenclatureService.createNewNomenclature(nomNomenclature, parentsName, childrensName, description, refiIris, type, nature, categorie, image);
+        nomenclatureService.createNewNomenclature(nomNomenclature, parentsName, childrensName, description, refiIris, type, nature, categorie, durationOfFabrication, quantity, quantityMax, quantityMin, image);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
     }
 
@@ -257,9 +266,17 @@ public class NomenclatureController {
             @RequestParam("categorie") String categorie,
             @RequestParam("parentsName") List<String> parentsName,
             @RequestParam("childrensName") List<String> childrensName,
+            @RequestParam("durationOfFabrication")
+            Date durationOfFabrication,
+            @RequestParam("quantity")
+            int quantity,
+            @RequestParam("quantityMax")
+            int quantityMax,
+            @RequestParam("quantityMin")
+            int quantityMin,
             
             @RequestParam("image") MultipartFile[] image) throws ResourceNotFoundException {
-        nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, refIris, type, nature, categorie, parentsName, childrensName, image);
+        nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, refIris, type, nature, categorie, parentsName, childrensName,durationOfFabrication, quantity, quantityMax, quantityMin, image);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 
@@ -323,6 +340,14 @@ public class NomenclatureController {
             @PathVariable(value = "nomenclatureId", required = true) @NotEmpty(message = "{http.error.0001}") String nomenclatureId)
             throws ResourceNotFoundException {
         return nomenclatureService.getSelectedChildrensName(nomenclatureId);
+    }
+    @GetMapping("/getSelectedChildrens/{nomNomenclature}")
+    @ApiOperation(value = "service to get  Element by name nomenclature.")
+    public ResponseEntity<Map<String, Object>> getSelectedChildrens(
+            @ApiParam(name = "nomNomenclature", value = "name of nomenclature", required = true)
+            @PathVariable(value = "nomNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") List<String> nomNomenclature)
+            throws ResourceNotFoundException {
+        return nomenclatureService.getSelectedChildrens(nomNomenclature);
     }
 
     @GetMapping("/getChildrensNomenclatureToUpdate/{nomenclatureId}")
