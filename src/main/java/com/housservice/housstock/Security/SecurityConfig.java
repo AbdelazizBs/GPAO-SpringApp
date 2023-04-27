@@ -16,7 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static jdk.nashorn.internal.runtime.PropertyDescriptor.GET;
+
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;

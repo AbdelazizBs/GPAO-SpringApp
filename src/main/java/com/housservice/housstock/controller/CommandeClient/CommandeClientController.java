@@ -2,6 +2,7 @@ package com.housservice.housstock.controller.CommandeClient;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.AffectationProduit;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.dto.*;
 import com.housservice.housstock.service.CommandeClientService;
@@ -126,8 +127,14 @@ public class CommandeClientController {
     }
     @GetMapping("/getAllMatiere")
     @ApiOperation(value = "service to get one Reference fournisseur")
-    public List<String> getAllMatiere() {
-        return commandeService.getAllMatiere();
+    public List<String> getAllMatiere(@RequestParam String nomClient) {
+        return commandeClientService.getAllArticle(nomClient);
+    }
+
+    @GetMapping("/getArticleAttribut")
+    @ApiOperation(value = "service to get one Reference fournisseur")
+    public List<AffectationProduit> getArticleAttribut(@RequestParam String designation) {
+        return commandeClientService.getArticleAttribut(designation);
     }
 
     @PutMapping("/updateCommandeClientClient/{idArticle}")

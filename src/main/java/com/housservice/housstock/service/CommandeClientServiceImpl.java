@@ -37,16 +37,16 @@ public class CommandeClientServiceImpl implements CommandeClientService{
     private final ArticleRepository articleRepository;
     private final CommandeClientSuiviRepository commandeClientSuiviRepository;
 
-    private final MatiereRepository matierePrimaireRepository;
+    private final AffectationProduitRepository affectationProduitRepository;
 
-    public CommandeClientServiceImpl(CommandeClientRepository commandeClientRepository,CommandeClientSuiviRepository commandeClientSuiviRepository,ArticleRepository articleRepository, ClientRepository clientRepository, MessageHttpErrorProperties messageHttpErrorProperties, MatiereRepository matierePrimaireRepository ) {
+    public CommandeClientServiceImpl(CommandeClientRepository commandeClientRepository,CommandeClientSuiviRepository commandeClientSuiviRepository,ArticleRepository articleRepository, ClientRepository clientRepository, MessageHttpErrorProperties messageHttpErrorProperties, AffectationProduitRepository affectationProduitRepository) {
 
         this.commandeClientRepository = commandeClientRepository;
         this.clientRepository = clientRepository;
         this.commandeClientSuiviRepository = commandeClientSuiviRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.articleRepository = articleRepository;
-        this.matierePrimaireRepository = matierePrimaireRepository;
+        this.affectationProduitRepository = affectationProduitRepository;
 
     }
 
@@ -281,4 +281,18 @@ public class CommandeClientServiceImpl implements CommandeClientService{
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    public List<String> getAllArticle(String nomClient){
+        List<AffectationProduit> matieres = affectationProduitRepository.findAffectationProduitBylistClient(nomClient);
+        return matieres.stream()
+                .map(AffectationProduit::getDestination)
+                .collect(Collectors.toList());
+    }
+
+    public List<AffectationProduit> getArticleAttribut(String designation){
+        List<AffectationProduit> Article = affectationProduitRepository.findAffectationProduitByDestination(designation);
+        return Article;
+
+
+    }
+
 }

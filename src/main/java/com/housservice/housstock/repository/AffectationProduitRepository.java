@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AffectationProduitRepository extends MongoRepository<AffectationProduit, String> {
@@ -25,4 +26,7 @@ public interface AffectationProduitRepository extends MongoRepository<Affectatio
     Page<AffectationProduit> findAffectationByIdProduit(String id, Pageable paging);
 
     Page<AffectationProduit> findAffectationProduitBylistClient(String raisonSocial, Pageable paging);
+    List<AffectationProduit> findAffectationProduitBylistClient(String raisonSocial);
+
+    List<AffectationProduit> findAffectationProduitByDestination(String designation);
 }

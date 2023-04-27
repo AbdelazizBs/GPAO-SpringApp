@@ -1,6 +1,7 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.AffectationProduit;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.model.dto.CommandeClientDto;
@@ -34,6 +35,7 @@ public interface CommandeClientService {
 
     void miseEnVeille(String id, CommandeClientSuiviDto commandeClientSuiviDto) throws ResourceNotFoundException;
 
-
+    List<String> getAllArticle(String nomClient);
+    List<AffectationProduit> getArticleAttribut(String designation);
 
 }

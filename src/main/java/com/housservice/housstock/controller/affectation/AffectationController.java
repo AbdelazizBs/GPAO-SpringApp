@@ -13,7 +13,6 @@ import com.housservice.housstock.service.AffectationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.SyntaxException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
