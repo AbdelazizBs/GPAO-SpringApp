@@ -89,10 +89,6 @@ public class ExcelService {
             }
         }
         for (Client client : clients1) {
-            client.setDate(new Date());
-            client.setMiseEnVeille(false);
-            List<Contact> contacts = new ArrayList<>();
-                client.setContact(contacts);
             boolean exist = clientRepository.existsClientByRefClientIris(client.getRefClientIris());
             if (exist) {
                 clientRepository.delete(clientRepository.findClientByRefClientIris(client.getRefClientIris())
@@ -100,6 +96,10 @@ public class ExcelService {
                                 MessageFormat.format(messageHttpErrorProperties.getError0002(),client.getRefClientIris()))));
                 clientRepository.save(client);
             }
+            client.setDate(new Date());
+            client.setMiseEnVeille(false);
+            client.setContact(new ArrayList<>());
+            client.setPictures(new ArrayList<>());
             clientRepository.save(client);
         }
 
@@ -141,10 +141,6 @@ public class ExcelService {
             }
         }
         for (Fournisseur fournisseur : fournisseurs1) {
-            fournisseur.setDate(new Date());
-            fournisseur.setMiseEnVeille(0);
-            List<Contact> contacts = new ArrayList<>();
-                fournisseur.setContact(contacts);
             boolean exist = fournisseurRepository.existsFournisseurByRefFrsIris(fournisseur.getRefFrsIris());
             if (exist) {
                 fournisseurRepository.delete(fournisseurRepository.findFournisseurByRefFrsIris(fournisseur.getRefFrsIris())
@@ -152,10 +148,26 @@ public class ExcelService {
                                 MessageFormat.format(messageHttpErrorProperties.getError0002(),fournisseur.getRefFrsIris()))));
                 fournisseurRepository.save(fournisseur);
             }
+            fournisseur.setDate(new Date());
+            fournisseur.setMiseEnVeille(0);
+            List<Contact> contacts = new ArrayList<>();
+                fournisseur.setContact(contacts);
+            fournisseur.setAbrege("");
+            fournisseur.setAdresseBanque("");
+            fournisseur.setCodeDouane("");
+            fournisseur.setCodePostal("");
+            fournisseur.setEmail("");
+            fournisseur.setIdentifiantTva("");
+            fournisseur.setLinkedin("");
+            fournisseur.setNomBanque("");
+            fournisseur.setRegion("");
+            fournisseur.setSiteWeb("");
+            fournisseur.setRne("");
+            fournisseur.setRib("");
+            fournisseur.setSwift("");
+            fournisseur.setPictures(new ArrayList<>());
             fournisseurRepository.save(fournisseur);
         }
-
-
     }
 
     public void excelFormatSageToFournisseur(MultipartFile file) throws IOException, ResourceNotFoundException {

@@ -19,18 +19,16 @@ public class Client {
 
 	@Id
 	private String id;
+	private String raisonSocial;
 
-
-	private String refClientIris;
-	private String statut;
-	private String codePostal;
 	private String adresse;
 	private String ville;
 	private String region;
+	private String refClientIris;
+	private String statut;
+	private String codePostal;
+
 	private String pays;
-	private String codeDouane;
-	private String rne;
-	private String cif;
 
 
 
@@ -39,7 +37,6 @@ public class Client {
 	private Date date ;
 
 
-	private String raisonSocial;
 
 
 
@@ -53,6 +50,9 @@ public class Client {
 
 
 
+	private String codeDouane;
+	private String rne;
+	private String cif;
 
 
 	private String incoterm;
