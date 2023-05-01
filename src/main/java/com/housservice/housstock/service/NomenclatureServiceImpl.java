@@ -6,10 +6,7 @@ import com.housservice.housstock.mapper.NomenclatureMapper;
 import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.NomenclatureDto;
 import com.housservice.housstock.model.enums.TypeNomEnClature;
-import com.housservice.housstock.repository.ClientRepository;
-import com.housservice.housstock.repository.FournisseurRepository;
-import com.housservice.housstock.repository.NomenclatureRepository;
-import com.housservice.housstock.repository.PictureRepository;
+import com.housservice.housstock.repository.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,8 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.MessageFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
@@ -43,18 +38,20 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     private final ClientRepository clientRepository;
     private final FournisseurRepository fournisseurRepository;
+    private final EtapeProductionRepository etapeProductionRepository;
 
 
     @Autowired
     public NomenclatureServiceImpl(NomenclatureRepository nomenclatureRepository, SequenceGeneratorService sequenceGeneratorService,
                                    MessageHttpErrorProperties messageHttpErrorProperties, PictureRepository pictureRepository,
                                    ClientRepository clientRepository,
-                                   FournisseurRepository fournisseurRepository) {
+                                   FournisseurRepository fournisseurRepository, EtapeProductionRepository etapeProductionRepository) {
         this.nomenclatureRepository = nomenclatureRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.pictureRepository = pictureRepository;
         this.clientRepository = clientRepository;
         this.fournisseurRepository = fournisseurRepository;
+        this.etapeProductionRepository = etapeProductionRepository;
     }
 
     public static byte[] decompressBytes(byte[] data) {
@@ -221,19 +218,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
 
     @Override
-    public ResponseEntity<Map<String, Object>> getIdNomenclatures(String nomNomenclature)
-            throws ResourceNotFoundException {
-
-        Nomenclature nomenclature = nomenclatureRepository.findNomenclatureByNomNomenclature(nomNomenclature).orElseThrow(()
-                -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomNomenclature)));
-        Map<String, Object> response = new HashMap<>();
-        response.put("idNomenclature", nomenclature.getId());
-        //response.put("refIris", nomenclature.getRefIris());
-        return ResponseEntity.ok(response);
-    }
-
-
-    @Override
     public List<String> getNomNomenclatures() {
         List<Nomenclature> nomenclatures = nomenclatureRepository.findAll();
         return nomenclatures.stream()
@@ -277,11 +261,18 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                                       int quantity,
                                       int quantityMax,
                                       int quantityMin,
+                                      List<String> etapeProductions,
                                       MultipartFile[] image) throws ResourceNotFoundException, IOException {
         if (nomenclatureRepository.existsNomenclatureByNomNomenclature(nomNomenclature)) {
             throw new IllegalArgumentException("Nom nomenclature existe déja !!");
         }
         Nomenclature nomenclature = new Nomenclature();
+        nomenclature.setEtapeProductions(new ArrayList<>());
+        for (String etape : etapeProductions) {
+            EtapeProduction etapeProduction = etapeProductionRepository.findByNomEtape(etape).orElseThrow(() ->
+                    new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), etape)));
+            nomenclature.getEtapeProductions().add(etapeProduction);
+        }
         nomenclature.setType(TypeNomEnClature.valueOf(type));
         nomenclature.setMiseEnVeille(false);
         nomenclature.setNomNomenclature(nomNomenclature);
@@ -291,7 +282,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setParentsId(new ArrayList<>());
         nomenclature.setChildrensId(new ArrayList<>());
         nomenclature.setChildrens(new ArrayList<>());
-        nomenclature.setEtapeProductions(new ArrayList<>());
         nomenclature.setRefIris(refIris);
         nomenclature.setChildrensName(childrensName);
         nomenclature.setParentsName(parentsName);
@@ -351,11 +341,21 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     }
 
     @Override
-    public void updateNomenclature(String idNomenclature, String nomNomenclature, String description, String refIris, String type,
-                                   String nature, String categorie, List<String> parentsName, List<String> childrensName,      Date durationOfFabrication,
+    public void updateNomenclature(String idNomenclature,
+                                   String nomNomenclature,
+                                   String description,
+                                   String refIris,
+                                   String type,
+                                   String nature,
+                                   String categorie,
+                                   List<String> parentsName,
+                                   List<String> childrensName,
+                                   Date durationOfFabrication,
                                    int quantity,
                                    int quantityMax,
-                                   int quantityMin, MultipartFile[] image) throws ResourceNotFoundException {
+                                   int quantityMin,
+                                   List<String> etapeProductions,
+                                   MultipartFile[] image) throws ResourceNotFoundException {
 
         if (isEmpty(nomNomenclature, type, categorie)) {
             throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
@@ -378,7 +378,13 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setQuantity(quantity);
         nomenclature.setQuantityMax(quantityMax);
         nomenclature.setQuantityMin(quantityMin);
+        nomenclature.setEtapeProductions(new ArrayList<>());
         allAffectationMethod(parentsName, childrensName, nomenclature);
+        for (String etape : etapeProductions) {
+            EtapeProduction etapeProduction = etapeProductionRepository.findByNomEtape(etape).orElseThrow(() ->
+                    new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), etape)));
+            nomenclature.getEtapeProductions().add(etapeProduction);
+        }
         nomenclatureRepository.save(nomenclature);
     }
 
@@ -648,9 +654,37 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     public void miseEnVeille(String idNomenclature) throws ResourceNotFoundException {
         Nomenclature nomenclature = nomenclatureRepository.findById(idNomenclature)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idNomenclature)));
+        removeAffectationFromchildrensAndParents(nomenclature);
         nomenclature.setMiseEnVeille(true);
         nomenclatureRepository.save(nomenclature);
 
+    }
+
+    private void removeAffectationFromchildrensAndParents(Nomenclature nomenclature) {
+        nomenclature.getChildrensId().forEach(id -> {
+            Nomenclature   nomenclature1 = null;
+            try {
+                nomenclature1 = nomenclatureRepository.findById(id)
+                           .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            nomenclature1.getParentsName().removeIf(name -> name.equals(nomenclature.getNomNomenclature()));
+            nomenclature1.getParentsId().removeIf(idParent -> idParent.equals(nomenclature.getId()));
+            nomenclatureRepository.save(nomenclature1);
+        });
+        nomenclature.getParentsId().forEach(id -> {
+            Nomenclature   nomenclature1 = null;
+            try {
+                nomenclature1 = nomenclatureRepository.findById(id)
+                           .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+            } catch (ResourceNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            nomenclature1.getChildrensName().removeIf(name -> name.equals(nomenclature.getNomNomenclature()));
+            nomenclature1.getChildrensId().removeIf(idChild -> idChild.equals(nomenclature.getId()));
+            nomenclatureRepository.save(nomenclature1);
+        });
     }
 
 
@@ -711,29 +745,14 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         for (String id : idNomenclaturesSelected) {
             nomenclatureRepository.deleteById(id);
         }
-
-
     }
-
-
-    @Override
-    public ResponseEntity<Map<String, Object>> getChildrensNameArticles() {
-        try {
-            Map<String, Object> response = new HashMap<>();
-            List<Nomenclature> nomenclatures = nomenclatureRepository.findNomenclatureByMiseEnVeille(false);
-            response.put("childrensName", nomenclatures.stream().filter(
-                    nomenclature -> !nomenclature.getType().equals(TypeNomEnClature.Element)).map(Nomenclature::getNomNomenclature).collect(Collectors.toList()));
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @Override
     public ResponseEntity<Map<String, Object>> getChildrensName() {
         try {
             Map<String, Object> response = new HashMap<>();
-            response.put("childrensName", nomenclatureRepository.findNomenclatureByMiseEnVeille(false).stream().map(Nomenclature::getNomNomenclature).collect(Collectors.toList()));
+            response.put("childrensName", nomenclatureRepository.findNomenclatureByMiseEnVeille(false).stream().filter(
+                    nomenclature -> nomenclature.getType().equals(TypeNomEnClature.Element)).map(Nomenclature::getNomNomenclature).collect(Collectors.toList()
+            ));
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
