@@ -25,6 +25,8 @@ public class Article {
     @Id
     private String id;
     private String designationMatiere;
+    private Produit produit;
+
     private Date dateLivraison;
     private String commentaire;
     private String prixUnitaire;
@@ -34,8 +36,10 @@ public class Article {
     public Article() {
     }
 
-    public Article(String designationMatiere, Date dateLivraison, String commentaire, String prixUnitaire, int quantite, int prix) {
+
+    public Article(String designationMatiere, Produit produit, Date dateLivraison, String commentaire, String prixUnitaire, int quantite, int prix) {
         this.designationMatiere = designationMatiere;
+        this.produit = produit;
         this.dateLivraison = dateLivraison;
         this.commentaire = commentaire;
         this.prixUnitaire = prixUnitaire;

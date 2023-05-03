@@ -152,7 +152,9 @@ public class MachineServiceImpl implements MachineService
         if (machineRepository.existsMachineByRefMachine(machineDto.getRefMachine())) {
             throw new IllegalArgumentException(	"Matricule existe deja !!");
         }
+        System.out.println(machineDto.getNomConducteur());
         Machine machine = MachineMapper.MAPPER.toMachine(machineDto);
+        machine.setEtat("Disponible");
         machineRepository.save(machine);
 
     }
@@ -226,7 +228,11 @@ public class MachineServiceImpl implements MachineService
                 .collect(Collectors.toList());
     }
 
-
+    @Override
+    public String getEtat(String id)   {
+        Machine machines = machineRepository.findById(id).get();
+        return machines.getEtat();
+    }
     @Override
     public List<String> getConducteur()   {
         List<Personnel> personnels = personnelRepository.findPersonnelByPoste("Conducteur machine");
@@ -247,5 +253,16 @@ public class MachineServiceImpl implements MachineService
         TypeMachine matiere2 = TypeMachineMapper.MAPPER.toTypeMachine(machineDto2);
         typeMachineRepository.save(matiere2);
 
+    }
+
+    public void reserve(String id){
+        Machine machines = machineRepository.findById(id).get();
+        machines.setEtat("Reserve");
+        machineRepository.save(machines);
+    }
+    public void Demarer(String id){
+        Machine machines = machineRepository.findById(id).get();
+        machines.setEtat("Disponible");
+        machineRepository.save(machines);
     }
 }

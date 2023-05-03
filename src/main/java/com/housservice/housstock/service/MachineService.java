@@ -30,4 +30,9 @@ public interface MachineService {
     public List<String> getConducteur();
     public void addType(String type) throws ResourceNotFoundException;
     public void Restaurer(String id) throws ResourceNotFoundException;
+    public String getEtat(String id);
+
+    public void reserve(String id);
+    public void Demarer(String id);
+
 }

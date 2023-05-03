@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -44,6 +45,13 @@ public class ProduitController {
     @ApiOperation(value = "service to add new Produit")
     public ResponseEntity<String> addProduit(@Valid @RequestBody ProduitDto produitDto)   {
         produitService.addProduit(produitDto);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+    }
+
+    @PutMapping("/addEtape/{id}")
+    @ApiOperation(value = "service to add new Etape")
+    public ResponseEntity<String> addEtape(@Valid @RequestBody String[] Etapes, @PathVariable(value = "id", required = true) String id)   {
+        produitService.addEtape(Etapes,id);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
     }
     @PutMapping("/updateProduit/{idProduit}")
@@ -86,6 +94,13 @@ public class ProduitController {
     public List<String> getTypeProduit() {
         return produitService.getTypeProduit();
     }
+
+    @GetMapping("/getEtape")
+    @ApiOperation(value = "service to get one Type")
+    public List<String> getEtape() {
+        return produitService.getEtape();
+    }
+
     @GetMapping("/getUniteVente")
     @ApiOperation(value = "service to get one unite Vente")
     public List<String> getUniteVente() {
@@ -96,4 +111,39 @@ public class ProduitController {
         return produitService.getAllProduitByDesignation(designation);
     }
 
+
+
+    @DeleteMapping("/removePictures/{id}")
+    @ApiOperation(value = "service to delete all  Picture by idClient and idPicture.")
+    public Map< String, Boolean > removePictures(
+            @ApiParam(name = "id", value="id of Commande", required = true)
+            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+            throws ResourceNotFoundException {
+        produitService.removePictures(id);
+        Map < String, Boolean > response = new HashMap< >();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
+
+    @DeleteMapping("/removePicture/{idPic}")
+    @ApiOperation(value = "service to delete one Picture by Id.")
+    public Map< String, Boolean > removePicture(
+            @ApiParam(name = "idPic", value="id of picture", required = true)
+            @PathVariable(value = "idPic", required = true) @NotEmpty(message = "{http.error.0001}") String idPic)
+            throws ResourceNotFoundException {
+        produitService.removePicture(idPic);
+        Map < String, Boolean > response = new HashMap< >();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
+    @PutMapping("/addImage/{ref}")
+    public ResponseEntity<String> addphoto(
+            @ApiParam(name = "ref", value="ref", required = true)
+            @PathVariable(value = "ref", required = true) @NotEmpty(message = "{http.error.0001}") String ref,
+            @RequestParam("images") MultipartFile[] images)
+    {
+        produitService.addphoto(images,ref);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+
+    }
 }

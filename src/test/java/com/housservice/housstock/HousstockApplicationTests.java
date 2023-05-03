@@ -909,7 +909,7 @@ class HousstockApplicationTests {
 	@Test
 	public void testCreateNewMachine(){
 		Date date = new Date(2023, 3, 3);
-		Machine machine=new  Machine( "0","achref", "libelle", 10,date, "type1", false);
+		Machine machine=new  Machine( "0", new ArrayList<>(),"libelle", 10,date, "type1", false,"disponible");
 		String ExistType=typeMachineRepository.findByNom(machine.getType());
 		if (ExistType==null){
 			String errorMessage = "Cannot create machine. Type entity does not exist in the database.";
@@ -969,5 +969,5 @@ class HousstockApplicationTests {
 
 	}
 
-	
+
 }

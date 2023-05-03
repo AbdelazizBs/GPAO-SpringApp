@@ -7,9 +7,7 @@ import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.model.dto.ProduitDto;
-import com.housservice.housstock.repository.ProduitRepository;
-import com.housservice.housstock.repository.TypeProduitRepository;
-import com.housservice.housstock.repository.UniteVenteRepoitory;
+import com.housservice.housstock.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,12 +15,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,13 +28,20 @@ public class ProduitServiceImpl implements ProduitService{
     private final TypeProduitRepository typeProduitRepository;
     private final UniteVenteRepoitory uniteVenteRepoitory;
     private final ProduitRepository produitRepository;
-    
+    private final EtapeRepository etapeRepository;
+    private final PictureRepository pictureRepository;
 
-    public ProduitServiceImpl(MessageHttpErrorProperties messageHttpErrorProperties, TypeProduitRepository typeProduitRepository, UniteVenteRepoitory uniteVenteRepoitory, ProduitRepository produitRepository) {
+
+
+    public ProduitServiceImpl(MessageHttpErrorProperties messageHttpErrorProperties,PictureRepository pictureRepository, EtapeRepository etapeRepository,TypeProduitRepository typeProduitRepository, UniteVenteRepoitory uniteVenteRepoitory, ProduitRepository produitRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.typeProduitRepository = typeProduitRepository;
         this.uniteVenteRepoitory = uniteVenteRepoitory;
         this.produitRepository = produitRepository;
+        this.etapeRepository = etapeRepository;
+        this.pictureRepository = pictureRepository;
+
+
     }
     @Override
     public void addProduit(ProduitDto produitDto) {
@@ -48,9 +52,11 @@ public class ProduitServiceImpl implements ProduitService{
             if (produitRepository.existsProduitByDesignation(produitDto.getDesignation())) {
                 throw new IllegalArgumentException(	" cin " + produitDto.getDesignation() +  "  existe deja !!");
             }
-
+            List<Picture> pictures1 = new ArrayList<>();
+            produitDto.setPictures(pictures1);
             Produit produit = ProduitMapper.MAPPER.toProduit(produitDto);
-
+            List<Picture> pictures2 = new ArrayList<>();
+            produit.setPictures(pictures2);
             produitRepository.save(produit);
         }
         catch (Exception e)
@@ -58,7 +64,19 @@ public class ProduitServiceImpl implements ProduitService{
             throw new IllegalArgumentException(e.getMessage());
         }
     }
-
+    @Override
+    public void addEtape(String[] Etapes,String id) {
+        try
+        {
+            Produit produit = produitRepository.findById(id).get();
+            produit.setEtapes(Etapes);
+            produitRepository.save(produit);
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
     @Override
     public void updateProduit(ProduitDto produitDto, String idProduit) throws ResourceNotFoundException {
         Produit produit = produitRepository.findById(idProduit)
@@ -171,6 +189,14 @@ public class ProduitServiceImpl implements ProduitService{
                 .map(TypeProduit::getNom)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<String> getEtape()   {
+        List<Etape> etapes = etapeRepository.findAll();
+        return etapes.stream()
+                .map(Etape::getNomEtape)
+                .collect(Collectors.toList());
+    }
     @Override
     public List<String> getUniteVente()   {
         List<UniteVente> unites = uniteVenteRepoitory.findAll();
@@ -196,5 +222,48 @@ public class ProduitServiceImpl implements ProduitService{
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    @Override
+    public void addphoto(MultipartFile[] images, String ref){
+        Produit produit = produitRepository.findProduitByRef(ref).get();
+        List<Picture> pictures = new ArrayList<>();
+        for (MultipartFile file : images) {
+            Picture picture = new Picture();
+            picture.setFileName(file.getOriginalFilename());
+            System.out.println(picture.getFileName());
+            picture.setType(file.getContentType());
+            try {
+                picture.setBytes(file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            pictureRepository.save(picture);
+            pictures.add(picture);
+        }
+        produit.setPictures(pictures);
+        produitRepository.save(produit);
+
+    }
+    @Override
+    public void removePictures(String idP) throws ResourceNotFoundException {
+        Produit produit = produitRepository.findById(idP)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idP)));
+        for (String id : produit.getPictures().stream().map(Picture::getId).collect(Collectors.toList())) {
+            produitRepository.deleteById(id);
+        }
+        produit.getPictures().removeAll(produit.getPictures());
+        produitRepository.save(produit);
+    }
+    @Override
+    public void removePicture(String idPic) throws ResourceNotFoundException {
+        Picture picture = pictureRepository.findById(idPic)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPic)));
+        Produit produit = produitRepository.findProduitByPictures(picture)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), picture)));
+        pictureRepository.deleteById(idPic);
+        produit.getPictures().removeIf(picture1 -> picture1.equals(picture));
+        produitRepository.save(produit);
     }
 }

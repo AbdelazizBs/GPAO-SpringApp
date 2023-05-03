@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.List;
+
 @Getter
 @Setter
 @Document(collection="Produit")
@@ -16,14 +18,19 @@ public class Produit {
     private String type;
     private String designation;
     private Date dateCreation;
+    private String[] Etapes;
+    private List<Picture> pictures;
 
-    public Produit(String ref, String type, String designation, Date dateCreation) {
+    public Produit(String ref, String type, String designation, Date dateCreation, List<Picture> pictures) {
         this.ref = ref;
         this.type = type;
         this.designation = designation;
         this.dateCreation = dateCreation;
+        this.pictures = pictures;
     }
 
     public Produit() {
     }
+
+
 }

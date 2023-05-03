@@ -20,8 +20,6 @@ public interface ClientService {
 	public List<String> getRaisonSociales();
 
     Optional<Client> getClientById(String id);
-
-
 	public ResponseEntity<Map<String, Object>> onSortActiveClient(int page, int size, String field, String order);
 	public ResponseEntity<Map<String, Object>> onSortClientNotActive(int page, int size, String field, String order);
 

@@ -55,6 +55,12 @@ public class MachineController {
         return machineService.getType();
     }
 
+    @GetMapping("/getEtat/{id}")
+    @ApiOperation(value = "service to get one Etat")
+    public String getEtat(@ApiParam(name = "id", value="id", required = true)
+                                    @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String id) {
+        return machineService.getEtat(id);
+    }
     @GetMapping("/search")
     @ApiOperation(value = "service to filter machines ")
     public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
@@ -161,4 +167,15 @@ public class MachineController {
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 
+    @GetMapping("/reserve/{id}")
+    @ApiOperation(value = "service to get one Etat")
+    public void reverse(@ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) {
+         machineService.reserve(id);
+    }
+
+    @GetMapping("/demarer/{id}")
+    @ApiOperation(value = "service to get one Etat")
+    public void Demarer(@ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) {
+        machineService.Demarer(id);
+    }
 }

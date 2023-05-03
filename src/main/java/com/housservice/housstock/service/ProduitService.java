@@ -4,12 +4,14 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Produit;
 import com.housservice.housstock.model.dto.ProduitDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ProduitService {
     void addProduit(ProduitDto produit) ;
+    void addEtape(String[] Etapes,String id) ;
 
 
     void updateProduit(ProduitDto produit,String idProduit) throws ResourceNotFoundException;
@@ -26,8 +28,12 @@ public interface ProduitService {
     ResponseEntity<Map<String, Object>> onSortProduit(int page, int size, String field, String order);
 
     List<String> getTypeProduit();
-
+    List<String> getEtape();
     List<String> getUniteVente();
 
     ResponseEntity<Map<String, Object>> getAllProduitByType(String type, int page, int size);
+    void addphoto(MultipartFile[] images, String ref);
+    void removePictures(String idP) throws ResourceNotFoundException;
+
+    void removePicture(String idPicture) throws ResourceNotFoundException;
 }

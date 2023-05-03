@@ -8,19 +8,24 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
+
 public abstract class MachineMapper {
-    public static MachineMapper  MAPPER = Mappers.getMapper(MachineMapper.class);
+    public static MachineMapper MAPPER = Mappers.getMapper(MachineMapper.class);
 
     public abstract MachineDto toMachineDto(Machine machine);
 
-    public abstract Machine toMachine(MachineDto  machineDto);
+    public abstract Machine toMachine(MachineDto machineDto);
+
+
+
     @AfterMapping
-    void updateMachineDto(final Machine  machine, @MappingTarget final MachineDto machineDto)   {
+    void updateMachineDto(final Machine machine, @MappingTarget final MachineDto machineDto)   {
 
     }
 
     @AfterMapping
-    void updateMachine(final MachineDto machineDto, @MappingTarget final Machine machine) {
+    void updateMachine(final MachineDto  machineDto, @MappingTarget final Machine machine) {
 
     }
+
 }

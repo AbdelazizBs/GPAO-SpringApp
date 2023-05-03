@@ -2,11 +2,10 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.AffectationProduit;
+import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.model.dto.CommandeClientDto;
-import com.housservice.housstock.model.dto.CommandeClientSuiviDto;
-import com.housservice.housstock.model.dto.CommandeSuiviDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -33,9 +32,12 @@ public interface CommandeClientService {
     void deleteArticleCommandeClient(String idArticle) throws ResourceNotFoundException;
     ResponseEntity<Map<String, Object>> getCommandeClientNotActive(int page, int size);
 
-    void miseEnVeille(String id, CommandeClientSuiviDto commandeClientSuiviDto) throws ResourceNotFoundException;
-
+    void miseEnVeille(String id) throws ResourceNotFoundException;
+    ResponseEntity<byte[]> RecordReport(String id) ;
     List<String> getAllArticle(String nomClient);
     List<AffectationProduit> getArticleAttribut(String designation);
+    List<String> getClientArticle(String id);
+
+    void addOF(Article article) throws ResourceNotFoundException;
 
 }

@@ -1,6 +1,7 @@
 package com.housservice.housstock.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.housservice.housstock.model.Produit;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -19,6 +20,7 @@ public class ArticleDto {
     @NotEmpty(message = "Article designationMatiere  should not empty")
     private String designationMatiere;
 
+    private Produit produit;
 
     @NotNull(message = "personnel date embauche should not empty")
     private Date dateLivraison;

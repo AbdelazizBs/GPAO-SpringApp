@@ -15,4 +15,6 @@ public interface CommandeClientRepository extends MongoRepository<CommandeClient
 
     Optional<CommandeClient> findCommandeClientByNumBcd(String numBcd);
     Optional<CommandeClient> findCommandeClientByArticleId(String idContact ) ;
+
+    Page<CommandeClient> findCommandeClientByMiseEnVeille(Pageable paging, boolean b);
 }

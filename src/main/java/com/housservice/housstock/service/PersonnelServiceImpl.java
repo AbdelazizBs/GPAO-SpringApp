@@ -363,7 +363,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 		for (MultipartFile file : images) {
 			Picture picture = new Picture();
 			picture.setFileName(file.getOriginalFilename());
-			System.out.println(picture.getFileName());
 			picture.setType(file.getContentType());
 			try {
 				picture.setBytes(file.getBytes());

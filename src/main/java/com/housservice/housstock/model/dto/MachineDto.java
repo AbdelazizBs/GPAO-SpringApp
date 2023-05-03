@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +26,7 @@ public class MachineDto {
     private int nbConducteur;
     @Size(min = 2, message = "nom conducteur should have at least 2 characters")
     @NotEmpty(message = "nom conducteur should not empty")
-    private String nomConducteur;
+    private List<String> nomConducteur;
+    private String etat;
 
 }

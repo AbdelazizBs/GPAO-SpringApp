@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,22 +15,23 @@ public class Machine {
     @Id
    private  String id;
     private String refMachine;
-    private String nomConducteur;
+    private List<String> nomConducteur;
     private String libelle;
     private int nbConducteur;
     private Date dateMaintenance;
     private String type;
     private boolean miseEnVeille;
+    private String etat;
 
-    public Machine( String refMachine,String nomConducteur, String libelle, int nbConducteur, Date dateMaintenance, String type, boolean miseEnVeille) {
-
-        this.refMachine= refMachine;
+    public Machine(String refMachine, List<String> nomConducteur, String libelle, int nbConducteur, Date dateMaintenance, String type, boolean miseEnVeille, String etat) {
+        this.refMachine = refMachine;
+        this.nomConducteur = nomConducteur;
         this.libelle = libelle;
         this.nbConducteur = nbConducteur;
         this.dateMaintenance = dateMaintenance;
         this.type = type;
         this.miseEnVeille = miseEnVeille;
-        this.nomConducteur=nomConducteur;
+        this.etat = etat;
     }
 
     public Machine() {

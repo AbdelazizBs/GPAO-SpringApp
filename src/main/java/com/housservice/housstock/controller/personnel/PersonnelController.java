@@ -41,9 +41,7 @@ public class PersonnelController {
 	public ResponseEntity<String> createNewClient(
 			@ApiParam(name = "email", value = "email", required = true) @PathVariable(value = "email", required = true) @NotEmpty(message = "{http.error.0001}") String email,
 			@RequestParam("images") MultipartFile[] images)
-	{
-		System.out.println(images);
-		personnelService.addphoto(images,email);
+	{personnelService.addphoto(images,email);
 		return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
 	}

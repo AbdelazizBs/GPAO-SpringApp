@@ -7,5 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface TypeMachineRepository extends MongoRepository<TypeMachine, String> {
 
     TypeMachine deleteByNom(String autre);
+
+    String findByNom(String type);
 }
 

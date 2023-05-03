@@ -3,6 +3,7 @@ package com.housservice.housstock.controller.CommandeClient;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.AffectationProduit;
+import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.dto.*;
 import com.housservice.housstock.service.CommandeClientService;
@@ -130,7 +131,12 @@ public class CommandeClientController {
     public List<String> getAllMatiere(@RequestParam String nomClient) {
         return commandeClientService.getAllArticle(nomClient);
     }
-
+    @GetMapping("/getArticle/{id}")
+    @ApiOperation(value = "service to get one Reference fournisseur")
+    public List<String> getArticle(@ApiParam(name = "id", value="id of commandeClients", required = true)
+                                       @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) {
+        return commandeClientService.getClientArticle(id);
+    }
     @GetMapping("/getArticleAttribut")
     @ApiOperation(value = "service to get one Reference fournisseur")
     public List<AffectationProduit> getArticleAttribut(@RequestParam String designation) {
@@ -164,10 +170,23 @@ public class CommandeClientController {
 
     @PutMapping("/miseEnVeille/{id}")
     public ResponseEntity <String> miseEnVeille(
-            @ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
-            @Valid @RequestBody(required = true) CommandeClientSuiviDto commandeClientSuiviDto) throws ResourceNotFoundException {
-        commandeClientService.miseEnVeille(id,commandeClientSuiviDto);
+            @ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) throws ResourceNotFoundException {
+        commandeClientService.miseEnVeille(id);
 
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    }
+
+
+    @GetMapping("/report/{id}")
+    public ResponseEntity<byte[]> generateReport(@PathVariable String id){
+        return commandeClientService.RecordReport(id);
+    }
+
+    @PutMapping("/addOF")
+    public ResponseEntity <String> addOF(
+            @Valid @RequestBody(required = true) Article article) throws ResourceNotFoundException {
+        System.out.println(article);
+        commandeClientService.addOF(article);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 
