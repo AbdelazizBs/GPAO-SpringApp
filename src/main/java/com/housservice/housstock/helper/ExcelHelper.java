@@ -293,11 +293,6 @@ public class ExcelHelper {
 					case 7:
 						client.setEmail(currentCell.getStringCellValue());
 						
-						client.setSecteurActivite("");
-						client.setBrancheActivite("");
-						client.setEcheance("");
-						client.setModePaiement("");
-						
 						break;
 
 						

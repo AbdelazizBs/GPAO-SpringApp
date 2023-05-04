@@ -33,7 +33,6 @@ public interface NomenclatureService {
 
     ResponseEntity<Map<String, Object>> onSortActiveNomenClature(int page, int size, String field, String order);
 
-    public ResponseEntity<Map<String, Object>> getIdNomenclatures(String nomNomenclature) throws ResourceNotFoundException;
 
     public List<String> getNomNomenclatures();
 
@@ -48,7 +47,6 @@ public interface NomenclatureService {
     ResponseEntity<Map<String, Object>> getChildrensName();
     ResponseEntity<Map<String, Object>> getElementOfNomenclature(String idNomenclature) throws ResourceNotFoundException;
 
-    ResponseEntity<Map<String, Object>> getChildrensNameArticles();
 
     ResponseEntity<Map<String, Object>> getSelectedChildrensName(String nomenclatureId) throws ResourceNotFoundException;
     ResponseEntity<Map<String, Object>> getSelectedChildrens(List<String> nomNomenclature) throws ResourceNotFoundException;
@@ -81,6 +79,7 @@ public interface NomenclatureService {
                                int quantity,
                                int quantityMax,
                                int quantityMin,
+                               List<String> etapeProductions,
 
                                MultipartFile[] image) throws ResourceNotFoundException, IOException;
 
@@ -106,6 +105,8 @@ public interface NomenclatureService {
                             int quantity,
                             int quantityMax,
                             int quantityMin,
+                            List<String> etapeProductions,
+
                             MultipartFile[] image) throws ResourceNotFoundException;
 
     void affectClientAndFrsToNomenclature(String idNomenclature,
