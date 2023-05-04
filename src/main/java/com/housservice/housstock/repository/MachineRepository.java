@@ -8,10 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.List;
+
 public interface MachineRepository extends MongoRepository<Machine, String> {
     boolean existsMachineByRefMachine(String refMachine);
 
     Page<Machine> findMachineByMiseEnVeille(boolean b, Pageable paging);
     @Query( "{$or:[{'refMachine': {$regex : ?0}} ,{'type': {$regex : ?0}},{'libelle': {$regex : ?0}},{'nomConducteur': {$regex : ?0}}]}")
     Page<Machine> findMachineByTextToFind(String textToFind, Pageable pageable);
+
+    List<Machine> findMachineByEtat(String etat);
 }

@@ -5,16 +5,10 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.MachineMapper;
 import com.housservice.housstock.mapper.PlannificationMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
-import com.housservice.housstock.model.CommandeClient;
-import com.housservice.housstock.model.Machine;
-import com.housservice.housstock.model.Personnel;
-import com.housservice.housstock.model.Plannification;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.model.dto.PlannificationDto;
-import com.housservice.housstock.repository.MachineRepository;
-import com.housservice.housstock.repository.PersonnelRepository;
-import com.housservice.housstock.repository.PlannificationRepository;
-import com.housservice.housstock.repository.TypeMachineRepository;
+import com.housservice.housstock.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,16 +29,15 @@ import java.util.stream.Collectors;
 public class PlannificationServiceImpl implements PlannificationService {
     private final PlannificationRepository plannificationRepository;
     private final PersonnelRepository personnelRepository;
+    private final EtapeRepository etapeRepository;
 
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     @Autowired
-    public PlannificationServiceImpl(PersonnelRepository personnelRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository) {
+    public PlannificationServiceImpl(EtapeRepository etapeRepository,PersonnelRepository personnelRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.plannificationRepository=plannificationRepository;
         this.personnelRepository=personnelRepository;
-
-
-
+        this.etapeRepository=etapeRepository;
     }
     @Override
     public ResponseEntity<Map<String, Object>> getAllArticle(int page, int size) {
@@ -74,6 +67,10 @@ public class PlannificationServiceImpl implements PlannificationService {
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
 
         plannificationRepository.save(plannification1);
+    }
+    public String operationType(String etat){
+        Etape etape = etapeRepository.findEtapeByNomEtape(etat);
+        return etape.getTypeEtape();
     }
 
 

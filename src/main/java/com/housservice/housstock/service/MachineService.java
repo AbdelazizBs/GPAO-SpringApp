@@ -25,6 +25,7 @@ public interface MachineService {
 
     Optional<Machine> getMachineById(String id);
     ResponseEntity<Map<String, Object>> getAllMachine(int page, int size);
+    List<String> getAllMachineDisponible();
     ResponseEntity<Map<String, Object>> getAllMachineEnVielle(int page, int size);
     List<String> getType();
     public List<String> getConducteur();

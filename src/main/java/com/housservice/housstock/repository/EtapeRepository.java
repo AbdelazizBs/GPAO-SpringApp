@@ -5,4 +5,5 @@ import com.housservice.housstock.model.Etape;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface EtapeRepository extends MongoRepository<Etape,String> {
+    Etape findEtapeByNomEtape(String etat);
 }

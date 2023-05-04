@@ -25,6 +25,7 @@ import java.util.Map;
 @Validated
 public class PlannifcationController {
     private final MachineService machineService;
+
     private final PlannificationService plannificationService;
 
     private final MessageHttpErrorProperties messageHttpErrorProperties;
@@ -44,19 +45,17 @@ public class PlannifcationController {
         return plannificationService.getAllArticle(page,size);
 
     }
-    @PutMapping("/updatePlanification/{id}")
-    public ResponseEntity <String> updatePlanification(
-            @ApiParam(name = "id", value="id of client", required = true)
-            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String id,
-            @Valid @RequestBody Plannification plannification) throws ResourceNotFoundException {
+    @GetMapping("/getAllMachine")
+    public List<String> getAllMachine() throws ResourceNotFoundException {
+        return machineService.getAllMachineDisponible();}
 
-        plannificationService.updatePlanification(id,plannification);
 
-        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    @GetMapping("/operationType/{etat}")
+    public String operationType(@ApiParam(name = "etat", value = "etat", required = true)
+                                    @PathVariable(value = "etat", required = true) @NotEmpty(message = "{http.error.0001}") String etat) throws ResourceNotFoundException {
+        return plannificationService.operationType(etat);
+
     }
-
-
-
 
 
 

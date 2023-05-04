@@ -152,7 +152,6 @@ public class MachineServiceImpl implements MachineService
         if (machineRepository.existsMachineByRefMachine(machineDto.getRefMachine())) {
             throw new IllegalArgumentException(	"Matricule existe deja !!");
         }
-        System.out.println(machineDto.getNomConducteur());
         Machine machine = MachineMapper.MAPPER.toMachine(machineDto);
         machine.setEtat("Disponible");
         machineRepository.save(machine);
@@ -265,4 +264,12 @@ public class MachineServiceImpl implements MachineService
         machines.setEtat("Disponible");
         machineRepository.save(machines);
     }
-}
+    public List<String> getAllMachineDisponible(){
+        List<Machine> machine= machineRepository.findMachineByEtat("Disponible");
+        return machine.stream()
+                .map(Machine::getLibelle)
+                .collect(Collectors.toList());
+    }
+
+    };
+

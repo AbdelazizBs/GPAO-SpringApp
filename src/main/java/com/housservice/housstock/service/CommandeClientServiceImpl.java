@@ -297,6 +297,8 @@ public class CommandeClientServiceImpl implements CommandeClientService{
     public void addOF(Article article) throws ResourceNotFoundException {
         Plannification plannification = new Plannification();
         plannification.setLigneCommandeClient(article);
+        String[] etape1=article.getProduit().getEtapes();
+        plannification.setNomEtape(etape1[0]);
         plannificationRepository.save(plannification);
     }
 }
