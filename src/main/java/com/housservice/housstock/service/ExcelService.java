@@ -6,11 +6,9 @@ import com.housservice.housstock.helper.ExcelHelper;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Contact;
 import com.housservice.housstock.model.Fournisseur;
-import com.housservice.housstock.model.Nomenclature;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.repository.ClientRepository;
 import com.housservice.housstock.repository.FournisseurRepository;
-import com.housservice.housstock.repository.NomenclatureRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,15 +27,13 @@ public class ExcelService {
     final PersonnelRepository personnelRepository;
     final ClientRepository clientRepository;
     final FournisseurRepository fournisseurRepository;
-    final NomenclatureRepository nomenclatureRepository;
     
     private final MessageHttpErrorProperties messageHttpErrorProperties;
 
-    public ExcelService(ClientRepository clientRepository, PersonnelRepository personnelRepository,FournisseurRepository fournisseurRepository,NomenclatureRepository nomenclatureRepository, MessageHttpErrorProperties messageHttpErrorProperties) {
+    public ExcelService(ClientRepository clientRepository, PersonnelRepository personnelRepository,FournisseurRepository fournisseurRepository, MessageHttpErrorProperties messageHttpErrorProperties) {
         this.clientRepository = clientRepository;
         this.personnelRepository = personnelRepository;
         this.fournisseurRepository = fournisseurRepository;
-        this.nomenclatureRepository = nomenclatureRepository;
         
         this.messageHttpErrorProperties = messageHttpErrorProperties;
     }
@@ -196,34 +192,6 @@ public class ExcelService {
             }
             fournisseurRepository.save(fournisseur);
         }
-
-    }
-    
-    
-    
-    public void saveNomenclature(MultipartFile file) throws IOException, ResourceNotFoundException {
-        List<Nomenclature> nomenclatures = ExcelHelper.excelToNomenclatures(file.getInputStream());
-        List<Nomenclature> nomenclature1 = new ArrayList<>();
-        for (Nomenclature nomenclature : nomenclatures) {
-            if (nomenclature.getRefIris() != null && nomenclature.getRefIris().length() > 0) {
-            	nomenclature1.add(nomenclature);
-            }
-        }
-        for (Nomenclature nomenclature : nomenclature1) {
-        	//nomenclature.setDate(new Date());
-        	//nomenclature.setMiseEnVeille(0);
-           // List<Contact> contacts = new ArrayList<>();
-            //    fournisseur.setContact(contacts);
-            boolean exist = nomenclatureRepository.existsNomenclatureByRefIris(nomenclature.getRefIris());
-            if (exist) {
-                nomenclatureRepository.delete(nomenclatureRepository.findNomenclatureByRefIris(nomenclature.getRefIris())
-                        .orElseThrow(() -> new ResourceNotFoundException(
-                                MessageFormat.format(messageHttpErrorProperties.getError0002(),nomenclature.getRefIris()))));
-                nomenclatureRepository.save(nomenclature);
-            }
-            nomenclatureRepository.save(nomenclature);
-        }
-
 
     }
     

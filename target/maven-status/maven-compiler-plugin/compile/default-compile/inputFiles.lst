@@ -59,7 +59,6 @@ C:\Gitlab-webapplication\housstock-backend\src\main\java\com\housservice\houssto
 C:\Gitlab-webapplication\housstock-backend\src\main\java\com\housservice\housstock\model\dto\LigneVenteDto.java
 C:\Gitlab-webapplication\housstock-backend\src\main\java\com\housservice\housstock\configuration\DataLoader.java
 C:\Gitlab-webapplication\housstock-backend\src\main\java\com\housservice\housstock\model\dto\RolesDto.java
-C:\Gitlab-webapplication\housstock-backend\src\main\java\com\housservice\housstock\model\Tutorial.java
 C:\Gitlab-webapplication\housstock-backend\src\main\java\com\housservice\housstock\exception\ResourceNotFoundException.java
 C:\Gitlab-webapplication\housstock-backend\src\main\java\com\housservice\housstock\model\CommandeClient.java
 C:\Gitlab-webapplication\housstock-backend\src\main\java\com\housservice\housstock\service\LigneCommandeClientServiceImpl.java

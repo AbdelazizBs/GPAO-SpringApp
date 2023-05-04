@@ -3,7 +3,6 @@ package com.housservice.housstock.helper;
 import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Fournisseur;
 import com.housservice.housstock.model.Personnel;
-import com.housservice.housstock.model.Nomenclature;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -536,65 +535,5 @@ public class ExcelHelper {
 	}
 
 
-	public static List<Nomenclature> excelToNomenclatures(InputStream is) throws IOException
-	{
-
-		Workbook workbook = new XSSFWorkbook(is);
-
-		Sheet sheet = workbook.getSheetAt(0);
-
-		List<Nomenclature> nomenclatures = new ArrayList<>();
-
-		int rowNumber = 0;
-
-		for (int i = 0; i <= sheet.getLastRowNum(); i++)
-			
-		{
-			Row currentRow = sheet.getRow(i);
-
-			// skip header
-
-			if (rowNumber == 0)
-			{
-				rowNumber++;
-				continue;
-			}
-
-			Iterator<Cell> cellsInRow = currentRow.iterator();
-
-			Nomenclature nomenclature = new Nomenclature();
-
-			int cellIdx = 0;
-
-			while (cellsInRow.hasNext())
-			{
-				Cell currentCell =  cellsInRow.next();
-
-				switch (cellIdx)
-				{
-
-					case 0:
-						nomenclature.setRefIris(currentCell.getStringCellValue());
-						break;
-
-					case 1:
-						nomenclature.setNomNomenclature(currentCell.getStringCellValue());
-						break;
-
-				}
-
-				cellIdx++;
-			}
-
-			nomenclatures.add(nomenclature);
-
-		}
-
-		workbook.close();
-		return nomenclatures;
-
-	}
-	
-	
 }
 
