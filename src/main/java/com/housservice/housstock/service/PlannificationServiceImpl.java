@@ -30,14 +30,17 @@ public class PlannificationServiceImpl implements PlannificationService {
     private final PlannificationRepository plannificationRepository;
     private final PersonnelRepository personnelRepository;
     private final EtapeRepository etapeRepository;
+    private final MachineRepository machineRepository;
 
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     @Autowired
-    public PlannificationServiceImpl(EtapeRepository etapeRepository,PersonnelRepository personnelRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository) {
+    public PlannificationServiceImpl(MachineRepository machineRepository,EtapeRepository etapeRepository,PersonnelRepository personnelRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.plannificationRepository=plannificationRepository;
         this.personnelRepository=personnelRepository;
         this.etapeRepository=etapeRepository;
+        this.machineRepository=machineRepository;
+
     }
     @Override
     public ResponseEntity<Map<String, Object>> getAllArticle(int page, int size) {
@@ -45,7 +48,28 @@ public class PlannificationServiceImpl implements PlannificationService {
             List<PlannificationDto> articles = new ArrayList<PlannificationDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<Plannification> pageTuts;
-            pageTuts = plannificationRepository.findAll(paging);
+            pageTuts = plannificationRepository.findPlannificationByEtat(false,paging);
+            articles = pageTuts.getContent().stream().map(article -> {
+                return PlannificationMapper.MAPPER.toPlannificationDto(article);
+            }).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("articles", articles);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllArticleLance(int page, int size) {
+        try {
+            List<PlannificationDto> articles = new ArrayList<PlannificationDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<Plannification> pageTuts;
+            pageTuts = plannificationRepository.findPlannificationByEtat(true,paging);
             articles = pageTuts.getContent().stream().map(article -> {
                 return PlannificationMapper.MAPPER.toPlannificationDto(article);
             }).collect(Collectors.toList());
@@ -65,13 +89,20 @@ public class PlannificationServiceImpl implements PlannificationService {
     public void updatePlanification(String id, Plannification plannification) throws ResourceNotFoundException {
         Plannification plannification1 = plannificationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
-
-        plannificationRepository.save(plannification1);
+     plannificationRepository.delete(plannification1);
+     Machine machine = machineRepository.findMachineByLibelle(plannification.getRefMachine());
+     machine.setEtat("Reserve");
+     machineRepository.save(machine);
+     plannification.setEtat(true);
+     plannificationRepository.save(plannification);
     }
     public String operationType(String etat){
         Etape etape = etapeRepository.findEtapeByNomEtape(etat);
         return etape.getTypeEtape();
     }
-
+    public List<String> getConducteur(String refMachine){
+        Machine machine = machineRepository.findMachineByLibelle(refMachine);
+        return machine.getNomConducteur();
+    }
 
 }

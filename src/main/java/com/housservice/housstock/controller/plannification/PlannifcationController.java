@@ -4,6 +4,7 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.Plannification;
+import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.service.MachineService;
 import com.housservice.housstock.service.PlannificationService;
 import io.swagger.annotations.Api;
@@ -39,10 +40,18 @@ public class PlannifcationController {
 
 
     @GetMapping("/getAllArticle")
-    @ApiOperation(value = "service to get get All Personnel")
+    @ApiOperation(value = "service to get get All Article")
     public ResponseEntity<Map<String, Object>> getAllArticle(@RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "3") int size){
         return plannificationService.getAllArticle(page,size);
+
+    }
+
+    @GetMapping("/getAllArticleLance")
+    @ApiOperation(value = "service to get get All Article")
+    public ResponseEntity<Map<String, Object>> getAllArticleLance(@RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "3") int size){
+        return plannificationService.getAllArticleLance(page,size);
 
     }
     @GetMapping("/getAllMachine")
@@ -57,7 +66,20 @@ public class PlannifcationController {
 
     }
 
+    @GetMapping("/getConducteur/{refMachine}")
+    public List<String>  getConducteur(@ApiParam(name = "refMachine", value = "refMachine", required = true)
+                                @PathVariable(value = "refMachine", required = true) @NotEmpty(message = "{http.error.0001}") String refMachine ) throws ResourceNotFoundException {
+         return plannificationService.getConducteur(refMachine);
 
+    }
 
+    @PutMapping("/updatePlanfication/{id}")
+    public ResponseEntity<String> getConducteur(@ApiParam(name = "id", value = "id", required = true)
+                                      @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
+                                      @Valid @RequestBody Plannification plannification
+                                      ) throws ResourceNotFoundException {
+        plannificationService.updatePlanification(id,plannification);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
+    }
 }

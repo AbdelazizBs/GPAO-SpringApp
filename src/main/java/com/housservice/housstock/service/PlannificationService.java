@@ -11,6 +11,11 @@ import java.util.Map;
 public interface PlannificationService {
 
     ResponseEntity<Map<String, Object>> getAllArticle(int page, int size);
+    ResponseEntity<Map<String, Object>> getAllArticleLance(int page, int size);
+
     void updatePlanification(String id, Plannification plannification) throws ResourceNotFoundException;
     String operationType(String etat);
+    List<String> getConducteur(String refMachine);
+
+
 }

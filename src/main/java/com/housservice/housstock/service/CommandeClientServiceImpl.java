@@ -299,6 +299,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         plannification.setLigneCommandeClient(article);
         String[] etape1=article.getProduit().getEtapes();
         plannification.setNomEtape(etape1[0]);
+        plannification.setEtat(false);
         plannificationRepository.save(plannification);
     }
 }

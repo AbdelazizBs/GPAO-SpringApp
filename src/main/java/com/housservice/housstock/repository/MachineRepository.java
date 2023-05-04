@@ -1,5 +1,6 @@
 package com.housservice.housstock.repository;
 
+import com.housservice.housstock.model.Etape;
 import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Personnel;
@@ -18,4 +19,6 @@ public interface MachineRepository extends MongoRepository<Machine, String> {
     Page<Machine> findMachineByTextToFind(String textToFind, Pageable pageable);
 
     List<Machine> findMachineByEtat(String etat);
+
+    Machine findMachineByLibelle(String refMachine);
 }

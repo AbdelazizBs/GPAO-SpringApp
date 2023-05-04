@@ -17,7 +17,7 @@ public class PlannificationDto {
     @Id
     private String id;
     private String refMachine;
-    private List<Personnel> idPersonnels;
+    private List<String> personnels;
     private String nomEtape;
     private Article ligneCommandeClient;
     private Date heureDebutPrevue;
@@ -28,5 +28,6 @@ public class PlannificationDto {
     private int quantiteConforme;
     private int quantiteInitiale;
     private String commentaire;
+    private Boolean etat;
 
 }

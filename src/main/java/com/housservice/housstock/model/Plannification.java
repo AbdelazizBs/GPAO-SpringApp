@@ -15,7 +15,7 @@ package com.housservice.housstock.model;
         @Id
         private String id;
         private String refMachine;
-        private List<Personnel>idPersonnels;
+        private List<String> personnels;
         private String nomEtape;
         private Article ligneCommandeClient;
         private Date heureDebutPrevue;
@@ -26,22 +26,24 @@ package com.housservice.housstock.model;
         private int quantiteConforme;
         private int quantiteInitiale;
         private String commentaire;
+        private Boolean etat;
 
         public Plannification() {
         }
 
-        public Plannification(String refMachine, List<Personnel> idPersonnels, String nomEtape, Article ligneCommandeClient, Date heureDebutPrevue, Date heureDebutReel, Date heureFinPrevue, Date heureFinReel, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire) {
-        this.refMachine = refMachine;
-        this.idPersonnels = idPersonnels;
-        this.nomEtape = nomEtape;
-        this.ligneCommandeClient = ligneCommandeClient;
-        this.heureDebutPrevue = heureDebutPrevue;
-        this.heureDebutReel = heureDebutReel;
-        this.heureFinPrevue = heureFinPrevue;
-        this.heureFinReel = heureFinReel;
-        this.quantiteNonConforme = quantiteNonConforme;
-        this.quantiteConforme = quantiteConforme;
-        this.quantiteInitiale = quantiteInitiale;
-        this.commentaire = commentaire;
+        public Plannification(String refMachine, List<String> personnels, String nomEtape, Article ligneCommandeClient, Date heureDebutPrevue, Date heureDebutReel, Date heureFinPrevue, Date heureFinReel, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, Boolean etat) {
+            this.refMachine = refMachine;
+            this.personnels = personnels;
+            this.nomEtape = nomEtape;
+            this.ligneCommandeClient = ligneCommandeClient;
+            this.heureDebutPrevue = heureDebutPrevue;
+            this.heureDebutReel = heureDebutReel;
+            this.heureFinPrevue = heureFinPrevue;
+            this.heureFinReel = heureFinReel;
+            this.quantiteNonConforme = quantiteNonConforme;
+            this.quantiteConforme = quantiteConforme;
+            this.quantiteInitiale = quantiteInitiale;
+            this.commentaire = commentaire;
+            this.etat = etat;
+        }
     }
-}
