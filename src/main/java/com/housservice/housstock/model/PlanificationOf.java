@@ -35,8 +35,7 @@ public class PlanificationOf {
     private LocalDateTime heureFinReel;
     private LocalDateTime heureDebutReel;
 
-    @Size(max = 100)
-    private String quantiteInitiale;
+    private int quantiteInitiale;
 
 
     public PlanificationOf() {

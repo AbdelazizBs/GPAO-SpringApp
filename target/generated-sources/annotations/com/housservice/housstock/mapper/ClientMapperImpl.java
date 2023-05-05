@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-28T16:46:31+0200",
+    date = "2023-05-05T00:34:13+0200",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 17.0.1 (Oracle Corporation)"
 )
 @Component
@@ -82,20 +82,20 @@ public class ClientMapperImpl extends ClientMapper {
         Client client = new Client();
 
         client.setId( clientDto.getId() );
-        client.setRefClientIris( clientDto.getRefClientIris() );
-        client.setStatut( clientDto.getStatut() );
-        client.setCodePostal( clientDto.getCodePostal() );
+        client.setRaisonSocial( clientDto.getRaisonSocial() );
         client.setAdresse( clientDto.getAdresse() );
         client.setVille( clientDto.getVille() );
         client.setRegion( clientDto.getRegion() );
+        client.setRefClientIris( clientDto.getRefClientIris() );
+        client.setStatut( clientDto.getStatut() );
+        client.setCodePostal( clientDto.getCodePostal() );
         client.setPays( clientDto.getPays() );
+        client.setDate( clientDto.getDate() );
+        client.setSecteurActivite( clientDto.getSecteurActivite() );
+        client.setBrancheActivite( clientDto.getBrancheActivite() );
         client.setCodeDouane( clientDto.getCodeDouane() );
         client.setRne( clientDto.getRne() );
         client.setCif( clientDto.getCif() );
-        client.setDate( clientDto.getDate() );
-        client.setRaisonSocial( clientDto.getRaisonSocial() );
-        client.setSecteurActivite( clientDto.getSecteurActivite() );
-        client.setBrancheActivite( clientDto.getBrancheActivite() );
         client.setIncoterm( clientDto.getIncoterm() );
         client.setTelecopie( clientDto.getTelecopie() );
         client.setPhone( clientDto.getPhone() );

@@ -23,7 +23,7 @@ public class PlanificationOfDTO {
     private LocalDateTime heureFinReel;
 
     @Size(max = 100)
-    private String quantiteInitiale;
+    private int quantiteInitiale;
 
 
     private LocalDateTime heureDebutReel;

@@ -3,15 +3,10 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.CommandMapper;
-import com.housservice.housstock.model.Client;
-import com.housservice.housstock.model.CommandeClient;
-import com.housservice.housstock.model.LigneCommandeClient;
-import com.housservice.housstock.model.PlanificationOf;
+import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.CommandeClientDto;
-import com.housservice.housstock.repository.ClientRepository;
-import com.housservice.housstock.repository.CommandeClientRepository;
-import com.housservice.housstock.repository.LigneCommandeClientRepository;
-import com.housservice.housstock.repository.PlanificationRepository;
+import com.housservice.housstock.model.enums.TypeNomEnClature;
+import com.housservice.housstock.repository.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,16 +37,19 @@ public class CommandeClientServiceImpl implements CommandeClientService {
 
     final
     PlanificationRepository planificationRepository;
+    private final NomenclatureRepository nomenclatureRepository;
 
     @Autowired
     public CommandeClientServiceImpl(CommandeClientRepository commandeClientRepository, SequenceGeneratorService sequenceGeneratorService,
-                                     MessageHttpErrorProperties messageHttpErrorProperties, ClientRepository clientRepository, LigneCommandeClientRepository ligneCommandeClientRepository, PlanificationRepository planificationRepository) {
+                                     MessageHttpErrorProperties messageHttpErrorProperties, ClientRepository clientRepository, LigneCommandeClientRepository ligneCommandeClientRepository, PlanificationRepository planificationRepository,
+                                     NomenclatureRepository nomenclatureRepository) {
         this.commandeClientRepository = commandeClientRepository;
         this.sequenceGeneratorService = sequenceGeneratorService;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.clientRepository = clientRepository;
         this.ligneCommandeClientRepository = ligneCommandeClientRepository;
         this.planificationRepository = planificationRepository;
+        this.nomenclatureRepository = nomenclatureRepository;
     }
 
 
@@ -120,6 +118,8 @@ public class CommandeClientServiceImpl implements CommandeClientService {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
     @Override
     public ResponseEntity<Map<String, Object>> getAllCommandeClientFermer(int page, int size) {
@@ -196,13 +196,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         commandeClient.setEtatProduction("En attente");
         ligneCommandeClientRepository.saveAll(ligneCommandeClients);
         for (LigneCommandeClient ligneCommandeClient : ligneCommandeClients) {
-            for (int j = 0; j < ligneCommandeClient.getNomenclature().getEtapeProductions().size(); j++) {
-                PlanificationOf planificationOf = new PlanificationOf();
-                planificationOf.setNomEtape(ligneCommandeClient.getNomenclature().getEtapeProductions().get(j).getNomEtape());
-                planificationOf.setLigneCommandeClient(ligneCommandeClient);
-                planificationOf.setQuantiteInitiale(ligneCommandeClient.getQuantite());
-                planificationRepository.save(planificationOf);
-            }
+            getPlanification(ligneCommandeClient.getNomenclature(), ligneCommandeClient);
         }
         if (commandeClient.getClient() == null || !StringUtils.equals(commandeClient.getClient().getId(), commandeClient.getClient().getId())) {
             assert commandeClient.getClient() != null;
@@ -214,11 +208,37 @@ public class CommandeClientServiceImpl implements CommandeClientService {
     }
 
 
+    public void getPlanification(Nomenclature nomenclature,LigneCommandeClient ligneCommandeClient) {
+
+        if (nomenclature.getType().equals(TypeNomEnClature.Element)) {
+            ligneCommandeClient.setNomenclature(nomenclature);
+            // Create a new Planification for this Nomenclature
+            PlanificationOf planificationOf = new PlanificationOf();
+            planificationOf.setNomEtape(nomenclature.getEtapeProductions().get(0).getNomEtape());
+            planificationOf.setLigneCommandeClient(ligneCommandeClient);
+            planificationOf.setQuantiteInitiale(nomenclature.getQuantity());
+            planificationRepository.save(planificationOf);
+        } else if (nomenclature.getType().equals(TypeNomEnClature.Article)) {
+            // Get the children Nomenclatures
+            List<Nomenclature> childrens = new ArrayList<>();
+            nomenclature.getChildrensId().stream().map(
+                    id -> {
+                        childrens.add(nomenclatureRepository.findById(id).get());
+                        return id;
+                    }
+            ).collect(Collectors.toList());
+            // Create a new Planification for each child Nomenclature
+            for (Nomenclature child : childrens) {
+                getPlanification(child, ligneCommandeClient);
+            }
+        }
+    }
+
     @Override
     public void deleteCommandeClient(String commandeClientId) {
         List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByIdCommandeClient(commandeClientId);
         ligneCommandeClients.forEach(ligneCommandeClient -> {
-            List<PlanificationOf> planificationOf = planificationRepository.findPlanificationOfByLigneCommandeClient(ligneCommandeClient);
+            List<PlanificationOf> planificationOf = planificationRepository.findAll().stream().filter(planificationOf1 -> planificationOf1.getLigneCommandeClient().getId().equals(ligneCommandeClient.getId())).collect(Collectors.toList());
             planificationRepository.deleteAll(planificationOf);
         });
         ligneCommandeClientRepository.deleteAll(ligneCommandeClients);

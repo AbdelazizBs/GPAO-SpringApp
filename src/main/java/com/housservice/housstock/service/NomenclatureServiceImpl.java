@@ -751,7 +751,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         try {
             Map<String, Object> response = new HashMap<>();
             response.put("childrensName", nomenclatureRepository.findNomenclatureByMiseEnVeille(false).stream().filter(
-                    nomenclature -> nomenclature.getType().equals(TypeNomEnClature.Element)).map(Nomenclature::getNomNomenclature).collect(Collectors.toList()
+                    nomenclature -> !nomenclature.getType().equals(TypeNomEnClature.Famille)).map(Nomenclature::getNomNomenclature).collect(Collectors.toList()
             ));
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {

@@ -8,11 +8,15 @@ import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.PlanificationOf;
 import com.housservice.housstock.model.dto.PlanificationOfDTO;
 import com.housservice.housstock.repository.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,26 +55,7 @@ public class PlanificationServiceImpl implements PlanificationService {
 
     }
 
-    @Override
-    public PlanificationOfDTO buildPlanificationOfDTOFromPlanificationOf(PlanificationOf planificationOf) {
-        if (planificationOf == null) {
-            return null;
-        }
 
-        PlanificationOfDTO planificationOfDTO = new PlanificationOfDTO();
-        planificationOfDTO.setId(planificationOf.getId());
-        List<String> idPersonnels = planificationOf.getPersonnels().stream().map(personnel -> personnel.getId()).collect(Collectors.toList());
-        planificationOfDTO.setIdPersonnels(idPersonnels);
-        planificationOfDTO.setDateLancementReel(planificationOf.getDateLancementReel());
-        planificationOfDTO.setHeureDebutReel(planificationOf.getHeureDebutReel());
-        planificationOfDTO.setHeureFinReel(planificationOf.getHeureFinReel());
-        planificationOfDTO.setQuantiteInitiale(planificationOf.getQuantiteInitiale());
-        planificationOfDTO.setIdLigneCommandeClient(planificationOf.getLigneCommandeClient().getId());
-        planificationOfDTO.setNomEtape(planificationOf.getNomEtape());
-        planificationOfDTO.setRefMachine(planificationOf.getMachine().getReference());
-        return planificationOfDTO;
-
-    }
 
     @Override
     public PlanificationOf buildPlanificationOfFromPlanificationOfDTO(PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
@@ -99,20 +84,29 @@ public class PlanificationServiceImpl implements PlanificationService {
 
         return planificationOf;
     }
-
     @Override
-    public List<PlanificationOf> getPlanificationEtape(String idLc) throws ResourceNotFoundException {
-        LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findById(idLc)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idLc)));
-        return planificationRepository.findPlanificationOfByLigneCommandeClient(ligneCommandeClient);
+    public ResponseEntity<Map<String, Object>> getPlanificationByIdLigneCmdAndIndex(String idLC, int index) {
+        try {
+            List<PlanificationOf> planifications;
+            planifications = planificationRepository.findAll();
+            List<PlanificationOf> planificationsOf = planifications.stream().filter(planificationOf -> {
+                return planificationOf.getLigneCommandeClient().getId().equals(idLC);
+            }).collect(Collectors.toList());
+            PlanificationOf planificationOf = planificationsOf.get(index);
+            Map<String, Object> response = new HashMap<>();
+            response.put("planification", planificationOf);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
-    public PlanificationOf getPlanificationByIdLigneCmdAndNamEtape(String idLc, String nomEtape) throws ResourceNotFoundException {
-        LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findById(idLc)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idLc)));
-        List<PlanificationOf> planificationOf = planificationRepository.findPlanificationOfByLigneCommandeClient(ligneCommandeClient);
-        return planificationOf.stream().filter(planificationOf1 -> planificationOf1.getNomEtape().equals(nomEtape)).findFirst().orElse(null);
+    public List<PlanificationOf> getPlanificationByIdLigneCmd(String idLc) throws ResourceNotFoundException {
+        List<PlanificationOf> planificationOfs = planificationRepository.findAll();
+        planificationOfs = planificationOfs.stream().filter(planificationOf -> planificationOf.getLigneCommandeClient().getId().equals(idLc)).collect(Collectors.toList());
+        return planificationOfs;
     }
 
 }

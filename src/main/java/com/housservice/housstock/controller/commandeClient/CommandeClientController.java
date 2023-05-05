@@ -91,7 +91,8 @@ public class CommandeClientController {
 	  }
 
     
-    @DeleteMapping("/deleteCommandeClient/{id}")
+
+	  @DeleteMapping("/deleteCommandeClient/{id}")
 	  @ApiOperation(value = "service to delete one Commande Client by Id.")
 	  public Map < String, Boolean > deleteCommandeClient(
 			  @ApiParam(name = "id", value="id of commandeClient", required = true)
