@@ -74,7 +74,7 @@ public class PlannifcationController {
     }
 
     @PutMapping("/updatePlanfication/{id}")
-    public ResponseEntity<String> getConducteur(@ApiParam(name = "id", value = "id", required = true)
+    public ResponseEntity<String> updatePlan(@ApiParam(name = "id", value = "id", required = true)
                                       @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
                                       @Valid @RequestBody Plannification plannification
                                       ) throws ResourceNotFoundException {
@@ -82,4 +82,33 @@ public class PlannifcationController {
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
     }
+    @PutMapping("/updateEtape/{id}")
+    public ResponseEntity<String> updateEtape(@ApiParam(name = "id", value = "id", required = true)
+                                             @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
+                                             @Valid @RequestBody Plannification plannification
+    ) throws ResourceNotFoundException {
+        plannificationService.updateEtape(id,plannification);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+
+    }
+
+
+    @GetMapping("/indiceEtape/{id}")
+    public int indiceEtape(@ApiParam(name = "id", value = "id", required = true)
+                              @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) throws ResourceNotFoundException {
+        return plannificationService.indiceEtape(id);
+
+    }
+    @GetMapping("/getEtapes/{id}")
+    public String[] getEtapes(@ApiParam(name = "id", value = "id", required = true)
+                                @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) throws ResourceNotFoundException {
+        return plannificationService.getEtape(id);
+
+    }
+    @GetMapping("/getMonitrice")
+    public List<String> getMonitrice( ) throws ResourceNotFoundException {
+        return plannificationService.getMonitrice();
+
+    }
+
 }

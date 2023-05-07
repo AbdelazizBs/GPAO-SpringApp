@@ -1,11 +1,9 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
-import com.housservice.housstock.mapper.MachineMapper;
 import com.housservice.housstock.mapper.ProduitMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.*;
-import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.model.dto.ProduitDto;
 import com.housservice.housstock.repository.*;
 import org.springframework.data.domain.Page;
@@ -196,6 +194,12 @@ public class ProduitServiceImpl implements ProduitService{
         return etapes.stream()
                 .map(Etape::getNomEtape)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String[] getEtapes(String id)   {
+        Optional<Produit> produit = produitRepository.findById(id);
+        return produit.get().getEtapes();
     }
     @Override
     public List<String> getUniteVente()   {

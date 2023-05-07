@@ -18,10 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -90,11 +87,25 @@ public class PlannificationServiceImpl implements PlannificationService {
         Plannification plannification1 = plannificationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
      plannificationRepository.delete(plannification1);
-     Machine machine = machineRepository.findMachineByLibelle(plannification.getRefMachine());
-     machine.setEtat("Reserve");
-     machineRepository.save(machine);
+     if (plannification.getRefMachine()!=null){
+         Machine machine = machineRepository.findMachineByLibelle(plannification.getRefMachine());
+         machine.setEtat("Reserve");
+         machineRepository.save(machine);
+     }
      plannification.setEtat(true);
      plannificationRepository.save(plannification);
+    }
+    @Override
+    public void updateEtape(String id, Plannification plannification) throws ResourceNotFoundException {
+        Plannification plannification1 = plannificationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
+
+        plannification1.setNomEtape(plannification.getNomEtape());
+        if (plannification.getRefMachine()!=null){
+            plannification1.setRefMachine(plannification.getRefMachine());
+        }
+        plannification1.setPersonnels(plannification.getPersonnels());
+        plannificationRepository.save(plannification1);
     }
     public String operationType(String etat){
         Etape etape = etapeRepository.findEtapeByNomEtape(etat);
@@ -104,5 +115,22 @@ public class PlannificationServiceImpl implements PlannificationService {
         Machine machine = machineRepository.findMachineByLibelle(refMachine);
         return machine.getNomConducteur();
     }
+    public String[] getEtape(String id){
+        Plannification plan = plannificationRepository.findById(id).get();
+        return plan.getLigneCommandeClient().getProduit().getEtapes();
+    }
 
+    public List<String> getMonitrice(){
+        List<Personnel> personnel = personnelRepository.findPersonnelByPoste("Monitrice");
+        return personnel.stream()
+                .map(Personnel::getFullName)
+                .collect(Collectors.toList());
+    }
+    public int indiceEtape(String id) {
+        Optional<Plannification> plan = plannificationRepository.findById(id);
+        String[] etapes = plan.get().getLigneCommandeClient().getProduit().getEtapes();
+        String etapenom = plan.get().getNomEtape();
+        return Arrays.asList(etapes).indexOf(etapenom);
+
+    }
 }

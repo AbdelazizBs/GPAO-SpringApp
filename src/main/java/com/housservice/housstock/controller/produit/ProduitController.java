@@ -111,7 +111,10 @@ public class ProduitController {
         return produitService.getAllProduitByDesignation(designation);
     }
 
-
+        @GetMapping("/getEtapes/{id}")
+    public String[] getEtapes(@PathVariable(value = "id", required = true)String id){
+        return produitService.getEtapes(id);
+    }
 
     @DeleteMapping("/removePictures/{id}")
     @ApiOperation(value = "service to delete all  Picture by idClient and idPicture.")

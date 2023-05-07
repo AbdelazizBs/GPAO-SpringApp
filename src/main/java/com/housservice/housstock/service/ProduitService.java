@@ -29,6 +29,7 @@ public interface ProduitService {
 
     List<String> getTypeProduit();
     List<String> getEtape();
+   String[] getEtapes(String id);
     List<String> getUniteVente();
 
     ResponseEntity<Map<String, Object>> getAllProduitByType(String type, int page, int size);

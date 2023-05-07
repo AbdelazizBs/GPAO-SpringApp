@@ -17,5 +17,8 @@ public interface PlannificationService {
     String operationType(String etat);
     List<String> getConducteur(String refMachine);
 
-
+    public String[] getEtape(String id);
+    List<String>getMonitrice();
+   void updateEtape(String id, Plannification plannification)throws ResourceNotFoundException;
+   int indiceEtape(String id);
 }
