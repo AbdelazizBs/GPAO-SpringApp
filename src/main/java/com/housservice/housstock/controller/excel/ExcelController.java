@@ -148,6 +148,24 @@ public class ExcelController {
 	}
 	
 	
+	@PostMapping("/uploadNomenclatureFile")
+	public ResponseEntity<ResponseMessage> uploadNomenclatureFile(@RequestParam("file") MultipartFile file) throws IOException, ResourceNotFoundException {
+		String message = "";
+
+		if (ExcelHelper.hasExcelFormat(file))
+		{
+
+			fileService.saveFournisseur(file);
+
+
+		}
+		message = "Uploaded the file successfully: " + file.getOriginalFilename();
+
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+
+	}
+	
+	
 	
 	
 	// get xlsx static file from resources folder

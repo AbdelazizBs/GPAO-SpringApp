@@ -14,10 +14,13 @@ public interface NomenclatureRepository extends MongoRepository<Nomenclature, St
     @Query("{ 'MiseEnVeille' : { $ne: 1}}")
     Page<Nomenclature> findNomenclatureActif(Pageable pageable);
 
-
+    boolean existsNomenclatureByRefIris(String refIris);
+    
     boolean existsNomenclatureByNomNomenclature(String nomNomenclature);
 
     Optional<Nomenclature> findNomenclatureByNomNomenclature(String nomNomenclature);
+    
+    Optional<Nomenclature> findNomenclatureByRefIris(String refIris);
 
     List<Nomenclature> findNomenclatureByMiseEnVeille(boolean miseEnVeille);
 
