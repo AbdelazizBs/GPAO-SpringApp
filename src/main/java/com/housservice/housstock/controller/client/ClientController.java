@@ -49,9 +49,7 @@ public class ClientController {
     @GetMapping("/getAllClient")
     @ApiOperation(value = "service to get tout les clients ")
     public ResponseEntity<Map<String, Object>> getActiveClient(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
-
         return clientService.getActiveClient(page, size);
-
     }
 
 
@@ -77,7 +75,7 @@ public class ClientController {
     @GetMapping("/getClientByNameNomenclatures/{nameNomenclature}")
     @ApiOperation(value = "service to get names Client by Id nomenclature.")
     public ResponseEntity<Map<String, Object>> getClientByNameNomenclatures(@ApiParam(name = "nameNomenclature", value = "id of nomenclature", required = true)
-                                                                            @PathVariable(value = "nameNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String nameNomenclature)
+                                                      @PathVariable(value = "nameNomenclature", required = true) @NotEmpty(message = "{http.error.0001}") String nameNomenclature)
             throws ResourceNotFoundException {
         return clientService.getClientByNameNomenclatures(nameNomenclature);
     }

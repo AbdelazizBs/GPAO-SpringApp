@@ -67,7 +67,6 @@ public class Nomenclature {
     private int quantityMax;
     private int quantity;
     private int quantityStock;
-    private Date durationOfFabrication;
 
 
     private Date date;

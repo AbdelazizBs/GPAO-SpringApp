@@ -1,5 +1,7 @@
 package com.housservice.housstock.model.dto;
 
+import com.housservice.housstock.model.LigneCommandeClient;
+import com.housservice.housstock.model.Machine;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -20,19 +22,19 @@ public class PlanificationOfDTO {
 
     private Date dateLancementReel;
 
-    private LocalDateTime heureFinReel;
+    private Date heureFinReel;
 
-    @Size(max = 100)
     private int quantiteInitiale;
 
 
-    private LocalDateTime heureDebutReel;
+    private Date heureDebutReel;
 
-    private String idLigneCommandeClient;
+    private LigneCommandeClient ligneCommandeClient;
 
     private String nomEtape;
+    private String nomNomenclature;
 
-    private String refMachine;
+    private List<Machine> machines;
 
 
     public PlanificationOfDTO() {

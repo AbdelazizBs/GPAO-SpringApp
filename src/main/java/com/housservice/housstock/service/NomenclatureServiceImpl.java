@@ -257,7 +257,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                                       String type,
                                       String nature,
                                       String categorie,
-                                      Date durationOfFabrication,
                                       int quantity,
                                       int quantityMax,
                                       int quantityMin,
@@ -291,7 +290,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setPrice(0);
         nomenclature.setQuantityMin(0);
         nomenclature.setQuantityMax(0);
-        nomenclature.setDurationOfFabrication(durationOfFabrication);
         nomenclature.setQuantity(quantity);
         nomenclature.setQuantityMax(quantityMax);
         nomenclature.setQuantityMin(quantityMin);
@@ -350,7 +348,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                                    String categorie,
                                    List<String> parentsName,
                                    List<String> childrensName,
-                                   Date durationOfFabrication,
                                    int quantity,
                                    int quantityMax,
                                    int quantityMin,
@@ -374,7 +371,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         nomenclature.setParentsName(parentsName);
         nomenclature.setChildrensName(childrensName);
         nomenclature.setNomNomenclature(nomNomenclature);
-        nomenclature.setDurationOfFabrication(durationOfFabrication);
         nomenclature.setQuantity(quantity);
         nomenclature.setQuantityMax(quantityMax);
         nomenclature.setQuantityMin(quantityMin);

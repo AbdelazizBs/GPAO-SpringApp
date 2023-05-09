@@ -199,8 +199,6 @@ public class NomenclatureController {
             String categorie,
             @RequestParam("parentsName")
             List<String> parentsName,
-            @RequestParam("durationOfFabrication")
-            Date durationOfFabrication,
             @RequestParam("quantity")
             int quantity,
             @RequestParam("quantityMax")
@@ -214,7 +212,7 @@ public class NomenclatureController {
             @RequestParam("image") MultipartFile[] image
     ) throws ResourceNotFoundException, IOException {
 
-        nomenclatureService.createNewNomenclature(nomNomenclature, parentsName, childrensName, description, refiIris, type, nature, categorie, durationOfFabrication, quantity, quantityMax, quantityMin,etapeProductions, image);
+        nomenclatureService.createNewNomenclature(nomNomenclature, parentsName, childrensName, description, refiIris, type, nature, categorie, quantity, quantityMax, quantityMin,etapeProductions, image);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
     }
 
@@ -261,8 +259,6 @@ public class NomenclatureController {
             @RequestParam("categorie") String categorie,
             @RequestParam("parentsName") List<String> parentsName,
             @RequestParam("childrensName") List<String> childrensName,
-            @RequestParam("durationOfFabrication")
-            Date durationOfFabrication,
             @RequestParam("quantity")
             int quantity,
             @RequestParam("quantityMax")
@@ -272,7 +268,7 @@ public class NomenclatureController {
             @RequestParam("etapeProductions")
             List<String> etapeProductions,
             @RequestParam("image") MultipartFile[] image) throws ResourceNotFoundException {
-        nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, refIris, type, nature, categorie, parentsName, childrensName,durationOfFabrication, quantity, quantityMax, quantityMin, etapeProductions,image);
+        nomenclatureService.updateNomenclature(idNomenclature, nomNomenclature, description, refIris, type, nature, categorie, parentsName, childrensName, quantity, quantityMax, quantityMin, etapeProductions,image);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 

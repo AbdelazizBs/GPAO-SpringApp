@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-05T00:34:13+0200",
+    date = "2023-05-08T19:55:03+0200",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 17.0.1 (Oracle Corporation)"
 )
 @Component
@@ -62,7 +62,6 @@ public class NomenclatureMapperImpl extends NomenclatureMapper {
         nomenclatureDto.setQuantityMax( nomenclature.getQuantityMax() );
         nomenclatureDto.setQuantity( nomenclature.getQuantity() );
         nomenclatureDto.setQuantityStock( nomenclature.getQuantityStock() );
-        nomenclatureDto.setDurationOfFabrication( nomenclature.getDurationOfFabrication() );
         List<EtapeProduction> list7 = nomenclature.getEtapeProductions();
         if ( list7 != null ) {
             nomenclatureDto.setEtapeProductions( new ArrayList<EtapeProduction>( list7 ) );
@@ -128,7 +127,6 @@ public class NomenclatureMapperImpl extends NomenclatureMapper {
         nomenclature.setQuantityMax( nomenclatureDto.getQuantityMax() );
         nomenclature.setQuantity( nomenclatureDto.getQuantity() );
         nomenclature.setQuantityStock( nomenclatureDto.getQuantityStock() );
-        nomenclature.setDurationOfFabrication( nomenclatureDto.getDurationOfFabrication() );
         nomenclature.setDate( nomenclatureDto.getDate() );
         nomenclature.setMiseEnVeille( nomenclatureDto.isMiseEnVeille() );
         nomenclature.setDateMiseEnVeille( nomenclatureDto.getDateMiseEnVeille() );

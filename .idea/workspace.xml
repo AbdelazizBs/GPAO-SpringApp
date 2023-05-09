@@ -5,15 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a869f314-ccab-49e8-9835-46ce4e4b4b4c" name="Changes" comment="update planificationOf">
-      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/commandeClient/CommandeClientController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/commandeClient/CommandeClientController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/mapper/PlanificationMappper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/controller/PlanificationOf/PlanificationOfController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/controller/PlanificationOf/PlanificationOfController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/controller/client/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/controller/client/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/controller/nomenclatures/NomenclatureController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/controller/nomenclatures/NomenclatureController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/model/Nomenclature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/model/Nomenclature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/model/PlanificationOf.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/model/PlanificationOf.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/model/dto/NomenclatureDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/model/dto/NomenclatureDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/model/dto/PlanificationOfDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/model/dto/PlanificationOfDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/CommandeClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/CommandeClientService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/CommandeClientServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/CommandeClientServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/NomenclatureService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/NomenclatureService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/NomenclatureServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/NomenclatureServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/PlanificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/PlanificationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/PlanificationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/PlanificationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/PlanificationOf/PlanificationOfController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/PlanificationOf/PlanificationOfController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/client/ClientController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/client/ClientController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/nomenclatures/NomenclatureController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/nomenclatures/NomenclatureController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/model/Nomenclature.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/model/Nomenclature.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/model/PlanificationOf.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/model/PlanificationOf.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/model/dto/NomenclatureDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/model/dto/NomenclatureDto.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/model/dto/PlanificationOfDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/model/dto/PlanificationOfDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/repository/PlanificationRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/repository/PlanificationRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/CommandeClientServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/CommandeClientServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/NomenclatureService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/NomenclatureService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/NomenclatureServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/NomenclatureServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/PlanificationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/PlanificationService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/PlanificationServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/PlanificationServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/ArticleMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/ArticleMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/ClientMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/ClientMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/CommandMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/CommandMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/ContactMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/ContactMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/FournisseurMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/FournisseurMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/LigneCommandClientMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/LigneCommandClientMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/MachineMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/MachineMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/MatiereMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/MatiereMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/NomenclatureMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/NomenclatureMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/PersonnelMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/housservice/housstock/mapper/PersonnelMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +57,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Kotlin File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -109,6 +139,12 @@
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.HousstockApplication">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="HousstockApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="housstock" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.housservice.housstock.HousstockApplication" />
@@ -253,13 +289,10 @@
       <workItem from="1682974591629" duration="6263000" />
       <workItem from="1683124126094" duration="1430000" />
       <workItem from="1683218578859" duration="17237000" />
-    </task>
-    <task id="LOCAL-00016" summary="quick start Pfe teams">
-      <created>1676459972349</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1676459972350</updated>
+      <workItem from="1683296017977" duration="767000" />
+      <workItem from="1683485126662" duration="14960000" />
+      <workItem from="1683599514727" duration="731000" />
+      <workItem from="1683642148424" duration="1709000" />
     </task>
     <task id="LOCAL-00017" summary="affectation when add nomenclature">
       <created>1676899301855</created>
@@ -597,7 +630,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683248130604</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="update planificationOf">
+      <created>1683296111630</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1683296111631</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

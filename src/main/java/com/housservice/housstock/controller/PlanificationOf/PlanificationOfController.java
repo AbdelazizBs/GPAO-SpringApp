@@ -34,7 +34,7 @@ public class PlanificationOfController {
 
     @PutMapping("/updatePlanfication")
     public ResponseEntity<String> updatePlanfication(
-            @Valid @RequestBody PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
+            @RequestBody PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
         planificationService.updatePlanfication(planificationOfDTO);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 

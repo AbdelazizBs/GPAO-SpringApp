@@ -24,13 +24,14 @@ import java.util.stream.Collectors;
 @Service
 public class CommandeClientServiceImpl implements CommandeClientService {
 
-    private CommandeClientRepository commandeClientRepository;
+    private final CommandeClientRepository commandeClientRepository;
+    private final EtapeProductionRepository etapeProductionRepository;
 
-    private SequenceGeneratorService sequenceGeneratorService;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
     private final MessageHttpErrorProperties messageHttpErrorProperties;
 
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
     final
     LigneCommandeClientRepository ligneCommandeClientRepository;
 
@@ -38,18 +39,22 @@ public class CommandeClientServiceImpl implements CommandeClientService {
     final
     PlanificationRepository planificationRepository;
     private final NomenclatureRepository nomenclatureRepository;
+    private final MachineRepository machineRepository;
 
     @Autowired
-    public CommandeClientServiceImpl(CommandeClientRepository commandeClientRepository, SequenceGeneratorService sequenceGeneratorService,
+    public CommandeClientServiceImpl(CommandeClientRepository commandeClientRepository, EtapeProductionRepository etapeProductionRepository, SequenceGeneratorService sequenceGeneratorService,
                                      MessageHttpErrorProperties messageHttpErrorProperties, ClientRepository clientRepository, LigneCommandeClientRepository ligneCommandeClientRepository, PlanificationRepository planificationRepository,
-                                     NomenclatureRepository nomenclatureRepository) {
+                                     NomenclatureRepository nomenclatureRepository,
+                                     MachineRepository machineRepository) {
         this.commandeClientRepository = commandeClientRepository;
+        this.etapeProductionRepository = etapeProductionRepository;
         this.sequenceGeneratorService = sequenceGeneratorService;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.clientRepository = clientRepository;
         this.ligneCommandeClientRepository = ligneCommandeClientRepository;
         this.planificationRepository = planificationRepository;
         this.nomenclatureRepository = nomenclatureRepository;
+        this.machineRepository = machineRepository;
     }
 
 
@@ -176,8 +181,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         commandeClient.setEtatProduction(commandeClientDto.getEtatProduction());
         commandeClient.setDateCmd(commandeClientDto.getDateCmd());
         commandeClient.setDateCreationCmd(commandeClientDto.getDateCreationCmd());
-
-
         if (commandeClient.getClient() == null || !StringUtils.equals(commandeClientDto.getIdClient(), commandeClient.getClient().getId())) {
             Client client = clientRepository.findById(commandeClientDto.getIdClient()).get();
             commandeClient.setClient(client);
@@ -208,15 +211,20 @@ public class CommandeClientServiceImpl implements CommandeClientService {
     }
 
 
-    public void getPlanification(Nomenclature nomenclature,LigneCommandeClient ligneCommandeClient) {
-
+    public void getPlanification(Nomenclature nomenclature,LigneCommandeClient ligneCommandeClient) throws ResourceNotFoundException {
         if (nomenclature.getType().equals(TypeNomEnClature.Element)) {
             ligneCommandeClient.setNomenclature(nomenclature);
             // Create a new Planification for this Nomenclature
             PlanificationOf planificationOf = new PlanificationOf();
-            planificationOf.setNomEtape(nomenclature.getEtapeProductions().get(0).getNomEtape());
+            planificationOf.setPersonnels(new ArrayList<>());
+            EtapeProduction etapeProduction = etapeProductionRepository.findById(nomenclature.getEtapeProductions().get(0).getId()).
+                    orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),nomenclature.getEtapeProductions().get(0).getNomEtape())));
+            planificationOf.setMachines(machineRepository.findMachineByEtapeProduction(etapeProduction));
+                    planificationOf.setNomEtape(nomenclature.getEtapeProductions().get(0).getNomEtape());
             planificationOf.setLigneCommandeClient(ligneCommandeClient);
+            planificationOf.setNomNomenclature(ligneCommandeClient.getNomenclature().getNomNomenclature());
             planificationOf.setQuantiteInitiale(nomenclature.getQuantity());
+            planificationOf.setDateLancementReel(new Date());
             planificationRepository.save(planificationOf);
         } else if (nomenclature.getType().equals(TypeNomEnClature.Article)) {
             // Get the children Nomenclatures

@@ -75,7 +75,6 @@ public interface NomenclatureService {
 
                                String nature,
                                String categorie,
-                               Date durationOfFabrication,
                                int quantity,
                                int quantityMax,
                                int quantityMin,
@@ -101,7 +100,6 @@ public interface NomenclatureService {
                             String categorie,
                             List<String> parentsName,
                             List<String> childrensName,
-                            Date durationOfFabrication,
                             int quantity,
                             int quantityMax,
                             int quantityMin,

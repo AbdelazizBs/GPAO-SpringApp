@@ -36,7 +36,6 @@ public class NomenclatureDto {
     private int quantityMax;
     private int quantity;
     private int quantityStock;
-    private Date durationOfFabrication;
     private List<EtapeProduction> etapeProductions;
 
 

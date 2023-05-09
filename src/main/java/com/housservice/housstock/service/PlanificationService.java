@@ -11,9 +11,8 @@ import java.util.Map;
 
 public interface PlanificationService {
 
-    PlanificationOf buildPlanificationOfFromPlanificationOfDTO(PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException;
 
-    public void updatePlanfication(@Valid PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException;
+     void updatePlanfication(PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException;
 
     ResponseEntity<Map<String, Object>> getPlanificationByIdLigneCmdAndIndex(String idLc, int index);
 

@@ -3,6 +3,7 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.mapper.PlanificationMappper;
 import com.housservice.housstock.model.LigneCommandeClient;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.PlanificationOf;
@@ -49,24 +50,8 @@ public class PlanificationServiceImpl implements PlanificationService {
 
 
     @Override
-    public void updatePlanfication(@Valid PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
-        planificationRepository.save(buildPlanificationOfFromPlanificationOfDTO(planificationOfDTO));
-
-
-    }
-
-
-
-    @Override
-    public PlanificationOf buildPlanificationOfFromPlanificationOfDTO(PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
-        PlanificationOf planificationOf = new PlanificationOf();
-
-        planificationOf.setId("" + sequenceGeneratorService.generateSequence(PlanificationOf.SEQUENCE_NAME));
-        planificationOf.setId(planificationOfDTO.getId());
-        planificationOf.setDateLancementReel(planificationOfDTO.getDateLancementReel());
-        planificationOf.setHeureDebutReel(planificationOfDTO.getHeureDebutReel());
-        planificationOf.setHeureFinReel(planificationOfDTO.getHeureFinReel());
-        planificationOf.setQuantiteInitiale(planificationOfDTO.getQuantiteInitiale());
+    public void updatePlanfication( PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
+        PlanificationOf planificationOf = PlanificationMappper.MAPPER.toPlanificationOf(planificationOfDTO);
         List<Personnel> personnels = planificationOfDTO.getIdPersonnels().stream().map(s -> {
             try {
                 return personnelRepository.findById(s)
@@ -76,19 +61,14 @@ public class PlanificationServiceImpl implements PlanificationService {
             }
         }).collect(Collectors.toList());
         planificationOf.setPersonnels(personnels);
-        planificationOf.setMachine(machineRepository.findMachineByReference(planificationOfDTO.getRefMachine())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getRefMachine()))));
-        planificationOf.setNomEtape(planificationOfDTO.getNomEtape());
-        planificationOf.setLigneCommandeClient(ligneCommandeClientRepository.findById(planificationOfDTO.getIdLigneCommandeClient())
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getIdLigneCommandeClient()))));
-
-        return planificationOf;
+        planificationRepository.save(planificationOf);
     }
+
+
     @Override
     public ResponseEntity<Map<String, Object>> getPlanificationByIdLigneCmdAndIndex(String idLC, int index) {
         try {
-            List<PlanificationOf> planifications;
-            planifications = planificationRepository.findAll();
+           List<PlanificationOf> planifications = planificationRepository.findAll();
             List<PlanificationOf> planificationsOf = planifications.stream().filter(planificationOf -> {
                 return planificationOf.getLigneCommandeClient().getId().equals(idLC);
             }).collect(Collectors.toList());

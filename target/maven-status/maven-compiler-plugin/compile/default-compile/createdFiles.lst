@@ -128,6 +128,7 @@ com\housservice\housstock\service\EntrepriseService.class
 com\housservice\housstock\repository\PictureRepository.class
 com\housservice\housstock\exception\FileUploadExceptionAdvice.class
 com\housservice\housstock\model\Nomenclature.class
+com\housservice\housstock\mapper\PlanificationMappper.class
 com\housservice\housstock\model\UniteMesureDetail.class
 com\housservice\housstock\model\UniteMesure.class
 com\housservice\housstock\service\MachineServiceImpl.class
@@ -156,6 +157,7 @@ com\housservice\housstock\exception\ErrorDetails.class
 com\housservice\housstock\mapper\MachineMapperImpl.class
 com\housservice\housstock\service\RolesServiceImpl.class
 com\housservice\housstock\repository\ClientRepository.class
+com\housservice\housstock\mapper\PlanificationMappperImpl.class
 com\housservice\housstock\service\EtatMachineService.class
 com\housservice\housstock\model\dto\MachineDto.class
 com\housservice\housstock\model\Client.class
