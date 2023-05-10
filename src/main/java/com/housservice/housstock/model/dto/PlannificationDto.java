@@ -2,6 +2,7 @@ package com.housservice.housstock.model.dto;
 
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.Personnel;
+import com.housservice.housstock.model.PlanEtapes;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -29,5 +30,5 @@ public class PlannificationDto {
     private int quantiteInitiale;
     private String commentaire;
     private Boolean etat;
-
+    private List<PlanEtapes> etapes;
 }

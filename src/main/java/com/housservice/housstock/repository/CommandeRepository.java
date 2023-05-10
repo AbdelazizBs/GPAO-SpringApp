@@ -6,6 +6,7 @@ import com.housservice.housstock.model.Fournisseur;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +22,7 @@ public interface CommandeRepository extends MongoRepository<Commande, String> {
     Page<Commande> findCommandeByMiseEnVeille(Pageable paging, boolean b);
 
     List<Commande> findCommandeByMiseEnVeille(Boolean b);
+
+    @Query( "{$or:[{'numBcd': {$regex : ?0}},{'fournisseur': {$regex : ?0}} ,{'article.designationMatiere': {$regex : ?0}}] }")
+    Page<Commande> findCommandeByTextToFind(String textToFind, Pageable paging);
 }

@@ -27,11 +27,13 @@ package com.housservice.housstock.model;
         private int quantiteInitiale;
         private String commentaire;
         private Boolean etat;
+        private List<PlanEtapes> etapes;
+
 
         public Plannification() {
         }
 
-        public Plannification(String refMachine, List<String> personnels, String nomEtape, Article ligneCommandeClient, Date heureDebutPrevue, Date heureDebutReel, Date heureFinPrevue, Date heureFinReel, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, Boolean etat) {
+        public Plannification(String refMachine, List<String> personnels, String nomEtape, Article ligneCommandeClient, Date heureDebutPrevue, Date heureDebutReel, Date heureFinPrevue, Date heureFinReel, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, Boolean etat, List<PlanEtapes> etapes) {
             this.refMachine = refMachine;
             this.personnels = personnels;
             this.nomEtape = nomEtape;
@@ -45,5 +47,6 @@ package com.housservice.housstock.model;
             this.quantiteInitiale = quantiteInitiale;
             this.commentaire = commentaire;
             this.etat = etat;
+            this.etapes = etapes;
         }
     }

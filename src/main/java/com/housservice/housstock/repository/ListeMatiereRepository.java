@@ -10,6 +10,6 @@ import org.springframework.data.mongodb.repository.Query;
 public interface ListeMatiereRepository extends MongoRepository<ListeMatiere, String> {
     Page<ListeMatiere> findAllByType(Pageable paging, String Type);
     boolean existsListeMatiereByDesignation(String designation);
-    @Query( "{$or:[{'designation': {$regex : ?0}},{'longueur': {$regex : ?0}} ,{'v': {$regex : ?0}}] }")
+    @Query( "{$or:[{'designation': {$regex : ?0}},{'couleur': {$regex : ?0}} ,{'typePapier': {$regex : ?0}},{'grammage': {$regex : ?0}}] }")
     Page<ListeMatiere> findListeMatiereByTextToFind(String textToFind, Pageable paging);
 }

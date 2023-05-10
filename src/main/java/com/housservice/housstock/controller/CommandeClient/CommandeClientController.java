@@ -60,6 +60,15 @@ public class CommandeClientController {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+    @GetMapping("/search")
+    @ApiOperation(value = "service to filter Commande ")
+    public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
+                                                      @RequestParam boolean enVeille,
+                                                      @RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "3") int size) {
+        return commandeClientService.search(textToFind, page, size,enVeille);
+
+    }
     @PutMapping(value = "/addCommandeClient")
     public ResponseEntity<String> createNewCommande(
             @Valid  @RequestBody CommandeClientDto commandeClientDto

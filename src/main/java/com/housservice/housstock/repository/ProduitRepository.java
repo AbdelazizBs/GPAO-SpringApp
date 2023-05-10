@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface ProduitRepository extends MongoRepository<Produit, String> {
     Page<Produit> findAllByType(Pageable paging, String type);
-    @Query( "{$or:[{'designation': {$regex : ?0}},{'dateCreation': {$ref : ?0}} ,{'type': {$regex : ?0}}] }")
+    @Query( "{$or:[{'ref': {$regex : ?0}},{'designation': {$regex : ?0}} ,{'type': {$regex : ?0}}] }")
     Page<Produit> findProduitByTextToFind(String textToFind, Pageable paging);
 
     boolean existsProduitByDesignation(String designation);

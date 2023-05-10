@@ -70,6 +70,30 @@ public class CommandeServiceImpl implements CommandeService{
         }
     }
     @Override
+    public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
+
+        try {
+
+            List<CommandeDto> commandes;
+            Pageable paging = PageRequest.of(page, size);
+            Page<Commande> pageTuts;
+            pageTuts = commandeRepository.findCommandeByTextToFind(textToFind, paging);
+            commandes = pageTuts.getContent().stream().map(commande -> {
+                return CommandeMapper.MAPPER.toCommandeDto(commande);
+            }).collect(Collectors.toList());
+            commandes= commandes.stream().filter(commande -> commande.isMiseEnVeille()==enVeille).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("commandes", commandes);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @Override
     public void createNewCommande(CommandeDto commandeDto) throws ResourceNotFoundException {
         commandeDto.setMiseEnVeille(false);
 

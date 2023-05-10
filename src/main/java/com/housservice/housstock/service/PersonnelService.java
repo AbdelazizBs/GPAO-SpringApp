@@ -45,4 +45,5 @@ public interface PersonnelService {
     void removePictures(String idPersonnel) throws ResourceNotFoundException;
 
     void removePicture(String idPicture) throws ResourceNotFoundException;
+
 }

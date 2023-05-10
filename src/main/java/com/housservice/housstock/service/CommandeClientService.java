@@ -39,5 +39,7 @@ public interface CommandeClientService {
     List<String> getClientArticle(String id);
 
     void addOF(Article article) throws ResourceNotFoundException;
+    ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
+
 
 }

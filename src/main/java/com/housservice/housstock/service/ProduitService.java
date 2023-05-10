@@ -20,7 +20,7 @@ public interface ProduitService {
 
     ResponseEntity<Map<String, Object>> getAllProduit(int page, int size);
 
-    public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size);
+    ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size);
     Produit getProduitByDesignation(String nom) throws ResourceNotFoundException;
 
     List<Produit> getAllProduitByDesignation(String designation);

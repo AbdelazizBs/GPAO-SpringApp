@@ -3,10 +3,12 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.ArticleMapper;
 import com.housservice.housstock.mapper.CommandeClientMapper;
+import com.housservice.housstock.mapper.FournisseurMapper;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.model.dto.CommandeClientDto;
+import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.repository.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -300,6 +302,35 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         String[] etape1=article.getProduit().getEtapes();
         plannification.setNomEtape(etape1[0]);
         plannification.setEtat(false);
+        List<PlanEtapes> Etapes = new ArrayList<>();
+        if (plannification.getEtapes()==null){
+            plannification.setEtapes(Etapes);
+        }
         plannificationRepository.save(plannification);
     }
+    @Override
+    public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
+
+        try {
+
+            List<CommandeClientDto> commandes;
+            Pageable paging = PageRequest.of(page, size);
+            Page<CommandeClient> pageTuts;
+            pageTuts = commandeClientRepository.findCommandeClientByTextToFind(textToFind, paging);
+            commandes = pageTuts.getContent().stream().map(commande -> {
+                return CommandeClientMapper.MAPPER.toCommandeClientDto(commande);
+            }).collect(Collectors.toList());
+            commandes= commandes.stream().filter(commande -> commande.isMiseEnVeille()==enVeille).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("commandes", commandes);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

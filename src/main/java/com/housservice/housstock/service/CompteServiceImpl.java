@@ -67,15 +67,11 @@ public class CompteServiceImpl implements CompteService{
     }
 
     private String generateToken(Compte compte) {
-        // Define the expiration time for the token (e.g. 1 hour).
-        long expirationTime = 360000000; // 1 hour in milliseconds
-        // Get the current timestamp.
-        long currentTime = System.currentTimeMillis();
         Algorithm algorithm = Algorithm.HMAC256("test".getBytes());
         String token = JWT.create()
                 .withSubject(compte.getEmail())
                 .withClaim("roles",compte.getRole())
-                .withExpiresAt(new Date(System.currentTimeMillis() +30 *60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() +24 * 60 * 60 * 1000))
                 .sign(algorithm);
         return token;
     }
@@ -87,8 +83,6 @@ public class CompteServiceImpl implements CompteService{
         try {
             compteDto.setMiseEnVeille(false);
             compteDto.setPassword(passwordEncoder.encode(compteDto.getPassword()));
-            Optional<Personnel> personnel = personnelRepository.findByFullName(compteDto.getIdPersonnel());
-            compteDto.setIdPersonnel(personnel.get().getId());
             Compte compte = CompteMapper.MAPPER.toCompte(compteDto);
             compteRepository.save(compte);
         } catch (Exception e)

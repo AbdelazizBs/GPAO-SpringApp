@@ -5,6 +5,7 @@ import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.Plannification;
 import com.housservice.housstock.model.dto.MachineDto;
+import com.housservice.housstock.model.dto.PlanEtapesDto;
 import com.housservice.housstock.service.MachineService;
 import com.housservice.housstock.service.PlannificationService;
 import io.swagger.annotations.Api;
@@ -54,6 +55,15 @@ public class PlannifcationController {
         return plannificationService.getAllArticleLance(page,size);
 
     }
+    @GetMapping("/search")
+    @ApiOperation(value = "service to filter Commande ")
+    public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
+                                                      @RequestParam boolean enVeille,
+                                                      @RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "3") int size) {
+        return plannificationService.search(textToFind, page, size,enVeille);
+
+    }
     @GetMapping("/getAllMachine")
     public List<String> getAllMachine() throws ResourceNotFoundException {
         return machineService.getAllMachineDisponible();}
@@ -82,6 +92,16 @@ public class PlannifcationController {
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
     }
+    @PutMapping("/updateEtapes/{id}")
+    public ResponseEntity<String> updatePlan(@ApiParam(name = "id", value = "id", required = true)
+                                             @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
+                                             @Valid @RequestBody PlanEtapesDto planEtapesDto
+    ) throws ResourceNotFoundException {
+        plannificationService.updateEtapes(id,planEtapesDto);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+
+    }
+
     @PutMapping("/updateEtape/{id}")
     public ResponseEntity<String> updateEtape(@ApiParam(name = "id", value = "id", required = true)
                                              @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,

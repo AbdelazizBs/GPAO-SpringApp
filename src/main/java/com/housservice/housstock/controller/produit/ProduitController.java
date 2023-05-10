@@ -33,9 +33,8 @@ public class ProduitController {
         
     }
     @GetMapping("/search")
-    @ApiOperation(value = "service to filter liste matieres ")
+    @ApiOperation(value = "service to filter Article ")
     public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
-
                                                       @RequestParam(defaultValue = "0") int page,
                                                       @RequestParam(defaultValue = "3") int size) {
         return produitService.search(textToFind, page, size);

@@ -131,7 +131,6 @@ public class ProduitServiceImpl implements ProduitService{
             produits = pageTuts.getContent().stream().map(produit -> {
                 return ProduitMapper.MAPPER.toProduitDto(produit);
             }).collect(Collectors.toList());
-
             Map<String, Object> response = new HashMap<>();
             response.put("produits", produits);
             response.put("currentPage", pageTuts.getNumber());

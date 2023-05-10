@@ -11,7 +11,6 @@ import org.mapstruct.factory.Mappers;
 
 public abstract class PlannificationMapper {
     public static PlannificationMapper MAPPER = Mappers.getMapper(PlannificationMapper.class);
-
     public abstract PlannificationDto toPlannificationDto(Plannification plannification);
 
     public abstract Plannification toPlannification(PlannificationDto plannificationDto);

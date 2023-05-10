@@ -4,6 +4,7 @@ import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.*;
 import com.housservice.housstock.model.dto.CompteDto;
+import com.housservice.housstock.repository.CompteRepository;
 import com.housservice.housstock.service.CompteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,12 +24,16 @@ import java.util.*;
 @Api(tags = {"Compte Management"})
 public class LoginController {
     private final CompteService loginService;
+    private final CompteRepository compteRepository;
+
     private final MessageHttpErrorProperties messageHttpErrorProperties;
 
 
-    public LoginController(CompteService loginService,MessageHttpErrorProperties messageHttpErrorProperties) {
+    public LoginController(CompteRepository compteRepository,CompteService loginService,MessageHttpErrorProperties messageHttpErrorProperties) {
         this.loginService = loginService;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
+        this.compteRepository = compteRepository;
+
     }
 
     @SneakyThrows
@@ -50,11 +55,11 @@ public class LoginController {
     @ApiOperation(value = "service to delete one Compte by Id.")
     public Map < String, Boolean > deletecompte(
             @ApiParam(name = "id", value="id of compte", required = true)
-            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String compteId)
+            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
             throws ResourceNotFoundException {
-        Compte compte = loginService.getCompteById(compteId)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), compteId)));
-        loginService.deleteCompte(compte);
+        Compte compte = compteRepository.findById(id).get();
+        compteRepository.delete(compte);
+
         Map < String, Boolean > response = new HashMap < > ();
         response.put("deleted", Boolean.TRUE);
         return response;

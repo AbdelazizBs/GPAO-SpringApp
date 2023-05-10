@@ -34,7 +34,6 @@ public class ListeMatiereController {
     @GetMapping("/search")
     @ApiOperation(value = "service to filter liste matieres ")
     public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
-                                                      @RequestParam boolean enVeille,
                                                       @RequestParam(defaultValue = "0") int page,
                                                       @RequestParam(defaultValue = "3") int size) {
         return listeMatiereService.search(textToFind, page, size);

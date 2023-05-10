@@ -85,6 +85,15 @@ public class CommandeController {
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
+    @GetMapping("/search")
+    @ApiOperation(value = "service to filter Commande ")
+    public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,
+                                                      @RequestParam boolean enVeille,
+                                                      @RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "3") int size) {
+        return commandeService.search(textToFind, page, size,enVeille);
+
+    }
     @GetMapping("/onSortActiveCommande")
     @ApiOperation(value = "service to get get All active commande   sorted  and ordered by  params")
     public ResponseEntity<Map<String, Object>> onSortActiveFournisseur(@RequestParam(defaultValue = "0") int page,
