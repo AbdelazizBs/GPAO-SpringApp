@@ -100,20 +100,37 @@ public class PlannificationServiceImpl implements PlannificationService {
     @Override
     public void updateEtapes(String id, PlanEtapesDto planEtapesDto) throws ResourceNotFoundException {
         Plannification plannification1 = plannificationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
-        List<PlanEtapes> Etapes = new ArrayList<>();
-        plannification1.setNomEtape(planEtapesDto.getNomEtape());
-        PlanEtapes Etapes1 = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
-        if(plannification1.getEtapes()==null){
-            Etapes.add(Etapes1);
-            plannification1.setEtapes(Etapes);
-            plannificationRepository.save(plannification1);
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+        List<PlanEtapes> etapes = plannification1.getEtapes();
+        if (etapes == null) {
+            etapes = new ArrayList<>();
         }
-        Etapes.addAll(plannification1.getEtapes());
-        Etapes.add(Etapes1);
-        plannification1.setEtapes(Etapes);
+
+        // Check if the etape exists in the Plannification's etapes list
+        boolean etapeExists = false;
+        PlanEtapes existingEtapeToRemove = null;
+        for (PlanEtapes existingEtape : etapes) {
+            if (existingEtape.getNomEtape().equals(planEtapesDto.getNomEtape())) {
+                etapeExists = true;
+                existingEtapeToRemove = existingEtape;
+                break;
+            }
+        }
+
+        // If the etape exists, remove it from the etapes list
+        if (etapeExists) {
+            etapes.remove(existingEtapeToRemove);
+        }
+
+        // Add the updated etape
+        PlanEtapes etape = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
+        etapes.add(etape);
+        plannification1.setEtapes(etapes);
+        plannification1.setNomEtape(etape.getNomEtape());
         plannificationRepository.save(plannification1);
     }
+
+
     @Override
     public void updateEtape(String id, Plannification plannification) throws ResourceNotFoundException {
         Plannification plannification1 = plannificationRepository.findById(id)
@@ -149,8 +166,8 @@ public class PlannificationServiceImpl implements PlannificationService {
         Optional<Plannification> plan = plannificationRepository.findById(id);
         String[] etapes = plan.get().getLigneCommandeClient().getProduit().getEtapes();
         String etapenom = plan.get().getNomEtape();
-        return Arrays.asList(etapes).indexOf(etapenom);
-
+        List<String> etapesList = Arrays.asList(etapes);
+        return etapesList.indexOf(etapenom);
     }
 
     @Override
@@ -176,5 +193,30 @@ public class PlannificationServiceImpl implements PlannificationService {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public PlanEtapes getEtapesValue(String id, String Nom) {
+        Plannification plannification = plannificationRepository.findById(id).orElse(null);
+        if (plannification != null) {
+            Optional<PlanEtapes> matchingEtape = plannification.getEtapes().stream()
+                    .filter(etape -> etape.getNomEtape().equals(Nom))
+                    .findFirst();
+
+            if (matchingEtape.isPresent()) {
+                return matchingEtape.get();
+            }
+        }
+        return null;
+    }
+
+    public void Terminer(String id) {
+        Plannification plannification = plannificationRepository.findById(id).get();
+        plannification.setPlan(true);
+        plannificationRepository.save(plannification);
+    }
+    public void Suivi(String id) {
+        Plannification plannification = plannificationRepository.findById(id).get();
+        plannification.setEtat(true);
+        plannificationRepository.save(plannification);
     }
 }

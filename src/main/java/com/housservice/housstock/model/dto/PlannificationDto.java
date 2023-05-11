@@ -21,14 +21,11 @@ public class PlannificationDto {
     private List<String> personnels;
     private String nomEtape;
     private Article ligneCommandeClient;
-    private Date heureDebutPrevue;
-    private Date heureDebutReel;
-    private Date heureFinPrevue;
-    private Date heureFinReel;
     private int quantiteNonConforme;
     private int quantiteConforme;
     private int quantiteInitiale;
     private String commentaire;
+    private Boolean plan;
     private Boolean etat;
     private List<PlanEtapes> etapes;
 }

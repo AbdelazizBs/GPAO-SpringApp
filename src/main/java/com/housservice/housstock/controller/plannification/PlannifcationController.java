@@ -3,6 +3,7 @@ package com.housservice.housstock.controller.plannification;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.PlanEtapes;
 import com.housservice.housstock.model.Plannification;
 import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.model.dto.PlanEtapesDto;
@@ -11,6 +12,7 @@ import com.housservice.housstock.service.PlannificationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.math3.geometry.euclidean.threed.Plane;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -131,4 +133,22 @@ public class PlannifcationController {
 
     }
 
+    @GetMapping("/getEtapesValue/{id}")
+    public PlanEtapes getEtapesValue(@ApiParam(name = "id", value = "id", required = true)
+                                               @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,@RequestParam String Nom ) throws ResourceNotFoundException {
+        return plannificationService.getEtapesValue(id,Nom);
+
+    }
+        @GetMapping("/Ready/{id}")
+    public void Terminer(@ApiParam(name = "id", value = "id", required = true)
+                                     @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id
+    )  {
+        plannificationService.Terminer(id);
+    }
+    @GetMapping("/Suivi/{id}")
+    public void Suivi(@ApiParam(name = "id", value = "id", required = true)
+                         @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id
+    )  {
+        plannificationService.Suivi(id);
+    }
 }

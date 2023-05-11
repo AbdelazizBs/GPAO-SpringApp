@@ -301,6 +301,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         plannification.setLigneCommandeClient(article);
         String[] etape1=article.getProduit().getEtapes();
         plannification.setNomEtape(etape1[0]);
+        plannification.setPlan(false);
         plannification.setEtat(false);
         List<PlanEtapes> Etapes = new ArrayList<>();
         if (plannification.getEtapes()==null){

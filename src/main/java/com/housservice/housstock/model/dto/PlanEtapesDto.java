@@ -26,6 +26,8 @@ public class PlanEtapesDto {
     private Date datePrevu;
     private Date heureDebutPrevue;
     private Date heureFinPrevue;
+    private Date heureDebutReel;
+    private Date heureFinReel;
 
 }
 

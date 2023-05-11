@@ -2,6 +2,7 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.PlanEtapes;
 import com.housservice.housstock.model.Plannification;
 import com.housservice.housstock.model.dto.PlanEtapesDto;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,8 @@ public interface PlannificationService {
    void updateEtape(String id, Plannification plannification)throws ResourceNotFoundException;
    int indiceEtape(String id);
     public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
+    PlanEtapes getEtapesValue(String id,String Nom);
+     void Terminer(String id);
+    void Suivi(String id);
 
-}
+    }

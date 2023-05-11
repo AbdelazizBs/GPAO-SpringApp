@@ -20,16 +20,20 @@ public class PlanEtapes {
     private Date datePrevu;
     private Date heureDebutPrevue;
     private Date heureFinPrevue;
+    private Date heureDebutReel;
+    private Date heureFinReel;
 
     public PlanEtapes() {
     }
 
-    public PlanEtapes(String nomEtape, String refMachine, List<String> personnels, Date datePrevu, Date heureDebutPrevue, Date heureFinPrevue) {
+    public PlanEtapes(String nomEtape, String refMachine, List<String> personnels, Date datePrevu, Date heureDebutPrevue, Date heureFinPrevue, Date heureDebutReel, Date heureFinReel) {
         this.nomEtape = nomEtape;
         this.refMachine = refMachine;
         this.personnels = personnels;
         this.datePrevu = datePrevu;
         this.heureDebutPrevue = heureDebutPrevue;
         this.heureFinPrevue = heureFinPrevue;
+        this.heureDebutReel = heureDebutReel;
+        this.heureFinReel = heureFinReel;
     }
 }
