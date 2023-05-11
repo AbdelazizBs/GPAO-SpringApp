@@ -1,6 +1,5 @@
 com\housservice\housstock\controller\roles\RolesController.class
 com\housservice\housstock\mapper\ArticleMapper.class
-com\housservice\housstock\model\Tutorial.class
 com\housservice\housstock\service\PictureService.class
 com\housservice\housstock\controller\fournisseur\FournisseurController.class
 com\housservice\housstock\controller\machine\MachineController.class

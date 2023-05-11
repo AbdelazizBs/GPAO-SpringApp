@@ -24,4 +24,5 @@ public class LigneCommandeClientDto {
 	private String numCmdClient;
 
 	private Date delai;
+	private boolean lanced;
 }

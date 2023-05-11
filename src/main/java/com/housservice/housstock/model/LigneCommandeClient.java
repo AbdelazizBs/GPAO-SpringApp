@@ -35,6 +35,7 @@ public class LigneCommandeClient {
 
 
     private Date delai;
+    private boolean lanced;
 
     @Override
     public boolean equals(Object o) {

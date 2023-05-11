@@ -6,11 +6,9 @@ import com.housservice.housstock.mapper.LigneCommandClientMapper;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.LigneCommandeClient;
 import com.housservice.housstock.model.Nomenclature;
+import com.housservice.housstock.model.PlanificationOf;
 import com.housservice.housstock.model.dto.LigneCommandeClientDto;
-import com.housservice.housstock.repository.ArticleRepository;
-import com.housservice.housstock.repository.CommandeClientRepository;
-import com.housservice.housstock.repository.LigneCommandeClientRepository;
-import com.housservice.housstock.repository.NomenclatureRepository;
+import com.housservice.housstock.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +33,14 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 
     private CommandeClientRepository commandeClientRepository;
     private final NomenclatureRepository nomenclatureRepository;
+    private final PlanificationRepository planificationRepository;
 
     @Autowired
     public LigneCommandeClientServiceImpl(LigneCommandeClientRepository ligneCommandeClientRepository,
                                           SequenceGeneratorService sequenceGeneratorService, MessageHttpErrorProperties messageHttpErrorProperties,
                                           ArticleRepository articleRepository, CommandeClientRepository commandeClientRepository,
-                                          NomenclatureRepository nomenclatureRepository) {
+                                          NomenclatureRepository nomenclatureRepository,
+                                          PlanificationRepository planificationRepository) {
 
         this.ligneCommandeClientRepository = ligneCommandeClientRepository;
         this.sequenceGeneratorService = sequenceGeneratorService;
@@ -48,6 +48,7 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
         this.articleRepository = articleRepository;
         this.commandeClientRepository = commandeClientRepository;
         this.nomenclatureRepository = nomenclatureRepository;
+        this.planificationRepository = planificationRepository;
     }
 
     @Override
@@ -71,19 +72,34 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
         List<LigneCommandeClient> listLigneCommandeClient = ligneCommandeClientRepository.findAll();
         return listLigneCommandeClient.stream()
                 .map(this::buildLigneCommandeClientDtoFromLigneCommandeClient)
-                .filter(Objects::nonNull)
+                .filter(ligneCommandeClientDto -> !ligneCommandeClientDto.isLanced())
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<LigneCommandeClient> getAllLigneCommandeClientFermer() {
-        List<CommandeClient> commandeClients = commandeClientRepository.findAll();
-        List<LigneCommandeClient> ligneCommandeClients = new ArrayList<>();
-        commandeClients.stream()
-                .filter(CommandeClient::isClosed)
-                .forEach(commandeClient -> ligneCommandeClients.addAll(commandeClient.getLigneCommandeClient()));
+        List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findAll()
+                .stream().filter(ligneCommandeClientDto -> !ligneCommandeClientDto.isLanced())
+                .collect(Collectors.toList());
         return ligneCommandeClients;
     }
+    @Override
+    public List<LigneCommandeClient> getAllLigneCommandeClientLanced() {
+       return  ligneCommandeClientRepository.findLigneCommandeClientByLanced(true);
+    }
+
+
+    private static boolean isValidAll(List<PlanificationOf> planificationOfs) {
+        boolean isValid = false;
+            for (PlanificationOf planificationOf : planificationOfs) {
+                isValid = planificationOf.getDateLancementReel() != null
+                        && planificationOf.getHeureDebutReel() != null
+                        && planificationOf.getHeureFinReel() != null
+                        && planificationOf.getQuantiteInitiale() != 0;
+            }
+            return isValid;
+        }
+
 
     @Override
     public LigneCommandeClientDto getLigneCommandeClientById(String id) {
@@ -104,6 +120,7 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
                 () -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getIdNomenclature())));
         LigneCommandeClient ligneCommandeClient = LigneCommandClientMapper.MAPPER.toLigneCommandClient(ligneCommandeClientDto);
         ligneCommandeClient.setNomenclature(nomenclature);
+        ligneCommandeClient.setLanced(false);
         ligneCommandeClientRepository.save(ligneCommandeClient);
         CommandeClient commandeClient = commandeClientRepository.findById(ligneCommandeClientDto.getIdCommandeClient())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getIdCommandeClient())));
@@ -135,6 +152,20 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
         commandeClientRepository.save(commandeClient);
         ligneCommandeClientRepository.save(ligneCommandeClient);
 
+    }
+
+    @Override
+    public void lanceLc(String idLc) throws ResourceNotFoundException {
+        LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findById(idLc)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idLc)));
+        List<PlanificationOf> planificationOfs = planificationRepository.findAll().stream()
+                .filter(planificationOf -> planificationOf.getLigneCommandeClient().getId().equals(idLc)).collect(Collectors.toList());
+        if (isValidAll(planificationOfs)) {
+            ligneCommandeClient.setLanced(true);
+            ligneCommandeClientRepository.save(ligneCommandeClient);
+        }else {
+            throw new ResourceNotFoundException(MessageFormat.format("La ligne de commande client {0} n'est pas encore planifiée",idLc));
+        }
     }
 
     @Override

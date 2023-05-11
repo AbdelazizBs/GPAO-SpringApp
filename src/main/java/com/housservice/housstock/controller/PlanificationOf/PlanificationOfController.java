@@ -33,7 +33,7 @@ public class PlanificationOfController {
 
 
     @PutMapping("/updatePlanfication")
-    public ResponseEntity<String> updatePlanfication(
+    public ResponseEntity<String> updatePlanfication(@Valid
             @RequestBody PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
         planificationService.updatePlanfication(planificationOfDTO);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
@@ -44,10 +44,17 @@ public class PlanificationOfController {
 
 
     @GetMapping("/getPlanificationByIdLigneCmd/{idLc}")
-    public List<PlanificationOf> getPlanificationByIdLigneCmd(
+    public List<PlanificationOfDTO> getPlanificationByIdLigneCmd(
             @ApiParam(name = "idLc", value = "id of ligneCmd", required = true)
             @PathVariable(value = "idLc", required = true) @NotEmpty(message = "{http.error.0001}") String idLc) throws ResourceNotFoundException {
         return planificationService.getPlanificationByIdLigneCmd(idLc);
+    }
+
+    @GetMapping("/getAllPlanificationsParOperation")
+    public List<PlanificationOfDTO> getAllPlanificationsParOperation(
+            @RequestParam(value = "operationType", required = true) @NotEmpty(message = "{http.error.0001}") String operationType
+            ) throws ResourceNotFoundException {
+        return planificationService.getAllPlanificationsParOperation(operationType);
     }
 
     @GetMapping("/getPlanificationByIdLigneCmdAndIndex/{idLc}/{index}")

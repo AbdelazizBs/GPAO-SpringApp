@@ -197,7 +197,6 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findLigneCommandeClientByIdCommandeClient(commandeClient.getId());
         commandeClient.setClosed(true);
         commandeClient.setEtatProduction("En attente");
-        ligneCommandeClientRepository.saveAll(ligneCommandeClients);
         for (LigneCommandeClient ligneCommandeClient : ligneCommandeClients) {
             getPlanification(ligneCommandeClient.getNomenclature(), ligneCommandeClient);
         }
@@ -220,7 +219,8 @@ public class CommandeClientServiceImpl implements CommandeClientService {
             EtapeProduction etapeProduction = etapeProductionRepository.findById(nomenclature.getEtapeProductions().get(0).getId()).
                     orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),nomenclature.getEtapeProductions().get(0).getNomEtape())));
             planificationOf.setMachines(machineRepository.findMachineByEtapeProduction(etapeProduction));
-                    planificationOf.setNomEtape(nomenclature.getEtapeProductions().get(0).getNomEtape());
+            planificationOf.setNomEtape(nomenclature.getEtapeProductions().get(0).getNomEtape());
+            planificationOf.setOperationType(nomenclature.getEtapeProductions().get(0).getTypeEtape());
             planificationOf.setLigneCommandeClient(ligneCommandeClient);
             planificationOf.setNomNomenclature(ligneCommandeClient.getNomenclature().getNomNomenclature());
             planificationOf.setQuantiteInitiale(nomenclature.getQuantity());

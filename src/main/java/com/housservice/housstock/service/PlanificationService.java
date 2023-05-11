@@ -16,6 +16,7 @@ public interface PlanificationService {
 
     ResponseEntity<Map<String, Object>> getPlanificationByIdLigneCmdAndIndex(String idLc, int index);
 
-    List<PlanificationOf> getPlanificationByIdLigneCmd(String idLc) throws ResourceNotFoundException;
+    List<PlanificationOfDTO> getPlanificationByIdLigneCmd(String idLc) throws ResourceNotFoundException;
+    List<PlanificationOfDTO> getAllPlanificationsParOperation(String operationType) throws ResourceNotFoundException;
 
 }

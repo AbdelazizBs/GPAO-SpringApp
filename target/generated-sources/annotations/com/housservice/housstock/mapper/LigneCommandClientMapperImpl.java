@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-08T19:55:03+0200",
+    date = "2023-05-11T01:06:15+0200",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 17.0.1 (Oracle Corporation)"
 )
 @Component
@@ -26,6 +26,7 @@ public class LigneCommandClientMapperImpl extends LigneCommandClientMapper {
         ligneCommandeClientDto.setIdCommandeClient( ligneCommandClient.getIdCommandeClient() );
         ligneCommandeClientDto.setNumCmdClient( ligneCommandClient.getNumCmdClient() );
         ligneCommandeClientDto.setDelai( ligneCommandClient.getDelai() );
+        ligneCommandeClientDto.setLanced( ligneCommandClient.isLanced() );
 
         updateLigneCommandClientDto( ligneCommandClient, ligneCommandeClientDto );
 
@@ -45,6 +46,7 @@ public class LigneCommandClientMapperImpl extends LigneCommandClientMapper {
         ligneCommandeClient.setIdCommandeClient( ligneCommandeClientDto.getIdCommandeClient() );
         ligneCommandeClient.setNumCmdClient( ligneCommandeClientDto.getNumCmdClient() );
         ligneCommandeClient.setDelai( ligneCommandeClientDto.getDelai() );
+        ligneCommandeClient.setLanced( ligneCommandeClientDto.isLanced() );
 
         updateLigneCommandClient( ligneCommandeClientDto, ligneCommandeClient );
 

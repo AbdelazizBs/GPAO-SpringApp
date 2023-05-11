@@ -46,6 +46,12 @@ public class LigneCommandeClientController {
         return ligneCommandeClientService.getAllLigneCommandeClientFermer();
 
     }
+    @GetMapping("/getAllLigneCommandeClientLanced")
+    public List<LigneCommandeClient> getAllLigneCommandeClientLanced() {
+        return ligneCommandeClientService.getAllLigneCommandeClientLanced();
+
+    }
+
 
     @GetMapping("/getLignCmdByIdCmd/{idCmd}")
     public List<LigneCommandeClient> getLignCmdByIdCmd(
@@ -80,6 +86,15 @@ public class LigneCommandeClientController {
             @Valid @RequestBody(required = true) LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
 
         ligneCommandeClientService.updateLigneCommandeClient(ligneCommandeClientDto);
+
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    }
+    @PutMapping("/lanceLc/{idLc}")
+    public ResponseEntity<String> lunchLc(
+            @ApiParam(name = "idLc", value = "id of ligneCommandeClient", required = true)
+            @PathVariable(value = "idLc", required = true) @NotEmpty(message = "{http.error.0001}") String idLc,
+             @RequestBody(required = true) LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
+        ligneCommandeClientService.lanceLc(idLc);
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }

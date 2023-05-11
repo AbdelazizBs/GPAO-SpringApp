@@ -9,6 +9,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
+import java.util.stream.Collectors;
+
 @Mapper(componentModel = "spring")
 
 public abstract class PlanificationMappper   {
@@ -21,7 +23,7 @@ public abstract class PlanificationMappper   {
 
     @AfterMapping
     void updatePlanificationDto(final PlanificationOf planificationOf, @MappingTarget final PlanificationOfDTO planificationOfDTO)   {
-
+    planificationOfDTO.setNomPersonnels(planificationOf.getPersonnels().stream().map(Personnel::getNom).collect(Collectors.toList()));
     }
 
     @AfterMapping

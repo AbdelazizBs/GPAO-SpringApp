@@ -22,6 +22,8 @@ public class PlanificationOf {
     private String id;
     private LigneCommandeClient ligneCommandeClient;
     private String nomEtape;
+    private String operationType;
+
     private String nomNomenclature;
     private List<Machine> machines;
     private List<Personnel> personnels;

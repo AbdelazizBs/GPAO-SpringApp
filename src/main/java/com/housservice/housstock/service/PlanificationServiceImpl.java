@@ -72,9 +72,9 @@ public class PlanificationServiceImpl implements PlanificationService {
             List<PlanificationOf> planificationsOf = planifications.stream().filter(planificationOf -> {
                 return planificationOf.getLigneCommandeClient().getId().equals(idLC);
             }).collect(Collectors.toList());
-            PlanificationOf planificationOf = planificationsOf.get(index);
+            PlanificationOfDTO planificationOfDTO = PlanificationMappper.MAPPER.toPlanificationOfDto(planificationsOf.get(index));
             Map<String, Object> response = new HashMap<>();
-            response.put("planification", planificationOf);
+            response.put("planification", planificationOfDTO);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
@@ -83,10 +83,17 @@ public class PlanificationServiceImpl implements PlanificationService {
     }
 
     @Override
-    public List<PlanificationOf> getPlanificationByIdLigneCmd(String idLc) throws ResourceNotFoundException {
+    public List<PlanificationOfDTO> getPlanificationByIdLigneCmd(String idLc) throws ResourceNotFoundException {
         List<PlanificationOf> planificationOfs = planificationRepository.findAll();
         planificationOfs = planificationOfs.stream().filter(planificationOf -> planificationOf.getLigneCommandeClient().getId().equals(idLc)).collect(Collectors.toList());
-        return planificationOfs;
+        return planificationOfs.stream().map(PlanificationMappper.MAPPER::toPlanificationOfDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PlanificationOfDTO> getAllPlanificationsParOperation(String operationType) throws ResourceNotFoundException {
+        List<PlanificationOf> planificationOfs = planificationRepository.findAll();
+            planificationOfs = planificationOfs.stream().filter(planificationOf -> planificationOf.getOperationType().equals(operationType)).collect(Collectors.toList());
+            return planificationOfs.stream().map(PlanificationMappper.MAPPER::toPlanificationOfDto).collect(Collectors.toList());
     }
 
 }

@@ -19,6 +19,7 @@ public class PlanificationOfDTO {
     private String id;
 
     private List<String> idPersonnels;
+    private List<String> nomPersonnels;
 
     private Date dateLancementReel;
 
@@ -32,6 +33,7 @@ public class PlanificationOfDTO {
     private LigneCommandeClient ligneCommandeClient;
 
     private String nomEtape;
+    private String operationType;
     private String nomNomenclature;
 
     private List<Machine> machines;

@@ -9,6 +9,7 @@ public interface LigneCommandeClientRepository extends MongoRepository<LigneComm
 	
 
     List<LigneCommandeClient> findLigneCommandeClientByIdCommandeClient(String idCommandeClient);
+    List<LigneCommandeClient> findLigneCommandeClientByLanced(boolean lanced);
 
 
 }

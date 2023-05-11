@@ -9,19 +9,21 @@ import java.util.List;
 
 public interface LigneCommandeClientService {
 
-    public List<LigneCommandeClientDto> getAllLigneCommandeClient();
+     List<LigneCommandeClientDto> getAllLigneCommandeClient();
 
-    public List<LigneCommandeClient> getAllLigneCommandeClientFermer();
+     List<LigneCommandeClient> getAllLigneCommandeClientFermer();
+     List<LigneCommandeClient> getAllLigneCommandeClientLanced();
 
-    public LigneCommandeClientDto getLigneCommandeClientById(String id);
+     LigneCommandeClientDto getLigneCommandeClientById(String id);
 
-    public List<LigneCommandeClient> getLignCmdByIdCmd(String idCmd) throws ResourceNotFoundException;
+     List<LigneCommandeClient> getLignCmdByIdCmd(String idCmd) throws ResourceNotFoundException;
 
-    public LigneCommandeClientDto buildLigneCommandeClientDtoFromLigneCommandeClient(LigneCommandeClient ligneCommandeClient);
+     LigneCommandeClientDto buildLigneCommandeClientDtoFromLigneCommandeClient(LigneCommandeClient ligneCommandeClient);
 
-    public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException;
+     void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException;
 
-    public void updateLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException;
+     void updateLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException;
+     void lanceLc(String idLc) throws ResourceNotFoundException;
 
-    public void deleteLigneCommandeClient(String ligneCommandeClientId) throws ResourceNotFoundException;
+     void deleteLigneCommandeClient(String ligneCommandeClientId) throws ResourceNotFoundException;
 }
