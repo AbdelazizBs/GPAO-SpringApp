@@ -127,6 +127,9 @@ public class PlannificationServiceImpl implements PlannificationService {
         etapes.add(etape);
         plannification1.setEtapes(etapes);
         plannification1.setNomEtape(etape.getNomEtape());
+        plannification1.setQuantiteInitiale(etape.getQuantiteInitiale());
+        plannification1.setQuantiteConforme(etape.getQuantiteConforme());
+        plannification1.setQuantiteNonConforme(etape.getQuantiteNonConforme());
         plannificationRepository.save(plannification1);
     }
 
