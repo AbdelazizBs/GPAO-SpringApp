@@ -2,6 +2,7 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.PlanEtapes;
 import com.housservice.housstock.model.Plannification;
 import com.housservice.housstock.model.dto.PlanEtapesDto;
@@ -17,8 +18,9 @@ public interface PlannificationService {
 
     void updatePlanification(String id, Plannification plannification) throws ResourceNotFoundException;
     void updateEtapes(String id, PlanEtapesDto planEtapesDto) throws ResourceNotFoundException;
+    void updateof( Plannification plannification,String id) throws ResourceNotFoundException ;
 
-    String operationType(String etat);
+     String operationType(String etat);
     List<String> getConducteur(String refMachine);
 
     public String[] getEtape(String id);
@@ -29,5 +31,6 @@ public interface PlannificationService {
     PlanEtapes getEtapesValue(String id,String Nom);
      void Terminer(String id);
     void Suivi(String id);
+    void deleteArticle(String id);
 
     }
