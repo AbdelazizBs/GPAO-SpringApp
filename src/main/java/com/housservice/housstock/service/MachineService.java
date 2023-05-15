@@ -19,6 +19,7 @@ public interface MachineService {
     String getIdMachine(String nomEtape) throws ResourceNotFoundException;
 
     List<Machine> getAllMachinesByEtapes(String nomEtape) throws ResourceNotFoundException;
+     ResponseEntity<Map<String, Object>> getMachinesId(List<String> machinsName) throws ResourceNotFoundException;
 
     MachineDto getMachineById(String id);
 

@@ -9,5 +9,5 @@ import java.util.List;
 public interface PlanificationRepository extends MongoRepository<PlanificationOf, String> {
 
 
-
+List<PlanificationOf> findPlanificationOfByLanced(boolean lanced);
 }

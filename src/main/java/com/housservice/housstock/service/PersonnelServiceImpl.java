@@ -3,11 +3,12 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.PersonnelMapper;
+import com.housservice.housstock.model.EtapeProduction;
+import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
-import com.housservice.housstock.repository.ComptesRepository;
-import com.housservice.housstock.repository.PersonnelRepository;
-import com.housservice.housstock.repository.RolesRepository;
+import com.housservice.housstock.repository.*;
+import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class PersonnelServiceImpl implements PersonnelService {
 
     private final PersonnelRepository personnelRepository;
+    private final MachineRepository machineRepository;
 
     final
     ComptesRepository comptesRepository;
@@ -33,13 +35,17 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 
     final RolesRepository rolesRepository;
+    private final EtapeProductionRepository etapeProductionRepository;
 
-    public PersonnelServiceImpl(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties,
-                                RolesRepository rolesRepository, ComptesRepository comptesRepository) {
+    public PersonnelServiceImpl(PersonnelRepository personnelRepository, MachineRepository machineRepository, MessageHttpErrorProperties messageHttpErrorProperties,
+                                RolesRepository rolesRepository, ComptesRepository comptesRepository,
+                                EtapeProductionRepository etapeProductionRepository) {
         this.personnelRepository = personnelRepository;
+        this.machineRepository = machineRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.rolesRepository = rolesRepository;
         this.comptesRepository = comptesRepository;
+        this.etapeProductionRepository = etapeProductionRepository;
     }
 
 
@@ -234,6 +240,70 @@ public class PersonnelServiceImpl implements PersonnelService {
             }
             Map<String, Object> response = new HashMap<>();
             response.put("nomConducteurs", nomConducteurs);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getOperatricesName() {
+
+        try {
+            List<PersonnelDto> personnels;
+            personnels = personnelRepository.findAll().stream().map(personnel -> {
+                return PersonnelMapper.MAPPER.toPersonnelDto(personnel);
+            }).collect(Collectors.toList());
+            List<String> operatricesName = new ArrayList<>();
+            for (PersonnelDto personnel : personnels) {
+                if (personnel.getPoste().startsWith("Opérat")) {
+                    operatricesName.add(personnel.getNom());
+                }
+            }
+            Map<String, Object> response = new HashMap<>();
+            response.put("operatricesName", operatricesName);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+ @Override
+    public ResponseEntity<Map<String, Object>> getPersonnelsNameByMachine(String nomEtape) {
+
+        try {
+            List<String> personnelsName = new ArrayList<>();
+            EtapeProduction etapeProductions =etapeProductionRepository.findByNomEtape(nomEtape).
+                    orElseThrow(() -> new NotFoundException("Etape production not found"));
+            List<Machine> machines = machineRepository.findMachineByEtapeProduction(etapeProductions);
+            // add all personnels name of machines in list and filter reppeated name
+            for (Machine machine : machines) {
+                for (Personnel personnel : machine.getPersonnel()) {
+                    personnelsName.add(personnel.getNom());
+                }
+            }
+            personnelsName = personnelsName.stream().distinct().collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("nomConducteurs", personnelsName);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+ @Override
+    public ResponseEntity<Map<String, Object>> getPersonnelsId(List<String> personnelsName) {
+
+        try {
+            List<String> personnels = new ArrayList<>();
+            personnelRepository.findAll().forEach(personnel -> {
+                if (personnelsName.contains(personnel.getNom())) {
+                    personnels.add(personnel.getId());
+                }
+            });
+            Map<String, Object> response = new HashMap<>();
+            response.put("personnelsId", personnels);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

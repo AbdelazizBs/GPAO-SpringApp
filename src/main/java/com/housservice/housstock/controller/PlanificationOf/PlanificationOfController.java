@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,8 +34,12 @@ public class PlanificationOfController {
 
 
     @PutMapping("/updatePlanfication")
-    public ResponseEntity<String> updatePlanfication(@Valid
-            @RequestBody PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
+    public ResponseEntity<String> updatePlanfication(@RequestBody PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
+        // control de la date de lancementPrevue, heureDebutPrevue, heureFinPrevue and quantiteInitiale
+        if (planificationOfDTO.getDateLancementPrevue() == null || planificationOfDTO.getHeureDebutPrevue() == null
+                || planificationOfDTO.getHeureFinPrevue() == null || planificationOfDTO.getQuantiteInitiale() == 0) {
+            return ResponseEntity.badRequest().body(messageHttpErrorProperties.getError0001());
+        }
         planificationService.updatePlanfication(planificationOfDTO);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 

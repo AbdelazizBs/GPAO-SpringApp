@@ -216,15 +216,12 @@ public class CommandeClientServiceImpl implements CommandeClientService {
             // Create a new Planification for this Nomenclature
             PlanificationOf planificationOf = new PlanificationOf();
             planificationOf.setPersonnels(new ArrayList<>());
-            EtapeProduction etapeProduction = etapeProductionRepository.findById(nomenclature.getEtapeProductions().get(0).getId()).
-                    orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),nomenclature.getEtapeProductions().get(0).getNomEtape())));
-            planificationOf.setMachines(machineRepository.findMachineByEtapeProduction(etapeProduction));
+            planificationOf.setMachines(new ArrayList<>());
             planificationOf.setNomEtape(nomenclature.getEtapeProductions().get(0).getNomEtape());
             planificationOf.setOperationType(nomenclature.getEtapeProductions().get(0).getTypeEtape());
             planificationOf.setLigneCommandeClient(ligneCommandeClient);
             planificationOf.setNomNomenclature(ligneCommandeClient.getNomenclature().getNomNomenclature());
-            planificationOf.setQuantiteInitiale(nomenclature.getQuantity());
-            planificationOf.setDateLancementReel(new Date());
+            planificationOf.setLanced(false);
             planificationRepository.save(planificationOf);
         } else if (nomenclature.getType().equals(TypeNomEnClature.Article)) {
             // Get the children Nomenclatures

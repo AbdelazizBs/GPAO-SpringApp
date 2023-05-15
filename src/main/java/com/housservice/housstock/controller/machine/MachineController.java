@@ -46,6 +46,12 @@ public class MachineController {
 			 return machineService.getMachineEnVeille(page,size);
 			 
 		 }
+
+	@GetMapping("/getMachinesId")
+	@ApiOperation(value = "service to get machineId for selected name list.")
+	public ResponseEntity<Map<String, Object>> getMachinesId(@RequestParam(value = "machinsName", required = true) List<String> machinsName) throws ResourceNotFoundException {
+		return machineService.getMachinesId(machinsName);
+	}
 		 @GetMapping("/getIdMachine/{nomEtape}")
 		 public String  getIdMachine (
 				 @PathVariable(value = "nomEtape", required = true) @NotEmpty(message = "{http.error.0001}") String nomEtape) throws ResourceNotFoundException {

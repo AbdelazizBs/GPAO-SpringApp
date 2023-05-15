@@ -21,6 +21,9 @@ public interface PersonnelService {
     ResponseEntity<Map<String, Object>> getAllPersonnelEnVeille(int page, int size);
 
     ResponseEntity<Map<String, Object>> getConcducteurs();
+    ResponseEntity<Map<String, Object>> getOperatricesName();
+    ResponseEntity<Map<String, Object>> getPersonnelsNameByMachine(String nomEtape);
+    ResponseEntity<Map<String, Object>> getPersonnelsId(List<String> personnelsName);
 
 
     PersonnelDto getPersonnelById(String id) throws ResourceNotFoundException;

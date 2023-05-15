@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -160,6 +157,15 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idLc)));
         List<PlanificationOf> planificationOfs = planificationRepository.findAll().stream()
                 .filter(planificationOf -> planificationOf.getLigneCommandeClient().getId().equals(idLc)).collect(Collectors.toList());
+        planificationOfs.forEach(
+                planificationOf -> {
+                    planificationOf.setDateLancementReel(new Date());
+                    planificationOf.setHeureDebutReel(new Date());
+                    planificationOf.setHeureFinReel(new Date());
+                    planificationOf.setLanced(true);
+                    planificationRepository.save(planificationOf);
+                }
+        );
         if (isValidAll(planificationOfs)) {
             ligneCommandeClient.setLanced(true);
             ligneCommandeClientRepository.save(ligneCommandeClient);

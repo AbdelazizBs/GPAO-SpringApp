@@ -1,5 +1,6 @@
 package com.housservice.housstock.mapper;
 
+import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.PlanificationOf;
 import com.housservice.housstock.model.dto.PersonnelDto;
@@ -24,6 +25,9 @@ public abstract class PlanificationMappper   {
     @AfterMapping
     void updatePlanificationDto(final PlanificationOf planificationOf, @MappingTarget final PlanificationOfDTO planificationOfDTO)   {
     planificationOfDTO.setNomPersonnels(planificationOf.getPersonnels().stream().map(Personnel::getNom).collect(Collectors.toList()));
+    planificationOfDTO.setIdPersonnels(planificationOf.getPersonnels().stream().map(Personnel::getId).collect(Collectors.toList()));
+    planificationOfDTO.setMachinesId(planificationOf.getMachines().stream().map(Machine::getId).collect(Collectors.toList()));
+    planificationOfDTO.setLibelleMachine(planificationOf.getMachines().stream().map(Machine::getLibelle).collect(Collectors.toList()));
     }
 
     @AfterMapping

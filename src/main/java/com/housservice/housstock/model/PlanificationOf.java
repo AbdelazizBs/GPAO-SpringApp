@@ -30,8 +30,15 @@ public class PlanificationOf {
     private Date dateLancementReel;
     private Date heureFinReel;
     private Date heureDebutReel;
+    private Date dateLancementPrevue;
+    private Date heureFinPrevue;
+    private Date heureDebutPrevue;
     private int quantiteInitiale;
+    private int qteConforme;
+    private int qteNonConforme;
 
+    private String commentaire;
+    private boolean lanced;
 
     public PlanificationOf() {
 

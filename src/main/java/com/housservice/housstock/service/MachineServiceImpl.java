@@ -190,6 +190,24 @@ public class MachineServiceImpl implements MachineService {
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), nomEtape)));
         return machineRepository.findMachineByEtapeProduction(etapeProduction);
     }
+    @Override
+    public ResponseEntity<Map<String, Object>> getMachinesId(List<String> machinsName) {
+
+        try {
+            List<String> machinesId = new ArrayList<>();
+            machineRepository.findAll().forEach(machine -> {
+                if (machinsName.contains(machine.getLibelle())) {
+                    machinesId.add(machine.getId());
+                }
+            });
+            Map<String, Object> response = new HashMap<>();
+            response.put("machinesId", machinesId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 
 
     @Override

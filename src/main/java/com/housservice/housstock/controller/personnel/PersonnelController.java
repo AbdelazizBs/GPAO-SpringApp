@@ -97,12 +97,27 @@ public class PersonnelController {
     }
 
     @GetMapping("/getConcducteurs")
-    @ApiOperation(value = "service to get Conducteurs.")
+    @ApiOperation(value = "service to get Conducteurs name list")
     public ResponseEntity<Map<String, Object>> getConcducteurs() {
         return personnelService.getConcducteurs();
     }
+   @GetMapping("/getOperatricesName")
+    @ApiOperation(value = "service to get Operatrice name list.")
+    public ResponseEntity<Map<String, Object>> getOperatricesName() {
+        return personnelService.getOperatricesName();
+    }
 
+    @GetMapping("/getPersonnelsNameByNameEtape")
+    @ApiOperation(value = "service to get Operatrice name list.")
+    public ResponseEntity<Map<String, Object>> getPersonnelsNameByMachine(@RequestParam(value = "nomEtape", required = true) String nomEtape) {
+        return personnelService.getPersonnelsNameByMachine(nomEtape);
+    }
 
+    @GetMapping("/getPersonnelsId")
+    @ApiOperation(value = "service to get Operatrice name list.")
+    public ResponseEntity<Map<String, Object>> getPersonnelsId(@RequestParam(value = "personnelsName", required = true) List<String> personnelsName) {
+        return personnelService.getPersonnelsId(personnelsName);
+    }
     @GetMapping("token/refreshToken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
