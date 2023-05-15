@@ -3,6 +3,7 @@ package com.housservice.housstock.controller.plannification;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.PlanEtapes;
 import com.housservice.housstock.model.Plannification;
 import com.housservice.housstock.model.dto.MachineDto;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -150,5 +153,27 @@ public class PlannifcationController {
                          @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id
     )  {
         plannificationService.Suivi(id);
+    }
+    @DeleteMapping("/deleteArticle/{id}")
+    @ApiOperation(value = "service to delete one Article by Id.")
+    public Map < String, Boolean > deleteArticle(
+            @ApiParam(name = "id", value="id of Article", required = true)
+            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+            throws ResourceNotFoundException {
+        plannificationService.deleteArticle(id);
+        Map < String, Boolean > response = new HashMap < > ();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
+    @PutMapping("/updateof/{id}")
+    public ResponseEntity<String> updateof(
+            @ApiParam(name = "id", value = "id", required = true)
+            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
+            @Valid @RequestBody Plannification plannification
+    ) throws ResourceNotFoundException {
+        plannificationService.updateof(plannification,id);
+
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+
     }
 }

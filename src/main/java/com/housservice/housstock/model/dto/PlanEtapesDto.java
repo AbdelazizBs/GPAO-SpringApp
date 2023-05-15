@@ -28,6 +28,10 @@ public class PlanEtapesDto {
     private Date heureFinPrevue;
     private Date heureDebutReel;
     private Date heureFinReel;
+    private int quantiteNonConforme;
+    private int quantiteConforme;
+    private int quantiteInitiale;
+    private String commentaire;
 
 }
 

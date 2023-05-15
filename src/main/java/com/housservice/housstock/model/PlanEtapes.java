@@ -22,11 +22,15 @@ public class PlanEtapes {
     private Date heureFinPrevue;
     private Date heureDebutReel;
     private Date heureFinReel;
+    private int quantiteNonConforme;
+    private int quantiteConforme;
+    private int quantiteInitiale;
+    private String commentaire;
 
     public PlanEtapes() {
     }
 
-    public PlanEtapes(String nomEtape, String refMachine, List<String> personnels, Date datePrevu, Date heureDebutPrevue, Date heureFinPrevue, Date heureDebutReel, Date heureFinReel) {
+    public PlanEtapes(String nomEtape, String refMachine, List<String> personnels, Date datePrevu, Date heureDebutPrevue, Date heureFinPrevue, Date heureDebutReel, Date heureFinReel, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire) {
         this.nomEtape = nomEtape;
         this.refMachine = refMachine;
         this.personnels = personnels;
@@ -35,5 +39,9 @@ public class PlanEtapes {
         this.heureFinPrevue = heureFinPrevue;
         this.heureDebutReel = heureDebutReel;
         this.heureFinReel = heureFinReel;
+        this.quantiteNonConforme = quantiteNonConforme;
+        this.quantiteConforme = quantiteConforme;
+        this.quantiteInitiale = quantiteInitiale;
+        this.commentaire = commentaire;
     }
 }

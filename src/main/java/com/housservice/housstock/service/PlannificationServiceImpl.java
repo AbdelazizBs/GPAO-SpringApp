@@ -127,6 +127,9 @@ public class PlannificationServiceImpl implements PlannificationService {
         etapes.add(etape);
         plannification1.setEtapes(etapes);
         plannification1.setNomEtape(etape.getNomEtape());
+        plannification1.setQuantiteInitiale(etape.getQuantiteInitiale());
+        plannification1.setQuantiteConforme(etape.getQuantiteConforme());
+        plannification1.setQuantiteNonConforme(etape.getQuantiteNonConforme());
         plannificationRepository.save(plannification1);
     }
 
@@ -141,6 +144,15 @@ public class PlannificationServiceImpl implements PlannificationService {
             plannification1.setRefMachine(plannification.getRefMachine());
         }
         plannification1.setPersonnels(plannification.getPersonnels());
+        plannificationRepository.save(plannification1);
+    }
+
+    @Override
+    public void updateof( Plannification plannification,String id) throws ResourceNotFoundException {
+        Plannification plannification1 = plannificationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
+        plannification1.getLigneCommandeClient().setDateLivraison(plannification.getLigneCommandeClient().getDateLivraison());
+        plannification1.getLigneCommandeClient().setQuantite(plannification.getLigneCommandeClient().getQuantite());
         plannificationRepository.save(plannification1);
     }
     public String operationType(String etat){
@@ -218,5 +230,9 @@ public class PlannificationServiceImpl implements PlannificationService {
         Plannification plannification = plannificationRepository.findById(id).get();
         plannification.setEtat(true);
         plannificationRepository.save(plannification);
+    }
+    public void deleteArticle(String id){
+        Plannification plannification = plannificationRepository.findById(id).get();
+        plannificationRepository.delete(plannification);
     }
 }
