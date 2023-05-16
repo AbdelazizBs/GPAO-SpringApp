@@ -28,4 +28,8 @@ public class PlannificationDto {
     private Boolean plan;
     private Boolean etat;
     private List<PlanEtapes> etapes;
+    private String ref;
+
+
+    private static int seq = 0;
 }

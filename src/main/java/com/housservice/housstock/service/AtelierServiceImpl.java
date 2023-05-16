@@ -27,11 +27,11 @@ import java.util.stream.Collectors;
 
 import static org.springframework.data.repository.util.ReactiveWrapperConverters.map;
 @Service
-public class PlanifierMachineServiceImpl implements PlanifierMachineService{
+public class AtelierServiceImpl implements AtelierService{
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     private final PlannificationRepository plannificationRepository;
     private final MachineRepository machineRepository;
-    public PlanifierMachineServiceImpl(MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository, MachineRepository machineRepository) {
+    public AtelierServiceImpl(MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository, MachineRepository machineRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.plannificationRepository = plannificationRepository;
         this.machineRepository = machineRepository;
@@ -45,47 +45,30 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
     }
 
     @Override
-    public List<String> getMachineByNomConducteur(String nomConducteur) {
-       List<Machine> machines=machineRepository.findMachineByNomConducteur(nomConducteur);
-        return machines.stream()
-                .map(Machine::getLibelle)
-                .collect(Collectors.toList());
-
-    }
-    @Override
-    public ResponseEntity<Map<String, Object>> getOfByRefMachine(int page, int size,String refMachine) {
+    public ResponseEntity<Map<String, Object>> getOfByRefMachine(int page, int size) {
         try {
             List<Plannification> plannifications =  plannificationRepository.findAll();
             Pageable paging = PageRequest.of(page, size);
             Page<Plannification> pageTuts;
             pageTuts = plannificationRepository.findAll(paging);
-            List<PlanEtapes> matchingPlanifications = new ArrayList<>();
+            List<PlanEtapes> ateliers = new ArrayList<>();
 
             for (Plannification planification : plannifications) {
                 for (PlanEtapes etape : planification.getEtapes()) {
-                    if (etape.getRefMachine().equals(refMachine)) {
-                        matchingPlanifications.add(etape);
+                    if (etape.getRefMachine()==null) {
+                        ateliers.add(etape);
                         break;
                     }
                 }
             }
             Map<String, Object> response = new HashMap<>();
-            response.put("matchingPlanifications", matchingPlanifications);
+            response.put("ateliers", ateliers);
             response.put("currentPage", pageTuts.getNumber());
             response.put("totalItems", pageTuts.getTotalElements());
             response.put("totalPages", pageTuts.getTotalPages());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            Pageable paging = PageRequest.of(page, size);
-            Page<Plannification> pageTuts;
-            pageTuts = plannificationRepository.findAll(paging);
-            List<PlanEtapes> matchingPlanifications = new ArrayList<>();
-            Map<String, Object> response = new HashMap<>();
-            response.put("matchingPlanifications", matchingPlanifications);
-            response.put("currentPage", pageTuts.getNumber());
-            response.put("totalItems", pageTuts.getTotalElements());
-            response.put("totalPages", pageTuts.getTotalPages());
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

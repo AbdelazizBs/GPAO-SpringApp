@@ -32,6 +32,7 @@ public class PlanEtapesDto {
     private int quantiteConforme;
     private int quantiteInitiale;
     private String commentaire;
+    private String ref;
 
 }
 

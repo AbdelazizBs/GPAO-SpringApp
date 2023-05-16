@@ -14,7 +14,6 @@ package com.housservice.housstock.model;
     public class Plannification {
         @Id
         private String id;
-        private String refMachine;
         private List<String> personnels;
         private String nomEtape;
         private Article ligneCommandeClient;
@@ -25,13 +24,20 @@ package com.housservice.housstock.model;
         private Boolean plan;
         private Boolean etat;
         private List<PlanEtapes> etapes;
+        private String ref;
+
+
+        private static int seq = 0;
 
 
         public Plannification() {
         }
+        public void incrementCmdId() {
+            ++seq;
+            ref = "OF_00"+seq;
+        }
 
-        public Plannification(String refMachine, List<String> personnels, String nomEtape, Article ligneCommandeClient, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, Boolean plan, Boolean etat, List<PlanEtapes> etapes) {
-            this.refMachine = refMachine;
+        public Plannification(List<String> personnels, String nomEtape, Article ligneCommandeClient, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, Boolean plan, Boolean etat, List<PlanEtapes> etapes, String ref, int seq) {
             this.personnels = personnels;
             this.nomEtape = nomEtape;
             this.ligneCommandeClient = ligneCommandeClient;
@@ -42,5 +48,7 @@ package com.housservice.housstock.model;
             this.plan = plan;
             this.etat = etat;
             this.etapes = etapes;
+            this.ref = ref;
+            this.seq = seq;
         }
     }

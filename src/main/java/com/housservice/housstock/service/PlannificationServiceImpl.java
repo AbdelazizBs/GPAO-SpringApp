@@ -88,11 +88,6 @@ public class PlannificationServiceImpl implements PlannificationService {
         Plannification plannification1 = plannificationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
      plannificationRepository.delete(plannification1);
-     if (plannification.getRefMachine()!=null){
-         Machine machine = machineRepository.findMachineByLibelle(plannification.getRefMachine());
-         machine.setEtat("Reserve");
-         machineRepository.save(machine);
-     }
      plannification.setEtat(true);
      plannificationRepository.save(plannification);
     }
@@ -121,10 +116,12 @@ public class PlannificationServiceImpl implements PlannificationService {
         if (etapeExists) {
             etapes.remove(existingEtapeToRemove);
         }
-
+        planEtapesDto.setRef(plannification1.getRef());
         // Add the updated etape
         PlanEtapes etape = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
+        etape.setRef(plannification1.getRef());
         etapes.add(etape);
+        etape.setQuantiteInitiale(plannification1.getQuantiteInitiale());
         plannification1.setEtapes(etapes);
         plannification1.setNomEtape(etape.getNomEtape());
         plannification1.setQuantiteInitiale(etape.getQuantiteInitiale());
@@ -140,9 +137,6 @@ public class PlannificationServiceImpl implements PlannificationService {
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
 
         plannification1.setNomEtape(plannification.getNomEtape());
-        if (plannification.getRefMachine()!=null){
-            plannification1.setRefMachine(plannification.getRefMachine());
-        }
         plannification1.setPersonnels(plannification.getPersonnels());
         plannificationRepository.save(plannification1);
     }
@@ -235,4 +229,6 @@ public class PlannificationServiceImpl implements PlannificationService {
         Plannification plannification = plannificationRepository.findById(id).get();
         plannificationRepository.delete(plannification);
     }
+
+
 }

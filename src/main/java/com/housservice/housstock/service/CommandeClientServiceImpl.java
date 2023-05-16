@@ -303,6 +303,8 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         plannification.setNomEtape(etape1[0]);
         plannification.setPlan(false);
         plannification.setEtat(false);
+        plannification.setQuantiteInitiale(article.getQuantite());
+        plannification.incrementCmdId();
         List<PlanEtapes> Etapes = new ArrayList<>();
         if (plannification.getEtapes()==null){
             plannification.setEtapes(Etapes);
