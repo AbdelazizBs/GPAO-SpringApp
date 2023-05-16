@@ -39,9 +39,7 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
 
     @Override
     public Optional<Machine> getMachineById(String id) {
-
             return machineRepository.findById(id);
-
     }
 
     @Override
@@ -50,8 +48,8 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
         return machines.stream()
                 .map(Machine::getLibelle)
                 .collect(Collectors.toList());
-
     }
+
     @Override
     public ResponseEntity<Map<String, Object>> getOfByRefMachine(int page, int size,String refMachine) {
         try {
@@ -60,7 +58,6 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
             Page<Plannification> pageTuts;
             pageTuts = plannificationRepository.findAll(paging);
             List<PlanEtapes> matchingPlanifications = new ArrayList<>();
-
             for (Plannification planification : plannifications) {
                 for (PlanEtapes etape : planification.getEtapes()) {
                     if (etape.getRefMachine().equals(refMachine)) {
@@ -87,14 +84,11 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
             response.put("totalPages", pageTuts.getTotalPages());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
-
     }
 
     @Override
     public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille) {
-
         try {
-
             List<PlannificationDto> articles;
             Pageable paging = PageRequest.of(page, size);
             Page<Plannification> pageTuts;
@@ -108,7 +102,6 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
             response.put("currentPage", pageTuts.getNumber());
             response.put("totalItems", pageTuts.getTotalElements());
             response.put("totalPages", pageTuts.getTotalPages());
-
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -122,8 +115,6 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
         if (etapes == null) {
             etapes = new ArrayList<>();
         }
-
-        // Check if the etape exists in the Plannification's etapes list
         boolean etapeExists = false;
         PlanEtapes existingEtapeToRemove = null;
         for (PlanEtapes existingEtape : etapes) {
@@ -133,13 +124,9 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
                 break;
             }
         }
-
-        // If the etape exists, remove it from the etapes list
         if (etapeExists) {
             etapes.remove(existingEtapeToRemove);
         }
-
-        // Add the updated etape
         PlanEtapes etape = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
         etapes.add(etape);
         plannification1.setEtapes(etapes);

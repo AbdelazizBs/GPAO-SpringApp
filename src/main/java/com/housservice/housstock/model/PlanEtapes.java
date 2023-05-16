@@ -14,10 +14,14 @@ import java.util.List;
 public class PlanEtapes {
     @Id
     private String id;
+    private String idOf;
+
     private String nomEtape;
     private String refMachine;
     private List<String> personnels;
     private Date datePrevu;
+    private Date dateReel;
+
     private Date heureDebutPrevue;
     private Date heureFinPrevue;
     private Date heureDebutReel;
@@ -33,11 +37,13 @@ public class PlanEtapes {
     public PlanEtapes() {
     }
 
-    public PlanEtapes(String nomEtape, String refMachine, List<String> personnels, Date datePrevu, Date heureDebutPrevue, Date heureFinPrevue, Date heureDebutReel, Date heureFinReel, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, String ref) {
+    public PlanEtapes(String idOf, String nomEtape, String refMachine, List<String> personnels, Date datePrevu, Date dateReel, Date heureDebutPrevue, Date heureFinPrevue, Date heureDebutReel, Date heureFinReel, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, String ref) {
+        this.idOf = idOf;
         this.nomEtape = nomEtape;
         this.refMachine = refMachine;
         this.personnels = personnels;
         this.datePrevu = datePrevu;
+        this.dateReel = dateReel;
         this.heureDebutPrevue = heureDebutPrevue;
         this.heureFinPrevue = heureFinPrevue;
         this.heureDebutReel = heureDebutReel;

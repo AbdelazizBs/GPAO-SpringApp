@@ -19,7 +19,12 @@ import java.util.List;
 public class PlanEtapesDto {
 
     private String id;
+
+
+    private String idOf;
+    private Date dateReel;
     private String nomEtape;
+
     private String refMachine;
 
     private List<String> personnels;
