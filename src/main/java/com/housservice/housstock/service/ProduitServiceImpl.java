@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class ProduitServiceImpl implements ProduitService{
+public class ProduitServiceImpl implements ProduitService {
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     private final TypeProduitRepository typeProduitRepository;
     private final UniteVenteRepoitory uniteVenteRepoitory;
@@ -30,8 +30,7 @@ public class ProduitServiceImpl implements ProduitService{
     private final PictureRepository pictureRepository;
 
 
-
-    public ProduitServiceImpl(MessageHttpErrorProperties messageHttpErrorProperties,PictureRepository pictureRepository, EtapeRepository etapeRepository,TypeProduitRepository typeProduitRepository, UniteVenteRepoitory uniteVenteRepoitory, ProduitRepository produitRepository) {
+    public ProduitServiceImpl(MessageHttpErrorProperties messageHttpErrorProperties, PictureRepository pictureRepository, EtapeRepository etapeRepository, TypeProduitRepository typeProduitRepository, UniteVenteRepoitory uniteVenteRepoitory, ProduitRepository produitRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.typeProduitRepository = typeProduitRepository;
         this.uniteVenteRepoitory = uniteVenteRepoitory;
@@ -41,40 +40,39 @@ public class ProduitServiceImpl implements ProduitService{
 
 
     }
+
     @Override
     public void addProduit(ProduitDto produitDto) {
-        try
-        {
+        try {
 
 
             if (produitRepository.existsProduitByDesignation(produitDto.getDesignation())) {
-                throw new IllegalArgumentException(	" cin " + produitDto.getDesignation() +  "  existe deja !!");
+                throw new IllegalArgumentException(" cin " + produitDto.getDesignation() + "  existe deja !!");
             }
             List<Picture> pictures1 = new ArrayList<>();
             produitDto.setPictures(pictures1);
             Produit produit = ProduitMapper.MAPPER.toProduit(produitDto);
             List<Picture> pictures2 = new ArrayList<>();
             produit.setPictures(pictures2);
+            produit.setMiseEnVeille(false);
+
             produitRepository.save(produit);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
+
     @Override
-    public void addEtape(String[] Etapes,String id) {
-        try
-        {
+    public void addEtape(String[] Etapes, String id) {
+        try {
             Produit produit = produitRepository.findById(id).get();
             produit.setEtapes(Etapes);
             produitRepository.save(produit);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
+
     @Override
     public void updateProduit(ProduitDto produitDto, String idProduit) throws ResourceNotFoundException {
         Produit produit = produitRepository.findById(idProduit)
@@ -83,8 +81,6 @@ public class ProduitServiceImpl implements ProduitService{
         produit.setDesignation(produitDto.getDesignation());
         produit.setRef(produitDto.getRef());
         produit.setDateCreation(produitDto.getDateCreation());
-
-
 
 
         produitRepository.save(produit);
@@ -98,12 +94,33 @@ public class ProduitServiceImpl implements ProduitService{
 
     }
     @Override
+    public ResponseEntity<Map<String, Object>> getAllProduitvielle(int page, int size) {
+        try {
+            List<ProduitDto> produits = new ArrayList<ProduitDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<Produit> pageTuts;
+            pageTuts = produitRepository.findProduitByMiseEnVeille(true,paging);
+            produits = pageTuts.getContent().stream().map(produit -> {
+                return ProduitMapper.MAPPER.toProduitDto(produit);
+            }).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("produits", produits);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+    @Override
     public ResponseEntity<Map<String, Object>> getAllProduit(int page, int size) {
         try {
             List<ProduitDto> produits = new ArrayList<ProduitDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<Produit> pageTuts;
-            pageTuts = produitRepository.findAll(paging);
+            pageTuts = produitRepository.findProduitByMiseEnVeille(false,paging);
             produits = pageTuts.getContent().stream().map(produit -> {
                 return ProduitMapper.MAPPER.toProduitDto(produit);
             }).collect(Collectors.toList());
@@ -147,21 +164,22 @@ public class ProduitServiceImpl implements ProduitService{
     public Produit getProduitByDesignation(String designation) throws ResourceNotFoundException {
         return produitRepository.findByDesignation(designation);
     }
+
     @Override
-    public List<Produit> getAllProduitByDesignation(String designation)   {
+    public List<Produit> getAllProduitByDesignation(String designation) {
         List<Produit> listes = produitRepository.findAllByDesignation(designation);
         return listes;
     }
+
     @Override
     public ResponseEntity<Map<String, Object>> onSortProduit(int page, int size, String field, String order) {
         try {
-            List<ProduitDto> produits ;
+            List<ProduitDto> produits;
             Pageable paging = PageRequest.of(page, size);
             Page<Produit> pageTuts;
-            if (order.equals("1")){
+            if (order.equals("1")) {
                 pageTuts = produitRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
-            }
-            else {
+            } else {
                 pageTuts = produitRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
             }
             produits = pageTuts.getContent().stream().map(produit -> {
@@ -179,8 +197,9 @@ public class ProduitServiceImpl implements ProduitService{
         }
 
     }
+
     @Override
-    public List<String> getTypeProduit()   {
+    public List<String> getTypeProduit() {
         List<TypeProduit> papiers = typeProduitRepository.findAll();
         return papiers.stream()
                 .map(TypeProduit::getNom)
@@ -188,7 +207,7 @@ public class ProduitServiceImpl implements ProduitService{
     }
 
     @Override
-    public List<String> getEtape()   {
+    public List<String> getEtape() {
         List<Etape> etapes = etapeRepository.findAll();
         return etapes.stream()
                 .map(Etape::getNomEtape)
@@ -196,12 +215,13 @@ public class ProduitServiceImpl implements ProduitService{
     }
 
     @Override
-    public String[] getEtapes(String id)   {
+    public String[] getEtapes(String id) {
         Optional<Produit> produit = produitRepository.findById(id);
         return produit.get().getEtapes();
     }
+
     @Override
-    public List<String> getUniteVente()   {
+    public List<String> getUniteVente() {
         List<UniteVente> unites = uniteVenteRepoitory.findAll();
         return unites.stream()
                 .map(UniteVente::getNom)
@@ -209,12 +229,12 @@ public class ProduitServiceImpl implements ProduitService{
     }
 
     @Override
-    public  ResponseEntity<Map<String, Object>> getAllProduitByType(String type, int page, int size)   {
+    public ResponseEntity<Map<String, Object>> getAllProduitByType(String type, int page, int size) {
         try {
             List<ProduitDto> listematieres = new ArrayList<ProduitDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<Produit> pageTuts;
-            pageTuts =  produitRepository.findAllByType(paging, type);
+            pageTuts = produitRepository.findAllByType(paging, type);
             listematieres = pageTuts.getContent().stream().map(listematiere -> ProduitMapper.MAPPER.toProduitDto(listematiere)).collect(Collectors.toList());
             Map<String, Object> response = new HashMap<>();
             response.put("listematieres", listematieres);
@@ -229,7 +249,7 @@ public class ProduitServiceImpl implements ProduitService{
 
 
     @Override
-    public void addphoto(MultipartFile[] images, String ref){
+    public void addphoto(MultipartFile[] images, String ref) {
         Produit produit = produitRepository.findProduitByRef(ref).get();
         List<Picture> pictures = new ArrayList<>();
         for (MultipartFile file : images) {
@@ -249,6 +269,7 @@ public class ProduitServiceImpl implements ProduitService{
         produitRepository.save(produit);
 
     }
+
     @Override
     public void removePictures(String idP) throws ResourceNotFoundException {
         Produit produit = produitRepository.findById(idP)
@@ -259,14 +280,29 @@ public class ProduitServiceImpl implements ProduitService{
         produit.getPictures().removeAll(produit.getPictures());
         produitRepository.save(produit);
     }
+
     @Override
     public void removePicture(String idPic) throws ResourceNotFoundException {
-        Picture picture = pictureRepository.findById(idPic)
+        Produit produit = produitRepository.findProduitByPicturesId(idPic)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPic)));
-        Produit produit = produitRepository.findProduitByPictures(picture)
-                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), picture)));
-        pictureRepository.deleteById(idPic);
-        produit.getPictures().removeIf(picture1 -> picture1.equals(picture));
+
+        produit.getPictures().removeIf(picture1 -> picture1.getId().equals(idPic));
+        produitRepository.save(produit);
+    }
+
+    @Override
+    public void miseEnVeille(String idArticle) throws ResourceNotFoundException {
+        Produit produit = produitRepository.findById(idArticle)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idArticle)));
+        produit.setMiseEnVeille(true);
+        produitRepository.save(produit);
+    }
+    @Override
+    public void Restaurer(String id) throws ResourceNotFoundException {
+        System.out.println(id);
+        Produit produit = produitRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+        produit.setMiseEnVeille(false);
         produitRepository.save(produit);
     }
 }

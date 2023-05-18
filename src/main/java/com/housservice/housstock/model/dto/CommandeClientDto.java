@@ -16,6 +16,9 @@ public class CommandeClientDto {
     private String dateCommande ;
     private String commentaire;
     private boolean miseEnVeille;
+    private String etat;
+    private String type;
+    private boolean terminer;
 
     @Size(min = 2, message = "fournisseur raisonSocial(intitule) should have at least 2 characters")
     @NotEmpty(message = "fournisseur raisonSocial(intitule)  should not empty")

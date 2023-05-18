@@ -22,23 +22,21 @@ public class CommandeClient {
     private String numBcd;
     private String client;
     private List<Article> article;
+    private String etat;
+    private String type;
+    private boolean terminer;
     private boolean miseEnVeille;
 
-    public CommandeClient(String id, String dateCommande, String commentaire, String numBcd, String client, List<Article> article,boolean miseEnVeille) {
-        this.id = id;
+
+    public CommandeClient(String dateCommande, String commentaire, String numBcd, String client, List<Article> article, String etat, String type, boolean terminer, boolean miseEnVeille) {
         this.dateCommande = dateCommande;
         this.commentaire = commentaire;
         this.numBcd = numBcd;
         this.client = client;
         this.article = article;
-        this.miseEnVeille=miseEnVeille;
-    }
-
-    public CommandeClient(String dateCommande, String commentaire, String numBcd, String client, boolean miseEnVeille) {
-        this.dateCommande = dateCommande;
-        this.commentaire = commentaire;
-        this.numBcd = numBcd;
-        this.client = client;
+        this.etat = etat;
+        this.type = type;
+        this.terminer = terminer;
         this.miseEnVeille = miseEnVeille;
     }
 

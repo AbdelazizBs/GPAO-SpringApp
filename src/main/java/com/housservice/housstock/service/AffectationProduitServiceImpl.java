@@ -120,12 +120,18 @@ public class AffectationProduitServiceImpl implements AffectationProduitService{
     @Override
     public void addAffectationProduit(AffectationProduitDto affectationProduitDto) {
         List<PrixVente> prixAchat = new ArrayList<>();
-        if (affectationProduitDto.getPrixVente() == null) {
+        PrixVente prixVente = new PrixVente();
+        prixVente.setPrix(affectationProduitDto.getPrix());
+        prixVente.setMinimunVente(affectationProduitDto.getMinimunVente());
+        prixVente.setUniteVente(affectationProduitDto.getUniteVente());
+        prixVente.setDateEffet(affectationProduitDto.getDateEffet());
+        prixVente.setDevise(affectationProduitDto.getDevise());
+        prixAchat.add(prixVente);
             affectationProduitDto.setPrixVente(prixAchat);
             AffectationProduit affectationProduit = AffectationProduitMapper.MAPPER.toAffectationProduit(affectationProduitDto);
             affectationProduitRepository.save(affectationProduit);
 
-        }
+
     }
     @Override
     public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size) {

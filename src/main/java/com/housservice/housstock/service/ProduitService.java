@@ -1,6 +1,7 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.Produit;
 import com.housservice.housstock.model.dto.ProduitDto;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,9 @@ public interface ProduitService {
     ResponseEntity<Map<String, Object>> getAllProduitByType(String type, int page, int size);
     void addphoto(MultipartFile[] images, String ref);
     void removePictures(String idP) throws ResourceNotFoundException;
-
+    void miseEnVeille(String idArticle ) throws ResourceNotFoundException;
+    ResponseEntity<Map<String, Object>> getAllProduitvielle(int page, int size) ;
     void removePicture(String idPicture) throws ResourceNotFoundException;
-}
+     void Restaurer(String id) throws ResourceNotFoundException ;
+
+    }

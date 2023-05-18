@@ -81,16 +81,17 @@ public class CompteServiceImpl implements CompteService{
     @Override
     public void add(CompteDto compteDto) throws ResourceNotFoundException {
         try {
+            if (compteRepository.existsByEmail(compteDto.getEmail())) {
+                throw new IllegalArgumentException("Ce nom d'utilisateur existe déjà.");
+            }
             compteDto.setMiseEnVeille(false);
             compteDto.setPassword(passwordEncoder.encode(compteDto.getPassword()));
             Compte compte = CompteMapper.MAPPER.toCompte(compteDto);
             compteRepository.save(compte);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
-
     @Override
     public void Restaurer(String id) throws ResourceNotFoundException {
         System.out.println(id);
@@ -101,15 +102,23 @@ public class CompteServiceImpl implements CompteService{
     }
     @Override
     public void updateCompte(CompteDto compteDto,String id) throws ResourceNotFoundException {
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         Compte compte = compteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
         if(compteDto.getPassword()!=""){
             compteDto.setPassword(passwordEncoder.encode(compteDto.getPassword()));
             compte.setPassword(compteDto.getPassword());
         }
-        compte.setEmail(compteDto.getEmail());
-        compte.setRole(compteDto.getRole());
+        if (compteDto.getEmail()==""){
+            throw new IllegalArgumentException("Veuillez renseigner les champs obligatoires.");
+
+        }
+        if (compteRepository.existsByEmail(compteDto.getEmail())) {
+            if(!compte.getEmail().equals(compteDto.getEmail())){
+                throw new IllegalArgumentException("Ce nom d'utilisateur existe déjà.");
+            }
+        }
+            compte.setEmail(compteDto.getEmail());
+            compte.setRole(compteDto.getRole());
         compteRepository.save(compte);
     }
     @Override

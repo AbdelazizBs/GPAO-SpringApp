@@ -3,6 +3,7 @@ package com.housservice.housstock.controller.produit;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Produit;
+import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.model.dto.ProduitDto;
 import com.housservice.housstock.repository.ProduitRepository;
 import com.housservice.housstock.service.ProduitService;
@@ -74,11 +75,17 @@ public class ProduitController {
     @ApiOperation(value = "service to delete one Produit by Id.")
     public Map<String, Boolean> deleteProduit(
             @ApiParam(name = "id", value = "id of produit", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String utilisateurId) {
-
         produitService.deleteProduit(utilisateurId);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+    @PutMapping("/restaurer/{id}")
+    public ResponseEntity <String> restaurer(
+            @ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+            throws ResourceNotFoundException {
+        produitService.Restaurer(id);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 
     @GetMapping("/getAllProduit")
@@ -86,6 +93,13 @@ public class ProduitController {
     public ResponseEntity<Map<String, Object>> getAllPersonnel(@RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "3") int size){
         return produitService.getAllProduit(page,size);
+
+    }
+    @GetMapping("/getAllProduitEnVeille")
+    @ApiOperation(value = "service to get get All matiere")
+    public ResponseEntity<Map<String, Object>> getAllProduitEnVeille(@RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "3") int size){
+        return produitService.getAllProduitvielle(page,size);
 
     }
     @GetMapping("/getTypeProduit")
@@ -133,6 +147,7 @@ public class ProduitController {
             @ApiParam(name = "idPic", value="id of picture", required = true)
             @PathVariable(value = "idPic", required = true) @NotEmpty(message = "{http.error.0001}") String idPic)
             throws ResourceNotFoundException {
+        System.out.println(idPic);
         produitService.removePicture(idPic);
         Map < String, Boolean > response = new HashMap< >();
         response.put("deleted", Boolean.TRUE);
@@ -147,5 +162,15 @@ public class ProduitController {
         produitService.addphoto(images,ref);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
+    }
+    @PutMapping("/miseEnVeille/{idArticle}")
+    public ResponseEntity <String> miseEnVeille(
+            @ApiParam(name = "idArticle", value="id of article", required = true)
+            @PathVariable(value = "idArticle", required = true) @NotEmpty(message = "{http.error.0001}")  String idArticle,
+            @RequestBody(required = true) MachineDto machineDto) throws ResourceNotFoundException {
+
+        produitService.miseEnVeille(idArticle);
+
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 }

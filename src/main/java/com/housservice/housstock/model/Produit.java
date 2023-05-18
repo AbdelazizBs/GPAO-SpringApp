@@ -20,13 +20,16 @@ public class Produit {
     private Date dateCreation;
     private String[] Etapes;
     private List<Picture> pictures;
+    private boolean miseEnVeille;
 
-    public Produit(String ref, String type, String designation, Date dateCreation, List<Picture> pictures) {
+
+    public Produit(String ref, String type, String designation, Date dateCreation, List<Picture> pictures, boolean miseEnVeille) {
         this.ref = ref;
         this.type = type;
         this.designation = designation;
         this.dateCreation = dateCreation;
         this.pictures = pictures;
+        this.miseEnVeille = miseEnVeille;
     }
 
     public Produit() {

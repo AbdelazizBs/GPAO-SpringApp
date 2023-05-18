@@ -190,6 +190,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         articles.add(article1);
         articles.addAll(commandeClient.getArticle());
         commandeClient.setArticle(articles);
+        commandeClient.setTerminer(true);
         commandeClientRepository.save(commandeClient);
 
     }
@@ -222,6 +223,9 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         List<Article> articleList = commandeClient.getArticle();
         articleList.removeIf(c -> c.equals(article));
         commandeClient.setArticle(articleList);
+        if (commandeClient.getArticle().size()==0){
+            commandeClient.setTerminer(false);
+        }
         commandeClientRepository.save(commandeClient);
         articleRepository.deleteById(idArticle);
     }
@@ -232,6 +236,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         CommandeClient commande = commandeClientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
         commande.setMiseEnVeille(true);
+        commande.setEtat("en attendant");
         commandeClientRepository.save(commande);
     }
 

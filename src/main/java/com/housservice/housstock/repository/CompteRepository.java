@@ -20,4 +20,6 @@ public interface CompteRepository extends MongoRepository<Compte, String> {
     Page<Compte> findMachineByMiseEnVeille(boolean b, Pageable paging);
 
     Optional<Compte> findCompteByEmail(String username);
+
+    boolean existsByEmail(String email);
 }

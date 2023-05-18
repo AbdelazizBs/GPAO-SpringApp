@@ -13,4 +13,6 @@ public class PrixVenteDto {
     private float prix;
     private Date dateEffet;
     private String devise;
+    private int minimunVente;
+    private String uniteVente;
 }

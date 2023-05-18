@@ -20,5 +20,6 @@ public class ProduitDto {
     private Date dateCreation;
     private String[] Etapes;
     private List<Picture> pictures;
+    private boolean miseEnVeille;
 
 }

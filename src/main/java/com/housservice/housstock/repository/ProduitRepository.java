@@ -23,7 +23,10 @@ public interface ProduitRepository extends MongoRepository<Produit, String> {
 
     List<Produit> findAllByDesignation(String designation);
 
-    Optional<Produit> findProduitByPictures(Picture picture);
 
     Optional<Produit> findProduitByRef(String ref);
+
+    Optional<Produit> findProduitByPicturesId(String idPic);
+
+    Page<Produit> findProduitByMiseEnVeille(boolean b, Pageable paging);
 }
