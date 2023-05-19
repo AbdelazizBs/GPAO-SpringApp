@@ -33,16 +33,19 @@ public class CommandeServiceImpl implements CommandeService{
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     private final ArticleRepository articleRepository;
     private final CommandeSuiviRepository commandeSuiviRepository;
+    private final AffectationRepository affectationRepository;
 
     private final MatiereRepository matiereRepository;
 
-    public CommandeServiceImpl(CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, MessageHttpErrorProperties messageHttpErrorProperties, ArticleRepository articleRepository, CommandeSuiviRepository commandeSuiviRepository, MatiereRepository matiereRepository) {
+    public CommandeServiceImpl(AffectationRepository affectationRepository,CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, MessageHttpErrorProperties messageHttpErrorProperties, ArticleRepository articleRepository, CommandeSuiviRepository commandeSuiviRepository, MatiereRepository matiereRepository) {
         this.commandeRepository = commandeRepository;
         this.fournisseurRepository = fournisseurRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.articleRepository = articleRepository;
         this.commandeSuiviRepository = commandeSuiviRepository;
         this.matiereRepository = matiereRepository;
+        this.affectationRepository = affectationRepository;
+
     }
 
     @Override
@@ -96,7 +99,7 @@ public class CommandeServiceImpl implements CommandeService{
     @Override
     public void createNewCommande(CommandeDto commandeDto) throws ResourceNotFoundException {
         commandeDto.setMiseEnVeille(false);
-
+        commandeDto.setTerminer(false);
         List<Article> articles = new ArrayList<>();
         if (commandeDto.getArticle()==null){
             commandeDto.setArticle(articles);
@@ -223,6 +226,7 @@ public class CommandeServiceImpl implements CommandeService{
         articles.add(article1);
         articles.addAll(commande.getArticle());
         commande.setArticle(articles);
+        commande.setTerminer(true);
         commandeRepository.save(commande);
     }
 
@@ -255,8 +259,21 @@ public class CommandeServiceImpl implements CommandeService{
         List<Article> articleList = commande.getArticle();
         articleList.removeIf(c -> c.equals(article));
         commande.setArticle(articleList);
+        if (commande.getArticle().size()==0){
+            commande.setTerminer(false);
+        }
         commandeRepository.save(commande);
         articleRepository.deleteById(idArticle);
+    }
+
+    public List<String> getAllArticle(String nomClient, String type) {
+        List<Affectation> matieres = affectationRepository.findAffectationBylistFournisseur(nomClient);
+        System.out.println(matieres);
+
+        return matieres.stream()
+                .filter(affectation -> affectation.getType().equals(type))
+                .map(Affectation::getDestination)
+                .collect(Collectors.toList());
     }
     @Override
     public List<String> getAllMatiere() {

@@ -188,6 +188,10 @@ public class CommandeController {
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
-
+    @GetMapping("/getAllArticle")
+    @ApiOperation(value = "service to get one Reference fournisseur")
+    public List<String> getAllArticle(@RequestParam String nomClient,@RequestParam String type) {
+        return commandeService.getAllArticle(nomClient,type);
+    }
 
 }

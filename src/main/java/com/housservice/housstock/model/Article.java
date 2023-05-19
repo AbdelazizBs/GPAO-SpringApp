@@ -31,11 +31,23 @@ public class Article {
     private String commentaire;
     private String prixUnitaire;
     private int quantite;
+    private String type;
+
     private int prix;
 
     public Article() {
     }
 
+    public Article(String designationMatiere, Produit produit, Date dateLivraison, String commentaire, String prixUnitaire, int quantite, String type, int prix) {
+        this.designationMatiere = designationMatiere;
+        this.produit = produit;
+        this.dateLivraison = dateLivraison;
+        this.commentaire = commentaire;
+        this.prixUnitaire = prixUnitaire;
+        this.quantite = quantite;
+        this.type = type;
+        this.prix = prix;
+    }
 
     public Article(String designationMatiere, Produit produit, Date dateLivraison, String commentaire, String prixUnitaire, int quantite, int prix) {
         this.designationMatiere = designationMatiere;

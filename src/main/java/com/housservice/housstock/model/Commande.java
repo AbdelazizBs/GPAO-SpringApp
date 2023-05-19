@@ -25,15 +25,21 @@ public class Commande {
     private boolean miseEnVeille;
     private String commentaire;
     private List<Article> article;
+    private String etat;
+    private String type;
+    private boolean terminer;
 
 
-    public Commande(String fournisseur, Date dateCommande, String numBcd, boolean miseEnVeille,  String commentaire, List<Article> article) {
+    public Commande(String fournisseur, Date dateCommande, String numBcd, boolean miseEnVeille, String commentaire, List<Article> article, String etat, String type, boolean terminer) {
         this.fournisseur = fournisseur;
         this.dateCommande = dateCommande;
         this.numBcd = numBcd;
         this.miseEnVeille = miseEnVeille;
         this.commentaire = commentaire;
         this.article = article;
+        this.etat = etat;
+        this.type = type;
+        this.terminer = terminer;
     }
 
     public Commande(){}

@@ -24,6 +24,7 @@ public class AffectationDto {
 	private String unite;
 	private String uniteAchat;
 	private String destination;
+	private String type;
 
 	private String idmatiere;
 	private List<PrixAchat> prixAchat;

@@ -32,21 +32,23 @@ public class Affectation {
     private String listFournisseur;
     private String idmatiere;
     private String destination;
+    private String type;
 
     private List<PrixAchat> prixAchat;
 
 
-    public Affectation(Date dateeffect,String destination,String uniteAchat, String ref, String devises, int prix, int minimumachat, String unite, String listFournisseur, String idmatiere, List<PrixAchat> prixAchat) {
+    public Affectation(Date dateeffect, String ref, String devises, int prix, int minimumachat, String unite, String uniteAchat, String listFournisseur, String idmatiere, String destination, String type, List<PrixAchat> prixAchat) {
         this.dateeffect = dateeffect;
         this.ref = ref;
         this.devises = devises;
         this.prix = prix;
         this.minimumachat = minimumachat;
-        this.uniteAchat = uniteAchat;
-        this.destination=destination;
         this.unite = unite;
+        this.uniteAchat = uniteAchat;
         this.listFournisseur = listFournisseur;
         this.idmatiere = idmatiere;
+        this.destination = destination;
+        this.type = type;
         this.prixAchat = prixAchat;
     }
 

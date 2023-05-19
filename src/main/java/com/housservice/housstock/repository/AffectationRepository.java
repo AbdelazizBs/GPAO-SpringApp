@@ -1,6 +1,7 @@
 package com.housservice.housstock.repository;
 
 import com.housservice.housstock.model.Affectation;
+import com.housservice.housstock.model.AffectationProduit;
 import com.housservice.housstock.model.PrixAchat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,7 @@ public interface AffectationRepository extends MongoRepository<Affectation, Stri
     Page<Affectation> findAffectationByListFournisseur(String id, Pageable paging);
 
     List<Affectation> findByPrixAchat(PrixAchat prixAchat);
+
+
+    List<Affectation> findAffectationBylistFournisseur(String nomClient);
 }

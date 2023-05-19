@@ -37,5 +37,5 @@ public interface CommandeService {
     void miseEnVeille(String id, CommandeSuiviDto commandeSuiviDto) throws ResourceNotFoundException;
     ResponseEntity<Map<String, Object>> getCommandeNotActive(int page, int size);
     ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
-
+     List<String> getAllArticle(String nomClient,String type);
 }

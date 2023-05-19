@@ -28,6 +28,9 @@ public class CommandeDto {
     private String commentaire;
 
     private List<Article> article;
+    private String etat;
+    private String type;
+    private boolean terminer;
 
 
 }

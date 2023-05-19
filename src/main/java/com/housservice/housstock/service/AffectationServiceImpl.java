@@ -120,6 +120,7 @@ public class AffectationServiceImpl implements AffectationService {
     @Override
     public void createNewAffectation(AffectationDto affectationDto) throws ResourceNotFoundException {
         ListeMatiere matiere = matiereRepository.findById(affectationDto.getIdmatiere()).get();
+        affectationDto.setType(matiere.getType());
         List<PrixAchat> prixAchat = new ArrayList<>();
         if (affectationDto.getPrixAchat()==null) {
             affectationDto.setPrixAchat(prixAchat);

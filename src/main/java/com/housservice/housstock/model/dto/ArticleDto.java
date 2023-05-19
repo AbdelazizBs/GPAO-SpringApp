@@ -21,6 +21,7 @@ public class ArticleDto {
     private String designationMatiere;
 
     private Produit produit;
+    private String type;
 
     @NotNull(message = " date embauche should not empty")
     private Date dateLivraison;

@@ -6,4 +6,4 @@
  * @author houssem.khadraoui@gmail.com
  *
  */
-package com.housservice.housstock.controller;
+package com.housservice.housstock.controller.planifierMachine;
