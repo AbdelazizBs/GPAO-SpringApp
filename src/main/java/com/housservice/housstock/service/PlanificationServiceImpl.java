@@ -70,7 +70,7 @@ public class PlanificationServiceImpl implements PlanificationService {
             }).collect(Collectors.toList());
         PlanificationOf planificationOf = PlanificationMappper.MAPPER.toPlanificationOf(planificationOfDTO);
         planificationOf.setPersonnels(personnels);
-            planificationOf.setMachines(machines);
+        planificationOf.setMachines(machines);
         planificationRepository.save(planificationOf);
     }
 

@@ -89,9 +89,9 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
     private static boolean isValidAll(List<PlanificationOf> planificationOfs) {
         boolean isValid = false;
             for (PlanificationOf planificationOf : planificationOfs) {
-                isValid = planificationOf.getDateLancementReel() != null
-                        && planificationOf.getHeureDebutReel() != null
-                        && planificationOf.getHeureFinReel() != null
+                isValid = planificationOf.getDateLancementPrevue() != null
+                        && planificationOf.getHeureDebutPrevue() != null
+                        && planificationOf.getHeureFinPrevue() != null
                         && planificationOf.getQuantiteInitiale() != 0;
             }
             return isValid;
@@ -157,16 +157,11 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idLc)));
         List<PlanificationOf> planificationOfs = planificationRepository.findAll().stream()
                 .filter(planificationOf -> planificationOf.getLigneCommandeClient().getId().equals(idLc)).collect(Collectors.toList());
-        planificationOfs.forEach(
-                planificationOf -> {
-                    planificationOf.setDateLancementReel(new Date());
-                    planificationOf.setHeureDebutReel(new Date());
-                    planificationOf.setHeureFinReel(new Date());
-                    planificationOf.setLanced(true);
-                    planificationRepository.save(planificationOf);
-                }
-        );
         if (isValidAll(planificationOfs)) {
+            planificationOfs.forEach(planificationOf -> {
+                planificationOf.setLanced(true);
+                planificationRepository.save(planificationOf);
+            });
             ligneCommandeClient.setLanced(true);
             ligneCommandeClientRepository.save(ligneCommandeClient);
         }else {

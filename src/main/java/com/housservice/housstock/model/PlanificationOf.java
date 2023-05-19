@@ -37,7 +37,7 @@ public class PlanificationOf {
     private int qteConforme;
     private int qteNonConforme;
 
-    private String commentaire;
+    private String comment;
     private boolean lanced;
 
     public PlanificationOf() {

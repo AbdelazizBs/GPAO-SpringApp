@@ -50,7 +50,7 @@ public class PlanificationOfDTO {
 
     private Date heureDebutPrevue;
     private List<String> libelleMachine;
-    private String commentaire;
+    private String comment;
     private boolean lanced;
 
 
