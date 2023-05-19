@@ -73,16 +73,7 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
             response.put("totalPages", pageTuts.getTotalPages());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            Pageable paging = PageRequest.of(page, size);
-            Page<Plannification> pageTuts;
-            pageTuts = plannificationRepository.findAll(paging);
-            List<PlanEtapes> matchingPlanifications = new ArrayList<>();
-            Map<String, Object> response = new HashMap<>();
-            response.put("matchingPlanifications", matchingPlanifications);
-            response.put("currentPage", pageTuts.getNumber());
-            response.put("totalItems", pageTuts.getTotalElements());
-            response.put("totalPages", pageTuts.getTotalPages());
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

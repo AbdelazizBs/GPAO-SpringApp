@@ -128,7 +128,7 @@ public class CompteServiceImpl implements CompteService{
     @Override
     public Optional<Personnel> getPersonnelById(String username){
         Compte compte= compteRepository.findCompteByEmail(username).get();
-        return personnelRepository.findById(compte.getIdPersonnel());
+        return personnelRepository.findByFullName(compte.getIdPersonnel());
     }
     @Override
     public void deleteCompte(Compte compte) {

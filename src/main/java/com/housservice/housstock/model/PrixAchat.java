@@ -16,14 +16,17 @@ public class PrixAchat {
     private int prix;
     private Date dateEffet;
     private String devise;
+    private int minimumachat;
+    private String uniteAchat;
 
-
-
-    public PrixAchat(int prix, Date dateEffet, String devise) {
+    public PrixAchat(int prix, Date dateEffet, String devise, int minimumachat, String uniteAchat) {
         this.prix = prix;
         this.dateEffet = dateEffet;
         this.devise = devise;
+        this.minimumachat = minimumachat;
+        this.uniteAchat = uniteAchat;
     }
+
     public PrixAchat() {
     }
 }

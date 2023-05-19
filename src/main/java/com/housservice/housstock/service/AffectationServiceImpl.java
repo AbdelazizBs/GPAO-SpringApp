@@ -121,13 +121,19 @@ public class AffectationServiceImpl implements AffectationService {
     public void createNewAffectation(AffectationDto affectationDto) throws ResourceNotFoundException {
         ListeMatiere matiere = matiereRepository.findById(affectationDto.getIdmatiere()).get();
         affectationDto.setType(matiere.getType());
-        List<PrixAchat> prixAchat = new ArrayList<>();
-        if (affectationDto.getPrixAchat()==null) {
-            affectationDto.setPrixAchat(prixAchat);
-            Affectation affectation = AffectationMapper.MAPPER.toAffectation(affectationDto);
-            affectation.setUnite(affectationDto.getUnite());
-            affectationRepository.save(affectation);
-        }
+        List<PrixAchat> prixAchats = new ArrayList<>();
+        PrixAchat prixAchat = new PrixAchat();
+        prixAchat.setPrix(affectationDto.getPrix());
+        prixAchat.setMinimumachat(affectationDto.getMinimumachat());
+        prixAchat.setUniteAchat(affectationDto.getUnite());
+        prixAchat.setDateEffet(affectationDto.getDateeffect());
+        prixAchat.setDevise(affectationDto.getDevises());
+        prixAchats.add(prixAchat);
+        affectationDto.setPrixAchat(prixAchats);
+        Affectation affectation = AffectationMapper.MAPPER.toAffectation(affectationDto);
+        affectation.setUnite(affectationDto.getUnite());
+        affectationRepository.save(affectation);
+
     }
 
     @Override
@@ -227,6 +233,10 @@ public class AffectationServiceImpl implements AffectationService {
         prixAchatRepository.save(prixAchat1);
         prixAchats.add(prixAchat1);
         prixAchats.addAll(affectation.getPrixAchat());
+        affectation.setPrix(prixAchat1.getPrix());
+        affectation.setUniteAchat(prixAchat1.getUniteAchat());
+        affectation.setMinimumachat(prixAchat1.getMinimumachat());
+        affectation.setDevises(prixAchat1.getDevise());
         affectation.setPrixAchat(prixAchats);
         affectationRepository.save(affectation);
     }
