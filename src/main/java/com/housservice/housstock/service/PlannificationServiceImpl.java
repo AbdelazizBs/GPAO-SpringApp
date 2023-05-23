@@ -28,16 +28,19 @@ public class PlannificationServiceImpl implements PlannificationService {
     private final PlannificationRepository plannificationRepository;
     private final PersonnelRepository personnelRepository;
     private final EtapeRepository etapeRepository;
+    private final CommandeClientRepository commandeClientRepository;
+
     private final MachineRepository machineRepository;
 
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     @Autowired
-    public PlannificationServiceImpl(MachineRepository machineRepository,EtapeRepository etapeRepository,PersonnelRepository personnelRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository) {
+    public PlannificationServiceImpl(CommandeClientRepository commandeClientRepository,MachineRepository machineRepository,EtapeRepository etapeRepository,PersonnelRepository personnelRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.plannificationRepository=plannificationRepository;
         this.personnelRepository=personnelRepository;
         this.etapeRepository=etapeRepository;
         this.machineRepository=machineRepository;
+        this.commandeClientRepository=commandeClientRepository;
 
     }
     @Override
@@ -66,6 +69,7 @@ public class PlannificationServiceImpl implements PlannificationService {
     public ResponseEntity<Map<String, Object>> getAllArticleLance(int page, int size) {
         try {
             calcul();
+
             List<PlannificationDto> articles = new ArrayList<PlannificationDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<Plannification> pageTuts;
@@ -98,6 +102,16 @@ public class PlannificationServiceImpl implements PlannificationService {
 
 
                 j.setProgress( (notready * 100) / total);
+                if(j.getProgress()!=0){
+                    CommandeClient commandeClient = commandeClientRepository.findById(j.getIdComm()).get();
+                    commandeClient.setEtat("en production");
+                    commandeClientRepository.save(commandeClient);
+                }
+                if(j.getProgress()==100){
+                    CommandeClient commandeClient = commandeClientRepository.findById(j.getIdComm()).get();
+                    commandeClient.setEtat("Terminé");
+                    commandeClientRepository.save(commandeClient);
+                }
                 plannificationRepository.save(j);
             }
         }
@@ -116,6 +130,9 @@ public class PlannificationServiceImpl implements PlannificationService {
         Plannification plannification1 = plannificationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
         List<PlanEtapes> etapes = plannification1.getEtapes();
+        CommandeClient commandeClient = commandeClientRepository.findById(plannification1.getIdComm()).get();
+        commandeClient.setEtat("Plannifier");
+        commandeClientRepository.save(commandeClient);
         if (etapes == null) {
             etapes = new ArrayList<>();
         }
@@ -239,6 +256,9 @@ public class PlannificationServiceImpl implements PlannificationService {
 
     public void Terminer(String id) {
         Plannification plannification = plannificationRepository.findById(id).get();
+        CommandeClient commandeClient = commandeClientRepository.findById(plannification.getIdComm()).get();
+        commandeClient.setEtat("en production");
+        commandeClientRepository.save(commandeClient);
         plannification.setPlan(true);
         plannificationRepository.save(plannification);
     }

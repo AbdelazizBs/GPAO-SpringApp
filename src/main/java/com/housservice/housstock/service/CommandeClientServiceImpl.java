@@ -302,7 +302,11 @@ public class CommandeClientServiceImpl implements CommandeClientService{
     }
     @Override
     public void addOF(Article article) throws ResourceNotFoundException {
+        CommandeClient commandeClient = commandeClientRepository.findCommandeClientByArticle(article);
         Plannification plannification = new Plannification();
+        if (commandeClient!=null){
+            plannification.setIdComm(commandeClient.getId());
+        }
         plannification.setLigneCommandeClient(article);
         String[] etape1=article.getProduit().getEtapes();
         plannification.setNomEtape(etape1[0]);

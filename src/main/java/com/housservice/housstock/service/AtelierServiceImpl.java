@@ -16,6 +16,7 @@ import com.housservice.housstock.model.dto.PlanEtapesDto;
 import com.housservice.housstock.model.dto.PlannificationDto;
 import com.housservice.housstock.repository.MachineRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
+import com.housservice.housstock.repository.PlanEtapesRepository;
 import com.housservice.housstock.repository.PlannificationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,14 +36,17 @@ public class AtelierServiceImpl implements AtelierService{
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     private final PlannificationRepository plannificationRepository;
     private final MachineRepository machineRepository;
+
+    private final PlanEtapesRepository planEtapesRepository;
     private final PersonnelRepository personnelRepository;
 
 
-    public AtelierServiceImpl(PersonnelRepository personnelRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository, MachineRepository machineRepository) {
+    public AtelierServiceImpl( PlanEtapesRepository planEtapesRepository,PersonnelRepository personnelRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository, MachineRepository machineRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.plannificationRepository = plannificationRepository;
         this.machineRepository = machineRepository;
         this.personnelRepository = personnelRepository;
+        this.planEtapesRepository = planEtapesRepository;
 
     }
 
@@ -153,6 +157,7 @@ public class AtelierServiceImpl implements AtelierService{
         }
         planEtapesDto.setTerminer(true);
         PlanEtapes etape = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
+        planEtapesRepository.save(etape);
         etapes.add(etape);
         plannification1.setEtapes(etapes);
         plannificationRepository.save(plannification1);

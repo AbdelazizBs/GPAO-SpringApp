@@ -31,6 +31,7 @@ public class PlannificationDto {
     private String ref;
 
     private int progress;
+    private String idComm;
 
     private  int seq = 0;
 }
