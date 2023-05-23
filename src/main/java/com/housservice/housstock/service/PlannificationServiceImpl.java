@@ -43,6 +43,7 @@ public class PlannificationServiceImpl implements PlannificationService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllArticle(int page, int size) {
         try {
+            calcul();
             List<PlannificationDto> articles = new ArrayList<PlannificationDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<Plannification> pageTuts;
@@ -64,6 +65,7 @@ public class PlannificationServiceImpl implements PlannificationService {
     @Override
     public ResponseEntity<Map<String, Object>> getAllArticleLance(int page, int size) {
         try {
+            calcul();
             List<PlannificationDto> articles = new ArrayList<PlannificationDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<Plannification> pageTuts;
@@ -82,7 +84,24 @@ public class PlannificationServiceImpl implements PlannificationService {
         }
 
     }
+    @Override
+    public void calcul() throws ResourceNotFoundException {
+        List<Plannification> plannification1 = plannificationRepository.findAll();
+        for(Plannification j :plannification1) {
+            int total = 0, notready = 0;
+            if (!j.getEtapes().isEmpty()) {
+                for (PlanEtapes i : j.getEtapes()) {
+                    total=total+1;
+                    if (i.getTerminer() == true)
+                        notready++;
+                }
 
+
+                j.setProgress( (notready * 100) / total);
+                plannificationRepository.save(j);
+            }
+        }
+    }
     @Override
     public void updatePlanification(String id, Plannification plannification) throws ResourceNotFoundException {
         Plannification plannification1 = plannificationRepository.findById(id)
@@ -117,6 +136,8 @@ public class PlannificationServiceImpl implements PlannificationService {
             etapes.remove(existingEtapeToRemove);
         }
         planEtapesDto.setRef(plannification1.getRef());
+        planEtapesDto.setEtat(false);
+        planEtapesDto.setTerminer(false);
         // Add the updated etape
         PlanEtapes etape = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
         etape.setRef(plannification1.getRef());

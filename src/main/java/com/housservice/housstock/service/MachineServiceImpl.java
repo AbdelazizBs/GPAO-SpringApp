@@ -264,8 +264,8 @@ public class MachineServiceImpl implements MachineService
         machines.setEtat("Disponible");
         machineRepository.save(machines);
     }
-    public List<String> getAllMachineDisponible(){
-        List<Machine> machine= machineRepository.findMachineByEtat("Disponible");
+    public List<String> getAllMachineDisponible(String etape){
+        List<Machine> machine= machineRepository.findMachineByType(etape);
         return machine.stream()
                 .map(Machine::getLibelle)
                 .collect(Collectors.toList());

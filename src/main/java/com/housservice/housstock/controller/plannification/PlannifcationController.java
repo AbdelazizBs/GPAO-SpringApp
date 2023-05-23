@@ -69,9 +69,10 @@ public class PlannifcationController {
         return plannificationService.search(textToFind, page, size,enVeille);
 
     }
-    @GetMapping("/getAllMachine")
-    public List<String> getAllMachine() throws ResourceNotFoundException {
-        return machineService.getAllMachineDisponible();}
+    @GetMapping("/getAllMachine/{etape}")
+    public List<String> getAllMachine(@ApiParam(name = "etape", value = "etape", required = true)
+                                          @PathVariable(value = "etape", required = true) @NotEmpty(message = "{http.error.0001}") String etape) throws ResourceNotFoundException {
+        return machineService.getAllMachineDisponible(etape);}
 
 
     @GetMapping("/operationType/{etat}")

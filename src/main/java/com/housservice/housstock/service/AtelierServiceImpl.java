@@ -1,6 +1,7 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.mapper.MachineMapper;
 import com.housservice.housstock.mapper.PersonnelMapper;
 import com.housservice.housstock.mapper.PlanEtapesMapper;
 import com.housservice.housstock.mapper.PlannificationMapper;
@@ -9,14 +10,17 @@ import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.PlanEtapes;
 import com.housservice.housstock.model.Plannification;
+import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.model.dto.PlanEtapesDto;
 import com.housservice.housstock.model.dto.PlannificationDto;
 import com.housservice.housstock.repository.MachineRepository;
+import com.housservice.housstock.repository.PersonnelRepository;
 import com.housservice.housstock.repository.PlannificationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,10 +35,15 @@ public class AtelierServiceImpl implements AtelierService{
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     private final PlannificationRepository plannificationRepository;
     private final MachineRepository machineRepository;
-    public AtelierServiceImpl(MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository, MachineRepository machineRepository) {
+    private final PersonnelRepository personnelRepository;
+
+
+    public AtelierServiceImpl(PersonnelRepository personnelRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository, MachineRepository machineRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.plannificationRepository = plannificationRepository;
         this.machineRepository = machineRepository;
+        this.personnelRepository = personnelRepository;
+
     }
 
     @Override
@@ -44,20 +53,22 @@ public class AtelierServiceImpl implements AtelierService{
 
     }
 
+
+
+
     @Override
     public ResponseEntity<Map<String, Object>> getOfByRefMachine(int page, int size) {
         try {
-            List<Plannification> plannifications =  plannificationRepository.findAll();
             Pageable paging = PageRequest.of(page, size);
             Page<Plannification> pageTuts;
             pageTuts = plannificationRepository.findAll(paging);
             List<PlanEtapes> ateliers = new ArrayList<>();
 
-            for (Plannification planification : plannifications) {
-                for (PlanEtapes etape : planification.getEtapes()) {
-                    if (etape.getRefMachine()==null) {
-                        ateliers.add(etape);
-                        break;
+            for (Plannification planification : pageTuts) {
+                if (!planification.getEtapes().isEmpty()) {
+                    PlanEtapes firstEtape = planification.getEtapes().get(0);
+                    if (firstEtape.getRefMachine() == null && firstEtape.getTerminer()==false) {
+                        ateliers.add(firstEtape);
                     }
                 }
             }
@@ -101,12 +112,33 @@ public class AtelierServiceImpl implements AtelierService{
     public void updateEtapes(String id, PlanEtapesDto planEtapesDto) throws ResourceNotFoundException {
         Plannification plannification1 = plannificationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+
+        if (!plannification1.getEtapes().isEmpty()) {
+            PlanEtapes firstEtape = plannification1.getEtapes().get(0);
+
+            // Update the properties of the first etape
+            if (planEtapesDto.getHeureDebutReel() != null && planEtapesDto.getHeureFinReel() != null) {
+                firstEtape.setEtat(true);
+            }
+            firstEtape.setQuantiteInitiale(planEtapesDto.getQuantiteInitiale());
+            firstEtape.setQuantiteConforme(planEtapesDto.getQuantiteConforme());
+            firstEtape.setQuantiteNonConforme(planEtapesDto.getQuantiteNonConforme());
+            firstEtape.setCommentaire(planEtapesDto.getCommentaire());
+            firstEtape.setHeureDebutReel(planEtapesDto.getHeureDebutReel());
+            firstEtape.setHeureFinReel(planEtapesDto.getHeureFinReel());
+            firstEtape.setDateReel(planEtapesDto.getDateReel());
+
+            plannificationRepository.save(plannification1);
+        }
+    }
+    @Override
+    public void terminer(String id,PlanEtapesDto planEtapesDto) throws ResourceNotFoundException {
+        Plannification plannification1 = plannificationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
         List<PlanEtapes> etapes = plannification1.getEtapes();
         if (etapes == null) {
             etapes = new ArrayList<>();
         }
-
-        // Check if the etape exists in the Plannification's etapes list
         boolean etapeExists = false;
         PlanEtapes existingEtapeToRemove = null;
         for (PlanEtapes existingEtape : etapes) {
@@ -116,16 +148,53 @@ public class AtelierServiceImpl implements AtelierService{
                 break;
             }
         }
-
-        // If the etape exists, remove it from the etapes list
         if (etapeExists) {
             etapes.remove(existingEtapeToRemove);
         }
-
-        // Add the updated etape
+        planEtapesDto.setTerminer(true);
         PlanEtapes etape = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
         etapes.add(etape);
         plannification1.setEtapes(etapes);
         plannificationRepository.save(plannification1);
     }
+    public List<String> getMonitrice(){
+        List<Personnel> personnel = personnelRepository.findPersonnelByPoste("Operatrice");
+        return personnel.stream()
+                .map(Personnel::getFullName)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public ResponseEntity<Map<String, Object>> onSortActiveAtelier(int page, int size, String field, String order) {
+        try {
+            Page<Plannification> pageTuts;
+            if (order.equals("1")){
+                pageTuts = plannificationRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
+            }
+            else {
+                pageTuts = plannificationRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
+            }
+            List<PlanEtapes> ateliers = new ArrayList<>();
+            for (Plannification planification : pageTuts) {
+                if (!planification.getEtapes().isEmpty()) {
+                    PlanEtapes firstEtape = planification.getEtapes().get(0);
+                    if (firstEtape.getRefMachine() == null && firstEtape.getTerminer()==false) {
+                        ateliers.add(firstEtape);
+                    }
+                }
+            }
+            Map<String, Object> response = new HashMap<>();
+            response.put("ateliers", ateliers);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
 }

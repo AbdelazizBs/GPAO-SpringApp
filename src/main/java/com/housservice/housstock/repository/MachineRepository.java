@@ -18,9 +18,10 @@ public interface MachineRepository extends MongoRepository<Machine, String> {
     @Query( "{$or:[{'refMachine': {$regex : ?0}} ,{'type': {$regex : ?0}},{'libelle': {$regex : ?0}},{'nomConducteur': {$regex : ?0}},{'etat': {$regex : ?0}}]}")
     Page<Machine> findMachineByTextToFind(String textToFind, Pageable pageable);
 
-    List<Machine> findMachineByEtat(String etat);
 
     Machine findMachineByLibelle(String refMachine);
 
     List<Machine> findMachineByNomConducteur(String nomConducteur);
+
+    List<Machine> findMachineByType(String etape);
 }

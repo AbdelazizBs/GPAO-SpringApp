@@ -26,6 +26,7 @@ public class PlanEtapesDto {
     private String nomEtape;
 
     private String refMachine;
+    private String monitrice;
 
     private List<String> personnels;
     private Date datePrevu;
@@ -38,6 +39,8 @@ public class PlanEtapesDto {
     private int quantiteInitiale;
     private String commentaire;
     private String ref;
+    private Boolean etat;
+    private Boolean terminer;
 
 }
 

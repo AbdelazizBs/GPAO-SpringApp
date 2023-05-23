@@ -51,28 +51,30 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getOfByRefMachine(int page, int size,String refMachine) {
+    public ResponseEntity<Map<String, Object>> getOfByRefMachine(int page, int size, String refMachine) {
         try {
-            List<Plannification> plannifications =  plannificationRepository.findAll();
             Pageable paging = PageRequest.of(page, size);
-            Page<Plannification> pageTuts;
-            pageTuts = plannificationRepository.findAll(paging);
+            Page<Plannification> pageTuts = plannificationRepository.findAll(paging);
             List<PlanEtapes> matchingPlanifications = new ArrayList<>();
-            for (Plannification planification : plannifications) {
-                for (PlanEtapes etape : planification.getEtapes()) {
-                    if (etape.getRefMachine().equals(refMachine)) {
-                        matchingPlanifications.add(etape);
-                        break;
+
+            for (Plannification planification : pageTuts) {
+                if (!planification.getEtapes().isEmpty()) {
+                    PlanEtapes firstEtape = planification.getEtapes().get(0);
+                    if (firstEtape.getRefMachine() != null && firstEtape.getRefMachine().equals(refMachine)&& firstEtape.getTerminer()==false) {
+                        matchingPlanifications.add(firstEtape);
                     }
                 }
             }
+
             Map<String, Object> response = new HashMap<>();
             response.put("matchingPlanifications", matchingPlanifications);
             response.put("currentPage", pageTuts.getNumber());
             response.put("totalItems", pageTuts.getTotalElements());
             response.put("totalPages", pageTuts.getTotalPages());
+
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -102,6 +104,29 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
     public void updateEtapes(String id, PlanEtapesDto planEtapesDto) throws ResourceNotFoundException {
         Plannification plannification1 = plannificationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+
+        if (!plannification1.getEtapes().isEmpty()) {
+            PlanEtapes firstEtape = plannification1.getEtapes().get(0);
+
+            // Update the properties of the first etape
+            if (planEtapesDto.getHeureDebutReel() != null && planEtapesDto.getHeureFinReel() != null) {
+                firstEtape.setEtat(true);
+            }
+            firstEtape.setQuantiteInitiale(planEtapesDto.getQuantiteInitiale());
+            firstEtape.setQuantiteConforme(planEtapesDto.getQuantiteConforme());
+            firstEtape.setQuantiteNonConforme(planEtapesDto.getQuantiteNonConforme());
+            firstEtape.setCommentaire(planEtapesDto.getCommentaire());
+            firstEtape.setHeureDebutReel(planEtapesDto.getHeureDebutReel());
+            firstEtape.setHeureFinReel(planEtapesDto.getHeureFinReel());
+            firstEtape.setDateReel(planEtapesDto.getDateReel());
+
+            plannificationRepository.save(plannification1);
+        }
+    }
+    @Override
+    public void terminer(String id,PlanEtapesDto planEtapesDto) throws ResourceNotFoundException {
+        Plannification plannification1 = plannificationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
         List<PlanEtapes> etapes = plannification1.getEtapes();
         if (etapes == null) {
             etapes = new ArrayList<>();
@@ -118,6 +143,7 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
         if (etapeExists) {
             etapes.remove(existingEtapeToRemove);
         }
+        planEtapesDto.setTerminer(true);
         PlanEtapes etape = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
         etapes.add(etape);
         plannification1.setEtapes(etapes);

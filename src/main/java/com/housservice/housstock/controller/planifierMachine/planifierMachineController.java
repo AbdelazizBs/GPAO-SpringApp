@@ -55,4 +55,13 @@ public class planifierMachineController {
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
     }
+    @PutMapping("/terminer/{id}")
+    public ResponseEntity<String> terminer(@ApiParam(name = "id", value = "id", required = true)
+                                             @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
+                                             @Valid @RequestBody PlanEtapesDto planEtapesDto
+    ) throws ResourceNotFoundException {
+        planifierMachineService.terminer(id,planEtapesDto);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+
+    }
 }

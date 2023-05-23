@@ -17,5 +17,5 @@ public interface PlanifierMachineService {
     ResponseEntity<Map<String, Object>> getOfByRefMachine(int page, int size,String refMachine);
     public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille);
     void updateEtapes(String id, PlanEtapesDto planEtapesDto) throws ResourceNotFoundException;
-
+     void terminer(String id,PlanEtapesDto planEtapesDto) throws ResourceNotFoundException;
 }

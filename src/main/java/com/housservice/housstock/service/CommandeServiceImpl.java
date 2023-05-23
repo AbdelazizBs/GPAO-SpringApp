@@ -247,7 +247,6 @@ public class CommandeServiceImpl implements CommandeService{
         articleRepository.save(articleToUpdate);
         commande.getArticle().add(articleToUpdate);
         commandeRepository.save(commande);
-
     }
 
     @Override

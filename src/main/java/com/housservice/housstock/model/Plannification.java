@@ -26,8 +26,9 @@ package com.housservice.housstock.model;
         private List<PlanEtapes> etapes;
         private String ref;
 
+        private int progress;
 
-        private static int seq = 0;
+        private int seq = 0;
 
 
         public Plannification() {
@@ -37,7 +38,8 @@ package com.housservice.housstock.model;
             ref = "OF_00"+seq;
         }
 
-        public Plannification(List<String> personnels, String nomEtape, Article ligneCommandeClient, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, Boolean plan, Boolean etat, List<PlanEtapes> etapes, String ref, int seq) {
+        public Plannification(String id, List<String> personnels, String nomEtape, Article ligneCommandeClient, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, Boolean plan, Boolean etat, List<PlanEtapes> etapes, String ref, int progress) {
+            this.id = id;
             this.personnels = personnels;
             this.nomEtape = nomEtape;
             this.ligneCommandeClient = ligneCommandeClient;
@@ -49,6 +51,6 @@ package com.housservice.housstock.model;
             this.etat = etat;
             this.etapes = etapes;
             this.ref = ref;
-            this.seq = seq;
+            this.progress = progress;
         }
     }

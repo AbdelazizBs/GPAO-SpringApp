@@ -18,6 +18,8 @@ public class PlanEtapes {
 
     private String nomEtape;
     private String refMachine;
+    private String monitrice;
+
     private List<String> personnels;
     private Date datePrevu;
     private Date dateReel;
@@ -31,16 +33,20 @@ public class PlanEtapes {
     private int quantiteInitiale;
     private String commentaire;
     private String ref;
+    private Boolean etat;
 
+    private Boolean terminer;
 
 
     public PlanEtapes() {
     }
 
-    public PlanEtapes(String idOf, String nomEtape, String refMachine, List<String> personnels, Date datePrevu, Date dateReel, Date heureDebutPrevue, Date heureFinPrevue, Date heureDebutReel, Date heureFinReel, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, String ref) {
+    public PlanEtapes(String id, String idOf, String nomEtape, String refMachine, String monitrice, List<String> personnels, Date datePrevu, Date dateReel, Date heureDebutPrevue, Date heureFinPrevue, Date heureDebutReel, Date heureFinReel, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, String ref, Boolean etat, Boolean terminer) {
+        this.id = id;
         this.idOf = idOf;
         this.nomEtape = nomEtape;
         this.refMachine = refMachine;
+        this.monitrice = monitrice;
         this.personnels = personnels;
         this.datePrevu = datePrevu;
         this.dateReel = dateReel;
@@ -53,5 +59,7 @@ public class PlanEtapes {
         this.quantiteInitiale = quantiteInitiale;
         this.commentaire = commentaire;
         this.ref = ref;
+        this.etat = etat;
+        this.terminer = terminer;
     }
 }

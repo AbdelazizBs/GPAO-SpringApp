@@ -30,6 +30,7 @@ public class PlannificationDto {
     private List<PlanEtapes> etapes;
     private String ref;
 
+    private int progress;
 
-    private static int seq = 0;
+    private  int seq = 0;
 }

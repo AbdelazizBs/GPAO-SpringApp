@@ -43,8 +43,13 @@ public class AtelierController {
         return atelierService.search(textToFind, page, size,enVeille);
 
     }
+    @GetMapping("/getMonitrice")
+    public List<String> getMonitrice( ) throws ResourceNotFoundException {
+        return atelierService.getMonitrice();
+
+    }
     @PutMapping("/updateEtapes/{id}")
-    public ResponseEntity<String> updatePlan(@ApiParam(name = "id", value = "id", required = true)
+    public ResponseEntity<String> updateEtapes(@ApiParam(name = "id", value = "id", required = true)
                                              @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
                                              @Valid @RequestBody PlanEtapesDto planEtapesDto
     ) throws ResourceNotFoundException {
@@ -52,4 +57,24 @@ public class AtelierController {
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
     }
+    @PutMapping("/terminer/{id}")
+    public ResponseEntity<String> terminer(@ApiParam(name = "id", value = "id", required = true)
+                                           @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
+                                           @Valid @RequestBody PlanEtapesDto planEtapesDto
+    ) throws ResourceNotFoundException {
+        atelierService.terminer(id,planEtapesDto);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
+
+    }
+
+    @GetMapping("/onSortActiveAtelier")
+    @ApiOperation(value = "service to get get All active machine   sorted  and ordered by  params")
+    public ResponseEntity<Map<String, Object>> c(@RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "3") int size,
+                                                                   @RequestParam(defaultValue = "field") String field,
+                                                                   @RequestParam(defaultValue = "order") String order){
+        return atelierService.onSortActiveAtelier(page,size,field,order);
+
+    }
+
 }
