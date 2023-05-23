@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.housservice.housstock.mapper.CompteMapper;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.Roles;
 import com.housservice.housstock.repository.RolesRepository;
@@ -59,34 +60,8 @@ public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 		this.rolesRepository = rolesRepository;
 	}
 
-	@Override
-	public ComptesDto buildComptesDtoFromComptes(Comptes comptes) {
-		if (comptes == null)
-		{
-			return null;
-		}
-			
-		ComptesDto comptesDto = new ComptesDto();
-		comptesDto.setId(comptes.getId());
-		comptesDto.setEmail(comptes.getEmail());
-		comptesDto.setPassword(comptes.getPassword());
-		
-		return comptesDto;
-		
-	}
-	
-	private Comptes buildComptesFromComptesDto(ComptesDto comptesDto)
-	{
-		Comptes comptes = new Comptes();
-		
-		comptes.setId(""+sequenceGeneratorService.generateSequence(Comptes.SEQUENCE_NAME));	
-		comptes.setId(comptesDto.getId());		
-		comptes.setEmail(comptesDto.getEmail());
-		comptes.setPassword(comptesDto.getPassword());
 
-		
-		return comptes;
-	}
+
 
 
 	@Override
@@ -95,7 +70,7 @@ public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 	List<Comptes> listComptes = comptesRepository.findAll();
 		
 		return listComptes.stream()
-				.map(comptes -> buildComptesDtoFromComptes(comptes))
+				.map(comptes -> CompteMapper.MAPPER.toComptesDto(comptes))
 				.filter(comptes -> comptes != null)
 				.collect(Collectors.toList());
 	}
@@ -105,18 +80,11 @@ public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 		
 		 Optional<Comptes> comptesOpt = comptesRepository.findById(id);
 			if(comptesOpt.isPresent()) {
-				return buildComptesDtoFromComptes(comptesOpt.get());
+				return CompteMapper.MAPPER.toComptesDto(comptesOpt.get());
 			}
 			return null;
 	}
 
-
-	@Override
-	public void createNewComptes(@Valid ComptesDto comptesDto) {
-		
-		comptesRepository.save(buildComptesFromComptesDto(comptesDto));
-		
-	}
 
 
 	@Override
@@ -145,19 +113,10 @@ public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 	public void addCompte(String idPersonnel,ComptesDto comptesDto) throws ResourceNotFoundException {
 		Personnel personnel = personnelRepository.findById(idPersonnel)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idPersonnel)));
-		comptesDto.setPassword(passwordEncoder.encode(comptesDto.getPassword()));
-		final Comptes comptes =  buildComptesFromComptesDto(comptesDto);
-		final List<Roles> rolesList = new ArrayList<>();
-		comptesDto
-				.getRoles()
-				.forEach(r -> {
-					try {
-						rolesList.add(rolesRepository.findByNom(r)
-								.orElseThrow(() -> new NotFoundException(r + " not found")));
-					} catch (NotFoundException e) {
-						throw new RuntimeException(e);
-					}
-				});
+		Comptes comptes = CompteMapper.MAPPER.toComptes(comptesDto);
+		comptes.setPassword(passwordEncoder.encode(comptesDto.getPassword()));
+		List<Roles> rolesList = comptesDto.getRolesName().stream().map(roleName ->
+				rolesRepository.findByNom(roleName).get()).collect(Collectors.toList());
 		comptes.setRoles(rolesList);
 		comptesRepository.save(comptes);
 		personnel.setCompte(comptes);
@@ -191,6 +150,11 @@ public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 		Comptes comptes = comptesRepository.findByEmail(email);
 		return comptes.getRoles().stream().map(Roles::getNom)
 				.collect(Collectors.toList());
+
+	}
+	@Override
+	public List<ComptesDto> getAllCompte() {
+		return  comptesRepository.findAll().stream().map(comptes -> CompteMapper.MAPPER.toComptesDto(comptes)).collect(Collectors.toList());
 
 	}
 }

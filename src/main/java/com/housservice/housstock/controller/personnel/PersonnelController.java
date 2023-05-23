@@ -120,7 +120,6 @@ public class PersonnelController {
     }
     @GetMapping("token/refreshToken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
@@ -139,6 +138,7 @@ public class PersonnelController {
                 Map<String, String> tokens = new HashMap<>();
                 tokens.put("access_token", access_token);
                 tokens.put("refresh_token", refreshToken);
+                tokens.put("roles", user.getCompte().getRoles().stream().map(Roles::getNom).collect(Collectors.toList()).toString());
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 

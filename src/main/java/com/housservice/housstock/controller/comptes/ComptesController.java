@@ -30,30 +30,33 @@ public class ComptesController {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
     }
 
-//    @PutMapping("/addCompte/{idPersonnel}")
-//    public ResponseEntity<String> addCompte(
-//            @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
-//            @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}") String idPersonnel,
-//            final String  email,
-//            final String  password,
-//            final List<String> roles
-//    ) throws ResourceNotFoundException {
-//        comptesService.addCompte(idPersonnel,email,password,roles);
-//        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
-//    }
-@PutMapping("/addCompte/{idPersonnel}")
-public ResponseEntity <String> addCompte(
-        @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
-        @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}") String idPersonnel,
-        @Valid @RequestBody ComptesDto comptesDto
-) throws ResourceNotFoundException {
-    comptesService.addCompte(idPersonnel,comptesDto);
-    return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
-}
+    @PutMapping("/addCompte/{idPersonnel}")
+    public ResponseEntity<String> addCompte(
+            @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
+            @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}") String idPersonnel,
+            @RequestBody ComptesDto comptesDto) throws ResourceNotFoundException {
+        comptesService.addCompte(idPersonnel,comptesDto);
+        return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    }
+//@PutMapping("/addCompte/{idPersonnel}")
+//public ResponseEntity <String> addCompte(
+//        @ApiParam(name = "idPersonnel", value="id of personnel", required = true)
+//        @PathVariable(value = "idPersonnel", required = true) @NotEmpty(message = "{http.error.0001}") String idPersonnel,
+//        @Valid @RequestBody ComptesDto comptesDto
+//) throws ResourceNotFoundException {
+//    comptesService.addCompte(idPersonnel,comptesDto);
+//    return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+//}
     @GetMapping("/getRoles/{email}")
     public List<String> getRoles(
             @PathVariable(value = "email", required = true) @NotEmpty(message = "{http.error.0001}") String email)
             throws ResourceNotFoundException {
         return comptesService.getRoles(email);
+    }
+
+    @GetMapping("/getAllCompte")
+    public List<ComptesDto> getAllCompte()
+            throws ResourceNotFoundException {
+        return comptesService.getAllCompte();
     }
 }

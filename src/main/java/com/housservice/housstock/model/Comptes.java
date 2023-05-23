@@ -20,8 +20,6 @@ import java.util.List;
 @Document(collection = "Compte")
 public class Comptes {
 
-	@Transient
-    public static final String SEQUENCE_NAME = "compte_sequence";
 	
     @Id
     private String id;

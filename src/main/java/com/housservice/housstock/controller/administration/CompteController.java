@@ -25,37 +25,37 @@ import com.housservice.housstock.service.SequenceGeneratorService;
 @RestController
 @RequestMapping("/api/v1")
 public class CompteController {
-	  @Autowired
-	  private ComptesRepository comptesRepository;
-
-	  @Autowired
-	  private SequenceGeneratorService sequenceGeneratorService;
-	  
-	  @GetMapping("/comptes/{id}")
-	  public ResponseEntity < Comptes > getUniteMesureById(@PathVariable(value = "id") String compteId)
-	  throws ResourceNotFoundException {
-	      Comptes compte = comptesRepository.findById(compteId)
-	    		  .orElseThrow(() -> new ResourceNotFoundException("Compte non trouvé pour cet id :: " + compteId));
-	      return ResponseEntity.ok().body(compte);
-	  }
-
-	  @PutMapping("/comptes")
-	  public Comptes createUniteMesure(@Valid @RequestBody Comptes compte) {
-		  compte.setId("" + sequenceGeneratorService.generateSequence(Comptes.SEQUENCE_NAME));
-	      return comptesRepository.save(compte);
-	  }
-
-	  @PutMapping("/comptes/{id}")
-	  public ResponseEntity < Comptes > updateUniteMesure(@PathVariable(value = "id") String compteId,
-	      @Valid @RequestBody Comptes compteData) throws ResourceNotFoundException {
-		  Comptes compte = comptesRepository.findById(compteId)
-	          .orElseThrow(() -> new ResourceNotFoundException("Compte non trouvé pour cet id :: " + compteId));
-
-	      compte.setEmail(compteData.getEmail());
-	      compte.setPassword(compteData.getPassword());
-	      final Comptes updatedCompte = comptesRepository.save(compte);
-	      return ResponseEntity.ok(updatedCompte);
-	  }
+//	  @Autowired
+//	  private ComptesRepository comptesRepository;
+//
+//	  @Autowired
+//	  private SequenceGeneratorService sequenceGeneratorService;
+//
+//	  @GetMapping("/comptes/{id}")
+//	  public ResponseEntity < Comptes > getUniteMesureById(@PathVariable(value = "id") String compteId)
+//	  throws ResourceNotFoundException {
+//	      Comptes compte = comptesRepository.findById(compteId)
+//	    		  .orElseThrow(() -> new ResourceNotFoundException("Compte non trouvé pour cet id :: " + compteId));
+//	      return ResponseEntity.ok().body(compte);
+//	  }
+//
+//	  @PutMapping("/comptes")
+//	  public Comptes createUniteMesure(@Valid @RequestBody Comptes compte) {
+////		  compte.setId("" + sequenceGeneratorService.generateSequence(Comptes.SEQUENCE_NAME));
+//	      return comptesRepository.save(compte);
+//	  }
+//
+//	  @PutMapping("/comptes/{id}")
+//	  public ResponseEntity < Comptes > updateUniteMesure(@PathVariable(value = "id") String compteId,
+//	      @Valid @RequestBody Comptes compteData) throws ResourceNotFoundException {
+//		  Comptes compte = comptesRepository.findById(compteId)
+//	          .orElseThrow(() -> new ResourceNotFoundException("Compte non trouvé pour cet id :: " + compteId));
+//
+//	      compte.setEmail(compteData.getEmail());
+//	      compte.setPassword(compteData.getPassword());
+//	      final Comptes updatedCompte = comptesRepository.save(compte);
+//	      return ResponseEntity.ok(updatedCompte);
+//	  }
 
 //	  @DeleteMapping("/comptes/{id}")
 //	  public Map < String, Boolean > deleteUniteMesure(@PathVariable(value = "id") Long uniteMesureId)

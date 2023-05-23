@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.*;
 
 @Configuration @EnableWebSecurity
@@ -60,19 +62,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/api/v1/user/login");
     http.csrf().disable();
     http.sessionManagement().sessionCreationPolicy(STATELESS);
-    http.authorizeRequests().antMatchers("/api/v1/personnel/login","/api/v1/personnel/token/refreshToken")
-            .permitAll();
-//    http.authorizeRequests().antMatchers(PUT,"/api/v1/personnel/**").permitAll();
-//    http.authorizeRequests().antMatchers(PUT,"/api/v1/compte/**").permitAll();
-//    http.authorizeRequests().antMatchers(GET,"/api/v1/user/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
-//    http.authorizeRequests().antMatchers(GET,"/api/v1/commandeClient/**"). ("ROLE_DEVELOPEMENT");
-//    http.authorizeRequests().antMatchers(GET,"/api/v1/commandeClient/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
-//    http.authorizeRequests().antMatchers(GET,"/api/v1/client/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
-//    http.authorizeRequests().antMatchers(GET,"/api/v1/personnel/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
-//    http.authorizeRequests().antMatchers(GET,"/api/v1/machine/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
-//    http.authorizeRequests().antMatchers(GET,"/api/v1/article/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
-//    http.authorizeRequests().antMatchers(POST,"/api/v1/article/**").hasAnyAuthority("ROLE_DEVELOPEMENT");
-//    http.authorizeRequests().anyRequest().authenticated();
+    //    http.authorizeRequests().antMatchers("/api/v1/personnel/login","/api/v1/personnel/token/refreshToken").permitAll();
+
+    //    admin role
+    http.authorizeRequests().antMatchers("/api/v1/user/**").hasAnyAuthority("ROLE_ADMIN");
+    http.authorizeRequests().antMatchers("/api/v1/role/**").hasAnyAuthority("ROLE_ADMIN");
+    http.authorizeRequests().antMatchers("/api/v1/compte/**").hasAnyAuthority("ROLE_ADMIN");
+
+    //    RH role
+    http.authorizeRequests().antMatchers("/api/v1/personnel/**").hasAnyAuthority("ROLE_RH","ROLE_ADMIN");
+
+    //   commercial and developpement role
+    http.authorizeRequests().antMatchers("/api/v1/commandeClient/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_ADMIN");
+    http.authorizeRequests().antMatchers("/api/v1/client/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPPEMENT","ROLE_ADMIN");
+    http.authorizeRequests().antMatchers("/api/v1/fournisseur/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPPEMENT","ROLE_ADMIN");
+    http.authorizeRequests().antMatchers("/api/v1/nomenclature/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPPEMENT","ROLE_ADMIN");
+    http.authorizeRequests().antMatchers("/api/v1/ligneCommandeClient/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPPEMENT","ROLE_ADMIN");
+
+
+
+    //    chef atelier and conducteur machine role
+    http.authorizeRequests().antMatchers("/api/v1/machine/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_CONDUCTEUR_MACHINE","ROLE_ADMIN");
+    http.authorizeRequests().antMatchers("/api/v1/ligneCommandeClient/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_CONDUCTEUR_MACHINE","ROLE_ADMIN");
+    http.authorizeRequests().antMatchers("/api/v1/planificationOf/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_ADMIN");
+
+
+
+    http.authorizeRequests().anyRequest().authenticated();
     http.addFilter(customAuthenticationFilter);
     http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

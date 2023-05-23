@@ -28,5 +28,11 @@ public class Roles{
 	private String nom;
 
 
+	public Roles(String role) {
+		this.nom = role;
+	}
 
+	public Roles() {
+
+	}
 }

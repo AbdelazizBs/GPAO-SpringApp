@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/role")
 @Api(tags = {"Roles Management"})
 public class RolesController {
 	
@@ -44,14 +44,14 @@ public class RolesController {
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 	  }
 
-    @GetMapping("/roles")
+    @GetMapping("/getAllRoles")
 	 public List< RolesDto > getAllRoles() {
 		 		
 		 return rolesService.getAllRoles();
 		 	 
 	 }
   
-    @GetMapping("/roles/{id}")
+    @GetMapping("/getRolesById/{id}")
 	@ApiOperation(value = "service to get one Roles by Id.")
 	  public ResponseEntity < RolesDto > getRolesById(
 			  @ApiParam(name = "id", value="id of roles", required = true)
@@ -64,14 +64,14 @@ public class RolesController {
 	      return ResponseEntity.ok().body(roles);
 	  }
     
-    @PutMapping("/roles")
+    @PutMapping("/createRoles")
 	  public ResponseEntity<String> createRoles(@Valid @RequestBody RolesDto rolesDto) {
 		  
     	  rolesService.createNewRoles(rolesDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }
     
-    @PutMapping("/roles/{id}")
+    @PutMapping("/updateRole/{id}")
 	  public ResponseEntity <String> updateRoles(
 			  @ApiParam(name = "id", value="id of roles", required = true)
 			  @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String rolesId,
@@ -83,7 +83,7 @@ public class RolesController {
 	  }
 
     
-	  @DeleteMapping("/roles/{id}")
+	  @DeleteMapping("/deleteRoles/{id}")
 	  @ApiOperation(value = "service to delete one Roles by Id.")
 	  public Map < String, Boolean > deleteRoles(
 			  @ApiParam(name = "id", value="id of roles", required = true)
