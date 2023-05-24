@@ -13,6 +13,7 @@ import java.util.Map;
 public interface PersonnelService {
 
     ResponseEntity<Map<String, Object>> getAllPersonnel(int page, int size);
+    ResponseEntity<Map<String, Object>> getAllPersonnelName();
 
     ResponseEntity<Map<String, Object>> onSortActivePersonnel(int page, int size, String field, String order);
 
@@ -23,6 +24,7 @@ public interface PersonnelService {
     ResponseEntity<Map<String, Object>> getConcducteurs();
     ResponseEntity<Map<String, Object>> getOperatricesName();
     ResponseEntity<Map<String, Object>> getPersonnelsNameByMachine(String nomEtape);
+    ResponseEntity<Map<String, Object>> getPersonnelByEmailCompte(String email);
     ResponseEntity<Map<String, Object>> getPersonnelsId(List<String> personnelsName);
 
 

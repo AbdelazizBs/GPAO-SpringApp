@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +33,11 @@ public class Comptes {
 
     private List<Roles> roles ;
 
+    private String idPersonnel;
+    private String personnelName;
+    private Date datelastlogin;
+
+    private  boolean enVeille;
 
     public Comptes() {
 

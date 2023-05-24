@@ -3,6 +3,7 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.configuration.MessageHttpErrorProperties;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.mapper.PersonnelMapper;
+import com.housservice.housstock.model.Comptes;
 import com.housservice.housstock.model.EtapeProduction;
 import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Personnel;
@@ -36,16 +37,18 @@ public class PersonnelServiceImpl implements PersonnelService {
 
     final RolesRepository rolesRepository;
     private final EtapeProductionRepository etapeProductionRepository;
+    private final ComptesRepository compteRepository;
 
     public PersonnelServiceImpl(PersonnelRepository personnelRepository, MachineRepository machineRepository, MessageHttpErrorProperties messageHttpErrorProperties,
                                 RolesRepository rolesRepository, ComptesRepository comptesRepository,
-                                EtapeProductionRepository etapeProductionRepository) {
+                                EtapeProductionRepository etapeProductionRepository, ComptesRepository compteRepository) {
         this.personnelRepository = personnelRepository;
         this.machineRepository = machineRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.rolesRepository = rolesRepository;
         this.comptesRepository = comptesRepository;
         this.etapeProductionRepository = etapeProductionRepository;
+        this.compteRepository = compteRepository;
     }
 
 
@@ -115,10 +118,10 @@ public class PersonnelServiceImpl implements PersonnelService {
 
     @Override
     public void mettreEnVeille(String idPersonnel) throws ResourceNotFoundException {
-
         Personnel personnel = personnelRepository.findById(idPersonnel).orElseThrow(() -> new ResourceNotFoundException(
                 MessageFormat.format(messageHttpErrorProperties.getError0002(), idPersonnel)));
         personnel.setMiseEnVeille(true);
+        personnel.getCompte().setEnVeille(true);
         personnelRepository.save(personnel);
     }
 
@@ -141,6 +144,23 @@ public class PersonnelServiceImpl implements PersonnelService {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getAllPersonnelName() {
+
+        try {
+           List<String> personnelsName = personnelRepository.findAll().stream().map(personnel -> {
+                return personnel.getNom();
+            }).collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("personnelsName", personnelsName);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
 
     }
 
@@ -257,7 +277,7 @@ public class PersonnelServiceImpl implements PersonnelService {
             }).collect(Collectors.toList());
             List<String> operatricesName = new ArrayList<>();
             for (PersonnelDto personnel : personnels) {
-                if (personnel.getPoste().startsWith("Opérat")) {
+                if (personnel.getPoste().startsWith("Monitrice de contrôle")) {
                     operatricesName.add(personnel.getNom());
                 }
             }
@@ -286,6 +306,22 @@ public class PersonnelServiceImpl implements PersonnelService {
             personnelsName = personnelsName.stream().distinct().collect(Collectors.toList());
             Map<String, Object> response = new HashMap<>();
             response.put("nomConducteurs", personnelsName);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getPersonnelByEmailCompte(String email) {
+        try {
+            Comptes comptes = compteRepository.findByEmail(email).
+                    orElseThrow(() -> new NotFoundException("Compte not found"));
+            Personnel personnel = personnelRepository.findPersonnelByCompteId(comptes.getId()).
+                    orElseThrow(() -> new NotFoundException("Personnel not found"));
+            Map<String, Object> response = new HashMap<>();
+            response.put("personnel", personnel);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

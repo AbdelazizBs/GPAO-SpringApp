@@ -101,13 +101,18 @@ public class PersonnelController {
     public ResponseEntity<Map<String, Object>> getConcducteurs() {
         return personnelService.getConcducteurs();
     }
-   @GetMapping("/getOperatricesName")
+    @GetMapping("/getOperatricesName")
     @ApiOperation(value = "service to get Operatrice name list.")
     public ResponseEntity<Map<String, Object>> getOperatricesName() {
         return personnelService.getOperatricesName();
     }
 
-    @GetMapping("/getPersonnelsNameByNameEtape")
+    @GetMapping("/getPersonnelByEmailCompte")
+    @ApiOperation(value = "service to get personnel by email account.")
+    public ResponseEntity<Map<String, Object>> getPersonnelByEmailCompte(@RequestParam(value = "email", required = true) String email) {
+        return personnelService.getPersonnelByEmailCompte(email);
+    }
+   @GetMapping("/getPersonnelsNameByNameEtape")
     @ApiOperation(value = "service to get Operatrice name list.")
     public ResponseEntity<Map<String, Object>> getPersonnelsNameByMachine(@RequestParam(value = "nomEtape", required = true) String nomEtape) {
         return personnelService.getPersonnelsNameByMachine(nomEtape);
@@ -191,6 +196,12 @@ public class PersonnelController {
     public ResponseEntity<Map<String, Object>> getAllPersonnel(@RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "3") int size) {
         return personnelService.getAllPersonnel(page, size);
+
+    }
+    @GetMapping("/getAllPersonnelName")
+    @ApiOperation(value = "service to get get All name of Personnels")
+    public ResponseEntity<Map<String, Object>> getAllPersonnelName() {
+        return personnelService.getAllPersonnelName();
 
     }
 

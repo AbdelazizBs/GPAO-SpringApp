@@ -3,7 +3,9 @@ package com.housservice.housstock.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.Roles;
+import com.housservice.housstock.repository.PersonnelRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +31,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager){
+
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager=authenticationManager;
     };
     @Override
@@ -53,6 +56,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         tokens.put("access_token",access_token);
         tokens.put("refresh_token",refresh_token);
         tokens.put("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).toString());
+        tokens.put("email", user.getUsername());
+        // get date connection in database
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(),tokens);
     }
