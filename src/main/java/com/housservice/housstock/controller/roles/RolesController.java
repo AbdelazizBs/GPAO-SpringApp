@@ -66,7 +66,6 @@ public class RolesController {
     
     @PutMapping("/createRoles")
 	  public ResponseEntity<String> createRoles(@Valid @RequestBody RolesDto rolesDto) {
-		  
     	  rolesService.createNewRoles(rolesDto);
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 	  }

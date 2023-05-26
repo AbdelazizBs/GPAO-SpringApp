@@ -18,6 +18,7 @@ public interface MachineRepository extends MongoRepository<Machine, String> {
     Page<Machine> findAll(Pageable pageable);
 
     Optional<Machine> findMachineByReference(String ref);
+    Optional<Machine> findMachineByLibelle(String libelle);
 
 
 }

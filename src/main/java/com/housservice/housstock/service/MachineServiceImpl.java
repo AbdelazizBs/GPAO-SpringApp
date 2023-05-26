@@ -191,17 +191,12 @@ public class MachineServiceImpl implements MachineService {
         return machineRepository.findMachineByEtapeProduction(etapeProduction);
     }
     @Override
-    public ResponseEntity<Map<String, Object>> getMachinesId(List<String> machinsName) {
+    public ResponseEntity<Map<String, Object>> getMachineIdByName(String machinsName) {
 
         try {
-            List<String> machinesId = new ArrayList<>();
-            machineRepository.findAll().forEach(machine -> {
-                if (machinsName.contains(machine.getLibelle())) {
-                    machinesId.add(machine.getId());
-                }
-            });
             Map<String, Object> response = new HashMap<>();
-            response.put("machinesId", machinesId);
+            response.put("machineId", machineRepository.findMachineByLibelle(machinsName)
+                    .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), machinsName))).getId());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

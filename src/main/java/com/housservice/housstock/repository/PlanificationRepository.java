@@ -10,4 +10,6 @@ public interface PlanificationRepository extends MongoRepository<PlanificationOf
 
 
 List<PlanificationOf> findPlanificationOfByLanced(boolean lanced);
+
+List<PlanificationOf> findPlanificationOfByLigneCommandeClientId(String idLc);
 }

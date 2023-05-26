@@ -22,9 +22,9 @@ public class LigneCommandeClient {
     private String id;
 
     @NotBlank
-    @Size(max = 100)
-    @Indexed(unique = true)
     private String quantite;
+
+    private int progress;
 
 
     private Nomenclature nomenclature;

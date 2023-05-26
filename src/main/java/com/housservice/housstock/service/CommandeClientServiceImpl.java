@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.Mac;
 import javax.validation.Valid;
 import java.text.MessageFormat;
 import java.util.*;
@@ -215,8 +216,9 @@ public class CommandeClientServiceImpl implements CommandeClientService {
             ligneCommandeClient.setNomenclature(nomenclature);
             // Create a new Planification for this Nomenclature
             PlanificationOf planificationOf = new PlanificationOf();
+            List<Machine> machine = machineRepository.findMachineByEtapeProduction(nomenclature.getEtapeProductions().get(0));
             planificationOf.setPersonnels(new ArrayList<>());
-            planificationOf.setMachines(new ArrayList<>());
+            planificationOf.setMachine(machine.get(0));
             planificationOf.setNomEtape(nomenclature.getEtapeProductions().get(0).getNomEtape());
             planificationOf.setOperationType(nomenclature.getEtapeProductions().get(0).getTypeEtape());
             planificationOf.setLigneCommandeClient(ligneCommandeClient);

@@ -1,15 +1,14 @@
 package com.housservice.housstock.mapper;
 
-import com.housservice.housstock.model.Machine;
 import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.PlanificationOf;
-import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.model.dto.PlanificationOfDTO;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -24,10 +23,10 @@ public abstract class PlanificationMappper   {
 
     @AfterMapping
     void updatePlanificationDto(final PlanificationOf planificationOf, @MappingTarget final PlanificationOfDTO planificationOfDTO)   {
-    planificationOfDTO.setNomPersonnels(planificationOf.getPersonnels().stream().map(Personnel::getNom).collect(Collectors.toList()));
-    planificationOfDTO.setIdPersonnels(planificationOf.getPersonnels().stream().map(Personnel::getId).collect(Collectors.toList()));
-    planificationOfDTO.setMachinesId(planificationOf.getMachines().stream().map(Machine::getId).collect(Collectors.toList()));
-    planificationOfDTO.setLibelleMachine(planificationOf.getMachines().stream().map(Machine::getLibelle).collect(Collectors.toList()));
+    planificationOfDTO.setNomPersonnels(planificationOf.getPersonnels().size()>0 ? planificationOf.getPersonnels().stream().map(Personnel::getNom).collect(Collectors.toList()):new ArrayList<>());
+            planificationOfDTO.setIdPersonnels(planificationOf.getPersonnels().size()>0 ? planificationOf.getPersonnels().stream().map(Personnel::getId).collect(Collectors.toList()):new ArrayList<>());
+    planificationOfDTO.setMachineId(planificationOf.getMachine() !=null ? planificationOf.getMachine().getId():"");
+    planificationOfDTO.setLibelleMachine( planificationOf.getMachine() !=null ? planificationOf.getMachine().getLibelle():"");
     }
 
     @AfterMapping

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-24T04:48:25+0200",
+    date = "2023-05-26T05:42:47+0200",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 17.0.1 (Oracle Corporation)"
 )
 @Component
@@ -24,6 +24,7 @@ public class LigneCommandClientMapperImpl extends LigneCommandClientMapper {
         ligneCommandeClientDto.setId( ligneCommandClient.getId() );
         ligneCommandeClientDto.setQuantite( ligneCommandClient.getQuantite() );
         ligneCommandeClientDto.setIdCommandeClient( ligneCommandClient.getIdCommandeClient() );
+        ligneCommandeClientDto.setProgress( ligneCommandClient.getProgress() );
         ligneCommandeClientDto.setNumCmdClient( ligneCommandClient.getNumCmdClient() );
         ligneCommandeClientDto.setDelai( ligneCommandClient.getDelai() );
         ligneCommandeClientDto.setLanced( ligneCommandClient.isLanced() );
@@ -43,6 +44,7 @@ public class LigneCommandClientMapperImpl extends LigneCommandClientMapper {
 
         ligneCommandeClient.setId( ligneCommandeClientDto.getId() );
         ligneCommandeClient.setQuantite( ligneCommandeClientDto.getQuantite() );
+        ligneCommandeClient.setProgress( ligneCommandeClientDto.getProgress() );
         ligneCommandeClient.setIdCommandeClient( ligneCommandeClientDto.getIdCommandeClient() );
         ligneCommandeClient.setNumCmdClient( ligneCommandeClientDto.getNumCmdClient() );
         ligneCommandeClient.setDelai( ligneCommandeClientDto.getDelai() );

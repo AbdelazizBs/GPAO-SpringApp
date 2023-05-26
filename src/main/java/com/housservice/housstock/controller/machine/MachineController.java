@@ -47,10 +47,10 @@ public class MachineController {
 			 
 		 }
 
-	@GetMapping("/getMachinesId")
+	@GetMapping("/getMachineIdByName")
 	@ApiOperation(value = "service to get machineId for selected name list.")
-	public ResponseEntity<Map<String, Object>> getMachinesId(@RequestParam(value = "machinsName", required = true) List<String> machinsName) throws ResourceNotFoundException {
-		return machineService.getMachinesId(machinsName);
+	public ResponseEntity<Map<String, Object>> getMachineIdByName(@RequestParam(value = "machinsName", required = true) String machinsName) throws ResourceNotFoundException {
+		return machineService.getMachineIdByName(machinsName);
 	}
 		 @GetMapping("/getIdMachine/{nomEtape}")
 		 public String  getIdMachine (

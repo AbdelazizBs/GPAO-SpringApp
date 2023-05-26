@@ -82,8 +82,8 @@ public class LigneCommandeClientController {
     @PutMapping("/updateLigneCommandeClient/{id}")
     public ResponseEntity<String> updateLigneCommandeClient(
             @ApiParam(name = "id", value = "id of ligneCommandeClient", required = true)
-            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String ligneCommandeClientId,
-            @Valid @RequestBody(required = true) LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
+            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id,
+             @RequestBody(required = true) LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
 
         ligneCommandeClientService.updateLigneCommandeClient(ligneCommandeClientDto);
 

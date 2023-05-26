@@ -20,6 +20,7 @@ public class LigneCommandeClientDto {
 	private String idNomenclature;
 
 	private String idCommandeClient;
+	private int progress;
 
 	private String numCmdClient;
 

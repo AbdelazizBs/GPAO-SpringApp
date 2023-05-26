@@ -25,7 +25,7 @@ public class PlanificationOf {
     private String operationType;
 
     private String nomNomenclature;
-    private List<Machine> machines;
+    private Machine machine;
     private List<Personnel> personnels;
     private Date dateLancementReel;
     private Date heureFinReel;

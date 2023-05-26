@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,25 +53,31 @@ public class PlanificationServiceImpl implements PlanificationService {
 
     @Override
     public void updatePlanfication( PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
-            List<Personnel> personnels = planificationOfDTO.getIdPersonnels().stream().map(s -> {
-                try {
-                    return personnelRepository.findById(s)
-                            .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), s)));
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }).collect(Collectors.toList());
-            List<Machine> machines = planificationOfDTO.getMachinesId().stream().map(s -> {
-                try {
-                    return machineRepository.findById(s)
-                            .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), s)));
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }).collect(Collectors.toList());
         PlanificationOf planificationOf = PlanificationMappper.MAPPER.toPlanificationOf(planificationOfDTO);
-        planificationOf.setPersonnels(personnels);
-        planificationOf.setMachines(machines);
+
+        if (planificationOfDTO.getIdPersonnels()!=null || !planificationOfDTO.getIdPersonnels().isEmpty()){
+           List<Personnel> personnels= new ArrayList<>();
+        planificationOfDTO.getIdPersonnels().forEach(idP ->
+                   {
+                       try {
+                          personnels.add(personnelRepository.findById(idP)
+                                   .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getIdPersonnels()))
+                                      ));
+                       } catch (ResourceNotFoundException e) {
+                           throw new RuntimeException(e);
+                       }
+                   }
+              );
+            planificationOf.setPersonnels(personnels);
+        }
+
+
+        if (!planificationOfDTO.getMachineId().isEmpty() || planificationOfDTO.getMachineId()!=null){
+                planificationOf.setMachine(null);
+                Machine machine = machineRepository.findById(planificationOfDTO.getMachineId())
+                        .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getMachineId())));
+                planificationOf.setMachine(machine);
+            }
         planificationRepository.save(planificationOf);
     }
 

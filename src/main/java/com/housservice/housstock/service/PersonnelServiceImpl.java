@@ -277,7 +277,7 @@ public class PersonnelServiceImpl implements PersonnelService {
             }).collect(Collectors.toList());
             List<String> operatricesName = new ArrayList<>();
             for (PersonnelDto personnel : personnels) {
-                if (personnel.getPoste().startsWith("Monitrice de contrôle")) {
+                if (personnel.getPoste().startsWith("Monitrice")) {
                     operatricesName.add(personnel.getNom());
                 }
             }

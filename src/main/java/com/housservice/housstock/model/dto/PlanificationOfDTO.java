@@ -21,7 +21,7 @@ public class PlanificationOfDTO {
     private String id;
 
     private List<String> idPersonnels;
-    private List<String> machinesId;
+    private String machineId;
     private List<String> nomPersonnels;
 
     private Date dateLancementReel;
@@ -49,7 +49,7 @@ public class PlanificationOfDTO {
     @NotNull(message = "{http.error.0001}")
 
     private Date heureDebutPrevue;
-    private List<String> libelleMachine;
+    private String libelleMachine;
     private String comment;
     private boolean lanced;
 

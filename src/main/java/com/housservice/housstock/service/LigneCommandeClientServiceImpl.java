@@ -112,7 +112,7 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
 
 
     @Override
-    public void createNewLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
+    public void createNewLigneCommandeClient( LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
         Nomenclature nomenclature = nomenclatureRepository.findById(ligneCommandeClientDto.getIdNomenclature()).orElseThrow(
                 () -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getIdNomenclature())));
         LigneCommandeClient ligneCommandeClient = LigneCommandClientMapper.MAPPER.toLigneCommandClient(ligneCommandeClientDto);
@@ -131,8 +131,7 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
     }
 
     @Override
-    public void updateLigneCommandeClient(@Valid LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
-
+    public void updateLigneCommandeClient( LigneCommandeClientDto ligneCommandeClientDto) throws ResourceNotFoundException {
         LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findById(ligneCommandeClientDto.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClientDto.getId())));
         CommandeClient commandeClient = commandeClientRepository.findById(ligneCommandeClientDto.getIdCommandeClient())
@@ -155,6 +154,7 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
     public void lanceLc(String idLc) throws ResourceNotFoundException {
         LigneCommandeClient ligneCommandeClient = ligneCommandeClientRepository.findById(idLc)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),idLc)));
+        ligneCommandeClient.setProgress(0);
         List<PlanificationOf> planificationOfs = planificationRepository.findAll().stream()
                 .filter(planificationOf -> planificationOf.getLigneCommandeClient().getId().equals(idLc)).collect(Collectors.toList());
         if (isValidAll(planificationOfs)) {
@@ -176,8 +176,11 @@ public class LigneCommandeClientServiceImpl implements LigneCommandeClientServic
         CommandeClient commandeClient = commandeClientRepository.findById(ligneCommandeClient.getIdCommandeClient())
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), ligneCommandeClient)));
         commandeClient.getLigneCommandeClient().removeIf(ligneCommandeClient1 -> ligneCommandeClient1.equals(ligneCommandeClient));
+        List<PlanificationOf> planificationOfs = planificationRepository.findPlanificationOfByLigneCommandeClientId(ligneCommandeClientId);
+        planificationRepository.deleteAll(planificationOfs);
         if (commandeClient.getLigneCommandeClient().isEmpty()) {
             commandeClient.setHaveLc(false);
+            commandeClient.setClosed(false);
         }
         commandeClientRepository.save(commandeClient);
         ligneCommandeClientRepository.deleteById(ligneCommandeClientId);
