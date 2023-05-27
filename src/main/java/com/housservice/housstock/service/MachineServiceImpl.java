@@ -11,6 +11,7 @@ import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.model.dto.MatiereDto;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.model.dto.TypeMachineDto;
+import com.housservice.housstock.repository.EtapeRepository;
 import com.housservice.housstock.repository.MachineRepository;
 import com.housservice.housstock.repository.PersonnelRepository;
 import com.housservice.housstock.repository.TypeMachineRepository;
@@ -32,14 +33,14 @@ public class MachineServiceImpl implements MachineService
     private final MachineRepository machineRepository;
     private final PersonnelRepository personnelRepository;
 
-    private final TypeMachineRepository typeMachineRepository;
+    private final EtapeRepository etapeRepository;
 
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     @Autowired
-    public MachineServiceImpl(MachineRepository machineRepository, MessageHttpErrorProperties messageHttpErrorProperties, TypeMachineRepository typeMachineRepository,PersonnelRepository personnelRepository) {
+    public MachineServiceImpl(MachineRepository machineRepository, MessageHttpErrorProperties messageHttpErrorProperties, EtapeRepository etapeRepository,PersonnelRepository personnelRepository) {
         this.machineRepository = machineRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
-        this.typeMachineRepository=typeMachineRepository;
+        this.etapeRepository=etapeRepository;
         this.personnelRepository=personnelRepository;
     }
 
@@ -221,9 +222,9 @@ public class MachineServiceImpl implements MachineService
     }
     @Override
     public List<String> getType()   {
-        List<TypeMachine> machines = typeMachineRepository.findAll();
+        List<Etape> machines = etapeRepository.findEtapeByTypeEtape("Machine");
         return machines.stream()
-                .map(TypeMachine::getNom)
+                .map(Etape::getNomEtape)
                 .collect(Collectors.toList());
     }
 
@@ -242,15 +243,15 @@ public class MachineServiceImpl implements MachineService
 
     @Override
     public void addType(String type) throws ResourceNotFoundException {
-        typeMachineRepository.deleteByNom("Autre");
-        TypeMachineDto machineDto1 = new TypeMachineDto();
-        machineDto1.setNom(type);
-        TypeMachine matiere1 = TypeMachineMapper.MAPPER.toTypeMachine(machineDto1);
-        typeMachineRepository.save(matiere1);
-        TypeMachineDto machineDto2 = new TypeMachineDto();
-        machineDto2.setNom("Autre");
-        TypeMachine matiere2 = TypeMachineMapper.MAPPER.toTypeMachine(machineDto2);
-        typeMachineRepository.save(matiere2);
+        etapeRepository.deleteByNomEtape("Autre");
+        Etape machineDto1 = new Etape();
+        machineDto1.setNomEtape(type);
+        machineDto1.setTypeEtape("Machine");
+        etapeRepository.save(machineDto1);
+        Etape machineDto2 = new Etape();
+        machineDto2.setNomEtape("Autre");
+        machineDto2.setTypeEtape("Machine");
+        etapeRepository.save(machineDto2);
 
     }
 

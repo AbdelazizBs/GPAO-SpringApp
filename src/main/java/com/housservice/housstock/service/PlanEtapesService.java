@@ -15,5 +15,4 @@ public interface PlanEtapesService {
      ResponseEntity<Map<String, Object>> searchP(String textToFind, int page, int size, boolean enVeille);
      ResponseEntity<Map<String, Object>> onSortActivePlanEtapes(int page, int size, String field, String order);
     public void delete(String id) ;
-
 }

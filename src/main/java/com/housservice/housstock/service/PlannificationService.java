@@ -29,7 +29,6 @@ public interface PlannificationService {
    int indiceEtape(String id);
     public ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
     PlanEtapes getEtapesValue(String id,String Nom);
-     void Terminer(String id);
     void Suivi(String id);
     void deleteArticle(String id);
 

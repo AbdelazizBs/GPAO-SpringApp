@@ -32,6 +32,4 @@ public class PlannificationDto {
 
     private int progress;
     private String idComm;
-
-    private  int seq = 0;
 }

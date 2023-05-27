@@ -15,7 +15,8 @@ public interface PlanEtapesRepository extends MongoRepository<PlanEtapes, String
 
 
 
-    Page<PlanEtapes> findPersonnelByTerminer(boolean b, Pageable paging);
     @Query( "{$or:[{'nomEtape': {$regex : ?0}} ,{'quantiteConforme': {$regex : ?0}} ,{'monitrice': {$regex : ?0}},{'ref': {$regex : ?0}}] }")
     Page<PlanEtapes> findPlanEtapesByTextToFind(String textToFind, Pageable paging);
+
+    Page<PlanEtapes> findPlanEtapesByTerminer(boolean b, Pageable paging);
 }

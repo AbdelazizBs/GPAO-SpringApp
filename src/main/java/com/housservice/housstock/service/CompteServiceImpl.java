@@ -59,6 +59,10 @@ public class CompteServiceImpl implements CompteService{
         if (bcrypt.matches(loginRequest.getPassword(),compte.getPassword())) {
             String token = generateToken(compte);
             compte.setDatelastlogin(new Date());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(compte.getDatelastlogin());
+            calendar.add(Calendar.HOUR_OF_DAY, 1);
+            compte.setDatelastlogin(calendar.getTime());
             compteRepository.save(compte);
             return token;
         } else {
@@ -84,6 +88,10 @@ public class CompteServiceImpl implements CompteService{
             if (compteRepository.existsByEmail(compteDto.getEmail())) {
                 throw new IllegalArgumentException("Ce nom d'utilisateur existe déjà.");
             }
+            if (compteDto.getRole()==null || compteDto.getIdPersonnel()==null || compteDto.getPassword()=="") {
+                throw new IllegalArgumentException("Veuillez renseigner les champs obligatoires.");
+            }
+
             compteDto.setMiseEnVeille(false);
             compteDto.setPassword(passwordEncoder.encode(compteDto.getPassword()));
             Compte compte = CompteMapper.MAPPER.toCompte(compteDto);

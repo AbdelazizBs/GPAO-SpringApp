@@ -13,6 +13,7 @@ import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.model.dto.PlanEtapesDto;
 import com.housservice.housstock.model.dto.PlannificationDto;
 import com.housservice.housstock.repository.MachineRepository;
+import com.housservice.housstock.repository.PlanEtapesRepository;
 import com.housservice.housstock.repository.PlannificationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,11 +31,15 @@ import static org.springframework.data.repository.util.ReactiveWrapperConverters
 public class PlanifierMachineServiceImpl implements PlanifierMachineService{
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     private final PlannificationRepository plannificationRepository;
+    private final PlanEtapesRepository planEtapesRepository;
+
     private final MachineRepository machineRepository;
-    public PlanifierMachineServiceImpl(MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository, MachineRepository machineRepository) {
+    public PlanifierMachineServiceImpl(PlanEtapesRepository planEtapesRepository,MessageHttpErrorProperties messageHttpErrorProperties, PlannificationRepository plannificationRepository, MachineRepository machineRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.plannificationRepository = plannificationRepository;
         this.machineRepository = machineRepository;
+        this.planEtapesRepository = planEtapesRepository;
+
     }
 
     @Override
@@ -146,7 +151,35 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
         planEtapesDto.setTerminer(true);
         PlanEtapes etape = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
         etapes.add(etape);
+        planEtapesRepository.save(etape);
         plannification1.setEtapes(etapes);
         plannificationRepository.save(plannification1);
+    }
+    @Override
+    public ResponseEntity<Map<String, Object>> getPlantodayByMachine(int page, int size,String refMachine) {
+        try {
+            List<PlanEtapesDto> planetapes = new ArrayList<PlanEtapesDto>();
+            Pageable paging = PageRequest.of(page, size);
+            Page<PlanEtapes> pageTuts;
+            pageTuts = planEtapesRepository.findPlanEtapesByTerminer(true, paging);
+            planetapes = pageTuts.getContent().stream().map(personnel -> {
+                return PlanEtapesMapper.MAPPER.toPlanEtapesDto(personnel);
+            }).collect(Collectors.toList());
+            List<PlanEtapesDto> matchingPlanifications = new ArrayList<>();
+            for (PlanEtapesDto i : planetapes) {
+                if (i.getRefMachine() != null && i.getRefMachine().equals(refMachine) ) {
+                    matchingPlanifications.add(i);
+                }
+            }
+            Map<String, Object> response = new HashMap<>();
+            response.put("matchingPlanifications", matchingPlanifications);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }

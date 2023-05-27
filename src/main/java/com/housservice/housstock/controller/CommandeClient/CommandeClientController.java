@@ -109,6 +109,15 @@ public class CommandeClientController {
         return commandeClientService.onSortActiveCommandeClient(page,size,field,order);
 
     }
+    @GetMapping("/onSortNoActiveCommandeClient")
+    @ApiOperation(value = "service to get get All active commandeClient   sorted  and ordered by  params")
+    public ResponseEntity<Map<String, Object>> onSortNoActiveCommandeClient(@RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "3") int size,
+                                                                  @RequestParam(defaultValue = "field") String field,
+                                                                  @RequestParam(defaultValue = "order") String order){
+        return commandeClientService.onSortNoActiveCommandeClient(page,size,field,order);
+
+    }
     @GetMapping("/getIdCommandeClients/{numBcd}")
     @ApiOperation(value = "service to get Id CommandeClient by numBcd.")
 
@@ -199,4 +208,15 @@ public class CommandeClientController {
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
     }
 
+    @DeleteMapping("/delete/{id}")
+    @ApiOperation(value = "service to delete one Commande by Id.")
+    public Map < String, Boolean > deleteclient(
+            @ApiParam(name = "id", value="id of Commande", required = true)
+            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+            throws ResourceNotFoundException {
+        commandeClientService.delete(id);
+        Map < String, Boolean > response = new HashMap < > ();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
 }

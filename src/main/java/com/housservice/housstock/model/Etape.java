@@ -23,4 +23,7 @@ public class Etape {
         this.nomEtape = nomEtape;
         this.typeEtape = typeEtape;
     }
+
+    public Etape() {
+    }
 }

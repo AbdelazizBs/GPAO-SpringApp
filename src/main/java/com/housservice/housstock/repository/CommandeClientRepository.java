@@ -20,7 +20,7 @@ public interface CommandeClientRepository extends MongoRepository<CommandeClient
     Optional<CommandeClient> findCommandeClientByArticleId(String idContact ) ;
 
     Page<CommandeClient> findCommandeClientByMiseEnVeille(Pageable paging, boolean b);
-    @Query( "{$or:[{'numBcd': {$regex : ?0}},{'client': {$regex : ?0}} ,{'article.designationMatiere': {$regex : ?0}}] }")
+    @Query( "{$or:[{'numBcd': {$regex : ?0}},{'client': {$regex : ?0}} ,{'article.designationMatiere': {$regex : ?0}},{'article.etat': {$regex : ?0}}] }")
     Page<CommandeClient> findCommandeClientByTextToFind(String textToFind, Pageable paging);
 
     CommandeClient findCommandeClientByArticle(Article article);

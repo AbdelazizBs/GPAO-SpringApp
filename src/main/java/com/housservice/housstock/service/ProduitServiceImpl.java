@@ -44,10 +44,8 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public void addProduit(ProduitDto produitDto) {
         try {
-
-
             if (produitRepository.existsProduitByDesignation(produitDto.getDesignation())) {
-                throw new IllegalArgumentException(" cin " + produitDto.getDesignation() + "  existe deja !!");
+                throw new IllegalArgumentException( produitDto.getDesignation() + "  existe deja !!");
             }
             List<Picture> pictures1 = new ArrayList<>();
             produitDto.setPictures(pictures1);

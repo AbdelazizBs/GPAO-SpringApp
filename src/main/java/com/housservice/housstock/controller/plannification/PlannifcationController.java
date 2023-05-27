@@ -143,12 +143,6 @@ public class PlannifcationController {
         return plannificationService.getEtapesValue(id,Nom);
 
     }
-        @GetMapping("/Ready/{id}")
-    public void Terminer(@ApiParam(name = "id", value = "id", required = true)
-                                     @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id
-    )  {
-        plannificationService.Terminer(id);
-    }
     @GetMapping("/Suivi/{id}")
     public void Suivi(@ApiParam(name = "id", value = "id", required = true)
                          @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id

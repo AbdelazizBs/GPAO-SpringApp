@@ -3,6 +3,7 @@ package com.housservice.housstock.service;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.AffectationProduit;
 import com.housservice.housstock.model.Article;
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.CommandeClient;
 import com.housservice.housstock.model.dto.ArticleDto;
 import com.housservice.housstock.model.dto.CommandeClientDto;
@@ -26,6 +27,8 @@ public interface CommandeClientService {
     int getallCommandeClient();
     public ResponseEntity<Map<String, Object>> onSortActiveCommandeClient(int page, int size, String field, String order);
     List<String> getAllClients();
+    public ResponseEntity<Map<String, Object>> onSortNoActiveCommandeClient(int page, int size, String field, String order);
+
     ResponseEntity<Map<String, Object>> getAllCommandeClient(int page , int size);
     void addArticleCommandeClient(ArticleDto articleDto, String idCommandeClient ) throws ResourceNotFoundException;
     void updateArticleCommandeClient( ArticleDto article, String idArticle) throws ResourceNotFoundException;
@@ -40,6 +43,6 @@ public interface CommandeClientService {
 
     void addOF(Article article) throws ResourceNotFoundException;
     ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
-
+     void delete(String id);
 
 }

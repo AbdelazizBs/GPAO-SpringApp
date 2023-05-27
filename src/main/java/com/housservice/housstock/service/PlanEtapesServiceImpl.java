@@ -42,13 +42,18 @@ public class PlanEtapesServiceImpl implements PlanEtapesService{
             List<PlanEtapesDto> planetapes = new ArrayList<PlanEtapesDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<PlanEtapes> pageTuts;
-            Date date = new Date();
-            pageTuts = planEtapesRepository.findPersonnelByTerminer(true, paging);
+            pageTuts = planEtapesRepository.findPlanEtapesByTerminer(true, paging);
             planetapes = pageTuts.getContent().stream().map(personnel -> {
                 return PlanEtapesMapper.MAPPER.toPlanEtapesDto(personnel);
             }).collect(Collectors.toList());
+            List<PlanEtapesDto> matchingPlanifications = new ArrayList<>();
+            for (PlanEtapesDto i : planetapes) {
+                    if (i.getRefMachine() == null) {
+                        matchingPlanifications.add(i);
+                    }
+                }
             Map<String, Object> response = new HashMap<>();
-            response.put("planetapes", planetapes);
+            response.put("matchingPlanifications", matchingPlanifications);
             response.put("currentPage", pageTuts.getNumber());
             response.put("totalItems", pageTuts.getTotalElements());
             response.put("totalPages", pageTuts.getTotalPages());
@@ -56,8 +61,9 @@ public class PlanEtapesServiceImpl implements PlanEtapesService{
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
+
+
     @Override
     public void delete(String id) {
     PlanEtapes planEtapes = planEtapesRepository.findById(id).get();

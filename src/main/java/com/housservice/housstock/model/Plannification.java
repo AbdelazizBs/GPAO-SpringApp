@@ -30,17 +30,12 @@ package com.housservice.housstock.model;
 
         private int progress;
 
-        private int seq = 0;
-
 
         public Plannification() {
         }
-        public void incrementCmdId() {
-            ++seq;
-            ref = "OF_00"+seq;
-        }
 
-        public Plannification(String id, List<String> personnels, String nomEtape, Article ligneCommandeClient, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, Boolean plan, Boolean etat, List<PlanEtapes> etapes, String ref, String idComm, int progress, int seq) {
+
+        public Plannification(String id, List<String> personnels, String nomEtape, Article ligneCommandeClient, int quantiteNonConforme, int quantiteConforme, int quantiteInitiale, String commentaire, Boolean plan, Boolean etat, List<PlanEtapes> etapes, String ref, String idComm, int progress) {
             this.id = id;
             this.personnels = personnels;
             this.nomEtape = nomEtape;
@@ -55,6 +50,5 @@ package com.housservice.housstock.model;
             this.ref = ref;
             this.idComm = idComm;
             this.progress = progress;
-            this.seq = seq;
         }
     }

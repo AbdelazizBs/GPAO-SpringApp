@@ -3,6 +3,7 @@ package com.housservice.housstock.controller.planifierMachine;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.dto.PlanEtapesDto;
+import com.housservice.housstock.service.PlanEtapesService;
 import com.housservice.housstock.service.PlanifierMachineService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,13 +22,15 @@ import java.util.Map;
 @RequestMapping("/api/v1/planifiermachine")
 public class planifierMachineController {
     private final MessageHttpErrorProperties messageHttpErrorProperties;
+    private final PlanEtapesService planEtapesService;
+
     private final PlanifierMachineService planifierMachineService;
-@Autowired
-    public planifierMachineController(MessageHttpErrorProperties messageHttpErrorProperties, PlanifierMachineService planifierMachineService) {
-        this.messageHttpErrorProperties = messageHttpErrorProperties;
+    @Autowired
+    public planifierMachineController( PlanEtapesService planEtapesService,MessageHttpErrorProperties messageHttpErrorProperties, PlanifierMachineService planifierMachineService) {this.messageHttpErrorProperties = messageHttpErrorProperties;
     this.planifierMachineService = planifierMachineService;
+    this.planEtapesService=planEtapesService;
 }
-@GetMapping("/getMachine/{nomConducteur}")
+    @GetMapping("/getMachine/{nomConducteur}")
     public List<String> getMachineNamesByConductor(@PathVariable String nomConducteur) {
         return planifierMachineService.getMachineByNomConducteur(nomConducteur);
     }
@@ -63,5 +66,11 @@ public class planifierMachineController {
         planifierMachineService.terminer(id,planEtapesDto);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
 
+    }
+    @GetMapping("/getPlantoday")
+    public ResponseEntity<Map<String, Object>> getPlantoday(@RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "3") int size,
+                                                            @RequestParam String refMachine){
+        return planifierMachineService.getPlantodayByMachine(page,size,refMachine);
     }
 }

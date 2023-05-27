@@ -325,6 +325,10 @@ public class CommandeServiceImpl implements CommandeService{
         }
     }
 
-
+    @Override
+    public void delete(String id) {
+        Commande commande= commandeRepository.findById(id).get();
+        commandeRepository.delete(commande);
+    }
 }
 

@@ -150,6 +150,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
             commandeClientDtos = pageTuts.getContent().stream().map(commandeClient -> {
                 return CommandeClientMapper.MAPPER.toCommandeClientDto(commandeClient);
             }).collect(Collectors.toList());
+            commandeClientDtos =commandeClientDtos.stream().filter(client -> !client.isMiseEnVeille()).collect(Collectors.toList());
 
             Map<String, Object> response = new HashMap<>();
             response.put("commandeClients", commandeClientDtos);
@@ -161,7 +162,32 @@ public class CommandeClientServiceImpl implements CommandeClientService{
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Override
+    public ResponseEntity<Map<String, Object>> onSortNoActiveCommandeClient(int page, int size, String field, String order) {
+        try {
+            List<CommandeClientDto> commandeClientDtos ;
+            Page<CommandeClient> pageTuts;
+            if (order.equals("1")){
+                pageTuts = commandeClientRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
+            }
+            else {
+                pageTuts = commandeClientRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
+            }
+            commandeClientDtos = pageTuts.getContent().stream().map(commandeClient -> {
+                return CommandeClientMapper.MAPPER.toCommandeClientDto(commandeClient);
+            }).collect(Collectors.toList());
+            commandeClientDtos =commandeClientDtos.stream().filter(client -> client.isMiseEnVeille()).collect(Collectors.toList());
 
+            Map<String, Object> response = new HashMap<>();
+            response.put("commandeClients", commandeClientDtos);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @Override
     public List<String> getAllClients() {
@@ -313,7 +339,6 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         plannification.setPlan(false);
         plannification.setEtat(false);
         plannification.setQuantiteInitiale(article.getQuantite());
-        plannification.incrementCmdId();
         List<PlanEtapes> Etapes = new ArrayList<>();
         if (plannification.getEtapes()==null){
             plannification.setEtapes(Etapes);
@@ -343,6 +368,11 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @Override
+    public void delete(String id) {
+        CommandeClient commandeClient= commandeClientRepository.findById(id).get();
+        commandeClientRepository.delete(commandeClient);
     }
 
 }

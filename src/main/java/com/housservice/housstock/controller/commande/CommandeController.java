@@ -2,6 +2,7 @@ package com.housservice.housstock.controller.commande;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.Client;
 import com.housservice.housstock.model.Commande;
 import com.housservice.housstock.model.CommandeSuivi;
 import com.housservice.housstock.model.dto.*;
@@ -192,6 +193,17 @@ public class CommandeController {
     @ApiOperation(value = "service to get one Reference fournisseur")
     public List<String> getAllArticle(@RequestParam String nomClient,@RequestParam String type) {
         return commandeService.getAllArticle(nomClient,type);
+    }
+    @DeleteMapping("/delete/{id}")
+    @ApiOperation(value = "service to delete one Commande by Id.")
+    public Map < String, Boolean > deleteclient(
+            @ApiParam(name = "id", value="id of Commande", required = true)
+            @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id)
+            throws ResourceNotFoundException {
+        commandeService.delete(id);
+        Map < String, Boolean > response = new HashMap < > ();
+        response.put("deleted", Boolean.TRUE);
+        return response;
     }
 
 }

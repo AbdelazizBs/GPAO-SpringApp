@@ -161,6 +161,15 @@ public class PlannificationServiceImpl implements PlannificationService {
         etapes.add(etape);
         etape.setQuantiteInitiale(plannification1.getQuantiteInitiale());
         etape.setIdOf(id);
+        String[] Nbretapes = this.getEtape(id);
+        int length = Nbretapes.length;
+        int i = etapes.size();
+        if (length== i){
+            plannification1.setPlan(true);
+            commandeClientRepository.findById(plannification1.getIdComm()).get();
+            commandeClient.setEtat("en production");
+            commandeClientRepository.save(commandeClient);
+        }
         plannification1.setEtapes(etapes);
         plannification1.setNomEtape(etape.getNomEtape());
         plannification1.setQuantiteInitiale(etape.getQuantiteInitiale());
@@ -254,14 +263,7 @@ public class PlannificationServiceImpl implements PlannificationService {
         return null;
     }
 
-    public void Terminer(String id) {
-        Plannification plannification = plannificationRepository.findById(id).get();
-        CommandeClient commandeClient = commandeClientRepository.findById(plannification.getIdComm()).get();
-        commandeClient.setEtat("en production");
-        commandeClientRepository.save(commandeClient);
-        plannification.setPlan(true);
-        plannificationRepository.save(plannification);
-    }
+
     public void Suivi(String id) {
         Plannification plannification = plannificationRepository.findById(id).get();
         plannification.setEtat(true);
