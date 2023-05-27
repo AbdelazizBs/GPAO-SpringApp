@@ -44,13 +44,10 @@ C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\Article.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\EtatMachineService.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\Comptes.java
-C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\article\ArticleController.java
-C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\article\package-info.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\EtapeProductionServiceImpl.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\MvtStkService.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\mapper\LigneCommandClientMapper.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\repository\CommandeClientRepository.java
-C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\matiere\MatiereController.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\mapper\ClientMapper.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\PlanificationOf.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\client\package-info.java
@@ -85,7 +82,6 @@ C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\MatiereService.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\ClientService.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\message\ResponseMessage.java
-C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\administration\UniteMesureController.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\repository\FournisseurRepository.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\dto\LigneCommandeFournisseurDto.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\CommandeClientService.java
@@ -111,7 +107,6 @@ C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\dto\EntrepriseDto.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\machine\package-info.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\mapper\PlanificationMappper.java
-C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\administration\CompteController.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\dto\LigneCommandeClientDto.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\dto\ComptesDto.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\Nomenclature.java
@@ -133,13 +128,11 @@ C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\NomenclatureServiceImpl.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\MachineService.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\dto\EtapeProductionDto.java
-C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\MvtStk\MvtStkController.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\filter\CustomAuthorizationFilter.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\dto\OrdreFabricationDTO.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\package-info.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\repository\ComptesRepository.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\MatiereServiceImpl.java
-C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\MvtStk\package-info.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\mapper\CommandMapper.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\repository\MvtStkRepository.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\EtatMachine.java
@@ -162,7 +155,6 @@ C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\repository\PersonnelRepository.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\MachineServiceImpl.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\PlanificationServiceImpl.java
-C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\matiere\package-info.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\personnel\PersonnelController.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\dto\MatiereDto.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\PlanificationService.java
@@ -176,7 +168,6 @@ C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\repository\MetaDataRepository.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\service\SequenceGeneratorService.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\configuration\package-info.java
-C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\controller\administration\package-info.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\dto\package-info.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\model\Contact.java
 C:\Users\Asus\Desktop\Travail\Stage\RealProject\housstock-backend\src\main\java\com\housservice\housstock\repository\PagingAndSortingRepository.java

@@ -27,6 +27,10 @@ public abstract class PlanificationMappper   {
             planificationOfDTO.setIdPersonnels(planificationOf.getPersonnels().size()>0 ? planificationOf.getPersonnels().stream().map(Personnel::getId).collect(Collectors.toList()):new ArrayList<>());
     planificationOfDTO.setMachineId(planificationOf.getMachine() !=null ? planificationOf.getMachine().getId():"");
     planificationOfDTO.setLibelleMachine( planificationOf.getMachine() !=null ? planificationOf.getMachine().getLibelle():"");
+//        planificationOfDTO.setNomPersonnels( planificationOf.getPersonnels().stream().map(Personnel::getNom).collect(Collectors.toList() ));
+//            planificationOfDTO.setIdPersonnels(planificationOf.getPersonnels().stream().map(Personnel::getId).collect(Collectors.toList()) );
+//    planificationOfDTO.setMachineId( planificationOf.getMachine().getId());
+//    planificationOfDTO.setLibelleMachine(  planificationOf.getMachine().getLibelle());
     }
 
     @AfterMapping

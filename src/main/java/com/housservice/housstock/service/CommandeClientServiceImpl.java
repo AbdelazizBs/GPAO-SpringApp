@@ -216,9 +216,8 @@ public class CommandeClientServiceImpl implements CommandeClientService {
             ligneCommandeClient.setNomenclature(nomenclature);
             // Create a new Planification for this Nomenclature
             PlanificationOf planificationOf = new PlanificationOf();
-            List<Machine> machine = machineRepository.findMachineByEtapeProduction(nomenclature.getEtapeProductions().get(0));
             planificationOf.setPersonnels(new ArrayList<>());
-            planificationOf.setMachine(machine.get(0));
+            planificationOf.setMachine(new Machine());
             planificationOf.setNomEtape(nomenclature.getEtapeProductions().get(0).getNomEtape());
             planificationOf.setOperationType(nomenclature.getEtapeProductions().get(0).getTypeEtape());
             planificationOf.setLigneCommandeClient(ligneCommandeClient);

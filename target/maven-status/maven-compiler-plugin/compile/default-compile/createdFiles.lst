@@ -3,7 +3,6 @@ com\housservice\housstock\controller\PlanificationOf\PlanificationOfController.c
 com\housservice\housstock\mapper\ArticleMapper.class
 com\housservice\housstock\service\PictureService.class
 com\housservice\housstock\controller\fournisseur\FournisseurController.class
-com\housservice\housstock\controller\article\ArticleController.class
 com\housservice\housstock\controller\machine\MachineController.class
 com\housservice\housstock\mapper\MatiereMapperImpl.class
 com\housservice\housstock\service\NomenclatureServiceImpl.class
@@ -12,7 +11,6 @@ com\housservice\housstock\mapper\MatiereMapper.class
 com\housservice\housstock\model\dto\PlanificationOfDTO.class
 com\housservice\housstock\repository\ComptesRepository.class
 com\housservice\housstock\repository\PlanificationRepository.class
-com\housservice\housstock\controller\matiere\MatiereController.class
 com\housservice\housstock\mapper\NomenclatureMapperImpl.class
 com\housservice\housstock\repository\MetaDataRepository.class
 com\housservice\housstock\controller\nomenclatures\NomenclatureController.class
@@ -29,7 +27,6 @@ com\housservice\housstock\mapper\NomenclatureMapper.class
 com\housservice\housstock\mapper\PersonnelMapperImpl.class
 com\housservice\housstock\service\ContactServiceImpl.class
 com\housservice\housstock\model\Picture.class
-com\housservice\housstock\controller\administration\UniteMesureController.class
 com\housservice\housstock\service\PersonnelServiceImpl.class
 com\housservice\housstock\mapper\FournisseurMapper.class
 com\housservice\housstock\controller\MetaDataController.class
@@ -92,7 +89,6 @@ com\housservice\housstock\repository\MatiereRepository.class
 com\housservice\housstock\controller\comptes\ComptesController.class
 com\housservice\housstock\service\EntrepriseService.class
 com\housservice\housstock\repository\PictureRepository.class
-com\housservice\housstock\controller\MvtStk\MvtStkController.class
 com\housservice\housstock\model\DatabaseSequence.class
 com\housservice\housstock\repository\MvtStkRepository.class
 com\housservice\housstock\exception\FileUploadExceptionAdvice.class
@@ -148,7 +144,6 @@ com\housservice\housstock\exception\GlobalExceptionHandler.class
 com\housservice\housstock\message\ResponseMessage.class
 com\housservice\housstock\configuration\DataLoader.class
 com\housservice\housstock\service\MachineService.class
-com\housservice\housstock\controller\administration\CompteController.class
 com\housservice\housstock\model\dto\EtapeProductionDto.class
 com\housservice\housstock\exception\ErrorDetails.class
 com\housservice\housstock\mapper\MachineMapperImpl.class

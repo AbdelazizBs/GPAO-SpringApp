@@ -54,10 +54,9 @@ public class PlanificationServiceImpl implements PlanificationService {
     @Override
     public void updatePlanfication( PlanificationOfDTO planificationOfDTO) throws ResourceNotFoundException {
         PlanificationOf planificationOf = PlanificationMappper.MAPPER.toPlanificationOf(planificationOfDTO);
-
-        if (planificationOfDTO.getIdPersonnels()!=null || !planificationOfDTO.getIdPersonnels().isEmpty()){
-           List<Personnel> personnels= new ArrayList<>();
-        planificationOfDTO.getIdPersonnels().forEach(idP ->
+         List<Personnel> personnels= new ArrayList<>();
+        if (!planificationOfDTO.getIdPersonnels().isEmpty()){
+            planificationOfDTO.getIdPersonnels().forEach(idP ->
                    {
                        try {
                           personnels.add(personnelRepository.findById(idP)
@@ -68,17 +67,14 @@ public class PlanificationServiceImpl implements PlanificationService {
                        }
                    }
               );
-            planificationOf.setPersonnels(personnels);
         }
-
-
-        if (!planificationOfDTO.getMachineId().isEmpty() || planificationOfDTO.getMachineId()!=null){
-                planificationOf.setMachine(null);
-                Machine machine = machineRepository.findById(planificationOfDTO.getMachineId())
-                        .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getMachineId())));
-                planificationOf.setMachine(machine);
-            }
-        planificationRepository.save(planificationOf);
+        if (!planificationOfDTO.getMachineId().isEmpty()){
+            Machine machine = machineRepository.findById(planificationOfDTO.getMachineId())
+                    .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), planificationOfDTO.getMachineId())));
+            planificationOf.setMachine(machine);
+        }
+                planificationOf.setPersonnels(personnels);
+                planificationRepository.save(planificationOf);
     }
 
 
