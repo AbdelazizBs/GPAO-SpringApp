@@ -23,7 +23,7 @@ public interface PersonnelService {
 
     ResponseEntity<Map<String, Object>> getConcducteurs();
     ResponseEntity<Map<String, Object>> getOperatricesName();
-    ResponseEntity<Map<String, Object>> getPersonnelsNameByMachine(String nomEtape);
+    ResponseEntity<Map<String, Object>> getConcducteursByLibelleMachineAndIdMachine(String libelle);
     ResponseEntity<Map<String, Object>> getPersonnelByEmailCompte(String email);
     ResponseEntity<Map<String, Object>> getPersonnelsId(List<String> personnelsName);
 

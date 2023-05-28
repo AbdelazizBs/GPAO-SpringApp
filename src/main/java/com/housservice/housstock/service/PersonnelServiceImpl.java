@@ -290,22 +290,17 @@ public class PersonnelServiceImpl implements PersonnelService {
 
     }
  @Override
-    public ResponseEntity<Map<String, Object>> getPersonnelsNameByMachine(String nomEtape) {
+    public ResponseEntity<Map<String, Object>> getConcducteursByLibelleMachineAndIdMachine(String libelle) {
 
         try {
-            List<String> personnelsName = new ArrayList<>();
-            EtapeProduction etapeProductions =etapeProductionRepository.findByNomEtape(nomEtape).
-                    orElseThrow(() -> new NotFoundException("Etape production not found"));
-            List<Machine> machines = machineRepository.findMachineByEtapeProduction(etapeProductions);
-            // add all personnels name of machines in list and filter reppeated name
-            for (Machine machine : machines) {
-                for (Personnel personnel : machine.getPersonnel()) {
-                    personnelsName.add(personnel.getNom());
-                }
-            }
-            personnelsName = personnelsName.stream().distinct().collect(Collectors.toList());
+            Machine machine = machineRepository.findMachineByLibelle(libelle)
+                    .orElseThrow(() -> new NotFoundException("Machine not found"));
+            List<String> coductersName = machine.getPersonnel().stream().map(personnel -> {
+                return personnel.getNom();
+            }).collect(Collectors.toList());
             Map<String, Object> response = new HashMap<>();
-            response.put("nomConducteurs", personnelsName);
+            response.put("nomConducteurs", coductersName);
+            response.put("machineId", machine.getId());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

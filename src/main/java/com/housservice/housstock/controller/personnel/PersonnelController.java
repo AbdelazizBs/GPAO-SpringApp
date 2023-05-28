@@ -112,10 +112,10 @@ public class PersonnelController {
     public ResponseEntity<Map<String, Object>> getPersonnelByEmailCompte(@RequestParam(value = "email", required = true) String email) {
         return personnelService.getPersonnelByEmailCompte(email);
     }
-   @GetMapping("/getPersonnelsNameByNameEtape")
+   @GetMapping("/getConcducteursByLibelleMachineAndIdMachine")
     @ApiOperation(value = "service to get Operatrice name list.")
-    public ResponseEntity<Map<String, Object>> getPersonnelsNameByMachine(@RequestParam(value = "nomEtape", required = true) String nomEtape) {
-        return personnelService.getPersonnelsNameByMachine(nomEtape);
+    public ResponseEntity<Map<String, Object>> getConcducteursByLibelleMachineAndIdMachine(@RequestParam(value = "libelle", required = true) String libelle) {
+        return personnelService.getConcducteursByLibelleMachineAndIdMachine(libelle);
     }
 
     @GetMapping("/getPersonnelsId")
