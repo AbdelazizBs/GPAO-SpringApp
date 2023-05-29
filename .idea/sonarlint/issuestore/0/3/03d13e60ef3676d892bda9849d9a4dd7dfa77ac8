@@ -1,0 +1,9 @@
+
+²
+java:S1130N"–Remove the declaration of thrown exception 'com.housservice.housstock.exception.ResourceNotFoundException', as it cannot be thrown from method's body.(ÐƒñÆûÿÿÿÿ
+²
+java:S1130T"–Remove the declaration of thrown exception 'com.housservice.housstock.exception.ResourceNotFoundException', as it cannot be thrown from method's body.(ÐƒñÆûÿÿÿÿ
+¹
+java:S1130Y"–Remove the declaration of thrown exception 'com.housservice.housstock.exception.ResourceNotFoundException', as it cannot be thrown from method's body.(ÐƒñÆûÿÿÿÿ8ÓùÆÞ„1
+U
+java:S1128"3Remove this unused import 'javax.validation.Valid'.(æ¤ñ÷úÿÿÿÿ8õÆ¯à„1

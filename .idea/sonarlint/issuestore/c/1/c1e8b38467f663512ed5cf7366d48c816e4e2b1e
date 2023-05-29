@@ -1,0 +1,4 @@
+
+n	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«ñ…;
+²
+java:S11307"–Remove the declaration of thrown exception 'com.housservice.housstock.exception.ResourceNotFoundException', as it cannot be thrown from method's body.(ÐƒñÆûÿÿÿÿ

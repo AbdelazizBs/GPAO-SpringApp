@@ -1,0 +1,81 @@
+
+`	java:S112i"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+`	java:S112o"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+`	java:S112t"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112¯"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112Í"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+h	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8û°şßÿ0
+h	java:S112ª"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8û°şßÿ0
+h	java:S112Ê"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ı°şßÿ0
+h	java:S112ä"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ı°şßÿ0
+h	java:S112ÿ"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ı°şßÿ0
+h	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ş°şßÿ0
+h	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ş°şßÿ0
+h	java:S112š"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ÿ°şßÿ0
+h	java:S112¦"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ÿ°şßÿ0
+h	java:S112‚"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ÿ°şßÿ0
+a
+java:S1192}"KDefine a constant instead of duplicating this literal "totalItems" 6 times.(•Æ–
+d
+java:S1192{"NDefine a constant instead of duplicating this literal "nomenclatures" 9 times.(Ë¾¯
+f
+java:S1192~"KDefine a constant instead of duplicating this literal "totalPages" 6 times.( —Ûşÿÿÿÿ
+g
+java:S1192|"LDefine a constant instead of duplicating this literal "currentPage" 6 times.(Òãï€úÿÿÿÿ
+†
+java:S1488’"hImmediately return this expression instead of assigning it to the temporary variable "etapeProductions".(Éû¬Ÿ8Œ±şßÿ0
+¬
+java:S4449ê"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8Ù²şßÿ0
+¬
+java:S4449Ñ"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8Ù²şßÿ0
+¬
+java:S4449È"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8Ù²şßÿ0
+¬
+java:S4449…"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8Ø²şßÿ0
+¬
+java:S4449×"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8ãÇûßÿ0
+¬
+java:S4449ò"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8Ù²şßÿ0
+¬
+java:S4449¿"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8Ù²şßÿ0
+¬
+java:S4449Ş"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8Ù²şßÿ0
+¬
+java:S4449ˆ"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8Ù²şßÿ0
+‡
+java:S4144Ó"dUpdate this method so that its implementation is not identical to "getNomNomenclatures" on line 221.(ºËûÂşÿÿÿÿ8Ü²şßÿ0
+>	java:S108D")Either remove or fill this block of code.(„è¯Å
+A
+java:S2201x"+The return value of "collect" must be used.(œçÖß
+A
+java:S2201r"+The return value of "collect" must be used.(œçÖß
+A
+java:S2201l"+The return value of "collect" must be used.(œçÖß
+R	java:S125’"<This block of commented-out lines of code should be removed.(ö¢ĞŠ
+I
+java:S1481¥"-Remove this unused "pageTuts" local variable.(ø–‹÷ıÿÿÿÿ
+B
+java:S2201¹"+The return value of "collect" must be used.(œçÖß
+b
+java:S1612Î"LReplace this lambda with method reference 'NomenclatureDto::isMiseEnVeille'.(âŠĞ,
+I
+java:S2201’"+The return value of "collect" must be used.(œçÖß8³³şßÿ0
+I
+java:S2201¡"+The return value of "collect" must be used.(œçÖß8µ³şßÿ0
+q
+java:S1602Æ"SRemove useless curly braces around statement and then remove useless return keyword(éğğğ8»³şßÿ0
+j
+java:S1612É"LReplace this lambda with method reference 'NomenclatureDto::isMiseEnVeille'.(¤’ê8¼³şßÿ0
+q
+java:S1602ß"SRemove useless curly braces around statement and then remove useless return keyword(éğğğ8¿³şßÿ0
+q
+java:S1602ù"SRemove useless curly braces around statement and then remove useless return keyword(¶Á¬•8Â³şßÿ0
+I
+java:S2201Ä"+The return value of "collect" must be used.(†öúš8É³şßÿ0
+I
+java:S2201Ú"+The return value of "collect" must be used.(†öúš8Ì³şßÿ0
+c
+java:S1854î"@Remove this useless assignment to local variable "nomenclature".(”Âëˆüÿÿÿÿ8Ü³şßÿ0
+T
+java:S1481î"1Remove this unused "nomenclature" local variable.(”Âëˆüÿÿÿÿ8İ³şßÿ0
+^	java:S125ñ"<This block of commented-out lines of code should be removed.(³Äº‘ÿÿÿÿÿ8İ³şßÿ0

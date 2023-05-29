@@ -1,0 +1,8 @@
+
+r	java:S117q"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÚåÃ…ÿÿÿÿÿ8ùÖú¾€1
+‹
+java:S1488q"iImmediately return this expression instead of assigning it to the temporary variable "IdEtapeProduction".(ÚåÃ…ÿÿÿÿÿ8úÖú¾€1
+
+java:S1612>"]Replace this lambda with method reference 'this::buildEtapeProductionDtoFromEtapeProduction'.(©ñ¶âÿÿÿÿÿ8Š×ú¾€1
+Z
+java:S1612?"=Replace this lambda with method reference 'Objects::nonNull'.(ÕèØÌ8Š×ú¾€1

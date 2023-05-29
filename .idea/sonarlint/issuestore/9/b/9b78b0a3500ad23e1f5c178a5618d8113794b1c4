@@ -1,0 +1,8 @@
+
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(•†Υ¶
+g
+java:S1128"LRemove this unused import 'com.housservice.housstock.model.PlanificationOf'.(Ύτ‚ÿÿÿÿÿ
+f
+java:S1128"PRemove this unused import 'org.springframework.validation.annotation.Validated'.(ΈÒΦƒ
+N
+java:S1128"3Remove this unused import 'javax.validation.Valid'.(ζ¤ρχϊÿÿÿÿ

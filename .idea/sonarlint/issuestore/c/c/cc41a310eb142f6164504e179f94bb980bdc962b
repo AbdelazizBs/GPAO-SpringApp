@@ -1,0 +1,6 @@
+
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(γ΅Ω
+²
+java:S1130C"–Remove the declaration of thrown exception 'com.housservice.housstock.exception.ResourceNotFoundException', as it cannot be thrown from method's body.(ΠƒρΖϋÿÿÿÿ
+U
+java:S1128"3Remove this unused import 'javax.validation.Valid'.(ζ¤ρχϊÿÿÿÿ8«τέ©…1

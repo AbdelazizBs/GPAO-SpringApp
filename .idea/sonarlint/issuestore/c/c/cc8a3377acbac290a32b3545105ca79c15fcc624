@@ -1,0 +1,9 @@
+
+P	java:S1252"<This block of commented-out lines of code should be removed.(∞∆>
+_
+java:S1612L"IReplace this lambda with method reference 'this::buildRolesDtoFromRoles'.(êÍ¿Ñ
+R
+java:S1612M"=Replace this lambda with method reference 'Objects::nonNull'.(ÏË“g
+Q	java:S125l"<This block of commented-out lines of code should be removed.(¸ÉÏ◊
+M
+java:S1068"7Remove this unused "personnelRepository" private field.(õ≠˛í

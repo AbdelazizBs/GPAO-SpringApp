@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a869f314-ccab-49e8-9835-46ce4e4b4b4c" name="Changes" comment="finish planifications">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/controller/personnel/PersonnelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/controller/personnel/PersonnelController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/PersonnelService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/PersonnelService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/PersonnelServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/housservice/housstock/service/PersonnelServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/personnel/PersonnelController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/controller/personnel/PersonnelController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/PersonnelServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/PersonnelServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/PersonnelService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/housservice/housstock/service/PersonnelService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -267,14 +262,7 @@
       <workItem from="1684986699387" duration="2366000" />
       <workItem from="1685051699329" duration="19102000" />
       <workItem from="1685148835913" duration="4270000" />
-      <workItem from="1685218772122" duration="5502000" />
-    </task>
-    <task id="LOCAL-00025" summary="update Command and ligne Cmd">
-      <created>1678280411575</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1678280411575</updated>
+      <workItem from="1685218772122" duration="5528000" />
     </task>
     <task id="LOCAL-00026" summary="update ligne Cmd">
       <created>1678445003969</created>
@@ -612,7 +600,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685156596360</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="finish planifications">
+      <created>1685235676328</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1685235676329</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

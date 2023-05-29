@@ -1,0 +1,27 @@
+
+a	java:S112ª"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+¥
+java:S4449ä"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ
+¥
+java:S4449Ó"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ
+X
+java:S1612O"=Replace this lambda with method reference 'Objects::nonNull'.(ôù‡¨úÿÿÿÿ
+T	java:S106²"9Replace this use of System.out or System.err by a logger.(Öû»«ûÿÿÿÿ
+C
+java:S1602·",Remove useless curly braces around statement(†ÑâÒ
+j
+java:S1602Ì"SRemove useless curly braces around statement and then remove useless return keyword(½àæ‹
+j
+java:S1602Ý"SRemove useless curly braces around statement and then remove useless return keyword(½àæ‹
+a
+java:S1128	"KRemove this unused import 'com.housservice.housstock.mapper.CommandMapper'.(ÃÀ®Ž
+a
+java:S1128"KRemove this unused import 'com.housservice.housstock.model.CommandeClient'.(ý§çó
+m
+java:S1128"RRemove this unused import 'com.housservice.housstock.model.dto.CommandeClientDto'.(­¯…¥øÿÿÿÿ
+N
+java:S1128"8Remove this unused import 'javassist.NotFoundException'.(Šæ¶™
+W
+java:S1068,"<Remove this unused "sequenceGeneratorService" private field.(þ‹ÁÂùÿÿÿÿ
+S
+java:S10682"8Remove this unused "entrepriseRepository" private field.(ýƒÖ¾þÿÿÿÿ

@@ -1,0 +1,16 @@
+
+]	java:S125$"<This block of commented-out lines of code should be removed.(ëß©øÿÿÿÿ8ß×‹„1
+T
+java:S1128"7Remove this unused import 'com.github.javafaker.Faker'.(û¹ªÕ8ÿÕÔ‹„1
+a
+java:S1128"DRemove this unused import 'com.housservice.housstock.model.Comptes'.(ÄâáŒ8ÿÕÔ‹„1
+h
+java:S1128"FRemove this unused import 'com.housservice.housstock.model.Personnel'.(óÈ½’ıÿÿÿÿ8ÿÕÔ‹„1
+k
+java:S1128"IRemove this unused import 'com.housservice.housstock.model.dto.RolesDto'.(ŠıõÙşÿÿÿÿ8à×‹„1
+h
+java:S1128"KRemove this unused import 'com.housservice.housstock.service.RolesService'.(Üş÷ç8à×‹„1
+d
+java:S1128"GRemove this unused import 'org.springframework.boot.CommandLineRunner'.(È—ÿÅ8à×‹„1
+g
+java:S1128"ERemove this unused import 'org.springframework.stereotype.Component'.(Ş÷Ñ¸ÿÿÿÿÿ8ÿÕÔ‹„1
