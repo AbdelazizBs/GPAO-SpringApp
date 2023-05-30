@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-05-30T23:54:48.060Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="hOQT8FXmbQTANIVbxaMd" version="21.3.6" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-05-30T23:56:04.626Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="F9hq0LtBvAaSK5cP20Bg" version="21.3.6" type="gitlab">
   <diagram name="Page-1" id="KksDJcQ3sd0gYTwmEH6W">
     <mxGraphModel dx="1424" dy="669" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -70,7 +70,7 @@
             <mxPoint x="403.16934849373797" y="500.68565150626205" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="GGUCeEKt93RqDW9J0Hbx-25" value="Gérer conducteur par machine" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="GGUCeEKt93RqDW9J0Hbx-25" value="Gérer conducteur par machine/etapeFabrication" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="90" y="130" width="270" height="40" as="geometry" />
         </mxCell>
         <mxCell id="GGUCeEKt93RqDW9J0Hbx-37" value="" style="triangle;whiteSpace=wrap;html=1;rotation=-145;direction=south;" parent="1" vertex="1">
