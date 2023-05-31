@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-05-31T22:57:49.369Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="esBpQ0OF5bFSAbUGzVr0" version="21.3.6" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-05-31T22:58:32.772Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="afh8YA4OdpfvzWlpKhnR" version="21.3.6" type="gitlab">
   <diagram name="Page-1" id="wp-qjo0mnfX6fGnWZDvT">
     <mxGraphModel dx="1662" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -67,7 +67,7 @@
             <mxPoint x="403.16934849373797" y="500.68565150626205" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="aSCEGUiYUO0jkmjhSBjL-18" value="Gérer liste personnel" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="aSCEGUiYUO0jkmjhSBjL-18" value="Gérer les personnels" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="100" y="130" width="260" height="40" as="geometry" />
         </mxCell>
         <mxCell id="aSCEGUiYUO0jkmjhSBjL-19" value="" style="triangle;whiteSpace=wrap;html=1;rotation=-145;direction=south;" vertex="1" parent="1">
