@@ -14,8 +14,7 @@ import java.util.List;
 public class MachineDto {
     @Id
     private String id;
-    @Size(min = 2, message = "machine reference should have at least 2 characters")
-    @NotEmpty(message = "machine reference  should not empty")
+
     private String refMachine;
     private Date dateMaintenance ;
     private boolean miseEnVeille;
@@ -28,5 +27,6 @@ public class MachineDto {
     @NotEmpty(message = "nom conducteur should not empty")
     private List<String> nomConducteur;
     private String etat;
+    private int counter;
 
 }

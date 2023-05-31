@@ -22,7 +22,7 @@ public class Machine {
     private String type;
     private boolean miseEnVeille;
     private String etat;
-
+    private int counter;
     public Machine(String refMachine, List<String> nomConducteur, String libelle, int nbConducteur, Date dateMaintenance, String type, boolean miseEnVeille, String etat) {
         this.refMachine = refMachine;
         this.nomConducteur = nomConducteur;

@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,10 +36,11 @@ public class CommandeServiceImpl implements CommandeService{
     private final ArticleRepository articleRepository;
     private final CommandeSuiviRepository commandeSuiviRepository;
     private final AffectationRepository affectationRepository;
+    private final MongoTemplate mongoTemplate;
 
     private final MatiereRepository matiereRepository;
 
-    public CommandeServiceImpl(AffectationRepository affectationRepository,CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, MessageHttpErrorProperties messageHttpErrorProperties, ArticleRepository articleRepository, CommandeSuiviRepository commandeSuiviRepository, MatiereRepository matiereRepository) {
+    public CommandeServiceImpl(MongoTemplate mongoTemplate,AffectationRepository affectationRepository,CommandeRepository commandeRepository, FournisseurRepository fournisseurRepository, MessageHttpErrorProperties messageHttpErrorProperties, ArticleRepository articleRepository, CommandeSuiviRepository commandeSuiviRepository, MatiereRepository matiereRepository) {
         this.commandeRepository = commandeRepository;
         this.fournisseurRepository = fournisseurRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
@@ -45,6 +48,7 @@ public class CommandeServiceImpl implements CommandeService{
         this.commandeSuiviRepository = commandeSuiviRepository;
         this.matiereRepository = matiereRepository;
         this.affectationRepository = affectationRepository;
+        this.mongoTemplate = mongoTemplate;
 
     }
 
@@ -96,10 +100,25 @@ public class CommandeServiceImpl implements CommandeService{
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public int findProduitWithMaxSize() {
+        List<Commande> produits = commandeRepository.findAll();
+
+        if (produits.isEmpty()) {
+            return 0;
+        }
+
+        Query query = new Query();
+        query.limit(1).with(Sort.by(Sort.Direction.DESC, "counter"));
+        Commande produit = mongoTemplate.findOne(query, Commande.class);
+        return produit.getCounter();
+    }
     @Override
     public void createNewCommande(CommandeDto commandeDto) throws ResourceNotFoundException {
         commandeDto.setMiseEnVeille(false);
         commandeDto.setTerminer(false);
+        commandeDto.setCounter(this.findProduitWithMaxSize()+1);
+        commandeDto.setNumBcd("Cmd" + String.format("%03d",commandeDto.getCounter()));
         List<Article> articles = new ArrayList<>();
         if (commandeDto.getArticle()==null){
             commandeDto.setArticle(articles);
@@ -115,7 +134,6 @@ public class CommandeServiceImpl implements CommandeService{
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
         commandes.setCommentaire(commande.getCommentaire());
         commandes.setFournisseur(commande.getFournisseur());
-        commandes.setNumBcd(commande.getNumBcd());
         commandes.setDateCommande(commande.getDateCommande());
         commandeRepository.save(commandes);
     }

@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -35,19 +37,35 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 	private final PersonnelRepository personnelRepository;
 
+	private final MongoTemplate mongoTemplate;
+
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	private final PictureRepository pictureRepository;
 
 
 
-	public PersonnelServiceImpl(PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties,PictureRepository pictureRepository) {
+	public PersonnelServiceImpl(MongoTemplate mongoTemplate,PersonnelRepository personnelRepository, MessageHttpErrorProperties messageHttpErrorProperties,PictureRepository pictureRepository) {
 		this.personnelRepository = personnelRepository;
 		this.pictureRepository=pictureRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
+		this.mongoTemplate=mongoTemplate;
+
 	}
 
+	public int findProduitWithMaxSize() {
+		List<Personnel> produits = personnelRepository.findAll();
 
+		if (produits.isEmpty()) {
+			return 0;
+		}
+
+		Query query = new Query();
+		query.limit(1).with(Sort.by(Sort.Direction.DESC, "counter"));
+		Personnel produit = mongoTemplate.findOne(query, Personnel.class);
+
+		return produit.getCounter();
+	}
 	@Override
 	public void  addPersonnel(PersonnelDto personnelDto)   {
 		try
@@ -61,11 +79,11 @@ public class PersonnelServiceImpl implements PersonnelService {
 			if (personnelRepository.existsPersonnelByCin(personnelDto.getCin())) {
 				throw new IllegalArgumentException(	" cin " + personnelDto.getCin() +  "  existe deja !!");
 			}
-			if (personnelRepository.existsPersonnelByMatricule(personnelDto.getMatricule())){
-				throw new IllegalArgumentException( "matricule" + personnelDto.getMatricule() + "  existe deja !!");
-			}
+
 			List<Picture> pictures = new ArrayList<>();
 			personnelDto.setPictures(pictures);
+			personnelDto.setCounter(this.findProduitWithMaxSize()+1);
+			personnelDto.setMatricule("ref" + String.format("%03d",personnelDto.getCounter()));
 			personnelDto.setFullName(personnelDto.getNom()+" "+personnelDto.getPrenom());
 			Personnel personnel = PersonnelMapper.MAPPER.toPersonnel(personnelDto);
 			personnel.setMiseEnVeille(false);
@@ -292,34 +310,6 @@ public class PersonnelServiceImpl implements PersonnelService {
 
 
 	@Override
-	public int getPersonnalByMonth() {
-		try {
-			LocalDate today = LocalDate.now();
-			ZoneId defaultZoneId = ZoneId.systemDefault();
-			LocalDate startD = LocalDate.now().withDayOfMonth(1);
-			Date Firstday = Date.from(startD.atStartOfDay(defaultZoneId).toInstant());
-			LocalDate endD = LocalDate.now().withDayOfMonth(today.getMonth().length(today.isLeapYear()));;
-			Date Lastday = Date.from(endD.atStartOfDay(defaultZoneId).toInstant());
-			List<Personnel> personnal = personnelRepository.findBydateEmbaucheBetween(Firstday, Lastday);
-			return (int) personnal.stream().count();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			return 0;
-		}
-	}
-
-	@Override
-	public int getallPersonnal() {
-		try {
-			List<Personnel> personnel = personnelRepository.findAll();
-			return (int) personnel.stream().count();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			return 0;
-		}
-	}
-
-	@Override
 	public List<Integer> getPersListe(boolean b) {
 		int date;
 
@@ -396,4 +386,113 @@ public class PersonnelServiceImpl implements PersonnelService {
 		personnel.getPictures().removeIf(picture1 -> picture1.equals(picture));
 		personnelRepository.save(personnel);
 	}
+
+	@Override
+	public int getPersonnalByMonth() {
+		try {
+			LocalDate today = LocalDate.now();
+			ZoneId defaultZoneId = ZoneId.systemDefault();
+			LocalDate startD = LocalDate.now().withDayOfMonth(1);
+			Date Firstday = Date.from(startD.atStartOfDay(defaultZoneId).toInstant());
+			LocalDate endD = LocalDate.now().withDayOfMonth(today.getMonth().length(today.isLeapYear()));;
+			Date Lastday = Date.from(endD.atStartOfDay(defaultZoneId).toInstant());
+			List<Personnel> personnels = personnelRepository.findByDateEmbaucheBetween(Firstday, Lastday);
+			return (int) personnels.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public int getallPersonnal() {
+		try {
+			List<Personnel> personnels = personnelRepository.findAll();
+			return (int) personnels.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public int getPersonnelSexe(String role){
+		try {
+			List<Personnel> personnels = personnelRepository.findPersonnelBySexe(role);
+			return (int) personnels.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public List<Personnel> getallPersonnallist() {
+		try {
+			List<Personnel> personnels = personnelRepository.findAll();
+			return personnels;
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
+	@Override
+	public int getActifPersonnel(boolean b) {
+		try {
+			List<Personnel> personnels = personnelRepository.findPersonnelByMiseEnVeille(b);
+			return (int) personnels.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+	@Override
+	public int getPersonnel(String role) {
+		try {
+			List<Personnel> personnels = personnelRepository.findPersonnelByPoste(role);
+			return (int) personnels.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+	@Override
+	public List<Integer> getPersonnalListe(boolean b) {
+		int date;
+		List<Integer> nbClients = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+		List<Personnel> activeClients =personnelRepository.findPersonnelByMiseEnVeille(b);
+		for(int i = 0; i< activeClients.size(); i++){
+			Personnel client= activeClients.get(i);
+			date=client.getDateEmbauche().getMonth()+1;
+			System.out.println(date);
+			switch (date){
+				case 9:
+					nbClients .set(0, nbClients .get(0) + 1);
+					break;
+				case 10:
+					nbClients .set(1, nbClients .get(1) + 1);
+					break;
+				case 11:
+					nbClients .set(2, nbClients .get(2) + 1);
+					break;
+				case 12:
+					nbClients .set(3, nbClients .get(3) + 1);
+					break;
+				case 1:
+					nbClients .set(4, nbClients .get(4) + 1);
+					break;
+				case 2:
+					nbClients .set(5, nbClients .get(5) + 1);
+					break;
+				case 3:
+					nbClients .set(6, nbClients .get(6) + 1);
+					break;
+			}
+		}
+		return nbClients ;
+	}
+
+
+
 }

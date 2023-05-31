@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,26 +30,44 @@ public class ProduitServiceImpl implements ProduitService {
     private final ProduitRepository produitRepository;
     private final EtapeRepository etapeRepository;
     private final PictureRepository pictureRepository;
+    private final MongoTemplate mongoTemplate;
 
 
-    public ProduitServiceImpl(MessageHttpErrorProperties messageHttpErrorProperties, PictureRepository pictureRepository, EtapeRepository etapeRepository, TypeProduitRepository typeProduitRepository, UniteVenteRepoitory uniteVenteRepoitory, ProduitRepository produitRepository) {
+    public ProduitServiceImpl(MongoTemplate mongoTemplate,MessageHttpErrorProperties messageHttpErrorProperties, PictureRepository pictureRepository, EtapeRepository etapeRepository, TypeProduitRepository typeProduitRepository, UniteVenteRepoitory uniteVenteRepoitory, ProduitRepository produitRepository) {
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.typeProduitRepository = typeProduitRepository;
         this.uniteVenteRepoitory = uniteVenteRepoitory;
         this.produitRepository = produitRepository;
         this.etapeRepository = etapeRepository;
         this.pictureRepository = pictureRepository;
+        this.mongoTemplate = mongoTemplate;
 
 
     }
 
+    public int findProduitWithMaxSize() {
+        List<Produit> produits = produitRepository.findAll();
+
+        if (produits.isEmpty()) {
+            return 0;
+        }
+
+        Query query = new Query();
+        query.limit(1).with(Sort.by(Sort.Direction.DESC, "counter"));
+        Produit produit = mongoTemplate.findOne(query, Produit.class);
+
+        return produit.getCounter();
+    }
     @Override
     public void addProduit(ProduitDto produitDto) {
         try {
             if (produitRepository.existsProduitByDesignation(produitDto.getDesignation())) {
                 throw new IllegalArgumentException( produitDto.getDesignation() + "  existe deja !!");
             }
+            produitDto.setCounter(this.findProduitWithMaxSize()+1);
+            produitDto.setRef("Art" + String.format("%03d",produitDto.getCounter()));
             List<Picture> pictures1 = new ArrayList<>();
+            produitDto.setEtapes(new String[]{});
             produitDto.setPictures(pictures1);
             Produit produit = ProduitMapper.MAPPER.toProduit(produitDto);
             List<Picture> pictures2 = new ArrayList<>();
@@ -77,12 +97,8 @@ public class ProduitServiceImpl implements ProduitService {
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), produitDto.getId())));
         produit.setType(produitDto.getType());
         produit.setDesignation(produitDto.getDesignation());
-        produit.setRef(produitDto.getRef());
         produit.setDateCreation(produitDto.getDateCreation());
-
-
         produitRepository.save(produit);
-
     }
 
     @Override

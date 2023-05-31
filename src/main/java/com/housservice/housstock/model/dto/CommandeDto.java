@@ -20,8 +20,6 @@ public class CommandeDto {
     @NotEmpty
     private String fournisseur;
     private Date dateCommande;
-    @Size(min = 2, message = "fournisseur numBcd should have at least 2 characters")
-    @NotEmpty(message = "fournisseur numBcd  should not empty")
     private String numBcd;
     private boolean miseEnVeille;
 
@@ -31,6 +29,6 @@ public class CommandeDto {
     private String etat;
     private String type;
     private boolean terminer;
-
+    private int counter;
 
 }

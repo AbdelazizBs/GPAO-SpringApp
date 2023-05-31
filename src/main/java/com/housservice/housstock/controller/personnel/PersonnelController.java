@@ -2,6 +2,7 @@ package com.housservice.housstock.controller.personnel;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.PersonnelDto;
 import com.housservice.housstock.service.PersonnelService;
 import com.housservice.housstock.service.PictureService;
@@ -167,15 +168,7 @@ public class PersonnelController {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
-	@GetMapping("/getPersonnelByMonth")
-	public int getFournisseurByMonth(){
-		return personnelService.getPersonnalByMonth();
-	}
 
-	@GetMapping("/getallPersonnel")
-	public int getallFournisseur(){
-		return personnelService.getallPersonnal();
-	}
 
 	@GetMapping("/getPrsActifListe")
 	public List<Integer> getFrsActifListe(){
@@ -209,6 +202,54 @@ public class PersonnelController {
 		response.put("deleted", Boolean.TRUE);
 		return response;
 	}
+	@GetMapping("/getPersonnelByMonth")
+	public int getPersonnelByMonth(){
+		return personnelService.getPersonnalByMonth();
+	}
+
+	@GetMapping("/getallPersonnel")
+	public int getallPersonnel(){
+		return personnelService.getallPersonnal();
+	}
+	@GetMapping("/getOperatricePersonnel")
+	public int getOperatricePersonnel(){
+		return personnelService.getPersonnel("Operatrice");
+	}
+	@GetMapping("/getConducteurPersonnel")
+	public int getConducteurPersonnel(){
+		return personnelService.getPersonnel("Conducteur machine");
+	}
+	@GetMapping("/getMonitricePersonnel")
+	public int getMonitricePersonnel(){
+		return personnelService.getPersonnel("Monitrice");
+	}
+
+	@GetMapping("/getActifPersonnel")
+	public int getActifPersonnel(){
+		return personnelService.getActifPersonnel(false);
+	}
+
+	@GetMapping("/getNoActifPersonnel")
+	public int getNoActifPersonnel(){
+		return personnelService.getActifPersonnel(true);
+	}
+	@GetMapping("/getPersonnelSexe")
+	public int getPersonnelSexe(){
+		return personnelService.getPersonnelSexe("Homme");
+	}
 
 
+	@GetMapping("/getPersonnelActifListe")
+	public List<Integer> getPersonnelActifListe(){
+		return personnelService.getPersonnalListe(false);
+	}
+	@GetMapping("/getPersonnelNoActifListe")
+	public List<Integer> getPersonnelNoActifListe(){
+		return personnelService.getPersonnalListe(true);
+	}
+
+	@GetMapping("/getallPersonnallist")
+	public List<Personnel> getallPersonnallist(){
+		return personnelService.getallPersonnallist();
+	}
 }

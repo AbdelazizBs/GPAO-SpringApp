@@ -21,5 +21,6 @@ public class ProduitDto {
     private String[] Etapes;
     private List<Picture> pictures;
     private boolean miseEnVeille;
+    private int counter;
 
 }

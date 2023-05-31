@@ -34,4 +34,8 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     Optional<Personnel> findPersonnelByPictures(Picture picture) ;
 
     Optional<Personnel> findByFullName(String idPersonnel);
+
+    List<Personnel> findByDateEmbaucheBetween(Date firstday, Date lastday);
+
+    List<Personnel> findPersonnelBySexe(String role);
 }

@@ -46,7 +46,7 @@ public class Personnel {
 
 	private String cin;
 
-
+	private int counter;
 
 	private String sexe;
 

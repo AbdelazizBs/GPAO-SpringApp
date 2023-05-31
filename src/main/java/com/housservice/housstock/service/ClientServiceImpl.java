@@ -20,6 +20,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,19 +50,22 @@ public class ClientServiceImpl implements ClientService {
 	final
 	PictureRepository pictureRepository;
 
+	private final MongoTemplate mongoTemplate;
+
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	final  ContactRepository contactRepository ;
 
 
 	@Autowired
-	public ClientServiceImpl(ClientRepository clientRepository,
+	public ClientServiceImpl(MongoTemplate mongoTemplate,ClientRepository clientRepository,
 							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository,
 							 PictureRepository pictureRepository) {
 		this.clientRepository = clientRepository;
 		this.messageHttpErrorProperties = messageHttpErrorProperties;
 		this.contactRepository = contactRepository;
 		this.pictureRepository = pictureRepository;
+		this.mongoTemplate=mongoTemplate;
 	}
 	public static byte[] decompressBytes(byte[] data) {
 		Inflater inflater = new Inflater();
@@ -133,9 +138,7 @@ public class ClientServiceImpl implements ClientService {
 								 String rib,
 								 String swift,
 								 MultipartFile[] images) {
-		if (clientRepository.existsClientByRefClientIris(refClientIris)) {
-			throw new IllegalArgumentException(	"Matricule existe deja !!");
-		}
+
 		if (clientRepository.existsClientByRaisonSocial(raisonSociale)) {
 			throw new IllegalArgumentException(	"Raison sociale existe deja !!");
 		}
@@ -150,14 +153,15 @@ public class ClientServiceImpl implements ClientService {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
 			pictureRepository.save(picture);
 			pictures.add(picture);
 		}
-
+	clientDto.setCounter(this.findProduitWithMaxSize()+1);
+	clientDto.setRefClientIris("RefClt" + String.format("%03d",clientDto.getCounter()));
 	clientDto.setPictures(pictures);
 	clientDto.setDate(new Date());
 	clientDto.setMiseEnVeille(false);
-	clientDto.setRefClientIris(refClientIris);
 	clientDto.setRaisonSocial(raisonSociale);
 	clientDto.setAdresse(adresse);
 	clientDto.setCodePostal(codePostal);
@@ -186,6 +190,19 @@ public class ClientServiceImpl implements ClientService {
 }
 		Client client = ClientMapper.MAPPER.toClient(clientDto);
 		clientRepository.save(client);
+	}
+	public int findProduitWithMaxSize() {
+		List<Client> produits = clientRepository.findAll();
+
+		if (produits.isEmpty()) {
+			return 0;
+		}
+
+		Query query = new Query();
+		query.limit(1).with(Sort.by(Sort.Direction.DESC, "counter"));
+		Client produit = mongoTemplate.findOne(query, Client.class);
+
+		return produit.getCounter();
 	}
 
 

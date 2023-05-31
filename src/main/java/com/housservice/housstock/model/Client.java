@@ -19,6 +19,8 @@ public class Client {
 	@Id
 	private String id;
 
+	private int counter;
+
 	private String refClientIris;
 	private String statut;
 	private String codePostal;

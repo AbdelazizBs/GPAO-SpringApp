@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,11 +37,13 @@ public class CommandeClientServiceImpl implements CommandeClientService{
     private final ArticleRepository articleRepository;
     private final PlannificationRepository plannificationRepository;
     private final ProduitRepository produitRepository;
+    private final MongoTemplate mongoTemplate;
 
     private final AffectationProduitRepository affectationProduitRepository;
 
-    public CommandeClientServiceImpl(ProduitRepository produitRepository,CommandeClientRepository commandeClientRepository,PlannificationRepository plannificationRepository,ArticleRepository articleRepository, ClientRepository clientRepository, MessageHttpErrorProperties messageHttpErrorProperties, AffectationProduitRepository affectationProduitRepository) {
+    public CommandeClientServiceImpl(MongoTemplate mongoTemplate,ProduitRepository produitRepository,CommandeClientRepository commandeClientRepository,PlannificationRepository plannificationRepository,ArticleRepository articleRepository, ClientRepository clientRepository, MessageHttpErrorProperties messageHttpErrorProperties, AffectationProduitRepository affectationProduitRepository) {
         this.produitRepository = produitRepository;
+        this.mongoTemplate = mongoTemplate;
         this.commandeClientRepository = commandeClientRepository;
         this.clientRepository = clientRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
@@ -326,6 +330,19 @@ public class CommandeClientServiceImpl implements CommandeClientService{
             return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    public int findProduitWithMaxSize() {
+        List<Plannification> produits = plannificationRepository.findAll();
+
+        if (produits.isEmpty()) {
+            return 0;
+        }
+
+        Query query = new Query();
+        query.limit(1).with(Sort.by(Sort.Direction.DESC, "counter"));
+        Plannification produit = mongoTemplate.findOne(query, Plannification.class);
+
+        return produit.getCounter();
+    }
     @Override
     public void addOF(Article article) throws ResourceNotFoundException {
         CommandeClient commandeClient = commandeClientRepository.findCommandeClientByArticle(article);
@@ -336,6 +353,8 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         plannification.setLigneCommandeClient(article);
         String[] etape1=article.getProduit().getEtapes();
         plannification.setNomEtape(etape1[0]);
+        plannification.setCounter(this.findProduitWithMaxSize()+1);
+        plannification.setRef("OF" + String.format("%03d",plannification.getCounter()));
         plannification.setPlan(false);
         plannification.setEtat(false);
         plannification.setQuantiteInitiale(article.getQuantite());

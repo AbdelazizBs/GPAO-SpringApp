@@ -20,6 +20,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,14 +36,17 @@ public class MachineServiceImpl implements MachineService
     private final PersonnelRepository personnelRepository;
 
     private final EtapeRepository etapeRepository;
+    private final MongoTemplate mongoTemplate;
 
     private final MessageHttpErrorProperties messageHttpErrorProperties;
     @Autowired
-    public MachineServiceImpl(MachineRepository machineRepository, MessageHttpErrorProperties messageHttpErrorProperties, EtapeRepository etapeRepository,PersonnelRepository personnelRepository) {
+    public MachineServiceImpl( MongoTemplate mongoTemplate,MachineRepository machineRepository, MessageHttpErrorProperties messageHttpErrorProperties, EtapeRepository etapeRepository,PersonnelRepository personnelRepository) {
         this.machineRepository = machineRepository;
         this.messageHttpErrorProperties = messageHttpErrorProperties;
         this.etapeRepository=etapeRepository;
         this.personnelRepository=personnelRepository;
+        this.mongoTemplate=mongoTemplate;
+
     }
 
     @Override
@@ -147,12 +152,24 @@ public class MachineServiceImpl implements MachineService
         }
 
     }
+
+    public int findProduitWithMaxSize() {
+        List<Machine> produits = machineRepository.findAll();
+
+        if (produits.isEmpty()) {
+            return 0;
+        }
+
+        Query query = new Query();
+        query.limit(1).with(Sort.by(Sort.Direction.DESC, "counter"));
+        Machine produit = mongoTemplate.findOne(query, Machine.class);
+
+        return produit.getCounter();
+    }
     @Override
     public void createNewMachine(MachineDto machineDto) throws ResourceNotFoundException {
-
-        if (machineRepository.existsMachineByRefMachine(machineDto.getRefMachine())) {
-            throw new IllegalArgumentException(	"Matricule existe deja !!");
-        }
+        machineDto.setCounter(this.findProduitWithMaxSize()+1);
+        machineDto.setRefMachine("RefMachine" + String.format("%03d",machineDto.getCounter()));
         Machine machine = MachineMapper.MAPPER.toMachine(machineDto);
         machine.setEtat("Disponible");
         machineRepository.save(machine);

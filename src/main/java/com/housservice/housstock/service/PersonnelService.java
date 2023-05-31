@@ -37,13 +37,18 @@ public interface PersonnelService {
     void deletePersonnel(String personnelId);
 
     void deletePersonnelSelected(List<String> idPersonnelsSelected);
-    int getPersonnalByMonth();
-    int getallPersonnal();
     List<Integer> getPersListe(boolean b);
 
     void addphoto(MultipartFile[] images,String email);
     void removePictures(String idPersonnel) throws ResourceNotFoundException;
 
     void removePicture(String idPicture) throws ResourceNotFoundException;
+    int getPersonnalByMonth();
+    int getallPersonnal();
 
+    int getPersonnelSexe(String role);
+    int getActifPersonnel(boolean b);
+    List<Integer> getPersonnalListe(boolean b);
+    int getPersonnel(String role);
+    List<Personnel> getallPersonnallist();
 }

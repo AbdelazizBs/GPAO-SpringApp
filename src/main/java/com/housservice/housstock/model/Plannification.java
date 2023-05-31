@@ -29,7 +29,7 @@ package com.housservice.housstock.model;
 
 
         private int progress;
-
+        private int counter;
 
         public Plannification() {
         }

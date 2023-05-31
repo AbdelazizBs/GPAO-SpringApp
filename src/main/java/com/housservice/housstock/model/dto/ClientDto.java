@@ -26,8 +26,9 @@ public class ClientDto {
 	private String id;
 
 
-	@Size(min = 2, message = "client matricule should have at least 2 characters")
-	@NotEmpty(message = "client matricule  should not empty")
+
+	private int counter;
+
 	private String refClientIris;
 
 

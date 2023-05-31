@@ -32,6 +32,7 @@ public class Fournisseur {
 	private String identifiantTva;
 
 
+	private int counter;
 
 
 

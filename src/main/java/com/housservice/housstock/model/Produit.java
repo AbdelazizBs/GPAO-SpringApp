@@ -15,6 +15,8 @@ public class Produit {
     @Id
     private String id;
     private String ref;
+    private int counter;
+
     private String type;
     private String designation;
     private Date dateCreation;
@@ -23,8 +25,8 @@ public class Produit {
     private boolean miseEnVeille;
 
 
-    public Produit(String ref, String type, String designation, Date dateCreation, List<Picture> pictures, boolean miseEnVeille) {
-        this.ref = ref;
+    public Produit( String type, String designation, Date dateCreation, List<Picture> pictures, boolean miseEnVeille) {
+
         this.type = type;
         this.designation = designation;
         this.dateCreation = dateCreation;

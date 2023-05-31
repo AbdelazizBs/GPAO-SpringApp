@@ -26,8 +26,7 @@ public class FournisseurDto {
 	private String id;
 
 
-	@Size(min = 2, message = "fournisseur matricule should have at least 2 characters")
-	@NotEmpty(message = "fournisseur matricule  should not empty")
+
 	private String refFournisseurIris;
 
 
@@ -39,6 +38,7 @@ public class FournisseurDto {
 	private String raisonSocial;
 
 
+	private int counter;
 	private int rate;
 	@Size(min = 2, message = "fournisseur pays should have at least 2 characters")
 	@NotEmpty(message = "fournisseur pays  should not empty")

@@ -85,12 +85,9 @@ public class PersonnelDto {
 
 	private String typeContrat;
 
-
-
-	@NotEmpty(message = "personnel matricule should not empty")
 	private String matricule;
 
-
+	private int counter;
 
 	private String phone;
 

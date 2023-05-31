@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,13 +48,14 @@ public class FournisseurServiceImpl implements FournisseurService {
 	final
 	PictureRepository pictureRepository;
 
+	private final MongoTemplate mongoTemplate;
 
 	private final MessageHttpErrorProperties messageHttpErrorProperties;
 	final  ContactRepository contactRepository ;
 
 
 	@Autowired
-	public FournisseurServiceImpl(FournisseurRepository fournisseurRepository,
+	public FournisseurServiceImpl(MongoTemplate mongoTemplate,FournisseurRepository fournisseurRepository,
 							 MessageHttpErrorProperties messageHttpErrorProperties, ContactRepository contactRepository,
 							 PictureRepository pictureRepository,CommandeRepository commandeRepository,CommandeSuiviRepository commandeSuiviRepository) {
 		this.fournisseurRepository = fournisseurRepository;
@@ -60,8 +63,11 @@ public class FournisseurServiceImpl implements FournisseurService {
 		this.contactRepository = contactRepository;
 		this.pictureRepository = pictureRepository;
 		this.commandeRepository =commandeRepository;
+		this.mongoTemplate=mongoTemplate;
+
 		this.commandeSuiviRepository=commandeSuiviRepository;
 	}
+
 	public static byte[] decompressBytes(byte[] data) {
 		Inflater inflater = new Inflater();
 		inflater.setInput(data);
@@ -100,7 +106,18 @@ public class FournisseurServiceImpl implements FournisseurService {
 			fournisseurRepository.deleteById(id);
 		}
 	}
+	public int findProduitWithMaxSize() {
+		List<Fournisseur> produits = fournisseurRepository.findAll();
 
+		if (produits.isEmpty()) {
+			return 0;
+		}
+		Query query = new Query();
+		query.limit(1).with(Sort.by(Sort.Direction.DESC, "counter"));
+		Fournisseur produit = mongoTemplate.findOne(query, Fournisseur.class);
+
+		return produit.getCounter();
+	}
 	@Override
 	public void createNewFournisseur( String refFournisseurIris,
 								 String intitulee,
@@ -124,9 +141,7 @@ public class FournisseurServiceImpl implements FournisseurService {
 								 String rib,
 								 String swift,
 								 MultipartFile[] images) {
-		if (fournisseurRepository.existsFournisseurByRefFournisseurIris(refFournisseurIris)) {
-			throw new IllegalArgumentException(	"Matricule existe deja !!");
-		}
+
 		if (fournisseurRepository.existsFournisseurByRaisonSocial(intitulee)) {
 			throw new IllegalArgumentException(	"Raison sociale existe deja !!");
 		}
@@ -144,11 +159,11 @@ public class FournisseurServiceImpl implements FournisseurService {
 			pictureRepository.save(picture);
 			pictures.add(picture);
 		}
-
+		fournisseurDto.setCounter(this.findProduitWithMaxSize()+1);
+		fournisseurDto.setRefFournisseurIris("RefFr" + String.format("%03d",fournisseurDto.getCounter()));
 		fournisseurDto.setPictures(pictures);
 		fournisseurDto.setDate(new Date());
 		fournisseurDto.setMiseEnVeille(false);
-		fournisseurDto.setRefFournisseurIris(refFournisseurIris);
 		fournisseurDto.setRaisonSocial(intitulee);
 		fournisseurDto.setAdresse(adresse);
 		fournisseurDto.setCodePostal(codePostal);
@@ -247,7 +262,6 @@ public class FournisseurServiceImpl implements FournisseurService {
 		fournisseur.setSwift(swift);
 		fournisseur.setLinkedin(linkedin);
 		fournisseur.setAbrege(abrege);
-		fournisseur.setRefFournisseurIris(refFournisseurIris);
 		fournisseur.setTelecopie(telecopie);
 		fournisseur.setPhone(phone);
 		fournisseur.setStatut(statut);
