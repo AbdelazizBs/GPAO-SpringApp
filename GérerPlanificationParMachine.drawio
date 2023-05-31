@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-05-31T02:26:55.198Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="qFKoiJt-5gwPZT6b20E_" version="21.3.6" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-05-31T20:37:32.871Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="rCnmQ1O1ZG_-qfCyfM4A" version="21.3.6" type="gitlab">
   <diagram name="Page-1" id="SmTJ9jXENOAO_js2h8ZC">
     <mxGraphModel dx="1424" dy="669" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -58,7 +58,7 @@
         <mxCell id="4MrRNxrMZ7cUZOcWSPhv-16" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="440" y="216.14" width="40" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="4MrRNxrMZ7cUZOcWSPhv-18" value="Gérer planification (&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;non lancé)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="4MrRNxrMZ7cUZOcWSPhv-18" value="Gérer planification" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="90" y="130" width="270" height="40" as="geometry" />
         </mxCell>
         <mxCell id="4MrRNxrMZ7cUZOcWSPhv-20" value="planifier" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
