@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-01T21:58:27.910Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="C3fckR2lHWkMgtwL5LWi" version="21.3.6" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-01T21:59:42.870Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="4p02Ijd6lFq2hX54vRT7" version="21.3.6" type="gitlab">
   <diagram name="Page-1" id="1Jm4oJgx9eYc-Yt_YUTq">
     <mxGraphModel dx="2206" dy="788" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -241,7 +241,7 @@
         <mxCell id="olYB9TG9YDRG8_5HBAq5-61" value="" style="triangle;whiteSpace=wrap;html=1;rotation=-180;direction=south;" parent="1" vertex="1">
           <mxGeometry x="-140" y="671.34" width="27.02" height="19.32" as="geometry" />
         </mxCell>
-        <mxCell id="olYB9TG9YDRG8_5HBAq5-62" value="Affecter article&lt;br&gt;(Nomenclature.type = article)" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="olYB9TG9YDRG8_5HBAq5-62" value="Affecter article commander&lt;br&gt;(Nomenclature.type = article)" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="9.999999999999986" y="799.9999999999999" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="olYB9TG9YDRG8_5HBAq5-63" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="olYB9TG9YDRG8_5HBAq5-62" target="olYB9TG9YDRG8_5HBAq5-64" edge="1">
