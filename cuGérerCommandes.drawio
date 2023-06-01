@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-01T19:20:25.938Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="-hUohY4DdYgDokW1jsJV" version="21.3.6" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-01T19:20:50.528Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="KqSVFnVwGdDLLbtwggOP" version="21.3.6" type="gitlab">
   <diagram name="Page-1" id="Dhz3QEpo0U_PGYgXKE9V">
     <mxGraphModel dx="2385" dy="745" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -88,7 +88,7 @@
             <mxPoint x="-106" y="530" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="gNxEo24BiPIkMwxeU2JK-26" value="Affecter article" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="gNxEo24BiPIkMwxeU2JK-26" value="Fermer commande" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="39.99999999999999" y="709.9999999999999" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-27" value="" style="triangle;whiteSpace=wrap;html=1;rotation=-225;direction=south;" vertex="1" parent="1">
@@ -124,7 +124,7 @@
         <mxCell id="gNxEo24BiPIkMwxeU2JK-42" value="" style="triangle;whiteSpace=wrap;html=1;rotation=-180;direction=south;" vertex="1" parent="1">
           <mxGeometry x="-140" y="671.34" width="27.02" height="19.32" as="geometry" />
         </mxCell>
-        <mxCell id="gNxEo24BiPIkMwxeU2JK-45" value="Fermer commande" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="gNxEo24BiPIkMwxeU2JK-45" value="Affecter article" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="-27.000000000000004" y="829.9999999999999" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-46" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="gNxEo24BiPIkMwxeU2JK-45" target="gNxEo24BiPIkMwxeU2JK-47">
