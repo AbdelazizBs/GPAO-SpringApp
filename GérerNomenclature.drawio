@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-01T18:28:31.766Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="uorYKyIRkB4sG-wPDqUF" version="21.3.6" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-01T18:43:58.986Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="nM-Uj2w-uAgUM2Z6A5vV" version="21.3.6" type="gitlab">
   <diagram name="Page-1" id="KVWeqL-EI9BCyQa8WPA-">
     <mxGraphModel dx="2489" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -133,7 +133,7 @@
             <mxPoint x="280" y="620" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Gi7Y1uuQ8ngbOhWbNbQB-46" value="Supprimer nomenclature" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Gi7Y1uuQ8ngbOhWbNbQB-46" value="Réactiver nomenclature" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="370" y="520" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="Gi7Y1uuQ8ngbOhWbNbQB-47" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Gi7Y1uuQ8ngbOhWbNbQB-46" target="Gi7Y1uuQ8ngbOhWbNbQB-48">
