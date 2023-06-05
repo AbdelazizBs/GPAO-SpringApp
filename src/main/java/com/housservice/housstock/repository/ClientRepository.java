@@ -33,4 +33,6 @@ public interface ClientRepository extends MongoRepository <Client, String> {
     List<Client> findClientByMiseEnVeille(boolean b);
 
 	List<Client> findBydateBetween(Date firstday, Date lastday);
+
+    List<Client> findClientByPays(String pays);
 }

@@ -35,5 +35,7 @@ public interface MachineService {
 
     public void reserve(String id);
     public void Demarer(String id);
-
+    int getallMachine(String b);
+    List<Integer> getClientListe(boolean b);
+    List<Machine> getMachineListe();
 }

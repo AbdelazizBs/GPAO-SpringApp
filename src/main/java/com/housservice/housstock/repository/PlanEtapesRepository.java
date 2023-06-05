@@ -19,4 +19,6 @@ public interface PlanEtapesRepository extends MongoRepository<PlanEtapes, String
     Page<PlanEtapes> findPlanEtapesByTextToFind(String textToFind, Pageable paging);
 
     Page<PlanEtapes> findPlanEtapesByTerminer(boolean b, Pageable paging);
+
+    List<PlanEtapes> findPlanEtapesByPersonnels(String nom);
 }

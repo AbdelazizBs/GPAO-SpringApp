@@ -274,5 +274,27 @@ public class PlannificationServiceImpl implements PlannificationService {
         plannificationRepository.delete(plannification);
     }
 
+    @Override
+    public int getallOF(boolean b) {
+        try {
+            List<Plannification> plannifications = plannificationRepository.findPlannificationByEtat(b);
+            return (int) plannifications.stream().count();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+    @Override
+    public int getOFTerminer() {
+        try {
+            List<Plannification> plannifications = plannificationRepository.findPlannificationByEtat(true);
+            return (int) plannifications.stream().count();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+
+
 
 }

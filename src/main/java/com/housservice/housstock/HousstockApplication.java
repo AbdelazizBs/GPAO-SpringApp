@@ -4,11 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-/**
- * 
- * @author houssem.khadraoui@gmail.com
- *
- */
 
 @SpringBootApplication
 public class HousstockApplication {

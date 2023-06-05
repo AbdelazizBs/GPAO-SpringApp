@@ -91,7 +91,24 @@ public class ListeMatiereController {
         return listeMatiereService.getAllMatiereByType(Type,page,size);
     }
 
-
-
-
+    @GetMapping("/getMatiere")
+    public int getMatiere(){
+        return listeMatiereService.getMatiere();
+    }
+    @GetMapping("/getMatierePapier")
+    public int getMatierePapier(){
+        return listeMatiereService.getMatieretype("Papier");
+    }
+    @GetMapping("/getMatiereVernis")
+    public int getMatiereVernis(){
+        return listeMatiereService.getMatieretype("Vernis");
+    }
+    @GetMapping("/getMatierePVC")
+    public int getMatierePVC(){
+        return listeMatiereService.getMatieretype("PVC");
+    }
+    @GetMapping("/getMatiereCordon")
+    public int getMatiereCordon(){
+        return listeMatiereService.getMatieretype("Cordon");
+    }
 }

@@ -19,5 +19,6 @@ public interface PlanifierMachineService {
     void updateEtapes(String id, PlanEtapesDto planEtapesDto) throws ResourceNotFoundException;
      void terminer(String id,PlanEtapesDto planEtapesDto) throws ResourceNotFoundException;
     ResponseEntity<Map<String, Object>> getPlantodayByMachine(int page, int size,String refMachine);
+    int getMachine(String nom,boolean b);
 
 }

@@ -28,4 +28,6 @@ public interface ListeMatiereService {
     List<String> getTypePapier();
 
     List<String> getUniteConsommation();
+    int getMatiere();
+    int getMatieretype(String type);
 }

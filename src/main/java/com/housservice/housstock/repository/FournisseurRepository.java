@@ -36,4 +36,6 @@ public interface FournisseurRepository extends MongoRepository <Fournisseur, Str
 	List<Fournisseur> findBydateBetween(Date fromDate , Date toDate);
 
     List<Fournisseur> findFournisseurById(String id);
+
+    List<Fournisseur> findFournisseurByPays(String pays);
 }

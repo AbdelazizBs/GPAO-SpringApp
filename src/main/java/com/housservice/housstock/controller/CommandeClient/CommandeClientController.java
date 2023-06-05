@@ -219,4 +219,14 @@ public class CommandeClientController {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+
+    @GetMapping("/getcommandeActifListe")
+    public int getcommandeActifListe(){
+        return commandeClientService.getcommandeListe(false)+commandeClientService.getcommandeListe(true);
+    }
+    @GetMapping("/getcommandeNoActifListe")
+    public int getcommandeNoActifListe(){
+        return commandeClientService.getcommandeListe(true);
+    }
+
 }

@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -319,4 +321,36 @@ public class ProduitServiceImpl implements ProduitService {
         produit.setMiseEnVeille(false);
         produitRepository.save(produit);
     }
+
+    @Override
+    public int getArticleBytype(String type) {
+        try {
+            List<Produit> produit = produitRepository.findProduitByType(type);
+            return (int) produit.stream().count();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+    @Override
+    public int getallArticle() {
+        try {
+            List<Produit> produit = produitRepository.findAll();
+            return (int) produit.stream().count();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+    @Override
+    public List<Produit> getallProduitlist() {
+        try {
+            List<Produit> produit = produitRepository.findAll();
+            return produit;
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
 }

@@ -188,5 +188,25 @@ public class ListeMatiereServiceImpl implements ListeMatiereService{
                 .map(UniteConsommation::getNom)
                 .collect(Collectors.toList());
     }
-    
+    @Override
+    public int getMatiere() {
+        try {
+            List<ListeMatiere> listeMatieres = listeMatiereRepository.findAll();
+            return (int) listeMatieres.stream().count();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+    @Override
+    public int getMatieretype(String type){
+        try {
+            List<ListeMatiere> listeMatieres = listeMatiereRepository.findListeMatiereByType(type);
+            return (int) listeMatieres.stream().count();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+
 }

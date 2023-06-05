@@ -3,6 +3,7 @@ package com.housservice.housstock.controller.Fournisseur;
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
 import com.housservice.housstock.model.Fournisseur;
+import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.FournisseurDto;
 import com.housservice.housstock.model.dto.ContactDto;
 import com.housservice.housstock.service.FournisseurService;
@@ -339,6 +340,16 @@ public class FournisseurController {
 	@GetMapping("/getAllCommandeSuivi")
 	public int getAllCommandeSuivi(){
 		return fournisseurService.getAllCommandeSuivi();
+	}
+
+	@GetMapping("/getallFrslist")
+	public List<Fournisseur> getallFrslist(){
+		return fournisseurService.getallFrslist();
+	}
+
+	@GetMapping("/getFournisseurTn")
+	public int getFournisseurTn(){
+		return fournisseurService.getFournisseurPays("Tunisie");
 	}
 
 }

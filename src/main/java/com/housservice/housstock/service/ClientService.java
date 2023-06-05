@@ -92,5 +92,6 @@ public interface ClientService {
 	int getClientByMonth();
 	int getallClient();
 	List<Integer> getClientListe(boolean b);
+	int getClientPays(String pays);
 
 }

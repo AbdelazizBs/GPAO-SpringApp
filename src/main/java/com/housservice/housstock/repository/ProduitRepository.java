@@ -29,4 +29,6 @@ public interface ProduitRepository extends MongoRepository<Produit, String> {
     Optional<Produit> findProduitByPicturesId(String idPic);
 
     Page<Produit> findProduitByMiseEnVeille(boolean b, Pageable paging);
+
+    List<Produit> findProduitByType(String type);
 }

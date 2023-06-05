@@ -178,4 +178,31 @@ public class MachineController {
     public void Demarer(@ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) {
         machineService.Demarer(id);
     }
+
+    @GetMapping("/getallmachineActive")
+    public int getallmachineActive(){
+        return machineService.getallMachine("Disponible");
+    }
+    @GetMapping("/getallmachineNoActive")
+    public int getallmachineNoActive(){
+        return machineService.getallMachine("Reserve");
+    }
+    @GetMapping("/getMachineActifListe")
+    public List<Integer> getMachineActifListe(){
+        return machineService.getClientListe(false);
+    }
+    @GetMapping("/getMachineNoActifListe")
+    public List<Integer> getMachineNoActifListe(){
+        return machineService.getClientListe(true);
+    }
+
+    @GetMapping("/getMachineListe")
+    public List<Machine> getMachineListe(){
+        return machineService.getMachineListe();
+    }
+
+
+
+
+
 }

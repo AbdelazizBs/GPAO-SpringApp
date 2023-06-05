@@ -1,6 +1,7 @@
 package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
+import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.Picture;
 import com.housservice.housstock.model.Produit;
 import com.housservice.housstock.model.dto.ProduitDto;
@@ -40,5 +41,7 @@ public interface ProduitService {
     ResponseEntity<Map<String, Object>> getAllProduitvielle(int page, int size) ;
     void removePicture(String idPicture) throws ResourceNotFoundException;
      void Restaurer(String id) throws ResourceNotFoundException ;
-
-    }
+    int getArticleBytype(String type);
+    int getallArticle();
+    List<Produit> getallProduitlist();
+}

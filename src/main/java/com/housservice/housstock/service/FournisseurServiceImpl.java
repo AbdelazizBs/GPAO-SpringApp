@@ -609,5 +609,25 @@ public class FournisseurServiceImpl implements FournisseurService {
 			return 0;
 		}
 	}
+	@Override
+	public List<Fournisseur> getallFrslist() {
+		try {
+			List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
+			return fournisseurs;
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+	@Override
+	public int getFournisseurPays(String pays) {
+		try {
+			List<Fournisseur> fournisseurs = fournisseurRepository.findFournisseurByPays(pays);
+			return (int) fournisseurs.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
 
 }

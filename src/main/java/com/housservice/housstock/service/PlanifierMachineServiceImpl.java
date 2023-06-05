@@ -182,4 +182,16 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
         }
 
     }
+    @Override
+    public int getMachine(String nom,boolean b) {
+        try {
+            List<PlanEtapes> planEtapes = planEtapesRepository.findPlanEtapesByPersonnels(nom);
+            long count = planEtapes.stream().filter(planEtape -> planEtape.getEtat()==b).count();
+            return (int) count;
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ package com.housservice.housstock.service;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.model.Fournisseur;
+import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.dto.ContactDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -94,5 +95,7 @@ public interface FournisseurService {
     ResponseEntity<byte[]> RecordReport(String id) ;
     int getAllCommande();
     int getAllCommandeSuivi();
+    List<Fournisseur> getallFrslist();
+    int getFournisseurPays(String pays);
 
 }

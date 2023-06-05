@@ -47,6 +47,7 @@ public interface PersonnelService {
     int getallPersonnal();
 
     int getPersonnelSexe(String role);
+
     int getActifPersonnel(boolean b);
     List<Integer> getPersonnalListe(boolean b);
     int getPersonnel(String role);

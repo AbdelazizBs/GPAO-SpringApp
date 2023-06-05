@@ -564,6 +564,16 @@ public class ClientServiceImpl implements ClientService {
 			return 0;
 		}
 	}
+	@Override
+	public int getClientPays(String pays) {
+		try {
+			List<Client> client = clientRepository.findClientByPays(pays);
+			return (int) client.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
 
 	@Override
 	public List<Integer> getClientListe(boolean b) {
@@ -575,7 +585,6 @@ public class ClientServiceImpl implements ClientService {
 		for(int i = 0; i< activeClients.size(); i++){
 			Client client= activeClients.get(i);
 			date=client.getDate().getMonth()+1;
-			System.out.println(date);
 			switch (date){
 				case 9:
 					nbClients .set(0, nbClients .get(0) + 1);

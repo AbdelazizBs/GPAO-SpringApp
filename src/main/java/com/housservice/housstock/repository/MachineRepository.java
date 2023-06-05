@@ -24,4 +24,8 @@ public interface MachineRepository extends MongoRepository<Machine, String> {
     List<Machine> findMachineByNomConducteur(String nomConducteur);
 
     List<Machine> findMachineByType(String etape);
+
+    List<Machine> findMachineByEtat(String b);
+
+    List<Machine> findMachineByMiseEnVeille(boolean b);
 }

@@ -31,5 +31,6 @@ public interface PlannificationService {
     PlanEtapes getEtapesValue(String id,String Nom);
     void Suivi(String id);
     void deleteArticle(String id);
-
+    int getallOF(boolean b);
+    int getOFTerminer();
     }

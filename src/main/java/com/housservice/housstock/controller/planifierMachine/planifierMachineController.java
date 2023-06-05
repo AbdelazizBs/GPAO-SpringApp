@@ -40,6 +40,17 @@ public class planifierMachineController {
                                                                  @RequestParam String refMachine){
     return planifierMachineService.getOfByRefMachine(page,size,refMachine);
     }
+
+    @GetMapping("/getEtape/{id}")
+    public int getEtape(@ApiParam(name = "id", value = "id", required = true)
+                                     @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id){
+        return planifierMachineService.getMachine(id,false);
+    }
+    @GetMapping("/getEtapeP/{id}")
+    public int getEtapeP(@ApiParam(name = "id", value = "id", required = true)
+                                 @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id){
+        return planifierMachineService.getMachine(id,true);
+    }
     @GetMapping("/search")
     @ApiOperation(value = "service to filter Commande ")
     public ResponseEntity<Map<String, Object>> search(@RequestParam String textToFind,

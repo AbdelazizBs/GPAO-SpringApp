@@ -335,5 +335,10 @@ public class ClientController {
 	public List<Integer> getClientNoActifListe(){
 		return clientService.getClientListe(true);
 	}
-	
+	@GetMapping("/getClientTn")
+	public int getClientTn(){
+		return clientService.getClientPays("Tunisie");
+	}
+
+
 }

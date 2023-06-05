@@ -42,19 +42,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/api/v1/compte/login")
             .permitAll();
-        http.authorizeRequests().antMatchers(GET,"/api/v1/personnel/**").hasAnyAuthority("Responsable RH","Admin");
+        http.authorizeRequests().antMatchers(GET,"/api/v1/personnel/**").hasAnyAuthority("Responsable de production","Responsable RH","Admin");
         http.authorizeRequests().antMatchers(POST,"/api/v1/personnel/**").hasAnyAuthority("Responsable RH","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/client/**").hasAnyAuthority("Commercial","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/fournisseur/**").hasAnyAuthority("Responsable d achat","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/commande/**").hasAnyAuthority("Responsable d achat","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/compte/**").hasAnyAuthority("Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/machine/**").hasAnyAuthority("Responsable d achat","Admin");
+        http.authorizeRequests().antMatchers(GET,"/api/v1/machine/**").hasAnyAuthority("Conducteur machine","Responsable de production","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/profile/**").permitAll();
         http.authorizeRequests().antMatchers(GET,"/api/v1/commandeClient/**").hasAnyAuthority("Commercial","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/listeMatiere/**").hasAnyAuthority("Responsable d achat","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/affectation/**").hasAnyAuthority("Responsable d achat","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/affectationFrs/**").hasAnyAuthority("Responsable d achat","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/planificationOf/**").hasAnyAuthority("Responsable d achat","Admin");
+        http.authorizeRequests().antMatchers(GET,"/api/v1/planificationOf/**").hasAnyAuthority("Conducteur machine","Responsable de production","Responsable d achat","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/planifiermachine/**").hasAnyAuthority("Conducteur machine","Admin");
         http.authorizeRequests().antMatchers(GET,"/api/v1/Atelier/**").hasAnyAuthority("Monitrice","Admin");
 

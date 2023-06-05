@@ -288,6 +288,64 @@ public class MachineServiceImpl implements MachineService
                 .map(Machine::getLibelle)
                 .collect(Collectors.toList());
     }
+    @Override
+    public int getallMachine(String b) {
+        try {
+            List<Machine> machines = machineRepository.findMachineByEtat(b);
+            return (int) machines.stream().count();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
 
-    };
+    @Override
+    public List<Integer> getClientListe(boolean b) {
+        int date;
+
+        List<Integer> nbMachines = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+
+        List<Machine> activeClients =machineRepository.findMachineByMiseEnVeille(b);
+        for(int i = 0; i< activeClients.size(); i++){
+            Machine client= activeClients.get(i);
+            date=client.getDateMaintenance().getMonth()+1;
+            switch (date){
+                case 9:
+                    nbMachines .set(0, nbMachines .get(0) + 1);
+                    break;
+                case 10:
+                    nbMachines .set(1, nbMachines .get(1) + 1);
+                    break;
+                case 11:
+                    nbMachines .set(2, nbMachines .get(2) + 1);
+                    break;
+                case 12:
+                    nbMachines .set(3, nbMachines .get(3) + 1);
+                    break;
+                case 1:
+                    nbMachines .set(4, nbMachines .get(4) + 1);
+                    break;
+                case 2:
+                    nbMachines .set(5, nbMachines .get(5) + 1);
+                    break;
+                case 3:
+                    nbMachines .set(6, nbMachines .get(6) + 1);
+                    break;
+            }
+        }
+        return nbMachines ;
+    }
+
+    @Override
+    public  List<Machine> getMachineListe() {
+        try {
+            List<Machine> machines = machineRepository.findAll();
+            return machines;
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+};
 

@@ -44,5 +44,5 @@ public interface CommandeClientService {
     void addOF(Article article) throws ResourceNotFoundException;
     ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
      void delete(String id);
-
+    int getcommandeListe(boolean b);
 }

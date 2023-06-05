@@ -2,6 +2,7 @@ package com.housservice.housstock.repository;
 
 import com.housservice.housstock.model.Article;
 import com.housservice.housstock.model.CommandeClient;
+import com.housservice.housstock.model.Plannification;
 import com.housservice.housstock.model.Produit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,4 +25,6 @@ public interface CommandeClientRepository extends MongoRepository<CommandeClient
     Page<CommandeClient> findCommandeClientByTextToFind(String textToFind, Pageable paging);
 
     CommandeClient findCommandeClientByArticle(Article article);
+
+    List<CommandeClient> findCommandeClientByMiseEnVeille(boolean b);
 }

@@ -171,4 +171,18 @@ public class PlannifcationController {
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
 
     }
+    @GetMapping("/getallOF")
+    public int getallOF(){
+        return plannificationService.getallOF(false);
+    }
+    @GetMapping("/getallOFLance")
+    public int getallOFLance(){
+        return plannificationService.getallOF(true);
+    }
+
+    @GetMapping("/getOFTerminer")
+    public int getOFTerminer(){
+        return plannificationService.getOFTerminer();
+    }
+
 }

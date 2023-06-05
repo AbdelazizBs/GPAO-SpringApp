@@ -393,5 +393,15 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         CommandeClient commandeClient= commandeClientRepository.findById(id).get();
         commandeClientRepository.delete(commandeClient);
     }
+    @Override
+    public int getcommandeListe(boolean b) {
+        try {
+            List<CommandeClient> commandeClients = commandeClientRepository.findCommandeClientByMiseEnVeille(b);
+            return (int) commandeClients.stream().count();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
 
 }

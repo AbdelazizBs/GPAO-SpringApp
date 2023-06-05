@@ -2,6 +2,7 @@ package com.housservice.housstock.controller.produit;
 
 import com.housservice.housstock.exception.ResourceNotFoundException;
 import com.housservice.housstock.message.MessageHttpErrorProperties;
+import com.housservice.housstock.model.Personnel;
 import com.housservice.housstock.model.Produit;
 import com.housservice.housstock.model.dto.MachineDto;
 import com.housservice.housstock.model.dto.ProduitDto;
@@ -172,5 +173,27 @@ public class ProduitController {
         produitService.miseEnVeille(idArticle);
 
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
+    }
+
+        @GetMapping("/getallArticle")
+    public int getallClient(){
+        return produitService.getallArticle();
+    }
+    @GetMapping("/getallProduitlist")
+    public List<Produit> getallProduitlist(){
+        return produitService.getallProduitlist();
+    }
+
+    @GetMapping("/getArticleBox")
+    public int getArticleBox(){
+        return produitService.getArticleBytype("box");
+    }
+    @GetMapping("/getArticlehangtag")
+    public int getArticlehangtag(){
+        return produitService.getArticleBytype("hangtag");
+    }
+    @GetMapping("/getArticleticket")
+    public int getArticleticket(){
+        return produitService.getArticleBytype("ticket");
     }
 }
