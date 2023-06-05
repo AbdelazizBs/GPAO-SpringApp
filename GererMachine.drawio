@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-06-04T21:28:21.010Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="9MMhmnh0ADrnHFKKpI7N" version="21.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-05T21:42:37.847Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="7oHdtAgNZrJZLsofdCNw" version="21.3.7" type="gitlab">
   <diagram name="Page-1" id="ZBr2NeBwEve-6yp4rQt4">
-    <mxGraphModel dx="1622" dy="927" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1379" dy="788" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -95,7 +95,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="FOdYkTecCOvwK7rrkMjk-92" value="Gérer machine" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="120" y="152.01999999999998" width="270" height="40" as="geometry" />
+          <mxGeometry x="120" y="149.99999999999997" width="270" height="40" as="geometry" />
         </mxCell>
         <mxCell id="FOdYkTecCOvwK7rrkMjk-93" value="Affiche liste machine en veille" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="840" y="437.02" width="200" height="80" as="geometry" />
