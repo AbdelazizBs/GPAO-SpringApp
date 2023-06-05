@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-01T22:30:08.691Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57" etag="4AMV3IH3cd0NMLoDwXin" version="21.3.6" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-05T21:48:19.867Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="gMqn7FCwvuQIam4ZA0G3" version="21.3.7" type="gitlab">
   <diagram name="Page-1" id="Dhz3QEpo0U_PGYgXKE9V">
     <mxGraphModel dx="2206" dy="788" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -7,11 +7,14 @@
         <mxCell id="gNxEo24BiPIkMwxeU2JK-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-370" y="329.66" width="1020" height="620" as="geometry" />
         </mxCell>
-        <mxCell id="gNxEo24BiPIkMwxeU2JK-2" value="Responsable&amp;nbsp;&lt;br&gt;Commerciale" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+        <mxCell id="gNxEo24BiPIkMwxeU2JK-2" value="Responsable&amp;nbsp;&lt;br&gt;Commercial" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
           <mxGeometry x="-429.32" y="464.65999999999997" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-3" value="administrateur" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
           <mxGeometry x="-430" y="814.66" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UuUNe-DfXySAParBAtfl-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=openThin;endFill=0;endSize=14;dashed=1;" edge="1" parent="1" source="gNxEo24BiPIkMwxeU2JK-4" target="gNxEo24BiPIkMwxeU2JK-6">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-4" value="Gérer les commandes" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-200" y="430" width="200" height="80" as="geometry" />
@@ -23,7 +26,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-6" value="S&#39;authentifier" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="190" y="433.17" width="200" height="80" as="geometry" />
+          <mxGeometry x="310" y="430" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-7" value="Affiche liste commande" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-240" y="589.9999999999999" width="220" height="80" as="geometry" />
@@ -37,17 +40,8 @@
         <mxCell id="gNxEo24BiPIkMwxeU2JK-12" value="Ajouter commande" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-360" y="720" width="200" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="gNxEo24BiPIkMwxeU2JK-13" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="gNxEo24BiPIkMwxeU2JK-4" target="gNxEo24BiPIkMwxeU2JK-14" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="50" y="720" as="sourcePoint" />
-            <mxPoint x="100" y="670" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="gNxEo24BiPIkMwxeU2JK-14" value="" style="triangle;whiteSpace=wrap;html=1;rotation=0;" parent="1" vertex="1">
-          <mxGeometry x="161.36" y="460.00000000000006" width="28.64" height="27.71" as="geometry" />
-        </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-15" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="70" y="444.66" width="40" height="20" as="geometry" />
+          <mxGeometry x="200" y="440" width="40" height="20" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-16" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="gNxEo24BiPIkMwxeU2JK-12" target="gNxEo24BiPIkMwxeU2JK-18" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -55,7 +49,7 @@
             <mxPoint x="-26.83065150626203" y="720.685651506262" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="gNxEo24BiPIkMwxeU2JK-17" value="Gérer commandes" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="gNxEo24BiPIkMwxeU2JK-17" value="Gérer commandes client" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-370" y="329.66" width="270" height="40" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-18" value="" style="triangle;whiteSpace=wrap;html=1;rotation=-150;direction=south;" parent="1" vertex="1">
@@ -65,7 +59,7 @@
           <mxGeometry x="-140" y="510.00000000000006" width="27.02" height="19.32" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-23" value="Affiche liste commande fermée" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="400" y="570" width="200" height="80" as="geometry" />
+          <mxGeometry x="380" y="604.66" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-24" value="" style="triangle;whiteSpace=wrap;html=1;rotation=115;direction=south;" parent="1" vertex="1">
           <mxGeometry x="-10" y="480" width="27.02" height="19.32" as="geometry" />
@@ -92,7 +86,7 @@
           <mxGeometry x="-260" y="830" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-34" value="Annuler commande" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="400" y="813.9799999999999" width="200" height="80" as="geometry" />
+          <mxGeometry x="396.49" y="804.6599999999999" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-35" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.515;entryY=0.494;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="gNxEo24BiPIkMwxeU2JK-34" target="gNxEo24BiPIkMwxeU2JK-36" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -101,7 +95,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-36" value="" style="triangle;whiteSpace=wrap;html=1;rotation=-180;direction=south;" parent="1" vertex="1">
-          <mxGeometry x="486.49" y="649.32" width="27.02" height="19.32" as="geometry" />
+          <mxGeometry x="482.98" y="684.6600000000001" width="27.02" height="19.32" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-41" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="gNxEo24BiPIkMwxeU2JK-29" target="gNxEo24BiPIkMwxeU2JK-42" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
