@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-05T21:48:19.867Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="gMqn7FCwvuQIam4ZA0G3" version="21.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-05T21:48:25.564Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="4lNMgYg_HnmQRuo8Loq3" version="21.3.7" type="gitlab">
   <diagram name="Page-1" id="Dhz3QEpo0U_PGYgXKE9V">
     <mxGraphModel dx="2206" dy="788" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -26,7 +26,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-6" value="S&#39;authentifier" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="310" y="430" width="200" height="80" as="geometry" />
+          <mxGeometry x="380" y="430" width="200" height="80" as="geometry" />
         </mxCell>
         <mxCell id="gNxEo24BiPIkMwxeU2JK-7" value="Affiche liste commande" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-240" y="589.9999999999999" width="220" height="80" as="geometry" />
