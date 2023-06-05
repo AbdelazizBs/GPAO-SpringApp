@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-05T22:27:40.176Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="UBkzE9AXhXDeDAtfSlFZ" version="21.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-05T22:29:21.864Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="FNTkILhNJ8xLCsTNQDhz" version="21.3.7" type="gitlab">
   <diagram name="Page-1" id="1Jm4oJgx9eYc-Yt_YUTq">
     <mxGraphModel dx="2359" dy="876" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -7,7 +7,7 @@
         <mxCell id="olYB9TG9YDRG8_5HBAq5-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-370" y="340" width="820" height="620" as="geometry" />
         </mxCell>
-        <mxCell id="olYB9TG9YDRG8_5HBAq5-2" value="Responsable&amp;nbsp;&lt;br&gt;Commerciale" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+        <mxCell id="olYB9TG9YDRG8_5HBAq5-2" value="Responsable&amp;nbsp;&lt;br&gt;Commercial" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
           <mxGeometry x="-429.32" y="464.65999999999997" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="olYB9TG9YDRG8_5HBAq5-3" value="administrateur" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
@@ -135,9 +135,6 @@
         </mxCell>
         <mxCell id="olYB9TG9YDRG8_5HBAq5-34" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-370" y="340" width="1040" height="670" as="geometry" />
-        </mxCell>
-        <mxCell id="olYB9TG9YDRG8_5HBAq5-35" value="Responsable&amp;nbsp;&lt;br&gt;Commerciale" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
-          <mxGeometry x="-429.32" y="464.65999999999997" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="olYB9TG9YDRG8_5HBAq5-36" value="administrateur" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
           <mxGeometry x="-430" y="814.66" width="30" height="60" as="geometry" />
