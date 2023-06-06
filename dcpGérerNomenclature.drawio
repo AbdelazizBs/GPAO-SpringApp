@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-06T17:50:20.965Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="la5kQLnEm7jIkhih_SqC" version="21.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-06T17:50:39.274Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="PshWF5NrdOJ8-R8onaAn" version="21.3.7" type="gitlab">
   <diagram name="Page-1" id="ZeFmTmOf-jvO1sqP45p0">
     <mxGraphModel dx="1866" dy="1053" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -313,13 +313,13 @@
           <mxGeometry y="80" width="260" height="60" as="geometry" />
         </mxCell>
         <mxCell id="cW0S-hsf7DiErjdXQ70p-97" value="&amp;lt;&amp;lt;Controle&amp;gt;&amp;gt;&lt;br&gt;CtrNomenclature" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
-          <mxGeometry x="810" y="340" width="260" height="170" as="geometry" />
+          <mxGeometry x="810" y="340" width="260" height="180" as="geometry" />
         </mxCell>
         <mxCell id="cW0S-hsf7DiErjdXQ70p-98" value="&amp;nbsp;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="cW0S-hsf7DiErjdXQ70p-97">
           <mxGeometry y="30" width="260" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="cW0S-hsf7DiErjdXQ70p-99" value="getNomenclatures()&lt;br&gt;getNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;rechercheNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;updateNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;deleteNomenclature()&lt;br&gt;mettreEnVeille()&lt;br&gt;affecterParents()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="cW0S-hsf7DiErjdXQ70p-97">
-          <mxGeometry y="60" width="260" height="110" as="geometry" />
+        <mxCell id="cW0S-hsf7DiErjdXQ70p-99" value="getNomenclatures()&lt;br&gt;getNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;rechercheNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;updateNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;deleteNomenclature()&lt;br&gt;mettreEnVeille()&lt;br&gt;affecterParents()&lt;br&gt;getHierarchie()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="cW0S-hsf7DiErjdXQ70p-97">
+          <mxGeometry y="60" width="260" height="120" as="geometry" />
         </mxCell>
         <mxCell id="cW0S-hsf7DiErjdXQ70p-100" value="&amp;lt;&amp;lt;Collection&amp;gt;&amp;gt;&lt;br&gt;Nomenclature" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
           <mxGeometry x="1150" y="505" width="260" height="160" as="geometry" />
