@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-06T22:13:11.383Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="ZoMHgxBTVdXCu77Ci93_" version="21.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-06T22:14:05.822Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="sUhczhuQwUhxbAi68ihZ" version="21.3.7" type="gitlab">
   <diagram name="Page-1" id="9361dd3d-8414-5efd-6122-117bd74ce7a7">
     <mxGraphModel dx="2386" dy="1295" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1.5" pageWidth="826" pageHeight="1169" background="none" math="0" shadow="0">
       <root>
@@ -99,10 +99,10 @@
             <mxPoint x="-69" y="1088" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="-uq-MVPFogUNPVX0MqQ4-32" value="[&lt;span style=&quot;font-size: 16px;&quot;&gt;Affichage nouveau&amp;nbsp; Personnel&lt;/span&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;]&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="-uq-MVPFogUNPVX0MqQ4-32" value="[&lt;span style=&quot;font-size: 16px;&quot;&gt;Création&lt;/span&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;]&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="-375" y="360" width="180" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="-uq-MVPFogUNPVX0MqQ4-33" value="[&lt;span style=&quot;font-size: 16px;&quot;&gt;Affichage personnel validés&lt;/span&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;]&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="-uq-MVPFogUNPVX0MqQ4-33" value="[&lt;span style=&quot;font-size: 16px;&quot;&gt;Affichage liste personnel&lt;/span&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;]&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="-370" y="805" width="180" height="80" as="geometry" />
         </mxCell>
         <mxCell id="-uq-MVPFogUNPVX0MqQ4-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.177;entryY=0.977;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.165;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1">
