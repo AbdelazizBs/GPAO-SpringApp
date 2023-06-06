@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-06T18:27:12.100Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="T5n16teEVxw9P1ks1rqE" version="21.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-06T18:29:10.091Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="iiykN9GnqcGyCwB7mRTI" version="21.3.7" type="gitlab">
   <diagram name="Page-1" id="AcUbQvHw5QFJXDGcqYBx">
     <mxGraphModel dx="1983" dy="1119" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -291,13 +291,13 @@
           <mxGeometry x="140" y="139.99999999999997" width="270" height="40" as="geometry" />
         </mxCell>
         <mxCell id="ppdD3s4YUbJsHrjWM72H-91" value="&amp;lt;&amp;lt;Dialogue&amp;gt;&amp;gt;&lt;br&gt;Sélection Nomenclature" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
-          <mxGeometry x="390" y="270" width="260" height="180" as="geometry" />
+          <mxGeometry x="390" y="270" width="260" height="170" as="geometry" />
         </mxCell>
         <mxCell id="ppdD3s4YUbJsHrjWM72H-92" value="nomNomenclature:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;type:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;parentsId:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;matricule:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;&amp;lt;liste&amp;gt;&amp;gt;NomenclatureCmd: LigneCmd[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="ppdD3s4YUbJsHrjWM72H-91">
           <mxGeometry y="30" width="260" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="ppdD3s4YUbJsHrjWM72H-93" value="addPersonnel()&lt;br&gt;affecterParents()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="ppdD3s4YUbJsHrjWM72H-91">
-          <mxGeometry y="130" width="260" height="50" as="geometry" />
+        <mxCell id="ppdD3s4YUbJsHrjWM72H-93" value="getNomenclatureClient()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="ppdD3s4YUbJsHrjWM72H-91">
+          <mxGeometry y="130" width="260" height="40" as="geometry" />
         </mxCell>
         <mxCell id="ppdD3s4YUbJsHrjWM72H-94" value="&amp;lt;&amp;lt;Dialogue&amp;gt;&amp;gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;List Commande" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
           <mxGeometry x="390" y="500" width="260" height="140" as="geometry" />
@@ -305,7 +305,7 @@
         <mxCell id="ppdD3s4YUbJsHrjWM72H-95" value="&amp;lt;&amp;lt;list&amp;gt;&amp;gt; commandes : Commande[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="ppdD3s4YUbJsHrjWM72H-94">
           <mxGeometry y="30" width="260" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="ppdD3s4YUbJsHrjWM72H-96" value="getCmd()&lt;br&gt;rechercheCmd()&lt;br&gt;deleteCmd()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="ppdD3s4YUbJsHrjWM72H-94">
+        <mxCell id="ppdD3s4YUbJsHrjWM72H-96" value="getCmd()&lt;br&gt;rechercheCmd()&lt;br&gt;deleteCmd()&lt;br&gt;fermerCmd()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="ppdD3s4YUbJsHrjWM72H-94">
           <mxGeometry y="80" width="260" height="60" as="geometry" />
         </mxCell>
         <mxCell id="ppdD3s4YUbJsHrjWM72H-143" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;entryX=-0.005;entryY=0.329;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="ppdD3s4YUbJsHrjWM72H-97" target="ppdD3s4YUbJsHrjWM72H-122">
@@ -370,13 +370,13 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="ppdD3s4YUbJsHrjWM72H-111" value="&amp;lt;&amp;lt;Controle&amp;gt;&amp;gt;&lt;br&gt;CtrlNomenclatureClient" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
-          <mxGeometry x="830" y="270" width="260" height="150" as="geometry" />
+          <mxGeometry x="830" y="270" width="260" height="100" as="geometry" />
         </mxCell>
         <mxCell id="ppdD3s4YUbJsHrjWM72H-112" value="&amp;nbsp;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="ppdD3s4YUbJsHrjWM72H-111">
           <mxGeometry y="30" width="260" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="ppdD3s4YUbJsHrjWM72H-113" value="addCmd()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;affecterClient()&lt;br&gt;getCmd()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;rechercheCmd()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;deleteCmd()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="ppdD3s4YUbJsHrjWM72H-111">
-          <mxGeometry y="60" width="260" height="90" as="geometry" />
+        <mxCell id="ppdD3s4YUbJsHrjWM72H-113" value="getNomenclatureClient()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="ppdD3s4YUbJsHrjWM72H-111">
+          <mxGeometry y="60" width="260" height="40" as="geometry" />
         </mxCell>
         <mxCell id="ppdD3s4YUbJsHrjWM72H-114" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.001;entryY=0.232;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" edge="1" parent="1" source="ppdD3s4YUbJsHrjWM72H-92" target="ppdD3s4YUbJsHrjWM72H-113">
           <mxGeometry relative="1" as="geometry" />
