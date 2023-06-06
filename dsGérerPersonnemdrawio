@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" modified="2023-06-06T22:15:44.274Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="bFnY4-Sl2yGZ1U72vvKt" version="21.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-06T22:16:28.768Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="8b3eAdXYK9vCWrROadLI" version="21.3.7" type="gitlab">
   <diagram name="Page-1" id="9361dd3d-8414-5efd-6122-117bd74ce7a7">
     <mxGraphModel dx="2666" dy="1453" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1.5" pageWidth="826" pageHeight="1169" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="-uq-MVPFogUNPVX0MqQ4-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-460" y="-160" width="1450" height="1290" as="geometry" />
+          <mxGeometry x="-460" y="-160" width="1450" height="1180" as="geometry" />
         </mxCell>
         <mxCell id="-uq-MVPFogUNPVX0MqQ4-2" value="DS Gérer personnel" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="-460" y="-160" width="180" height="30" as="geometry" />
@@ -40,7 +40,7 @@
           <mxGeometry x="-450" y="80" width="80" height="30" as="geometry" />
         </mxCell>
         <mxCell id="-uq-MVPFogUNPVX0MqQ4-10" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-450" y="650" width="1430" height="420" as="geometry" />
+          <mxGeometry x="-450" y="650" width="1430" height="320" as="geometry" />
         </mxCell>
         <mxCell id="-uq-MVPFogUNPVX0MqQ4-11" value="alt" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="-450" y="650" width="80" height="30" as="geometry" />
@@ -81,22 +81,22 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="-uq-MVPFogUNPVX0MqQ4-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.177;entryY=0.977;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.165;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1">
+        <mxCell id="-uq-MVPFogUNPVX0MqQ4-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.165;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="480" y="150" as="sourcePoint" />
-            <mxPoint x="481" y="1088" as="targetPoint" />
+            <mxPoint x="481" y="990" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="-uq-MVPFogUNPVX0MqQ4-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.177;entryY=0.977;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.165;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1">
+        <mxCell id="-uq-MVPFogUNPVX0MqQ4-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.165;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="204.25" y="150" as="sourcePoint" />
-            <mxPoint x="205.25" y="1088" as="targetPoint" />
+            <mxPoint x="203.72" y="81" as="sourcePoint" />
+            <mxPoint x="204" y="1000" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="-uq-MVPFogUNPVX0MqQ4-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.177;entryY=0.977;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.165;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1">
+        <mxCell id="-uq-MVPFogUNPVX0MqQ4-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.165;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="-70" y="150" as="sourcePoint" />
-            <mxPoint x="-69" y="1088" as="targetPoint" />
+            <mxPoint x="-69" y="1000" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="-uq-MVPFogUNPVX0MqQ4-32" value="[&lt;span style=&quot;font-size: 16px;&quot;&gt;Création&lt;/span&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;]&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
@@ -105,10 +105,10 @@
         <mxCell id="-uq-MVPFogUNPVX0MqQ4-33" value="[&lt;span style=&quot;font-size: 16px;&quot;&gt;Affichage liste personnel&lt;/span&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;]&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="-370" y="805" width="180" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="-uq-MVPFogUNPVX0MqQ4-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.177;entryY=0.977;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.165;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1">
+        <mxCell id="-uq-MVPFogUNPVX0MqQ4-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.165;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="830" y="150" as="sourcePoint" />
-            <mxPoint x="831" y="1088" as="targetPoint" />
+            <mxPoint x="831" y="990" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="-uq-MVPFogUNPVX0MqQ4-53" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;curved=0;endSize=14;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1" source="-uq-MVPFogUNPVX0MqQ4-36">
