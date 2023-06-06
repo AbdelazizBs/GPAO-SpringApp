@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-06-06T17:26:00.787Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="_oNepo7Mh4xNEm0k2Zmj" version="21.3.7" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-06T17:40:21.021Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.37" etag="j_FjiISDUpcq3mDnhi9p" version="21.3.7" type="gitlab">
   <diagram name="Page-1" id="2xbVu0nx7Zcjl5MdGJGn">
-    <mxGraphModel dx="1586" dy="895" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1866" dy="1053" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -284,43 +284,43 @@
             <mxPoint x="210" y="550" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-69" value="Responsable RH" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-69" value="Responsable &lt;br&gt;Développement" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
           <mxGeometry x="180" y="400" width="60" height="100" as="geometry" />
         </mxCell>
         <mxCell id="bgDlF4LqtdgQ4UADggFy-70" value="DCP Gérer personnel" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="140" y="149.99999999999997" width="270" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-71" value="&amp;lt;&amp;lt;Dialogue&amp;gt;&amp;gt;&lt;br&gt;Nouveau Personnel" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-71" value="&amp;lt;&amp;lt;Dialogue&amp;gt;&amp;gt;&lt;br&gt;Nouveau Nomenclature" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
           <mxGeometry x="390" y="270" width="260" height="180" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-72" value="nomPrenom:string&lt;br&gt;adresse:string&lt;br&gt;rib:string&lt;br&gt;poste:string&lt;br&gt;poste:string&lt;br&gt;matricule:string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-71">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-72" value="nomNomenclature:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;type:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;parentsId:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;matricule:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;client:Liste&amp;lt;Client&amp;gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;frs:List&amp;lt;Frs&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-71">
           <mxGeometry y="30" width="260" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-73" value="addPersonnel()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-71">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-73" value="addPersonnel()&lt;br&gt;affecterParents()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-71">
           <mxGeometry y="130" width="260" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-74" value="&amp;lt;&amp;lt;Dialogue&amp;gt;&amp;gt;&lt;br&gt;Liste personnel en veille" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-74" value="&amp;lt;&amp;lt;Dialogue&amp;gt;&amp;gt;&lt;br&gt;Liste Nomenclature" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
           <mxGeometry x="390" y="510" width="260" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-75" value="&amp;lt;&amp;lt;list&amp;gt;&amp;gt; personnels : Personnel[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-74">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-75" value="&amp;lt;&amp;lt;list&amp;gt;&amp;gt; nomenclatures : Nomenclature[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-74">
           <mxGeometry y="30" width="260" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-76" value="getPersonnels()&lt;br&gt;recherchePersonnel()&lt;br&gt;deletePersonnel()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-74">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-76" value="getNomenclatures()&lt;br&gt;rechercheNomenclature()&lt;br&gt;mettreEnVeille()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-74">
           <mxGeometry y="80" width="260" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-77" value="&amp;lt;&amp;lt;Controle&amp;gt;&amp;gt;&lt;br&gt;CtrPersonnel" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
-          <mxGeometry x="810" y="340" width="260" height="150" as="geometry" />
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-77" value="&amp;lt;&amp;lt;Controle&amp;gt;&amp;gt;&lt;br&gt;CtrNomenclature" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
+          <mxGeometry x="810" y="340" width="260" height="170" as="geometry" />
         </mxCell>
         <mxCell id="bgDlF4LqtdgQ4UADggFy-78" value="&amp;nbsp;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-77">
           <mxGeometry y="30" width="260" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-79" value="getAll()&lt;br&gt;getPersonnelById()&lt;br&gt;createPersonnel()&lt;br&gt;updatePersonnel()&lt;br&gt;deletePersonnel()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-77">
-          <mxGeometry y="60" width="260" height="90" as="geometry" />
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-79" value="getNomenclatures()&lt;br&gt;getNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;rechercheNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;updateNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;deleteNomenclature()&lt;br&gt;mettreEnVeille()&lt;br&gt;affecterParents()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-77">
+          <mxGeometry y="60" width="260" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-80" value="&amp;lt;&amp;lt;Collection&amp;gt;&amp;gt;&lt;br&gt;Personnel" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-80" value="&amp;lt;&amp;lt;Collection&amp;gt;&amp;gt;&lt;br&gt;Nomenclature" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
           <mxGeometry x="1180" y="300" width="260" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-81" value="nomPrenom:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;adresse:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;rib:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;poste:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;poste:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;matricule:string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-80">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-81" value="nomNomenclature:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;type:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;parentsId:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;matricule:string&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;client:Liste&amp;lt;Client&amp;gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;frs:List&amp;lt;Frs&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-80">
           <mxGeometry y="30" width="260" height="110" as="geometry" />
         </mxCell>
         <mxCell id="bgDlF4LqtdgQ4UADggFy-82" value="&amp;nbsp;" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-80">
@@ -341,16 +341,16 @@
         <mxCell id="bgDlF4LqtdgQ4UADggFy-86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.499;entryY=1.003;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" edge="1" parent="1" source="bgDlF4LqtdgQ4UADggFy-75" target="bgDlF4LqtdgQ4UADggFy-79">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-87" value="&amp;lt;&amp;lt;Dialogue&amp;gt;&amp;gt;&lt;br&gt;List Personnel" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-87" value="&amp;lt;&amp;lt;Dialogue&amp;gt;&amp;gt;&lt;br&gt;List Nomenclatture en veille" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
           <mxGeometry x="390" y="740" width="260" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-88" value="nomPrenom:string&lt;br&gt;adresse:string&lt;br&gt;rib:string&lt;br&gt;poste:string&lt;br&gt;poste:string&lt;br&gt;matricule:string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-87">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-88" value="nomNomenclature:string&lt;br&gt;type:string&lt;br&gt;parentsId:string&lt;br&gt;matricule:string&lt;br&gt;client:Liste&amp;lt;Client&amp;gt;&lt;br&gt;frs:List&amp;lt;Frs&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-87">
           <mxGeometry y="30" width="260" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-89" value="getPersonnels()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;recherchePersonnel()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;updatePersonnel()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;deletePersonnel()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-87">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-89" value="getNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;rechercheNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;updateNomenclature()&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;deleteNomenclature()" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="bgDlF4LqtdgQ4UADggFy-87">
           <mxGeometry y="130" width="260" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="bgDlF4LqtdgQ4UADggFy-90" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.804;entryY=1.011;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" edge="1" parent="1" source="bgDlF4LqtdgQ4UADggFy-88" target="bgDlF4LqtdgQ4UADggFy-79">
+        <mxCell id="bgDlF4LqtdgQ4UADggFy-90" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;entryX=0.895;entryY=1.007;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="bgDlF4LqtdgQ4UADggFy-88" target="bgDlF4LqtdgQ4UADggFy-79">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
