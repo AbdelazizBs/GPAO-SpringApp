@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-06-09T20:32:20.045Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.41" etag="4VgqqqtjhEmfy2qG05Q6" version="21.3.8" type="gitlab">
+<mxfile host="app.diagrams.net" modified="2023-06-09T20:38:40.332Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.41" etag="o4j8MXeelThdh7RYWHwN" version="21.3.8" type="gitlab">
   <diagram name="Page-1" id="aknOeW65uSR_TGDSYjEv">
     <mxGraphModel dx="2672" dy="2197" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -191,7 +191,7 @@
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="W4gsgQ9Uct64iBiayUEG-52" value="id: String&#xa;numero: String&#xa;dateCreation: Date&#xa;dateDebut: Date&#xa;dateFin: Date&#xa;etat: String&#xa;commande: Commande&#xa;lignesCommande: List&lt;LigneCommande&gt;&#xa;etapesProduction: List&lt;EtapeProduction&gt;&#xa;duréePrevue: int&#xa;dureeReelle: int" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="W4gsgQ9Uct64iBiayUEG-51">
+        <mxCell id="W4gsgQ9Uct64iBiayUEG-52" value="id: String&#xa;numero: String&#xa;dateCreation: Date&#xa;dateDebut: Date&#xa;dateFin: Date&#xa;etat: String&#xa;lignesCommande: List&lt;LigneCommande&gt;&#xa;etapesProduction: List&lt;EtapeProduction&gt;&#xa;duréePrevue: int&#xa;dureeReelle: int" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="W4gsgQ9Uct64iBiayUEG-51">
           <mxGeometry y="26" width="250" height="174" as="geometry" />
         </mxCell>
         <mxCell id="W4gsgQ9Uct64iBiayUEG-53" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="W4gsgQ9Uct64iBiayUEG-51">
