@@ -47,7 +47,7 @@
 				<text><![CDATA[LES DETAILS DE RAPORT]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="34" y="30" width="481" height="41" backcolor="#414145" uuid="4c14bb1a-912b-499a-ab40-3326624cb550"/>
+				<reportElement x="34" y="30" width="481" height="41" backcolor="#424242" uuid="4c14bb1a-912b-499a-ab40-3326624cb550"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="34" y="71" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="aed05713-e230-47e2-af25-11588a7de42e"/>

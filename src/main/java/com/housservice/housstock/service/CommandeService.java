@@ -36,7 +36,11 @@ public interface CommandeService {
     void addMatiere(String designation)throws ResourceNotFoundException;
     void miseEnVeille(String id, CommandeSuiviDto commandeSuiviDto) throws ResourceNotFoundException;
     ResponseEntity<Map<String, Object>> getCommandeNotActive(int page, int size);
+
     ResponseEntity<Map<String, Object>> search(String textToFind,int page, int size,boolean enVeille);
      List<String> getAllArticle(String nomClient,String type);
     public void delete(String id) ;
+    public ResponseEntity<Map<String, Object>> onSortNoActiveCommande(int page, int size, String field, String order);
+    ResponseEntity<Map<String, Object>> searchS(String textToFind,int page, int size,boolean enVeille);
+
 }

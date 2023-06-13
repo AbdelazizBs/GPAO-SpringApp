@@ -80,8 +80,8 @@ public class ListeMatiereServiceImpl implements ListeMatiereService{
         listeMatiere.setTypePvc(listeMatiereDto.getTypePvc());
         listeMatiere.setTypePelliculage(listeMatiereDto.getTypePelliculage());
         listeMatiere.setTypeCordon(listeMatiereDto.getTypeCordon());
-        listeMatiere.setTypeEncre(listeMatiereDto.getTypeVernis());
-        listeMatiere.setDesignation(listeMatiereDto.getTypeVernis());
+        listeMatiere.setTypeEncre(listeMatiereDto.getTypeEncre());
+        listeMatiere.setDesignation(listeMatiereDto.getDesignation());
         listeMatiere.setUniteConsommation(listeMatiereDto.getUniteConsommation());
         listeMatiere.setMicron(listeMatiereDto.getMicron());
 

@@ -207,6 +207,7 @@ public class MachineServiceImpl implements MachineService
         if (!machine.getRefMachine().equals(machineDto.getRefMachine())) {
             throw new IllegalArgumentException("Error Id!!");
         }
+        machine.setType(machineDto.getType());
         machine.setLibelle(machineDto.getLibelle());
         machine.setDateMaintenance(machineDto.getDateMaintenance());
         machine.setNbConducteur(machineDto.getNbConducteur());

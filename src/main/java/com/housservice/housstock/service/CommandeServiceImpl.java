@@ -101,6 +101,30 @@ public class CommandeServiceImpl implements CommandeService{
         }
     }
 
+    @Override
+    public ResponseEntity<Map<String, Object>> searchS(String textToFind, int page, int size, boolean enVeille) {
+
+        try {
+
+            List<CommandeSuiviDto> commandes;
+            Pageable paging = PageRequest.of(page, size);
+            Page<CommandeSuivi> pageTuts;
+            pageTuts = commandeSuiviRepository.findCommandeByTextToFind(textToFind, paging);
+            commandes = pageTuts.getContent().stream().map(commande -> {
+                return CommandeSuiviMapper.MAPPER.toCommandeSuiviDto(commande);
+            }).collect(Collectors.toList());
+            commandes= commandes.stream().collect(Collectors.toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("commandes", commandes);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     public int findProduitWithMaxSize() {
         List<Commande> produits = commandeRepository.findAll();
 
@@ -183,7 +207,7 @@ public class CommandeServiceImpl implements CommandeService{
             else {
                 pageTuts = commandeRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
             }
-            commandeDtos = pageTuts.getContent().stream().map(commande -> {
+            commandeDtos = pageTuts.getContent().stream().filter(client -> !client.isMiseEnVeille()).map(commande -> {
                 return CommandeMapper.MAPPER.toCommandeDto(commande);
             }).collect(Collectors.toList());
 
@@ -198,6 +222,31 @@ public class CommandeServiceImpl implements CommandeService{
         }
     }
 
+    @Override
+    public ResponseEntity<Map<String, Object>> onSortNoActiveCommande(int page, int size, String field, String order) {
+        try {
+            List<CommandeSuiviDto> commandeDtos ;
+            Page<CommandeSuivi> pageTuts;
+            if (order.equals("1")){
+                pageTuts = commandeSuiviRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, field)));
+            }
+            else {
+                pageTuts = commandeSuiviRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field)));
+            }
+            commandeDtos = pageTuts.getContent().stream().map(commande -> {
+                return CommandeSuiviMapper.MAPPER.toCommandeSuiviDto(commande);
+            }).collect(Collectors.toList());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("commandes", commandeDtos);
+            response.put("currentPage", pageTuts.getNumber());
+            response.put("totalItems", pageTuts.getTotalElements());
+            response.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @Override
     public List<String> getAllFournisseurs() {
         List<Fournisseur> fournisseurs = fournisseurRepository.findFournisseurByMiseEnVeille(false);
@@ -318,7 +367,11 @@ public class CommandeServiceImpl implements CommandeService{
         fournisseur.setRate(commandeSuiviDto.getRate());
         fournisseurRepository.save(fournisseur);
         commandeRepository.save(commande);
+
         CommandeSuivi commandeSuivi = CommandeSuiviMapper.MAPPER.toCommandeSuivi(commandeSuiviDto);
+        commandeSuivi.setVdate(commandeSuiviDto.getVdate());
+        commandeSuivi.setVprix(commandeSuiviDto.getVprix());
+        commandeSuivi.setRate(commandeSuiviDto.getRate());
         commandeSuivi.setRaisonSocial(fournisseur.getRaisonSocial());
         commandeSuiviRepository.save(commandeSuivi);
     }

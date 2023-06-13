@@ -18,12 +18,20 @@ public class CommandeSuivi {
     private int rate;
     private String commentaire;
     private String date;
+    private String numBcd;
+    private String vprix;
 
-    public CommandeSuivi(String raisonSocial, int rate, String commentaire, String date) {
+    private String vdate;
+
+    public CommandeSuivi(String id, String raisonSocial, int rate, String commentaire, String date, String numBcd, String vprix, String vdate) {
+        this.id = id;
         this.raisonSocial = raisonSocial;
         this.rate = rate;
         this.commentaire = commentaire;
         this.date = date;
+        this.numBcd = numBcd;
+        this.vprix = vprix;
+        this.vdate = vdate;
     }
 
     public CommandeSuivi() {

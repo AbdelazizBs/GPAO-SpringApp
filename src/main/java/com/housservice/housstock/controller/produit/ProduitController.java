@@ -196,4 +196,11 @@ public class ProduitController {
     public int getArticleticket(){
         return produitService.getArticleBytype("ticket");
     }
+    @GetMapping("/getArticleref")
+    public int getArticleref(){
+        return produitService.getArticleref();
+    }
+
+
+
 }

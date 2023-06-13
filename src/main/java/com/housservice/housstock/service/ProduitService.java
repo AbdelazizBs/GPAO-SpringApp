@@ -44,4 +44,5 @@ public interface ProduitService {
     int getArticleBytype(String type);
     int getallArticle();
     List<Produit> getallProduitlist();
+    int getArticleref();
 }

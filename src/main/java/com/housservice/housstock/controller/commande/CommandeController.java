@@ -105,7 +105,24 @@ public class CommandeController {
         return commandeService.onSortActiveCommande(page,size,field,order);
 
     }
+    @GetMapping("/onSortNoActiveCommande")
+    @ApiOperation(value = "service to get get All active commande   sorted  and ordered by  params")
+    public ResponseEntity<Map<String, Object>> onSortNoActiveFournisseur(@RequestParam(defaultValue = "0") int page,
+                                                                       @RequestParam(defaultValue = "3") int size,
+                                                                       @RequestParam(defaultValue = "field") String field,
+                                                                       @RequestParam(defaultValue = "order") String order){
+        System.out.println(order);
+        return commandeService.onSortNoActiveCommande(page,size,field,order);
 
+    }
+    @GetMapping("/searchS")
+    @ApiOperation(value = "service to filter Commande ")
+    public ResponseEntity<Map<String, Object>> searchS(@RequestParam String textToFind,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "3") int size) {
+        return commandeService.searchS(textToFind, page, size,true);
+
+    }
     @GetMapping("/getIdCommandes/{numBcd}")
     @ApiOperation(value = "service to get Id Commande by numBcd.")
     public ResponseEntity<Map<String, Object>>  getIdFournisseurs(  @ApiParam(name = "numBcd", value="numBcd of commandes", required = true)

@@ -39,7 +39,7 @@
 	<detail>
 		<band height="295">
 			<rectangle>
-				<reportElement x="34" y="30" width="481" height="41" backcolor="#3D5FE7" uuid="e776e7c0-524f-4e36-84c8-51fff100cbc8"/>
+				<reportElement x="34" y="30" width="481" height="41" backcolor="#424242" uuid="e776e7c0-524f-4e36-84c8-51fff100cbc8"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="34" y="71" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="0173991a-688b-44d2-bcdf-8c65a9e9aa7a"/>

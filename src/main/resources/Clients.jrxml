@@ -59,10 +59,10 @@
 	<detail>
 		<band height="248">
 			<rectangle>
-				<reportElement x="40" y="0" width="481" height="41" backcolor="#3D5FE7" uuid="e109afc7-5c56-4bea-a249-b305a077505b"/>
+				<reportElement x="40" y="0" width="481" height="41" backcolor="#424242" uuid="e109afc7-5c56-4bea-a249-b305a077505b"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="320" y="0" width="201" height="41" backcolor="#3D5FE7" uuid="f64d9153-07e2-43ea-89e9-27e5d8e3ca66"/>
+				<reportElement x="320" y="0" width="201" height="41" backcolor="#424242" uuid="f64d9153-07e2-43ea-89e9-27e5d8e3ca66"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="40" y="41" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="b55b4b64-ce27-4c44-9d78-255543cd9b95"/>
@@ -243,7 +243,7 @@
 	<columnFooter>
 		<band height="379">
 			<rectangle>
-				<reportElement x="40" y="10" width="481" height="41" backcolor="#3D5FE7" uuid="f286d6c0-1083-43b5-a4f6-540bfadca9ef"/>
+				<reportElement x="40" y="10" width="481" height="41" backcolor="#424242" uuid="f286d6c0-1083-43b5-a4f6-540bfadca9ef"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="40" y="51" width="481" height="41" backcolor="rgba(61, 95, 231, 0.0)" uuid="926d67bb-558c-4e35-98f5-97f791c174b7"/>

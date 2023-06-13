@@ -61,11 +61,14 @@ public class ProduitServiceImpl implements ProduitService {
         return produit.getCounter();
     }
     @Override
+    public int getArticleref() {
+        return this.findProduitWithMaxSize();
+    }
+
+    @Override
     public void addProduit(ProduitDto produitDto) {
         try {
-            if (produitRepository.existsProduitByDesignation(produitDto.getDesignation())) {
-                throw new IllegalArgumentException( produitDto.getDesignation() + "  existe deja !!");
-            }
+
             produitDto.setCounter(this.findProduitWithMaxSize()+1);
             produitDto.setRef("Art" + String.format("%03d",produitDto.getCounter()));
             List<Picture> pictures1 = new ArrayList<>();
@@ -266,6 +269,7 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Override
     public void addphoto(MultipartFile[] images, String ref) {
+        System.out.println(ref);
         Produit produit = produitRepository.findProduitByRef(ref).get();
         List<Picture> pictures = new ArrayList<>();
         for (MultipartFile file : images) {
@@ -275,6 +279,7 @@ public class ProduitServiceImpl implements ProduitService {
             picture.setType(file.getContentType());
             try {
                 picture.setBytes(file.getBytes());
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
