@@ -1,7 +1,7 @@
 
 k
 java:S1206)"PThis class overrides "equals()" and should therefore also override "hashCode()".(Ý¢êÍýÿÿÿÿ
-m
-java:S1128"PRemove this unused import 'org.springframework.data.mongodb.core.index.Indexed'.(§™õ÷8‡Ã±«…1
-[
-java:S1128">Remove this unused import 'javax.validation.constraints.Size'.(›«´Ý8ˆÃ±«…1
+f
+java:S1128"PRemove this unused import 'org.springframework.data.mongodb.core.index.Indexed'.(§™õ÷
+T
+java:S1128">Remove this unused import 'javax.validation.constraints.Size'.(›«´Ý

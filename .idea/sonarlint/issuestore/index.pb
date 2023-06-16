@@ -1,9 +1,6 @@
 
 I
 Diagramme sans nom.drawio,5\f\5f86721dea034549731c5e2ccfbdb7537803b64b
-:
-
-Dockerfile,6\6\6651ddff6eb82c840ced7c1dddee15c6e1913dd4
 N
 GestionStock_REMOTE_388.drawio,b\5\b5b3319a72f30fe94f7d0f72695a2a963fbb51df
 {
@@ -68,14 +65,10 @@ Osrc/main/java/com/housservice/housstock/controller/client/ClientController.java
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 w
 Gsrc/main/java/com/housservice/housstock/configuration/package-info.java,f\8\f8fd6e4a201c4311c9dc7f8ecd9ca6ca2491e441
-‘
-asrc/main/java/com/housservice/housstock/controller/PlanificationOf/PlanificationOfController.java,9\b\9b78b0a3500ad23e1f5c178a5618d8113794b1c4
 q
 Asrc/main/java/com/housservice/housstock/HousstockApplication.java,6\a\6a56c7453d0c725b6f84f8724d37ee6dadecd0cf
 h
 8src/main/java/com/housservice/housstock/model/Roles.java,3\c\3c8d29c6e85efc6f7f2074efb3f5518e284812af
-l
-<src/main/java/com/housservice/housstock/model/Personnel.java,9\5\954045da6f37300d01152e2a70aa27ec80dd3c52
 }
 Msrc/main/java/com/housservice/housstock/controller/excel/ExcelController.java,a\5\a5a7c1f1eef8fee78c24fffea7c9aff3a9197ceb
 
@@ -84,8 +77,6 @@ Qsrc/main/java/com/housservice/housstock/controller/contact/ContactController.ja
 Tsrc/main/java/com/housservice/housstock/controller/etapeProduction/package-info.java,9\f\9fe0c57abedf5dacd8b79c192571a94cec00bc7a
 ‘
 asrc/main/java/com/housservice/housstock/controller/etapeProduction/EtapeProductionController.java,a\8\a8f665c4290148c0377cb31cf1358a653c12b64b
-“
-csrc/main/java/com/housservice/housstock/controller/OrdreFabrication/OrdreFabricationController.java,b\0\b01a86cb62ad9d7eb196739c1512378319046e5c
 }
 Msrc/main/java/com/housservice/housstock/filter/CustomAuthorizationFilter.java,6\e\6e86990f22b6ec9feec5fb69cd6cdd258916a9c9
 u
@@ -114,14 +105,10 @@ y
 Isrc/main/java/com/housservice/housstock/repository/ComptesRepository.java,1\b\1b4d30504291f2e308f4c5189c38c14e55a2579d
 w
 Gsrc/main/java/com/housservice/housstock/service/ComptesServiceImpl.java,e\7\e777a605f67da052f6116dce7e4818dd4c4da29d
-y
-Isrc/main/java/com/housservice/housstock/configuration/SecurityConfig.java,2\0\2070779d4673153716ff66764895612e590a1598
 ‚
 Rsrc/main/java/com/housservice/housstock/model/dto/LigneCommandeFournisseurDto.java,2\9\2956a4367db18764e936e0fc542a51d5fe5e497f
 
 _src/main/java/com/housservice/housstock/controller/commandeClient/CommandeClientController.java,c\1\c1e8b38467f663512ed5cf7366d48c816e4e2b1e
-v
-Fsrc/main/java/com/housservice/housstock/model/LigneCommandeClient.java,1\3\13cac650bc106499b38b6501aabd3acec7292b12
 }
 Msrc/main/java/com/housservice/housstock/model/dto/LigneCommandeClientDto.java,0\5\053a975289cf2caa7e26a9909faf5980ee534d6d
 w
@@ -138,9 +125,15 @@ r
 Bsrc/main/java/com/housservice/housstock/model/EtapeProduction.java,5\5\550bec1029727fad8f4d6d704300621cc7fc1bb3
 j
 :src/main/java/com/housservice/housstock/model/Machine.java,6\c\6c9af0ed0fd7cd52019dd25dde88f5cba6496073
-r
-Bsrc/main/java/com/housservice/housstock/model/PlanificationOf.java,9\e\9e02212fecb21109dc7b8d5624fab483ef558794
-~
-Nsrc/main/java/com/housservice/housstock/service/CommandeClientServiceImpl.java,3\2\32a56b633b1727b1da565df937278a0944ee5045
 ™
 isrc/main/java/com/housservice/housstock/controller/ligneCommandeClient/LigneCommandeClientController.java,c\c\cc41a310eb142f6164504e179f94bb980bdc962b
+}
+Msrc/main/java/com/housservice/housstock/service/PlanificationServiceImpl.java,f\9\f9024684860a5f603337c858bb44b46bf7c44704
+x
+Hsrc/main/java/com/housservice/housstock/mapper/PlanificationMappper.java,8\8\88cd1b173e5914a8660d278ac7216c706b2c4334
+q
+Asrc/main/java/com/housservice/housstock/model/CommandeClient.java,b\b\bbbb723e7f066db925dc08257093a19651cb1816
+v
+Fsrc/main/java/com/housservice/housstock/model/LigneCommandeClient.java,1\3\13cac650bc106499b38b6501aabd3acec7292b12
+s
+Csrc/main/java/com/housservice/housstock/model/OrdreFabrication.java,9\6\96e586da96060151aea25e8c376ae6432893ccd2

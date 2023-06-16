@@ -63,19 +63,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.csrf().disable();
     http.sessionManagement().sessionCreationPolicy(STATELESS);
 //        http.authorizeRequests().antMatchers("/api/v1/user/login").permitAll();
-    http.authorizeRequests().antMatchers("/api/v1/role/**").hasAnyAuthority("ROLE_ADMIN");
-    http.authorizeRequests().antMatchers("/api/v1/compte/**").hasAnyAuthority("ROLE_ADMIN");
-    http.authorizeRequests().antMatchers("/api/v1/personnel/**").hasAnyAuthority("ROLE_ADMIN","ROLE_RH");
-    http.authorizeRequests().antMatchers("/api/v1/commandeClient/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_ADMIN","ROLE_PRODUCTION","ROLE_DEVELOPPEMENT");
-    http.authorizeRequests().antMatchers("/api/v1/client/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPPEMENT","ROLE_ADMIN");
-    http.authorizeRequests().antMatchers("/api/v1/fournisseur/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPEMENT","ROLE_ADMIN");
-    http.authorizeRequests().antMatchers("/api/v1/nomenclature/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPEMENT","ROLE_ADMIN","ROLE_PRODUCTION","ROLE_CONDUCTEUR_MACHINE");
-    http.authorizeRequests().antMatchers("/api/v1/ligneCommandeClient/**").hasAnyAuthority("ROLE_ADMIN","ROLE_PRODUCTION","ROLE_CONDUCTEUR_MACHINE");
-    http.authorizeRequests().antMatchers("/api/v1/machine/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_CONDUCTEUR_MACHINE","ROLE_ADMIN");
-    http.authorizeRequests().antMatchers("/api/v1/planificationOf/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_ADMIN","ROLE_CONDUCTEUR_MACHINE","ROLE_DEVELOPEMENT");
-    http.authorizeRequests().antMatchers("/api/v1/excel/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_ADMIN","ROLE_CONDUCTEUR_MACHINE","ROLE_DEVELOPEMENT","ROLE_COMMERCIALE","ROLE_RH");
-    http.authorizeRequests().antMatchers("/api/v1/etapeProduction/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_ADMIN","ROLE_CONDUCTEUR_MACHINE","ROLE_DEVELOPEMENT","ROLE_COMMERCIALE");
-    http.authorizeRequests().antMatchers("/api/v1/contactClient/**").hasAnyAuthority("ROLE_ADMIN","ROLE_COMMERCIALE");
+//    http.authorizeRequests().antMatchers("/api/v1/role/**").hasAnyAuthority("ROLE_ADMIN");
+//    http.authorizeRequests().antMatchers("/api/v1/compte/**").hasAnyAuthority("ROLE_ADMIN");
+//    http.authorizeRequests().antMatchers("/api/v1/personnel/**").hasAnyAuthority("ROLE_ADMIN","ROLE_RH");
+//    http.authorizeRequests().antMatchers("/api/v1/commandeClient/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_ADMIN","ROLE_PRODUCTION","ROLE_DEVELOPPEMENT");
+//    http.authorizeRequests().antMatchers("/api/v1/client/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPPEMENT","ROLE_ADMIN");
+//    http.authorizeRequests().antMatchers("/api/v1/fournisseur/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPEMENT","ROLE_ADMIN");
+//    http.authorizeRequests().antMatchers("/api/v1/nomenclature/**").hasAnyAuthority("ROLE_COMMERCIALE","ROLE_DEVELOPEMENT","ROLE_ADMIN","ROLE_PRODUCTION","ROLE_CONDUCTEUR_MACHINE");
+//    http.authorizeRequests().antMatchers("/api/v1/ligneCommandeClient/**").hasAnyAuthority("ROLE_ADMIN","ROLE_PRODUCTION","ROLE_CONDUCTEUR_MACHINE");
+//    http.authorizeRequests().antMatchers("/api/v1/machine/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_CONDUCTEUR_MACHINE","ROLE_ADMIN");
+//    http.authorizeRequests().antMatchers("/api/v1/planificationOf/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_ADMIN","ROLE_CONDUCTEUR_MACHINE","ROLE_DEVELOPEMENT");
+//    http.authorizeRequests().antMatchers("/api/v1/excel/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_ADMIN","ROLE_CONDUCTEUR_MACHINE","ROLE_DEVELOPEMENT","ROLE_COMMERCIALE","ROLE_RH");
+//    http.authorizeRequests().antMatchers("/api/v1/etapeProduction/**").hasAnyAuthority("ROLE_PRODUCTION","ROLE_ADMIN","ROLE_CONDUCTEUR_MACHINE","ROLE_DEVELOPEMENT","ROLE_COMMERCIALE");
+//    http.authorizeRequests().antMatchers("/api/v1/contactClient/**").hasAnyAuthority("ROLE_ADMIN","ROLE_COMMERCIALE");
 
 
 

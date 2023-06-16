@@ -33,9 +33,9 @@ public class PlanificationOf {
     private Date dateLancementPrevue;
     private Date heureFinPrevue;
     private Date heureDebutPrevue;
-    private int quantiteInitiale;
-    private int qteConforme;
-    private int qteNonConforme;
+        private int quantiteInitiale;
+        private int qteConforme;
+        private int qteNonConforme;
 
     private String comment;
     private boolean lanced;
