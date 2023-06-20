@@ -61,7 +61,12 @@ public class PlanificationOfController {
             ) throws ResourceNotFoundException {
         return planificationService.getAllPlanificationsParOperation(operationType);
     }
-
+    @GetMapping("/getAllPlanificationsParMachine")
+    public List<PlanificationOfDTO> getAllPlanificationsParMachine(
+            @RequestParam(value = "operationType", required = true) @NotEmpty(message = "{http.error.0001}") String operationType
+    ) throws ResourceNotFoundException {
+        return planificationService.getAllPlanificationsParMachine(operationType);
+    }
     @GetMapping("/getPlanificationByIdLigneCmdAndIndex/{idLc}/{index}")
     @ApiOperation(value = "service to get planification with index.")
     public ResponseEntity<Map<String, Object>> deleteCommandeClient(

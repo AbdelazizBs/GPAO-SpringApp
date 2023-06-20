@@ -13,7 +13,12 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>housstock</name>
     <description>Demo project for Spring Boot</description>
-
+    <distributionManagement>
+        <repository>
+            <id>deploymentRepo</id>
+            <url>http://172.20.10.8:8081/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
     <properties>
         <java.version>1.8</java.version>
         <commons-lang3.version>3.11</commons-lang3.version>

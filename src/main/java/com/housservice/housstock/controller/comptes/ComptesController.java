@@ -73,7 +73,7 @@ public class ComptesController {
     }
 
     @GetMapping("/getRoles/{email}")
-    public List<String> getRoles(
+    public String getRoles(
             @PathVariable(value = "email", required = true) @NotEmpty(message = "{http.error.0001}") String email)
             throws ResourceNotFoundException {
         return comptesService.getRoles(email);

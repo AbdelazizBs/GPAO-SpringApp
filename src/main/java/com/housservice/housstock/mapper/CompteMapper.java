@@ -30,7 +30,7 @@ public abstract class CompteMapper {
 
     @AfterMapping
     void updateComptesDto(final Comptes comptes, @MappingTarget final ComptesDto comptesDto)   {
-        comptesDto.setRolesName(comptes.getRoles().stream().map(Roles::getNom).collect(Collectors.toList()));
+        comptesDto.setRoleName(comptes.getRole().getNom());
     }
 
     @AfterMapping

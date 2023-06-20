@@ -65,6 +65,11 @@ public class MachineController {
 				 throws ResourceNotFoundException {
 			 return machineService.getAllMachinesByEtapes(nomEtape);
 		 }
+		 @GetMapping("/getLibelleMachines")
+		 public List<String>  getLibelleMachines ()
+				 throws ResourceNotFoundException {
+			 return machineService.getLibelleMachines();
+		 }
 
 		  @PutMapping("/addMachine")
 		  public ResponseEntity<String> createMachine(@Valid @RequestBody MachineDto machineDto) throws ResourceNotFoundException {

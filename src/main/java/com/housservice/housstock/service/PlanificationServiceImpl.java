@@ -109,4 +109,14 @@ public class PlanificationServiceImpl implements PlanificationService {
             return planificationOfs.stream().map(PlanificationMappper.MAPPER::toPlanificationOfDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<PlanificationOfDTO> getAllPlanificationsParMachine(String libelleMachine) throws ResourceNotFoundException {
+        Machine machine = machineRepository.findMachineByLibelle(libelleMachine).
+                orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), libelleMachine)));
+        List<PlanificationOf> planificationOfs = planificationRepository.findAll();
+        planificationOfs = planificationOfs.stream().filter(planificationOf -> planificationOf.getMachine() != null && planificationOf.getMachine().getId().equals(machine.getId())).collect(Collectors.toList());
+        return planificationOfs.stream().map(PlanificationMappper.MAPPER::toPlanificationOfDto).collect(Collectors.toList());
+    }
+
+
 }

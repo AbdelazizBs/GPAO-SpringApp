@@ -31,7 +31,7 @@ public class Comptes {
     private String password;
 
 
-    private List<Roles> roles ;
+    private Roles role ;
 
     private String idPersonnel;
     private String personnelName;

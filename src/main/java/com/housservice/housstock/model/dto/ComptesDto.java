@@ -24,7 +24,7 @@ public class ComptesDto {
 	    
 	    private String password;
 	    
-		private List<String> rolesName;
+		private String roleName;
 		private Date datelastlogin;
 
 

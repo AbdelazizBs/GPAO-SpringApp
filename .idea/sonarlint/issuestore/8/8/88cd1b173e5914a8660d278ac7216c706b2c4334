@@ -1,0 +1,12 @@
+
+m
+java:S1104"RMake MAPPER a static final constant or non-public and provide accessors if needed.(žý¹Óþÿÿÿÿ
+G
+java:S1444",Make this "public static MAPPER" field final(žý¹Óþÿÿÿÿ
+l
+java:S3008"QRename this field "MAPPER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(žý¹Óþÿÿÿÿ
+Y
+java:S1155">Use isEmpty() to check whether the collection is empty or not.(Æ¢¸üþÿÿÿÿ
+T
+java:S1155">Use isEmpty() to check whether the collection is empty or not.(¤±²‹
+Q	java:S125"<This block of commented-out lines of code should be removed.(Þ¨öæ

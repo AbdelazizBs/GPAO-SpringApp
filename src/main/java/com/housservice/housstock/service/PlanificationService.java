@@ -14,5 +14,7 @@ public interface PlanificationService {
 
     List<PlanificationOfDTO> getPlanificationByIdLigneCmd(String idLc) throws ResourceNotFoundException;
     List<PlanificationOfDTO> getAllPlanificationsParOperation(String operationType) throws ResourceNotFoundException;
+    List<PlanificationOfDTO> getAllPlanificationsParMachine(String operationType) throws ResourceNotFoundException;
+
 
 }

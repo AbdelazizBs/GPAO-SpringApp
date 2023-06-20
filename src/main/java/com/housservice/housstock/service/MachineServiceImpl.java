@@ -191,6 +191,10 @@ public class MachineServiceImpl implements MachineService {
         return machineRepository.findMachineByEtapeProduction(etapeProduction);
     }
     @Override
+    public List<String> getLibelleMachines( ) throws ResourceNotFoundException {
+       return machineRepository.findAll().stream().map(Machine::getLibelle).collect(Collectors.toList());
+    }
+    @Override
     public ResponseEntity<Map<String, Object>> getMachineIdByName(String machinsName) {
 
         try {

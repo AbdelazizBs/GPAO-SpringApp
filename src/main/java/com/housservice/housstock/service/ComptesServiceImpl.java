@@ -106,8 +106,8 @@ public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 		compte.setEmail(comptesDto.getEmail());
 		compte.setPersonnelName(personnel1.getNom());
 		compte.setPassword(passwordEncoder.encode(comptesDto.getPassword()));
-		compte.setRoles(comptesDto.getRolesName().stream().map(roleName ->
-				rolesRepository.findByNom(roleName).get()).collect(Collectors.toList()));
+		compte.setRole(rolesRepository.findByNom(comptesDto.getRoleName())
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),comptesDto.getRoleName()))));
 		comptesRepository.save(compte);
 		personnel1.setCompte(compte);
 		personnelRepository.save(personnel1);
@@ -137,8 +137,8 @@ public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 		comptes.setIdPersonnel(idPersonnel);
 		comptes.setEnVeille(false);
 		comptes.setDatelastlogin(null);
-		comptes.setRoles(comptesDto.getRolesName().stream().map(roleName ->
-				rolesRepository.findByNom(roleName).get()).collect(Collectors.toList()));
+		comptes.setRole(rolesRepository.findByNom(comptesDto.getRoleName())
+				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),comptesDto.getRoleName()))));
 		comptesRepository.save(comptes);
 		personnel.setCompte(comptes);
 		personnelRepository.save(personnel);
@@ -180,18 +180,16 @@ public class ComptesServiceImpl implements ComptesService , UserDetailsService {
 			comptesRepository.save(comptes);
 		}
 		Collection<SimpleGrantedAuthority> authorities =new ArrayList<>();
-		personnel.getCompte().getRoles().forEach(roles -> {authorities.add(new SimpleGrantedAuthority(roles.getNom()));
-		});
+		authorities.add(new SimpleGrantedAuthority(personnel.getCompte().getRole().getNom()));
 		return new org.springframework.security.core.userdetails.User(personnel.getCompte().getEmail(), personnel.getCompte().getPassword(),authorities);
 	}
 
 
 	@Override
-	public List<String> getRoles(String email) {
+	public String getRoles(String email) {
 		Comptes comptes = comptesRepository.findByEmail(email)
 				.orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),email)));
-		return comptes.getRoles().stream().map(Roles::getNom)
-				.collect(Collectors.toList());
+		return comptes.getRole().getNom();
 
 	}
 	@Override

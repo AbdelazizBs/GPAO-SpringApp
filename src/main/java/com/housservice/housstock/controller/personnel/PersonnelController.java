@@ -137,13 +137,14 @@ public class PersonnelController {
                 String access_token = JWT.create().withSubject(user.getNom())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles",
-                                user.getCompte().getRoles().stream().map(Roles::getNom).collect(Collectors.toList()))
+                        .withClaim("role",
+                                user.getCompte().getRole().getNom())
                         .sign(algorithm);
                 Map<String, String> tokens = new HashMap<>();
                 tokens.put("access_token", access_token);
                 tokens.put("refresh_token", refreshToken);
-                tokens.put("roles", user.getCompte().getRoles().stream().map(Roles::getNom).collect(Collectors.toList()).toString());
+                tokens.put("role", user.getCompte().getRole().getNom());
+
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 

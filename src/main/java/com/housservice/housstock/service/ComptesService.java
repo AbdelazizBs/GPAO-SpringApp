@@ -23,7 +23,7 @@ public interface ComptesService {
     void miseEnVeille(String idCompte) throws ResourceNotFoundException;
     void restaurer(String idCompte) throws ResourceNotFoundException;
     void deleteCompte(String idCompte) throws ResourceNotFoundException;
-     List<String> getRoles(String  email);
+     String getRoles(String  email);
       ResponseEntity<Map<String, Object>> getAllCompte(int page, int size);
       ResponseEntity<Map<String, Object>> getAllCompteEnVeille(int page, int size);
 

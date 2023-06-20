@@ -47,4 +47,11 @@ public class Machine {
     public Machine() {
 
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Machine machine = (Machine) o;
+        return id.equals(machine.id);
+    }
 }
