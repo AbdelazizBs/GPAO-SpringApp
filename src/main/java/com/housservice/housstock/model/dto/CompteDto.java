@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class CompteDto {
     @Id
     private String id;
+    @NotEmpty
     private String email;
     private String password;
     private String idPersonnel;
