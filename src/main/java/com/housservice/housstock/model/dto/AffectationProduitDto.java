@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 @Getter
@@ -13,11 +15,17 @@ import java.util.List;
 public class AffectationProduitDto {
     @Id
     private String id;
+    @NotEmpty
     private String refClient;
+    @NotNull
     private int minimunVente;
+    @NotEmpty
     private String uniteVente;
+    @NotNull
     private Date dateEffet;
+    @NotEmpty
     private String devise;
+    @NotNull
     private float prix;
     private List<PrixVente> prixVente;
     private String idProduit;

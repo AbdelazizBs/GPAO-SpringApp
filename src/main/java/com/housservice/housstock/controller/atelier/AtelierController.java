@@ -39,14 +39,16 @@ public class AtelierController {
 
     @GetMapping("/getListOf")
     public ResponseEntity<Map<String, Object>> getOfByRefMachien(@RequestParam(defaultValue = "0") int page,
-                                                                 @RequestParam(defaultValue = "3") int size){
-    return atelierService.getOfByRefMachine(page,size);
+                                                                 @RequestParam(defaultValue = "3") int size,
+                                                                 @RequestParam String personnel){
+    return atelierService.getOfByAteliers(page,size,personnel);
     }
 
     @GetMapping("/getPlantoday")
     public ResponseEntity<Map<String, Object>> getPlantoday(@RequestParam(defaultValue = "0") int page,
-                                                                 @RequestParam(defaultValue = "3") int size){
-        return planEtapesService.getPlantoday(page,size);
+                                                                 @RequestParam(defaultValue = "3") int size,
+                                                            @RequestParam String personnel){
+        return planEtapesService.getPlantoday(page,size,personnel);
     }
     @GetMapping("/search")
     @ApiOperation(value = "service to filter Commande ")

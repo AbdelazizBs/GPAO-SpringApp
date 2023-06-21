@@ -61,7 +61,7 @@ public class AtelierServiceImpl implements AtelierService{
 
 
     @Override
-    public ResponseEntity<Map<String, Object>> getOfByRefMachine(int page, int size) {
+    public ResponseEntity<Map<String, Object>> getOfByAteliers(int page, int size,String personnel) {
         try {
             Pageable paging = PageRequest.of(page, size);
             Page<Plannification> pageTuts;
@@ -71,7 +71,7 @@ public class AtelierServiceImpl implements AtelierService{
             for (Plannification planification : pageTuts) {
                 if (!planification.getEtapes().isEmpty()) {
                     PlanEtapes firstEtape = planification.getEtapes().get(0);
-                    if (firstEtape.getRefMachine() == null && firstEtape.getTerminer()==false) {
+                    if (firstEtape.getRefMachine() == null && firstEtape.getTerminer()==false && firstEtape.getMonitrice().equals(personnel)) {
                         ateliers.add(firstEtape);
                     }
                 }

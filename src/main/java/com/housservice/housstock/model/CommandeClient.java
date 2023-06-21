@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.List;
 @Getter
 @Setter
@@ -17,7 +18,7 @@ public class CommandeClient {
 
     @Id
     private String id;
-    private String dateCommande;
+    private Date dateCommande;
     private String commentaire;
     private String numBcd;
     private String client;
@@ -28,7 +29,7 @@ public class CommandeClient {
     private boolean miseEnVeille;
 
 
-    public CommandeClient(String dateCommande, String commentaire, String numBcd, String client, List<Article> article, String etat, String type, boolean terminer, boolean miseEnVeille) {
+    public CommandeClient(Date dateCommande, String commentaire, String numBcd, String client, List<Article> article, String etat, String type, boolean terminer, boolean miseEnVeille) {
         this.dateCommande = dateCommande;
         this.commentaire = commentaire;
         this.numBcd = numBcd;

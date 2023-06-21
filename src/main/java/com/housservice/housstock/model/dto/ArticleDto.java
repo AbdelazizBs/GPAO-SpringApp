@@ -23,7 +23,7 @@ public class ArticleDto {
     private Produit produit;
     private String type;
 
-    @NotNull(message = " date embauche should not empty")
+    @NotNull(message = " date  should not empty")
     private Date dateLivraison;
     private String prixUnitaire;
     @NotNull

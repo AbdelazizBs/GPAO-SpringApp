@@ -37,7 +37,7 @@ public class PlanEtapesServiceImpl implements PlanEtapesService{
 
     }
     @Override
-    public ResponseEntity<Map<String, Object>> getPlantoday(int page, int size) {
+    public ResponseEntity<Map<String, Object>> getPlantoday(int page, int size,String personnels) {
         try {
             List<PlanEtapesDto> planetapes = new ArrayList<PlanEtapesDto>();
             Pageable paging = PageRequest.of(page, size);
@@ -48,7 +48,7 @@ public class PlanEtapesServiceImpl implements PlanEtapesService{
             }).collect(Collectors.toList());
             List<PlanEtapesDto> matchingPlanifications = new ArrayList<>();
             for (PlanEtapesDto i : planetapes) {
-                    if (i.getRefMachine() == null) {
+                    if (i.getRefMachine() == null && i.getMonitrice().equals(personnels))  {
                         matchingPlanifications.add(i);
                     }
                 }

@@ -139,7 +139,11 @@ public class CommandeController {
         return commandeService.getAllFournisseurs();
     }
 
-
+    @GetMapping("/livrer/{id}")
+    @ApiOperation(value = "service to livrer commande")
+    public void livrer(@PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}")  String id) throws ResourceNotFoundException {
+        commandeService.livrer(id);
+    }
     @GetMapping("/report/{id}")
     public ResponseEntity<byte[]> generateReport(@PathVariable String id){
 
@@ -154,7 +158,6 @@ public class CommandeController {
             @Valid @RequestBody(required = true) ArticleDto articleDto) throws ResourceNotFoundException {
         commandeService.addArticleCommande(articleDto,idCommande);
         return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());
-
     }
     @PutMapping("/updateArticleClient/{idArticle}")
     public ResponseEntity <String> updateArticleCommande(

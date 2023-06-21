@@ -17,13 +17,13 @@ public class CommandeSuivi {
     private String raisonSocial;
     private int rate;
     private String commentaire;
-    private String date;
+    private Date date;
     private String numBcd;
     private String vprix;
 
     private String vdate;
 
-    public CommandeSuivi(String id, String raisonSocial, int rate, String commentaire, String date, String numBcd, String vprix, String vdate) {
+    public CommandeSuivi(String id, String raisonSocial, int rate, String commentaire, Date date, String numBcd, String vprix, String vdate) {
         this.id = id;
         this.raisonSocial = raisonSocial;
         this.rate = rate;

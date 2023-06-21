@@ -30,5 +30,6 @@ public class CommandeDto {
     private String type;
     private boolean terminer;
     private int counter;
+    private boolean livrer;
 
 }

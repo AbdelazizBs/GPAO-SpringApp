@@ -124,7 +124,7 @@ public class PlanifierMachineServiceImpl implements PlanifierMachineService{
             firstEtape.setHeureDebutReel(planEtapesDto.getHeureDebutReel());
             firstEtape.setHeureFinReel(planEtapesDto.getHeureFinReel());
             firstEtape.setDateReel(planEtapesDto.getDateReel());
-
+            plannification1.setQuantiteConforme(firstEtape.getQuantiteConforme());
             plannificationRepository.save(plannification1);
         }
     }

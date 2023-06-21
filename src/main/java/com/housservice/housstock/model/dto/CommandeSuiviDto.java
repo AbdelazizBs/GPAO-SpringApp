@@ -18,8 +18,7 @@ public class CommandeSuiviDto {
     @NotNull
     private int rate;
     private String commentaire;
-    @NotNull(message = " Verifier Commande date Liv")
-    private String date;
+    private Date date;
     private String numBcd;
 
     @NotEmpty

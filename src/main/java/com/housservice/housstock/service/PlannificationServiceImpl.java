@@ -136,8 +136,6 @@ public class PlannificationServiceImpl implements PlannificationService {
         if (etapes == null) {
             etapes = new ArrayList<>();
         }
-
-        // Check if the etape exists in the Plannification's etapes list
         boolean etapeExists = false;
         PlanEtapes existingEtapeToRemove = null;
         for (PlanEtapes existingEtape : etapes) {
@@ -147,15 +145,12 @@ public class PlannificationServiceImpl implements PlannificationService {
                 break;
             }
         }
-
-        // If the etape exists, remove it from the etapes list
         if (etapeExists) {
             etapes.remove(existingEtapeToRemove);
         }
         planEtapesDto.setRef(plannification1.getRef());
         planEtapesDto.setEtat(false);
         planEtapesDto.setTerminer(false);
-        // Add the updated etape
         PlanEtapes etape = PlanEtapesMapper.MAPPER.toPlanEtapes(planEtapesDto);
         etape.setRef(plannification1.getRef());
         etapes.add(etape);

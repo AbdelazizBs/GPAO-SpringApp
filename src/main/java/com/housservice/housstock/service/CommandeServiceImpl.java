@@ -141,6 +141,13 @@ public class CommandeServiceImpl implements CommandeService{
     public void createNewCommande(CommandeDto commandeDto) throws ResourceNotFoundException {
         commandeDto.setMiseEnVeille(false);
         commandeDto.setTerminer(false);
+        commandeDto.setLivrer(false);
+        if (commandeDto.getDateCommande() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(commandeDto.getDateCommande());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            commandeDto.setDateCommande(calendar.getTime());
+        }
         commandeDto.setCounter(this.findProduitWithMaxSize()+1);
         commandeDto.setNumBcd("Cmd" + String.format("%03d",commandeDto.getCounter()));
         List<Article> articles = new ArrayList<>();
@@ -158,6 +165,12 @@ public class CommandeServiceImpl implements CommandeService{
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  id)));
         commandes.setCommentaire(commande.getCommentaire());
         commandes.setFournisseur(commande.getFournisseur());
+        if (commande.getDateCommande() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(commande.getDateCommande());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            commande.setDateCommande(calendar.getTime());
+        }
         commandes.setDateCommande(commande.getDateCommande());
         commandeRepository.save(commandes);
     }
@@ -367,15 +380,24 @@ public class CommandeServiceImpl implements CommandeService{
         fournisseur.setRate(commandeSuiviDto.getRate());
         fournisseurRepository.save(fournisseur);
         commandeRepository.save(commande);
-
+        if (commandeSuiviDto.getDate() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(commandeSuiviDto.getDate());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            commandeSuiviDto.setDate(calendar.getTime());
+        }
         CommandeSuivi commandeSuivi = CommandeSuiviMapper.MAPPER.toCommandeSuivi(commandeSuiviDto);
-        commandeSuivi.setVdate(commandeSuiviDto.getVdate());
-        commandeSuivi.setVprix(commandeSuiviDto.getVprix());
-        commandeSuivi.setRate(commandeSuiviDto.getRate());
         commandeSuivi.setRaisonSocial(fournisseur.getRaisonSocial());
         commandeSuiviRepository.save(commandeSuivi);
     }
 
+    @Override
+    public void livrer(String id) throws ResourceNotFoundException {
+        Commande commande = commandeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), id)));
+        commande.setLivrer(true);
+        commandeRepository.save(commande);
+    }
     @Override
     public ResponseEntity<Map<String, Object>> getCommandeNotActive(int page, int size) {
         try {

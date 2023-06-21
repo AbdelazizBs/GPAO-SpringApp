@@ -42,5 +42,5 @@ public interface CommandeService {
     public void delete(String id) ;
     public ResponseEntity<Map<String, Object>> onSortNoActiveCommande(int page, int size, String field, String order);
     ResponseEntity<Map<String, Object>> searchS(String textToFind,int page, int size,boolean enVeille);
-
+    void livrer(String id) throws ResourceNotFoundException;
 }

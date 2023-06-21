@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface AtelierService {
     Optional<Machine> getMachineById(String id);
-    ResponseEntity<Map<String, Object>> getOfByRefMachine(int page, int size);
+    ResponseEntity<Map<String, Object>> getOfByAteliers(int page, int size,String personnel);
     public ResponseEntity<Map<String, Object>> search(String textToFind, int page, int size, boolean enVeille);
     void updateEtapes(String id, PlanEtapesDto planEtapesDto) throws ResourceNotFoundException;
     void terminer(String id,PlanEtapesDto planEtapesDto) throws ResourceNotFoundException;

@@ -84,6 +84,12 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         if (commandeClientDto.getArticle()==null){
             commandeClientDto.setArticle(articles);
         }
+        if (commandeClientDto.getDateCommande() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(commandeClientDto.getDateCommande());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            commandeClientDto.setDateCommande(calendar.getTime());
+        }
         CommandeClient commandeClient = CommandeClientMapper.MAPPER.toCommandeClient(commandeClientDto);
         commandeClientRepository.save(commandeClient);
     }
@@ -209,6 +215,12 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         Produit produit = produitRepository.findByDesignation(articleDto.getDesignationMatiere());
         articleDto.setProduit(produit);
         List<Article> articles = new ArrayList<>();
+        if (articleDto.getDateLivraison() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(articleDto.getDateLivraison());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            articleDto.setDateLivraison(calendar.getTime());
+        }
         Article article1 = ArticleMapper.MAPPER.toArticle(articleDto);
         if(commandeClient.getArticle()==null){
             articles.add(article1);
@@ -237,6 +249,12 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         articleToUpdate.setQuantite(articleDto.getQuantite());
         articleToUpdate.setPrixUnitaire(articleDto.getPrixUnitaire());
         articleToUpdate.setDesignationMatiere(articleDto.getDesignationMatiere());
+        if (articleDto.getDateLivraison() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(articleDto.getDateLivraison());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            articleDto.setDateLivraison(calendar.getTime());
+        }
         articleToUpdate.setDateLivraison(articleDto.getDateLivraison());
         articleRepository.save(articleToUpdate);
         commandeClient.getArticle().add(articleToUpdate);
@@ -350,6 +368,7 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         if (commandeClient!=null){
             plannification.setIdComm(commandeClient.getId());
         }
+        article.setDateLivraison(commandeClient.getDateCommande());
         plannification.setLigneCommandeClient(article);
         String[] etape1=article.getProduit().getEtapes();
         plannification.setNomEtape(etape1[0]);

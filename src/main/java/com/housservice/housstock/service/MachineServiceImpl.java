@@ -168,6 +168,12 @@ public class MachineServiceImpl implements MachineService
     }
     @Override
     public void createNewMachine(MachineDto machineDto) throws ResourceNotFoundException {
+        if (machineDto.getDateMaintenance() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(machineDto.getDateMaintenance());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            machineDto.setDateMaintenance(calendar.getTime());
+        }
         machineDto.setCounter(this.findProduitWithMaxSize()+1);
         machineDto.setRefMachine("RefMachine" + String.format("%03d",machineDto.getCounter()));
         Machine machine = MachineMapper.MAPPER.toMachine(machineDto);
@@ -209,6 +215,12 @@ public class MachineServiceImpl implements MachineService
         }
         machine.setType(machineDto.getType());
         machine.setLibelle(machineDto.getLibelle());
+        if (machineDto.getDateMaintenance() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(machineDto.getDateMaintenance());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            machineDto.setDateMaintenance(calendar.getTime());
+        }
         machine.setDateMaintenance(machineDto.getDateMaintenance());
         machine.setNbConducteur(machineDto.getNbConducteur());
         machine.setNomConducteur(machineDto.getNomConducteur());
