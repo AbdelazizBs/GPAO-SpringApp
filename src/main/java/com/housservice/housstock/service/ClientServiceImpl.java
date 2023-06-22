@@ -114,7 +114,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void createNewClient( String refClientIris,
+	public void createNewClient(
 								 String raisonSociale,
 								 String adresse,
 								 String codePostal,

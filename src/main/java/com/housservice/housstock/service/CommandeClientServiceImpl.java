@@ -287,10 +287,37 @@ public class CommandeClientServiceImpl implements CommandeClientService{
         commande.setEtat("en attendant");
         commandeClientRepository.save(commande);
     }
+    public void calcul() throws ResourceNotFoundException {
+        List<Plannification> plannification1 = plannificationRepository.findAll();
+        for(Plannification j :plannification1) {
+            int total = 0, notready = 0;
+            if (!j.getEtapes().isEmpty()) {
+                for (PlanEtapes i : j.getEtapes()) {
+                    total=total+1;
+                    if (i.getTerminer() == true)
+                        notready++;
+                }
 
+
+                j.setProgress( (notready * 100) / total);
+                if(j.getProgress()<100 && j.getProgress()>0){
+                    CommandeClient commandeClient = commandeClientRepository.findById(j.getIdComm()).get();
+                    commandeClient.setEtat("en production");
+                    commandeClientRepository.save(commandeClient);
+                }
+                if(j.getProgress()==100){
+                    CommandeClient commandeClient = commandeClientRepository.findById(j.getIdComm()).get();
+                    commandeClient.setEtat("Terminé");
+                    commandeClientRepository.save(commandeClient);
+                }
+                plannificationRepository.save(j);
+            }
+        }
+    }
     @Override
     public ResponseEntity<Map<String, Object>> getCommandeClientNotActive(int page, int size) {
         try {
+            calcul();
             List<CommandeClientDto> commandeClients = new ArrayList<CommandeClientDto>();
             Pageable paging = PageRequest.of(page, size);
             Page<CommandeClient> pageTuts;

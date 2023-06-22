@@ -24,7 +24,7 @@ public interface ClientService {
 	public ResponseEntity<Map<String, Object>> onSortClientNotActive(int page, int size, String field, String order);
 
 	
-	  void createNewClient(  String refClientIris,
+	  void createNewClient(
 							 String raisonSociale,
 							 String adresse,
 							 String codePostal,

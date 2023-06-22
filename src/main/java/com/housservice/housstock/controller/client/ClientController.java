@@ -120,9 +120,7 @@ public class ClientController {
 	  
 		@PutMapping(value = "/addClient")
 		  public ResponseEntity<String> createNewClient(
-																	  @RequestParam("refClientIris")
-															 			@NotEmpty
-																				  String refClientIris,
+
 																		  @RequestParam("raisonSociale")
 																		  @NotEmpty
 																		  String raisonSociale,
@@ -163,7 +161,7 @@ public class ClientController {
 																		  @RequestParam("images") MultipartFile[] images
 
 														) throws ResourceNotFoundException {
-	    	  clientService.createNewClient(refClientIris,raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm
+	    	  clientService.createNewClient(raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm
 					  ,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,images);
 
 		      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0003());
