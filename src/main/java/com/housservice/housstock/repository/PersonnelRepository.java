@@ -38,4 +38,6 @@ public interface PersonnelRepository extends MongoRepository<Personnel, String>{
     List<Personnel> findByDateEmbaucheBetween(Date firstday, Date lastday);
 
     List<Personnel> findPersonnelBySexe(String role);
+
+
 }

@@ -53,7 +53,7 @@ public interface ClientService {
 
 
 
-	public void updateClient(String idClient ,String refClientIris,
+	public void updateClient(String idClient ,
 							 String raisonSociale,
 							 String adresse,
 							 String codePostal,

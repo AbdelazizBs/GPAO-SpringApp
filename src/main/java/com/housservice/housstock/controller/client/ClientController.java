@@ -172,7 +172,7 @@ public class ClientController {
 	  public ResponseEntity <String> updateClient(
 			  @ApiParam(name = "idClient", value="id of client", required = true)
 			  @PathVariable(value = "idClient", required = true) @NotEmpty(message = "{http.error.0001}")  String idClient,
-			  @RequestParam("refClientIris") String refClientIris,
+
 			  @RequestParam("raisonSociale") String raisonSociale,
 			  @RequestParam("adresse") String adresse,
 			  @RequestParam("codePostal") String codePostal,
@@ -197,7 +197,7 @@ public class ClientController {
 			  @RequestParam("swift") String swift,
 			  @RequestParam("images") MultipartFile[] images) throws ResourceNotFoundException {
 
-		  clientService.updateClient(idClient,refClientIris,raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm
+		  clientService.updateClient(idClient,raisonSociale,adresse,codePostal,ville,pays,region,phone,email,statut,brancheActivite,secteurActivite,incoterm
 				  ,echeance,modePaiement,nomBanque,adresseBanque,codeDouane,rne,cif,telecopie,rib,swift,images);
 	      
 	      return ResponseEntity.ok().body(messageHttpErrorProperties.getError0004());

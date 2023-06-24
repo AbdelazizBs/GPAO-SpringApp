@@ -93,11 +93,15 @@ public class AffectationProduitServiceImpl implements AffectationProduitService{
         PrixVente prixVente = prixVenteRepository.findById(idPrixVente)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPrixVente)));
         List<PrixVente> prixVenteList = affectationProduit.getPrixVente();
-        prixVenteList.removeIf(c -> c.equals(prixVente));
-        affectationProduit.setPrixVente(prixVenteList);
+        for (int i = 0; i < prixVenteList.size(); i++) {
+            PrixVente currentPrixAchat = prixVenteList.get(i);
+            if (currentPrixAchat.getId().equals(idPrixVente)) {
+                prixVenteList.remove(i);
+                break;
+            }
+        }
         affectationProduitRepository.save(affectationProduit);
         prixVenteRepository.deleteById(idPrixVente);
-
     }
 
 
@@ -120,16 +124,17 @@ public class AffectationProduitServiceImpl implements AffectationProduitService{
     @Override
     public void addAffectationProduit(AffectationProduitDto affectationProduitDto) {
         List<PrixVente> prixAchat = new ArrayList<>();
+        AffectationProduit affectationProduit = AffectationProduitMapper.MAPPER.toAffectationProduit(affectationProduitDto);
         PrixVente prixVente = new PrixVente();
-        prixVente.setPrix(affectationProduitDto.getPrix());
-        prixVente.setMinimunVente(affectationProduitDto.getMinimunVente());
-        prixVente.setUniteVente(affectationProduitDto.getUniteVente());
-        prixVente.setDateEffet(affectationProduitDto.getDateEffet());
-        prixVente.setDevise(affectationProduitDto.getDevise());
+        prixVente.setPrix(affectationProduit.getPrix());
+        prixVente.setMinimunVente(affectationProduit.getMinimunVente());
+        prixVente.setUniteVente(affectationProduit.getUniteVente());
+        prixVente.setDateEffet(affectationProduit.getDateEffet());
+        prixVente.setDevise(affectationProduit.getDevise());
         prixAchat.add(prixVente);
-            affectationProduitDto.setPrixVente(prixAchat);
-            AffectationProduit affectationProduit = AffectationProduitMapper.MAPPER.toAffectationProduit(affectationProduitDto);
-            affectationProduitRepository.save(affectationProduit);
+        prixVenteRepository.save(prixVente);
+        affectationProduit.setPrixVente(prixAchat);
+        affectationProduitRepository.save(affectationProduit);
 
 
     }

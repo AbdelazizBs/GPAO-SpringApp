@@ -121,17 +121,18 @@ public class AffectationServiceImpl implements AffectationService {
     public void createNewAffectation(AffectationDto affectationDto) throws ResourceNotFoundException {
         ListeMatiere matiere = matiereRepository.findById(affectationDto.getIdmatiere()).get();
         affectationDto.setType(matiere.getType());
+        Affectation affectation = AffectationMapper.MAPPER.toAffectation(affectationDto);
         List<PrixAchat> prixAchats = new ArrayList<>();
         PrixAchat prixAchat = new PrixAchat();
-        prixAchat.setPrix(affectationDto.getPrix());
-        prixAchat.setMinimumachat(affectationDto.getMinimumachat());
-        prixAchat.setUniteAchat(affectationDto.getUnite());
-        prixAchat.setDateEffet(affectationDto.getDateeffect());
-        prixAchat.setDevise(affectationDto.getDevises());
+        prixAchat.setPrix(affectation.getPrix());
+        prixAchat.setMinimumachat(affectation.getMinimumachat());
+        prixAchat.setUniteAchat(affectation.getUnite());
+        prixAchat.setDateEffet(affectation.getDateeffect());
+        prixAchat.setDevise(affectation.getDevises());
         prixAchats.add(prixAchat);
-        affectationDto.setPrixAchat(prixAchats);
-        Affectation affectation = AffectationMapper.MAPPER.toAffectation(affectationDto);
-        affectation.setUnite(affectationDto.getUnite());
+        affectation.setPrixAchat(prixAchats);
+        affectation.setUnite(affectation.getUnite());
+        prixAchatRepository.save(prixAchat);
         affectationRepository.save(affectation);
 
     }
@@ -255,6 +256,8 @@ public class AffectationServiceImpl implements AffectationService {
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  prixAchatDto.getId())));
         prixAchatToUpdate.setPrix(prixAchatDto.getPrix());
         prixAchatToUpdate.setDevise(prixAchatDto.getDevise());
+        prixAchatToUpdate.setUniteAchat(prixAchatDto.getUniteAchat());
+        prixAchatToUpdate.setMinimumachat(prixAchatDto.getMinimumachat());
         prixAchatToUpdate.setDateEffet(prixAchatDto.getDateEffet());
         prixAchatRepository.save(prixAchatToUpdate);
         affectationRepository.save(affectation);
@@ -264,14 +267,25 @@ public class AffectationServiceImpl implements AffectationService {
     public void deletePrixAchatAffectation(String idPrixAchat) throws ResourceNotFoundException {
         PrixAchat prixAchat = prixAchatRepository.findById(idPrixAchat)
                 .orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(), idPrixAchat)));
+
         List<Affectation> affectations = affectationRepository.findByPrixAchat(prixAchat);
 
         for (Affectation affectation : affectations) {
-            affectation.getPrixAchat().removeIf(c -> c.equals(prixAchat));
+            List<PrixAchat> prixAchats = affectation.getPrixAchat();
+            for (int i = 0; i < prixAchats.size(); i++) {
+                PrixAchat currentPrixAchat = prixAchats.get(i);
+                if (currentPrixAchat.getId().equals(idPrixAchat)) {
+                    prixAchats.remove(i);
+                    break;
+                }
+            }
             affectationRepository.save(affectation);
         }
+
         prixAchatRepository.deleteById(idPrixAchat);
     }
+
+
     public Optional<Fournisseur> getFournisseurid(String id){
         Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
         return fournisseur;

@@ -103,6 +103,9 @@ public class ProduitServiceImpl implements ProduitService {
         produit.setType(produitDto.getType());
         produit.setDesignation(produitDto.getDesignation());
         produit.setDateCreation(produitDto.getDateCreation());
+        produit.setPictures(produit.getPictures());
+
+
         produitRepository.save(produit);
     }
 

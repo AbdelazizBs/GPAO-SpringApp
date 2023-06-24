@@ -30,7 +30,9 @@ public class PlanEtapesDto {
 
     private List<String> personnels;
     private Date datePrevu;
+    @NotNull(message = " date  should not empty")
     private Date heureDebutPrevue;
+    @NotNull(message = " date  should not empty")
     private Date heureFinPrevue;
     private Date heureDebutReel;
     private Date heureFinReel;

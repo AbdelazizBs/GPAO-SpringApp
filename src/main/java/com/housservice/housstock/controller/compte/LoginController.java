@@ -111,6 +111,7 @@ public class LoginController {
         return loginService.getAllPer();
     }
 
+
     @PutMapping("/miseEnVeille/{id}")
     public ResponseEntity <String> miseEnVeille(
             @ApiParam(name = "id", value = "id", required = true) @PathVariable(value = "id", required = true) @NotEmpty(message = "{http.error.0001}") String id) throws ResourceNotFoundException {

@@ -19,7 +19,8 @@ public class PrixAchat {
     private int minimumachat;
     private String uniteAchat;
 
-    public PrixAchat(int prix, Date dateEffet, String devise, int minimumachat, String uniteAchat) {
+    public PrixAchat(String id, int prix, Date dateEffet, String devise, int minimumachat, String uniteAchat) {
+        this.id = id;
         this.prix = prix;
         this.dateEffet = dateEffet;
         this.devise = devise;

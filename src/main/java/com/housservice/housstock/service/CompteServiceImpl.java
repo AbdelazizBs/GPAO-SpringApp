@@ -54,7 +54,10 @@ public class CompteServiceImpl implements CompteService{
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         Compte compte = compteRepository.findByEmail(loginRequest.getEmail());
         if (compte == null) {
-            throw new LoginException("Invalid username or password.");
+            throw new LoginException("Invalide nom d'utilisateur ou mot de passe.");
+        }
+        if (loginRequest.getPassword() == null) {
+            throw new LoginException("Invalide nom d'utilisateur ou mot de passe.");
         }
         if (bcrypt.matches(loginRequest.getPassword(),compte.getPassword())) {
             String token = generateToken(compte);
@@ -66,7 +69,7 @@ public class CompteServiceImpl implements CompteService{
             compteRepository.save(compte);
             return token;
         } else {
-            throw new LoginException("Invalid username or password.");
+            throw new LoginException("Invalide nom d'utilisateur ou mot de passe.");
         }
     }
 
@@ -243,6 +246,7 @@ public class CompteServiceImpl implements CompteService{
                 .map(Personnel::getFullName)
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public void miseEnVeille(String idCompte) throws ResourceNotFoundException {

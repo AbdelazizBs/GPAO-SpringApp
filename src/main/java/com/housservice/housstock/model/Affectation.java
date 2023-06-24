@@ -36,8 +36,8 @@ public class Affectation {
 
     private List<PrixAchat> prixAchat;
 
-
-    public Affectation(Date dateeffect, String ref, String devises, int prix, int minimumachat, String unite, String uniteAchat, String listFournisseur, String idmatiere, String destination, String type, List<PrixAchat> prixAchat) {
+    public Affectation(String id, Date dateeffect, String ref, String devises, int prix, int minimumachat, String unite, String uniteAchat, String listFournisseur, String idmatiere, String destination, String type, List<PrixAchat> prixAchat) {
+        this.id = id;
         this.dateeffect = dateeffect;
         this.ref = ref;
         this.devises = devises;

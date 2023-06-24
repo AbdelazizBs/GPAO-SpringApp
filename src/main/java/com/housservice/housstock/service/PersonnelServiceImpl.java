@@ -118,6 +118,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 		}
 		personnel.setNom(personnelDto.getNom());
 		personnel.setPrenom(personnelDto.getPrenom());
+		personnel.setFullName(personnelDto.getNom()+" "+personnelDto.getPrenom());
 		personnel.setDateNaissance(personnelDto.getDateNaissance());
 		personnel.setAdresse(personnelDto.getAdresse());
 		personnel.setPhoto(personnelDto.getPhoto());

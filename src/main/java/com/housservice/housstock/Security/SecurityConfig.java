@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
 
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -40,27 +40,52 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/api/v1/compte/login")
-            .permitAll();
-        http.authorizeRequests().antMatchers(GET,"/api/v1/personnel/**").hasAnyAuthority("Responsable de production","Responsable RH","Admin");
-        http.authorizeRequests().antMatchers(POST,"/api/v1/personnel/**").hasAnyAuthority("Responsable RH","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/client/**").hasAnyAuthority("Commercial","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/fournisseur/**").hasAnyAuthority("Responsable d achat","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/commande/**").hasAnyAuthority("Responsable d achat","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/compte/**").hasAnyAuthority("Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/machine/**").hasAnyAuthority("Conducteur machine","Responsable de production","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/profile/**").permitAll();
-        http.authorizeRequests().antMatchers(GET,"/api/v1/commandeClient/**").hasAnyAuthority("Commercial","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/listeMatiere/**").hasAnyAuthority("Responsable d achat","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/affectation/**").hasAnyAuthority("Responsable d achat","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/affectationFrs/**").hasAnyAuthority("Responsable d achat","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/planificationOf/**").hasAnyAuthority("Conducteur machine","Responsable de production","Responsable d achat","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/planifiermachine/**").hasAnyAuthority("Conducteur machine","Admin");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/Atelier/**").hasAnyAuthority("Monitrice","Admin");
+        http.authorizeRequests()
+                .antMatchers("/api/v1/compte/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/personnel/**").hasAnyAuthority("Responsable RH", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/personnel/**").hasAnyAuthority("Responsable RH", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/client/**").hasAnyAuthority("Commercial", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/client/**").hasAnyAuthority("Commercial", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/fournisseur/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/fournisseur/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/commande/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/commande/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/compte/**").hasAnyAuthority("Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/compte/**").hasAnyAuthority("Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/machine/**").hasAnyAuthority("Conducteur machine","Responsable de production", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/machine/**").hasAnyAuthority("Responsable de production", "Admin")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/machine/**").hasAnyAuthority("Responsable de production", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/profile/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/v1/profile/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/commandeClient/**").hasAnyAuthority("Commercial", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/commandeClient/**").hasAnyAuthority("Commercial", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/listeMatiere/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/listeMatiere/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/affectation/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/affectation/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/affectation/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/affectation/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/affectationFrs/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/affectationFrs/**").hasAnyAuthority("Responsable d achat", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/planificationOf/**").hasAnyAuthority("Responsable de production", "Admin")
+                .antMatchers(HttpMethod.PUT, "/api/v1/planificationOf/**").hasAnyAuthority("Responsable de production", "Admin")
+                .antMatchers(HttpMethod.GET, "/api/v1/planifiermachine/**").hasAnyAuthority("Conducteur machine")
+                .antMatchers(HttpMethod.PUT, "/api/v1/planifiermachine/**").hasAnyAuthority("Conducteur machine")
+                .antMatchers(HttpMethod.GET, "/api/v1/Atelier/**").hasAnyAuthority("Monitrice")
+                .antMatchers(HttpMethod.PUT, "/api/v1/Atelier/**").hasAnyAuthority("Monitrice")
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> {
+                    // Handle access denied response
+                    response.setStatus(HttpStatus.FORBIDDEN.value());
+                    response.getWriter().write("Access Denied");
+                });
 
-
-        http.addFilterBefore(new FilterAuthorization(),UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new FilterAuthorization(), UsernamePasswordAuthenticationFilter.class);
     }
+
+
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

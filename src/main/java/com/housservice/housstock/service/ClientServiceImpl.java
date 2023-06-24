@@ -215,7 +215,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void updateClient(String idClient ,String refClientIris,
+	public void updateClient(String idClient ,
 							 String raisonSociale,
 							 String adresse,
 							 String codePostal,
@@ -243,14 +243,9 @@ public class ClientServiceImpl implements ClientService {
 		if (!Objects.equals(email, "") && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
 			throw new IllegalArgumentException("Email invalide !!");
 		}
-		if (refClientIris.isEmpty() || raisonSociale.isEmpty() || adresse.isEmpty() || codePostal.isEmpty() || ville.isEmpty() || pays.isEmpty() || region.isEmpty()) {
-			throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires !!");
-		}
+
 		Client client = getClientById(idClient)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format(messageHttpErrorProperties.getError0002(),  idClient)));
-		if (!client.getRefClientIris().equals(refClientIris)) {
-			throw new IllegalArgumentException("Error Id!!");
-		}
 		if (!client.getRaisonSocial().equals(raisonSociale)) {
 			throw new IllegalArgumentException("Error Id!!");
 		}
@@ -285,7 +280,6 @@ public class ClientServiceImpl implements ClientService {
 		client.setSwift(swift);
 		client.setBrancheActivite(brancheActivite);
 		client.setSecteurActivite(secteurActivite);
-		client.setRefClientIris(refClientIris);
 		client.setTelecopie(telecopie);
 		client.setPhone(phone);
 		client.setStatut(statut);
