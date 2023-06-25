@@ -52,4 +52,6 @@ public interface PersonnelService {
     List<Integer> getPersonnalListe(boolean b);
     int getPersonnel(String role);
     List<Personnel> getallPersonnallist();
+    int getActifMonitrice(boolean b);
+    int getMonitrice();
 }

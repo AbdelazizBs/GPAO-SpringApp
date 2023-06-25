@@ -237,7 +237,18 @@ public class PersonnelController {
 	public int getPersonnelSexe(){
 		return personnelService.getPersonnelSexe("Homme");
 	}
-
+	@GetMapping("/getActifMonitrice")
+	public int getActifMonitrice(){
+		return personnelService.getActifMonitrice(false);
+	}
+	@GetMapping("/getMonitrice")
+	public int getMonitrice(){
+		return personnelService.getMonitrice();
+	}
+	@GetMapping("/getNoActifMonitrice")
+	public int getNoActifMonitrice(){
+		return personnelService.getActifMonitrice(true);
+	}
 
 	@GetMapping("/getPersonnelActifListe")
 	public List<Integer> getPersonnelActifListe(){

@@ -449,6 +449,27 @@ public class PersonnelServiceImpl implements PersonnelService {
 		}
 	}
 	@Override
+	public int getMonitrice() {
+		try {
+			List<Personnel> personnels = personnelRepository.findPersonnelByPoste("Operatrice");
+			return (int) personnels.stream().count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+	@Override
+	public int getActifMonitrice(boolean b) {
+		try {
+			List<Personnel> personnels = personnelRepository.findPersonnelByMiseEnVeille(b);
+			return (int) personnels.stream().filter(e -> e.getPoste().equals("Operatrice")).count();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
 	public int getPersonnel(String role) {
 		try {
 			List<Personnel> personnels = personnelRepository.findPersonnelByPoste(role);

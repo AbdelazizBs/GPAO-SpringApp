@@ -99,7 +99,6 @@ public class LoginController {
     public ResponseEntity<Map<String, Object>> getAllCompte(@RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "3") int size){
         return loginService.getAllCompte(page,size);
-
     }
 
     @GetMapping("/getAllRole")
